@@ -10,6 +10,11 @@ export interface Graph {
   points: Point[];
 }
 
+export enum GraphType {
+  model,
+  recorded,
+}
+
 export interface Color {
   r: number;
   g: number;

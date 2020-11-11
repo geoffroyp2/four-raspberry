@@ -1,21 +1,62 @@
-import { ProgramInfo, SensorValues } from "../interfaces/programInterfaces";
+import {
+  ProgramInfo,
+  SensorValues,
+  Point,
+} from "../interfaces/programInterfaces";
 import com, { i2cCom } from "./i2cCom";
 import db from "./db";
 
+import realdb from "../db/dbHandler";
+
+/*
+
+--------- TODO ---------
+
+-- db of programs
+-- selection/edition of items in db
+-- pause functionnalities: (complete pause & pause + time still running)
+-- program end and record in db 
+-- current cursor on graph
+-- display something different when not connected to 2nd raspberry + "connect" button
+
+
+-- restart from last recorded point
+
+*/
+
 class Program {
+  // --------------------
+  // ------ Fields ------
+  // --------------------
+
   // constants
   com: i2cCom = com;
   refreshInterval: number = 1000; //ms
 
   // program variables
   running: boolean = false;
+  paused: boolean = false;
   programStartTime: Date | null = null;
   lastRefresh: Date | null = null;
   currentProgram: ProgramInfo | null = null;
   currentSensorValues: SensorValues | null = null;
   currentTargetTemp: number = 0;
+  pauseTotalTime: number = 0;
 
-  //
+  // Recorded values
+  currentTempRecord: Point[] = [];
+  currentOxyRecord: Point[] = [];
+
+  constructor() {
+    console.log("before add");
+
+    realdb.addData();
+  }
+
+  // --------------------
+  // -- Program Select --
+  // --------------------
+
   getPrograms(): ProgramInfo[] {
     // lookup program infos in the database and return them to populate the UI selects
     return db;
@@ -33,14 +74,45 @@ class Program {
     };
   }
 
+  // ---------------------
+  // -- Program Control --
+  // ---------------------
+
   start(): void {
     if (!this.running) {
-      this.programStartTime = new Date();
-      this.running = true;
+      if (this.paused) {
+        this.running = true;
+        this.paused = false;
+        console.log("Program unpaused");
+        this.run();
+      } else {
+        this.programStartTime = new Date();
+        this.running = true;
 
-      console.log("Program started");
-      this.run();
+        this.currentTempRecord = [];
+        this.currentOxyRecord = [];
+
+        console.log("Program started");
+        this.run();
+      }
     }
+  }
+
+  pause(): void {
+    if (this.running) {
+      this.running = false;
+      this.paused = true;
+      console.log("Program paused");
+    }
+  }
+  stop(): void {
+    if (this.running) {
+      this.running = false;
+      console.log("Program stopped");
+    }
+  }
+  restartFromLast(): void {
+    // Restart from last recorded point
   }
 
   run(): void {
@@ -52,31 +124,32 @@ class Program {
           temp: this.currentTargetTemp,
           oxy: Math.random() * 60 + 30,
         });
-        this.currentSensorValues = com.requestSensorValues();
+        this.recordSensorValues();
         if (this.running) this.run();
       }, this.refreshInterval);
     }
   }
 
-  pause(): void {
-    if (this.running) {
-      this.running = false;
-      console.log("Program paused");
-    }
-  }
-  stop(): void {
-    if (this.running) {
-      this.running = false;
-      console.log("Program stopped");
-    }
-  }
-  restartFromLast(): void {}
+  // -------------------
+  // -- Sensor Values --
+  // -------------------
 
   getTargetTemp(): number {
     //called from the UI
 
     this.refreshTargetTemp();
     return this.currentTargetTemp || 0;
+  }
+
+  recordSensorValues(): void {
+    this.currentSensorValues = com.requestSensorValues();
+    this.currentTempRecord.push({
+      x:
+        new Date().getTime() -
+        this.programStartTime!.getTime() -
+        this.pauseTotalTime,
+      y: this.currentSensorValues.temp,
+    });
   }
 
   getSensorValues(): SensorValues {

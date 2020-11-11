@@ -12,13 +12,13 @@ const db: ProgramInfo[] = [...Array(6)].map((prog, progIdx) => {
         b: Math.floor(Math.random() * 210),
         a: 0.9,
       },
-      points: [...Array(100)].map((p, i) => {
+      points: [...Array(300)].map((p, i) => {
         return {
-          x: i * 1000 * 60 * 10,
+          x: i * 1000 * 60 * 1, //10, // un point toutes 10 minutes
           y:
-            0.2 * i +
-            Math.random() *
-              10 *
+            i +
+            progIdx *
+              0.5 *
               (Math.random() * 10 * ((i * progIdx + 5) / 1000) -
                 5 * ((i * progIdx + 5) / 1000)),
         };

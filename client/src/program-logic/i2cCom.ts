@@ -24,11 +24,11 @@ export class i2cCom {
   }
 
   requestSensorValues(): SensorValues {
-    console.log("sensor sending values");
+    // console.log("sensor sending values");
 
     return {
-      temp: this.targetValues!.temp + Math.random() * 40 - 20,
-      oxy: this.targetValues!.oxy + Math.random() * 10 - 5,
+      temp: this.targetValues!.temp * (Math.random() * 0.1 + 0.95),
+      oxy: this.targetValues!.oxy * (Math.random() * 0.1 + 0.95),
     };
   }
 }

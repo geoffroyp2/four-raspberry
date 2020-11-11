@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Scatter } from "react-chartjs-2";
 import { Graph } from "../interfaces/programInterfaces";
 import { formatTime } from "../utils/timeFormatter";
 import "chartjs-plugin-crosshair";
+import program from "../program-logic/program";
 
 interface Props {
   name: string;
   graph: Graph;
 }
 
+const refreshRate = 1000;
+
 const ProgramGraph = ({ name, graph }: Props) => {
+  const [currentTempRecord, setCurrentTempRecord] = useState([
+    ...program.currentTempRecord,
+  ]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentTempRecord([...program.currentTempRecord]);
+    }, refreshRate);
+    return () => clearTimeout(timer);
+  });
+
   return (
     <Scatter
       data={{
         datasets: [
           {
-            label: name,
+            label: "Température cible",
             data: graph.points,
             showLine: true,
             fill: false,
@@ -23,13 +37,33 @@ const ProgramGraph = ({ name, graph }: Props) => {
             backgroundColor: "rgb(0, 0, 0)", // couleur de remplissage de la courbe
             borderColor: `rgba(${graph.color.r},${graph.color.g},${graph.color.b},${graph.color.a})`, // couleur de la courbe
 
-            pointBackgroundColor: "rgba(0, 0, 0, 0.5)", // portion centrale des points
-            pointBorderColor: "rgba(0, 0, 0, 0.1)", // bordure des points
-            pointBorderWidth: 2, // épaisseur de la bordure
+            pointBackgroundColor: "rgba(0, 0, 0, 0)", // portion centrale des points
+            pointBorderColor: "rgba(0, 0, 0, 0)", // bordure des points
+            pointBorderWidth: 0, // épaisseur de la bordure
             pointHitRadius: 0, // rayon de hover
             pointHoverBackgroundColor: "rgba(0, 0, 0, 0)", // transformations de hover
-            pointHoverBorderColor: "rgba(0, 0, 0,0)",
-            pointHoverBorderWidth: 2,
+            pointHoverBorderColor: "rgba(0, 0, 0, 0)",
+            pointHoverBorderWidth: 0,
+
+            lineTension: 0.3,
+            yAxisID: "temp",
+          },
+          {
+            label: "Température mesurée",
+            data: currentTempRecord,
+            showLine: true,
+            fill: false,
+
+            backgroundColor: "rgb(0, 0, 0)", // couleur de remplissage de la courbe
+            borderColor: `rgba(255, 0, 0, 1)`, // couleur de la courbe
+
+            pointBackgroundColor: "rgba(0, 0, 0, 0)", // portion centrale des points
+            pointBorderColor: "rgba(0, 0, 0, 0)", // bordure des points
+            pointBorderWidth: 0, // épaisseur de la bordure
+            pointHitRadius: 0, // rayon de hover
+            pointHoverBackgroundColor: "rgba(0, 0, 0, 0)", // transformations de hover
+            pointHoverBorderColor: "rgba(0, 0, 0, 0)",
+            pointHoverBorderWidth: 0,
 
             lineTension: 0.3,
             yAxisID: "temp",
