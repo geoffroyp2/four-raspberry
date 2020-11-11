@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "node",
+    "pretty": true,
+    "outDir": "dist",
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts", "../client/src/db/handler.ts"],
+  "exclude": ["node_modules", ".vscode"]
+}

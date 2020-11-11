@@ -1,4 +1,4 @@
-import { IGraphDocument } from "./graphTypes";
+import { IGraphDocument } from "./types";
 
 export async function setLastUpdated(this: IGraphDocument): Promise<void> {
   const now = new Date();

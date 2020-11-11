@@ -1,5 +1,8 @@
 import { Document, Model } from "mongoose";
-import { Color, Point } from "../interfaces/programInterfaces";
+import {
+  Color,
+  Point,
+} from "../../../../client/src/interfaces/programInterfaces";
 
 export interface IGraph {
   name: string;

@@ -2,7 +2,7 @@ import * as Mongoose from "mongoose";
 
 let database: Mongoose.Connection;
 
-const connect = () => {
+export const connect = () => {
   if (database) return;
 
   const uri = "mongodb://192.168.0.24:27017/?readPreference=primary&ssl=false";
@@ -26,11 +26,8 @@ const connect = () => {
   });
 };
 
-const disconnect = () => {
+export const disconnect = () => {
   if (!database) return;
 
   Mongoose.disconnect();
 };
-
-const client = { connect, disconnect };
-export default client;

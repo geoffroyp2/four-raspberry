@@ -6,7 +6,7 @@ import {
 import com, { i2cCom } from "./i2cCom";
 import db from "./db";
 
-import realdb from "../db/dbHandler";
+// import realdb from "../db/dbHandler";
 
 /*
 
@@ -47,11 +47,11 @@ class Program {
   currentTempRecord: Point[] = [];
   currentOxyRecord: Point[] = [];
 
-  constructor() {
-    console.log("before add");
+  // constructor() {
+  //   console.log("before add");
 
-    realdb.addData();
-  }
+  //   realdb.addData();
+  // }
 
   // --------------------
   // -- Program Select --

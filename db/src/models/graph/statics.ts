@@ -1,4 +1,4 @@
-import { IGraphDocument, IGraphModel } from "./graphTypes";
+import { IGraphDocument, IGraphModel } from "./types";
 
 export async function findModelGraphs(
   this: IGraphModel
