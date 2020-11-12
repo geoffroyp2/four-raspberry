@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
+
 import { Scatter } from "react-chartjs-2";
-import { Graph } from "../interfaces/programInterfaces";
-import { formatTime } from "../utils/timeFormatter";
 import "chartjs-plugin-crosshair";
+
+import { Color, Point } from "../interfaces/programInterfaces";
+import { formatTime } from "../utils/timeFormatter";
 import program from "../program-logic/program";
 
 interface Props {
   name: string;
-  graph: Graph;
+  points: Point[];
+  color: Color;
 }
 
 const refreshRate = 1000;
 
-const ProgramGraph = ({ name, graph }: Props) => {
+const ProgramGraph = ({ name, points, color }: Props) => {
   const [currentTempRecord, setCurrentTempRecord] = useState([
     ...program.currentTempRecord,
   ]);
@@ -30,12 +33,12 @@ const ProgramGraph = ({ name, graph }: Props) => {
         datasets: [
           {
             label: "Température cible",
-            data: graph.points,
+            data: points,
             showLine: true,
             fill: false,
 
             backgroundColor: "rgb(0, 0, 0)", // couleur de remplissage de la courbe
-            borderColor: `rgba(${graph.color.r},${graph.color.g},${graph.color.b},${graph.color.a})`, // couleur de la courbe
+            borderColor: `rgba(${color.r},${color.g},${color.b},${color.a})`, // couleur de la courbe
 
             pointBackgroundColor: "rgba(0, 0, 0, 0)", // portion centrale des points
             pointBorderColor: "rgba(0, 0, 0, 0)", // bordure des points
@@ -87,6 +90,9 @@ const ProgramGraph = ({ name, graph }: Props) => {
               type: "linear",
               id: "temp",
               position: "left",
+              ticks: {
+                min: 0,
+              },
             },
           ],
           xAxes: [

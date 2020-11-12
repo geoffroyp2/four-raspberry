@@ -5,6 +5,9 @@ export class Routes {
   public nodesController: BaseController = new BaseController();
 
   public routes(app): void {
-    app.route("/graph").post(this.nodesController.post);
+    app
+      .route("/graph")
+      .get(this.nodesController.get)
+      .post(this.nodesController.post);
   }
 }

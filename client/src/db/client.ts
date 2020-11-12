@@ -1,46 +1,63 @@
-import { request } from "./request";
+import axios from "axios";
 
-export const addData = (callback: (res: any) => void) => {
-  const onReceive = (res: any): void => {
-    console.log(res);
-    callback(res);
-  };
+export const post = (req: any, callback: (res: any) => void): void => {
+  const body = JSON.stringify(req);
 
-  const data = [
-    {
-      name: "graph 1",
-      description: "graph 1 description",
-      graphType: "model",
-      color: { r: 230, g: 30, b: 30, a: 0.9 },
-      points: [
-        { x: 0, y: 20 },
-        { x: 1, y: 40 },
-        { x: 2, y: 90 },
-        { x: 3, y: 150 },
-        { x: 4, y: 210 },
-        { x: 5, y: 290 },
-        { x: 7, y: 370 },
-        { x: 8, y: 500 },
-        { x: 9, y: 650 },
-      ],
-    },
-    {
-      name: "graph 2",
-      description: "graph 2 description",
-      graphType: "model",
-      color: { r: 30, g: 230, b: 30, a: 0.9 },
-      points: [
-        { x: 1, y: 70 },
-        { x: 2, y: 170 },
-        { x: 3, y: 300 },
-        { x: 4, y: 480 },
-        { x: 5, y: 610 },
-        { x: 7, y: 800 },
-        { x: 8, y: 920 },
-        { x: 9, y: 1020 },
-      ],
-    },
-  ];
+  console.log("sending data");
 
-  request({ id: "add", data: data }, onReceive);
+  axios
+    .post("http://localhost:3001/graph", { body })
+    .then((res: any) => {
+      callback(res.data);
+    })
+    .catch((e: Error) => console.error(e));
 };
+
+export const get = (
+  params: { id: string; arg: string },
+  callback: (res: any) => void
+): void => {
+  console.log("requesting data", params);
+
+  axios
+    .get("http://localhost:3001/graph", { params })
+    .then((res: any) => {
+      callback(res);
+    })
+    .catch((e: Error) => console.error(e));
+};
+
+// import { request } from "./request";
+// import { IGraph } from "../../../db/src/models/graph/types";
+
+// export const addData = (callback: (res: any) => void) => {
+//   const onReceive = (res: any): void => {
+//     console.log(res);
+//     callback(res);
+//   };
+
+//   const data: IGraph[] = [...Array(10)].map((graph, graphIdx) => {
+//     return {
+//       name: `Graph #${graphIdx}`,
+//       description: `Description for Graph #${graphIdx}`,
+//       graphType: "model",
+//       color: {
+//         r: Math.random() * 255,
+//         g: Math.random() * 255,
+//         b: Math.random() * 255,
+//         a: 0.9,
+//       },
+//       points: [...Array(120)].map((point, pointIdx) => {
+//         return {
+//           x: pointIdx * 1000 * 60 * 5, // 1 point toutes les 5 minutes
+//           y:
+//             pointIdx * (Math.random() * 0.2 + 1.9) +
+//             pointIdx * (Math.random() * 0.2 + 1.9) * Math.log(pointIdx * 100) +
+//             (Math.random() * 40 - 20),
+//         };
+//       }),
+//     };
+//   });
+
+//   // post({ id: "add", data: data }, onReceive);
+// };

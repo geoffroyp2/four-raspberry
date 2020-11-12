@@ -2,7 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Routes } from "./config/routes";
 import * as cors from "cors";
-import { connect } from "./database";
+import database from "./database";
 
 class App {
   public app: express.Application;
@@ -12,7 +12,7 @@ class App {
     this.app = express();
     this.config();
     this.routePrv.routes(this.app);
-    connect();
+    database.connect();
   }
 
   private config(): void {

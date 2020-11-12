@@ -1,12 +1,9 @@
-import {
-  ProgramInfo,
-  SensorValues,
-  Point,
-} from "../interfaces/programInterfaces";
+import { SensorValues, Point } from "../interfaces/programInterfaces";
+import { IGraph } from "../../../db/src/models/graph/types";
 import com, { i2cCom } from "./i2cCom";
-import db from "./db";
+import dbHandler from "../db/handler";
 
-// import realdb from "../db/dbHandler";
+// import { addData } from "../db/client";
 
 /*
 
@@ -38,7 +35,7 @@ class Program {
   paused: boolean = false;
   programStartTime: Date | null = null;
   lastRefresh: Date | null = null;
-  currentProgram: ProgramInfo | null = null;
+  currentProgram: IGraph | null = null;
   currentSensorValues: SensorValues | null = null;
   currentTargetTemp: number = 0;
   pauseTotalTime: number = 0;
@@ -47,31 +44,28 @@ class Program {
   currentTempRecord: Point[] = [];
   currentOxyRecord: Point[] = [];
 
-  // constructor() {
-  //   console.log("before add");
-
-  //   realdb.addData();
-  // }
+  //cached elements from database
+  modelGraphs: IGraph[] = [];
 
   // --------------------
   // -- Program Select --
   // --------------------
 
-  getPrograms(): ProgramInfo[] {
+  getGraphs(callback: (graphs: IGraph[]) => void): void {
     // lookup program infos in the database and return them to populate the UI selects
-    return db;
+
+    const onReceive = (graphs: IGraph[]): void => {
+      this.modelGraphs = graphs;
+      callback(graphs);
+    };
+
+    dbHandler.getModelGraphs(onReceive);
   }
 
-  selectProgram(id: number): ProgramInfo {
+  selectProgram(id: number): IGraph {
     // load program in memory and returns it
-    this.currentProgram = db[id];
-    // return this.currentProgram;
-    return {
-      id: this.currentProgram.id,
-      name: this.currentProgram.name,
-      description: this.currentProgram?.description,
-      graph: this.currentProgram.graph,
-    };
+    this.currentProgram = this.modelGraphs[id];
+    return { ...this.currentProgram };
   }
 
   // ---------------------
@@ -171,13 +165,13 @@ class Program {
       this.lastRefresh = now;
       const programFullTime = now.getTime() - this.programStartTime!.getTime();
 
-      const graph = this.currentProgram!.graph.points;
+      const points = this.currentProgram!.points;
       let i = 1;
-      for (; i < graph.length; i++) if (graph[i].x > programFullTime) break;
+      for (; i < points.length; i++) if (points[i].x > programFullTime) break;
 
       const pente =
-        (graph[i].y - graph[i - 1].y) / (graph[i].x - graph[i - 1].x);
-      const yOrigine = graph[i].y - pente * graph[i].x;
+        (points[i].y - points[i - 1].y) / (points[i].x - points[i - 1].x);
+      const yOrigine = points[i].y - pente * points[i].x;
       this.currentTargetTemp = programFullTime * pente + yOrigine;
     }
   }

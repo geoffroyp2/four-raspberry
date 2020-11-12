@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { ProgramInfo } from "../interfaces/programInterfaces";
+
+import { IGraph } from "../../../db/src/models/graph/types";
 
 interface Props {
-  programList: ProgramInfo[];
+  programList: IGraph[];
   programSelectChange: (event: number) => void;
 }
 
@@ -11,8 +12,8 @@ const ProgramSelect = ({ programList, programSelectChange }: Props) => {
 
   const onSelectChange = useCallback(
     (event: any): void => {
-      setSelected(event.target.value);
-      programSelectChange(event.target.value);
+      setSelected(event.target.selectedIndex);
+      programSelectChange(event.target.selectedIndex);
     },
     [programSelectChange]
   );
@@ -21,7 +22,7 @@ const ProgramSelect = ({ programList, programSelectChange }: Props) => {
     <select onChange={onSelectChange} defaultValue={selected}>
       {programList.map((p) => {
         return (
-          <option value={p.id} key={p.id}>
+          <option value={p.name} key={p.name}>
             {p.name}
           </option>
         );
