@@ -1,8 +1,16 @@
 import { Document, Model } from "mongoose";
-import {
-  Color,
-  Point,
-} from "../../../../client/src/interfaces/programInterfaces";
+
+export interface Color {
+  r: number;
+  g: number;
+  b: number;
+  a?: number;
+}
+
+export interface Point {
+  x: number;
+  y: number;
+}
 
 export interface IGraph {
   name: string;
@@ -14,11 +22,11 @@ export interface IGraph {
   lastUpdated?: Date;
 }
 
-export interface IGraphDocument extends IGraph, Document {
+export interface IGraphDocument extends Document, IGraph {
   setLastUpdated: (this: IGraphDocument) => Promise<void>;
 }
 
-export interface IGraphModel extends IGraph, Model<IGraphDocument> {
+export interface IGraphModel extends Model<IGraphDocument>, IGraph {
   findModelGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
   findRecordedGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
 }

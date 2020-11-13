@@ -1,13 +1,12 @@
-import { Request, Response } from "express";
-import { BaseController } from "../controllers/baseController";
+import { GraphController } from "../controllers/graphController";
 
 export class Routes {
-  public nodesController: BaseController = new BaseController();
+  public graphController: GraphController = new GraphController();
 
   public routes(app): void {
     app
       .route("/graph")
-      .get(this.nodesController.get)
-      .post(this.nodesController.post);
+      .get(this.graphController.get)
+      .post(this.graphController.post);
   }
 }

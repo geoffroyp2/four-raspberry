@@ -92,6 +92,7 @@ const ProgramGraph = ({ name, points, color }: Props) => {
               position: "left",
               ticks: {
                 min: 0,
+                max: 2650,
               },
             },
           ],

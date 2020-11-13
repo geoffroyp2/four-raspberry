@@ -1,20 +1,3 @@
-export interface ProgramInfo {
-  id: number;
-  name: string;
-  description?: string;
-  graph: Graph;
-}
-
-export interface Graph {
-  color: Color;
-  points: Point[];
-}
-
-export enum GraphType {
-  model,
-  recorded,
-}
-
 export interface Color {
   r: number;
   g: number;

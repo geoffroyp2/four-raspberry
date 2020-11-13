@@ -1,5 +1,8 @@
 import { model } from "mongoose";
-import { IGraphDocument } from "./types";
+import { IGraphDocument, IGraphModel } from "./types";
 import GraphSchema from "./schema";
 
-export const GraphModel = model<IGraphDocument>("graph", GraphSchema);
+export const GraphModel = model<IGraphDocument, IGraphModel>(
+  "graph",
+  GraphSchema
+);

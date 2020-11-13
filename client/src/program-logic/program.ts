@@ -1,7 +1,7 @@
 import { SensorValues, Point } from "../interfaces/programInterfaces";
 import { IGraph } from "../../../db/src/models/graph/types";
-import com, { i2cCom } from "./i2cCom";
-import dbHandler from "../db/handler";
+import com from "./i2cCom";
+import db from "../db/handler";
 
 // import { addData } from "../db/client";
 
@@ -27,25 +27,24 @@ class Program {
   // --------------------
 
   // constants
-  com: i2cCom = com;
-  refreshInterval: number = 1000; //ms
+  private runLoopInterval: number = 1000; //ms
 
   // program variables
-  running: boolean = false;
-  paused: boolean = false;
-  programStartTime: Date | null = null;
-  lastRefresh: Date | null = null;
-  currentProgram: IGraph | null = null;
-  currentSensorValues: SensorValues | null = null;
-  currentTargetTemp: number = 0;
-  pauseTotalTime: number = 0;
+  public running: boolean = false;
+  public paused: boolean = false;
+  private programStartTime: Date | null = null;
+  private lastRefresh: Date | null = null;
+  private currentProgram: IGraph | null = null;
+  private currentSensorValues: SensorValues | null = null;
+  private currentTargetTemp: number = 0;
+  private pauseTotalTime: number = 0;
 
   // Recorded values
-  currentTempRecord: Point[] = [];
-  currentOxyRecord: Point[] = [];
+  public currentTempRecord: Point[] = [];
+  public currentOxyRecord: Point[] = [];
 
   //cached elements from database
-  modelGraphs: IGraph[] = [];
+  private modelGraphs: IGraph[] = [];
 
   // --------------------
   // -- Program Select --
@@ -53,13 +52,10 @@ class Program {
 
   getGraphs(callback: (graphs: IGraph[]) => void): void {
     // lookup program infos in the database and return them to populate the UI selects
-
-    const onReceive = (graphs: IGraph[]): void => {
+    db.getModelGraphs((graphs: IGraph[]): void => {
       this.modelGraphs = graphs;
       callback(graphs);
-    };
-
-    dbHandler.getModelGraphs(onReceive);
+    });
   }
 
   selectProgram(id: number): IGraph {
@@ -120,7 +116,7 @@ class Program {
         });
         this.recordSensorValues();
         if (this.running) this.run();
-      }, this.refreshInterval);
+      }, this.runLoopInterval);
     }
   }
 
