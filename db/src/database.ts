@@ -16,6 +16,7 @@ export const connect = () => {
     useUnifiedTopology: true,
     useCreateIndex: true,
   });
+
   database = Mongoose.connection;
 
   database.once("open", async () => {

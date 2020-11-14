@@ -1,4 +1,5 @@
 import { Document, Model } from "mongoose";
+import { GraphEditFilter, NewGraphFilter } from "../../controllers/queryFormat";
 
 export interface Color {
   r: number;
@@ -29,4 +30,13 @@ export interface IGraphDocument extends Document, IGraph {
 export interface IGraphModel extends Model<IGraphDocument>, IGraph {
   findModelGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
   findRecordedGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
+  createNewGraph: (
+    this: IGraphModel,
+    filter: NewGraphFilter
+  ) => Promise<IGraphDocument>;
+  updateGraph: (
+    this: IGraphModel,
+    graph: IGraph,
+    filter: GraphEditFilter
+  ) => Promise<IGraphDocument>;
 }

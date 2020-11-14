@@ -125,11 +125,11 @@ const ProgramGraph = ({ name, points, color }: Props) => {
               //   dashPattern: [5,3],
             },
             zoom: {
-              enabled: true, // enable zooming
-              zoomboxBackgroundColor: "rgba(66,133,244,0.2)", // background color of zoom box
-              zoomboxBorderColor: "#48F", // border color of zoom box
-              zoomButtonText: "Reset Zoom", // reset zoom button text
-              zoomButtonClass: "reset-zoom", // reset zoom button class
+              enabled: false, // enable zooming
+              // zoomboxBackgroundColor: "rgba(66,133,244,0.2)", // background color of zoom box
+              // zoomboxBorderColor: "#48F", // border color of zoom box
+              // zoomButtonText: "Reset Zoom", // reset zoom button text
+              // zoomButtonClass: "reset-zoom", // reset zoom button class
             },
           },
         },

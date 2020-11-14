@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GraphModel } from "../models/graph/model";
 
-import { GetRequest, PostRequest, ReqId } from "./queryFormat";
+import { GetRequest, NewGraphFilter, PostRequest, ReqId } from "./queryFormat";
 
 // Todo: handle connexion and errors to database
 
@@ -36,6 +36,13 @@ export class GraphController {
           res.json(result);
           break;
         }
+        case ReqId.createOne: {
+          const result = await (
+            await GraphModel.createNewGraph(query.filter as NewGraphFilter)
+          ).execPopulate();
+          res.json(result);
+          break;
+        }
       }
     } catch (e) {
       console.error(e);
@@ -46,12 +53,26 @@ export class GraphController {
   public async post(req: Request, res: Response): Promise<void> {
     const body: PostRequest = JSON.parse(req.body.body);
 
-    console.log("\nnew post: ", body);
+    console.log("\nnew post:");
 
     try {
-      await GraphModel.create(body.data);
-      console.log(`Inserted ${body.data.graphType} graph "${body.data.name}"`);
-      res.json(true);
+      switch (body.id) {
+        case ReqId.createOne: {
+          const newGraph = await GraphModel.create(body.graph);
+          console.log(`New ${body.graph.graphType} graph "${body.graph.name}"`);
+          res.json(newGraph);
+          break;
+        }
+        case ReqId.update: {
+          const updatedGraph = await GraphModel.updateGraph(
+            body.graph,
+            body.filter
+          );
+          console.log(`Updated "${body.graph.name}"`);
+          res.json(updatedGraph);
+          break;
+        }
+      }
     } catch (e) {
       console.error(e);
       res.json(false);

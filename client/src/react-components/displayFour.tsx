@@ -1,40 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
-
-import { IGraph } from "../../../db/src/models/graph/types";
-
-import program from "../program-logic/program";
-import LoadingScreen from "./loadingScreen";
-import ProgramSelect from "./programSelect";
-import ProgramZone from "./programZone";
+import React from "react";
+import { Container } from "react-bootstrap";
+import MainZone from "./mainZone/mainZone";
+// import MainZone from "./mainZone/mainZone";
+// import SelectTabs from "./tabs/tabs";
 
 const DisplayFour = () => {
-  const [programList, setProgramList] = useState<IGraph[]>([]);
-  const [programSelected, setProgramSelected] = useState<IGraph | null>(null);
-
-  useEffect(() => {
-    program.getGraphs((graphs: IGraph[]) => {
-      setProgramList(graphs);
-      setProgramSelected(program.selectProgram(0));
-    });
-  }, []);
-
-  const programSelectChange = useCallback((id: number) => {
-    setProgramSelected(program.selectProgram(id));
-  }, []);
-
   return (
-    <div>
-      {programList.length > 0 && programSelected ? (
-        <div>
-          <ProgramSelect
-            programList={programList}
-            programSelectChange={programSelectChange}
-          />
-          <ProgramZone programSelected={programSelected} />
-        </div>
-      ) : (
-        <LoadingScreen />
-      )}
+    <div
+      style={{
+        width: 1024,
+        height: 600,
+        borderColor: "#888888",
+        color: "#CCCCCC",
+        // Only for desktop version
+        border: "solid",
+        borderWidth: 1,
+        margin: 20,
+        backgroundColor: "#333333",
+      }}
+    >
+      <Container fluid className="p-0 m-0 w-100 h-100">
+        <MainZone />
+      </Container>
     </div>
   );
 };

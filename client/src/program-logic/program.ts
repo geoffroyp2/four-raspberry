@@ -2,6 +2,7 @@ import { SensorValues, Point } from "../interfaces/programInterfaces";
 import { IGraph } from "../../../db/src/models/graph/types";
 import com from "./i2cCom";
 import db from "../db/handler";
+import graphEditor from "./graphEdit";
 
 // import { addData } from "../db/client";
 
@@ -21,20 +22,22 @@ import db from "../db/handler";
 
 */
 
-class Program {
+export class Program {
   // --------------------
   // ------ Fields ------
   // --------------------
 
   // constants
+  public graphEdit: graphEditor = new graphEditor(this);
   private runLoopInterval: number = 1000; //ms
 
   // program variables
+  public currentProgram: IGraph | null = null;
+
   public running: boolean = false;
   public paused: boolean = false;
   private programStartTime: Date | null = null;
   private lastRefresh: Date | null = null;
-  private currentProgram: IGraph | null = null;
   private currentSensorValues: SensorValues | null = null;
   private currentTargetTemp: number = 0;
   private pauseTotalTime: number = 0;
@@ -44,21 +47,21 @@ class Program {
   public currentOxyRecord: Point[] = [];
 
   //cached elements from database
-  private modelGraphs: IGraph[] = [];
+  public modelGraphs: IGraph[] = [];
 
   // --------------------
   // -- Program Select --
   // --------------------
 
-  getGraphs(callback: (graphs: IGraph[]) => void): void {
+  public getGraphs(callback: (graphs: IGraph[]) => void): void {
     // lookup program infos in the database and return them to populate the UI selects
     db.getModelGraphs((graphs: IGraph[]): void => {
       this.modelGraphs = graphs;
-      callback(graphs);
+      callback([...graphs]);
     });
   }
 
-  selectProgram(id: number): IGraph {
+  public selectProgram(id: number): IGraph {
     // load program in memory and returns it
     this.currentProgram = this.modelGraphs[id];
     return { ...this.currentProgram };
@@ -68,7 +71,7 @@ class Program {
   // -- Program Control --
   // ---------------------
 
-  start(): void {
+  public start(): void {
     if (!this.running) {
       if (this.paused) {
         this.running = true;
@@ -88,24 +91,26 @@ class Program {
     }
   }
 
-  pause(): void {
+  public pause(): void {
     if (this.running) {
       this.running = false;
       this.paused = true;
       console.log("Program paused");
     }
   }
-  stop(): void {
+
+  public stop(): void {
     if (this.running) {
       this.running = false;
       console.log("Program stopped");
     }
   }
-  restartFromLast(): void {
+
+  public restartFromLast(): void {
     // Restart from last recorded point
   }
 
-  run(): void {
+  private run(): void {
     //Main loop
     if (this.running) {
       setTimeout(() => {
@@ -124,14 +129,14 @@ class Program {
   // -- Sensor Values --
   // -------------------
 
-  getTargetTemp(): number {
+  public getTargetTemp(): number {
     //called from the UI
 
     this.refreshTargetTemp();
     return this.currentTargetTemp || 0;
   }
 
-  recordSensorValues(): void {
+  private recordSensorValues(): void {
     this.currentSensorValues = com.requestSensorValues();
     this.currentTempRecord.push({
       x:
@@ -142,7 +147,7 @@ class Program {
     });
   }
 
-  getSensorValues(): SensorValues {
+  public getSensorValues(): SensorValues {
     // called from the UI
     return (
       (this.currentSensorValues && {
@@ -152,7 +157,7 @@ class Program {
     );
   }
 
-  refreshTargetTemp(): void {
+  private refreshTargetTemp(): void {
     // calculate new TargetValues from current program graph
     // for now only calculates target
 
@@ -173,5 +178,4 @@ class Program {
   }
 }
 
-const program = new Program();
-export default program;
+export default new Program();
