@@ -7,7 +7,7 @@ import "bootswatch/dist/darkly/bootstrap.min.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className="App">
+    <div className="App noselect">
       <DisplayFour />
     </div>
   </React.StrictMode>,

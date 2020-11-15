@@ -1,8 +1,8 @@
 import { SensorValues, Point } from "../interfaces/programInterfaces";
-import { IGraph } from "../../../db/src/models/graph/types";
 import com from "./i2cCom";
 import db from "../db/handler";
 import graphEditor from "./graphEdit";
+import { Graph } from "../interfaces/Igraph";
 
 // import { addData } from "../db/client";
 
@@ -32,7 +32,7 @@ export class Program {
   private runLoopInterval: number = 1000; //ms
 
   // program variables
-  public currentProgram: IGraph | null = null;
+  public currentProgram: Graph | null = null;
 
   public running: boolean = false;
   public paused: boolean = false;
@@ -47,24 +47,31 @@ export class Program {
   public currentOxyRecord: Point[] = [];
 
   //cached elements from database
-  public modelGraphs: IGraph[] = [];
+  public modelGraphs: { [id: string]: Graph } = {};
+  public currentSelectedProgram: Graph | null = null;
+
+  //UI calls
+  public updateReceived: boolean = false;
 
   // --------------------
   // -- Program Select --
   // --------------------
 
-  public getGraphs(callback: (graphs: IGraph[]) => void): void {
-    // lookup program infos in the database and return them to populate the UI selects
-    db.getModelGraphs((graphs: IGraph[]): void => {
-      this.modelGraphs = graphs;
-      callback([...graphs]);
+  public loadModelGraphs(callback: () => void) {
+    db.getModelGraphs((graphs: Graph[]): void => {
+      if (graphs.length > 0) {
+        graphs.forEach((g) => (this.modelGraphs[g._id] = g));
+        this.currentSelectedProgram = this.modelGraphs[graphs[0]._id];
+        callback();
+      } else {
+        console.error("No model graph results");
+      }
     });
   }
 
-  public selectProgram(id: number): IGraph {
+  public selectProgram(id: string): void {
     // load program in memory and returns it
     this.currentProgram = this.modelGraphs[id];
-    return { ...this.currentProgram };
   }
 
   // ---------------------

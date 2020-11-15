@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Scatter } from "react-chartjs-2";
 import "chartjs-plugin-crosshair";
 
-import { Color, Point } from "../interfaces/programInterfaces";
-import { formatTime } from "../utils/timeFormatter";
-import program from "../program-logic/program";
+import { Color, Point } from "../../interfaces/programInterfaces";
+import { formatTime } from "../../utils/timeFormatter";
+import program from "../../program-logic/program";
 
 interface Props {
   name: string;

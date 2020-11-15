@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 
-import { IGraph } from "../../../db/src/models/graph/types";
-
 import ProgramButtons from "./programButtons";
-import ProgramDescription from "./programDescription";
+// import ProgramDescription from "./programDescription";
 import ProgramGraph from "./ProgramGraph";
 import ProgramCurrentValues from "./programCurrentValues";
+import { Graph } from "../../interfaces/Igraph";
 
 interface Props {
-  programSelected: IGraph;
+  programSelected: Graph;
 }
 
 const ProgramZone = ({ programSelected }: Props) => {
-  const [currentProgram, setCurrentProgram] = useState<IGraph>(programSelected);
+  const [currentProgram, setCurrentProgram] = useState<Graph>(programSelected);
 
   // force update of currentProgram from id change
   if (programSelected.name !== currentProgram.name)
@@ -20,7 +19,7 @@ const ProgramZone = ({ programSelected }: Props) => {
 
   return (
     <div>
-      <ProgramDescription description={currentProgram.description} />
+      {/* <ProgramDescription description={currentProgram.description} /> */}
       <ProgramGraph
         name={programSelected.name}
         color={programSelected.color}

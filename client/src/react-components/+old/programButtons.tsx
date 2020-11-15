@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import program from "../program-logic/program";
+import program from "../../program-logic/program";
 
 const ProgramButtons = () => {
   const [running, setRunning] = useState<boolean>(program.running);

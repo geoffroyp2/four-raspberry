@@ -1,25 +1,48 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { IGraph } from "../../../../db/src/models/graph/types";
+import ProgramInfos from "./programInfos";
 import ProgramTable from "./programTable";
+
 import program from "../../program-logic/program";
+import { Graph } from "../../interfaces/Igraph";
 
-type Props = {
-  validate: (programSelected: IGraph) => void;
-};
+const ProgramSelectZone = () => {
+  const [programSelected, setProgramSelected] = useState<Graph>({
+    ...program.currentSelectedProgram!,
+  });
+  const [programId, setProgramId] = useState<string>(
+    program.currentSelectedProgram!._id
+  );
+  const [tableShouldRefresh, setTableShouldRefresh] = useState<boolean>(false);
 
-const ProgramSelectZone = ({ validate }: Props) => {
-  const [programList, setProgramList] = useState<IGraph[]>(program.modelGraphs);
-  const [programSelected, setProgramSelected] = useState<IGraph | null>(null);
+  // signal coming from the program infos to trigger the re-render for the table
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setTableShouldRefresh(false);
+  });
+  const refreshTable = useCallback(() => {
+    setTableShouldRefresh(true);
+  }, []);
+
+  const select = useCallback(() => {
+    setProgramSelected({ ...program.currentSelectedProgram! });
+    setProgramId(program.currentSelectedProgram!._id);
+  }, []);
 
   return (
     <Container fluid className="border pl-1 pr-1 pt-2 pb-2 w-100 h-100">
-      <Row sm={12}>
+      <Row noGutters>
         <Col sm={5}>
-          <ProgramTable select={(graph: IGraph) => setProgramSelected(graph)} />
+          <ProgramTable
+            select={select}
+            id={programId}
+            refresh={tableShouldRefresh}
+          />
         </Col>
         <Col sm={7}>
-          <div>{programSelected?.description || "noselect"}</div>
+          {programSelected && (
+            <ProgramInfos id={programId} refresh={refreshTable} />
+          )}
         </Col>
       </Row>
     </Container>

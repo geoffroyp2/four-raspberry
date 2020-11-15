@@ -25,8 +25,8 @@ const GraphSchema = new Schema(
     description: String,
     graphType: {
       type: String,
-      enum: ["model", "recorded"],
-      default: "model",
+      enum: ["modèle", "cuisson"],
+      default: "modèle",
     },
     color: {
       type: ColorSchema,

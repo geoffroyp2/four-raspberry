@@ -1,6 +1,7 @@
-import { IGraph } from "../../../db/src/models/graph/types";
 import { Program } from "./program";
 import db from "../db/handler";
+import { Graph } from "../interfaces/Igraph";
+import { GraphEditFilter } from "../../../db/src/controllers/queryFormat";
 
 export default class graphEditor {
   private program: Program;
@@ -9,14 +10,15 @@ export default class graphEditor {
     this.program = program;
   }
 
-  editDescription(text: string, callback: (res: string) => void): void {
-    db.updateGraph(
-      this.program.currentProgram!,
-      { description: text },
-      (res: IGraph) => {
-        this.program.currentProgram = res;
-        callback(res.description);
-      }
-    );
+  public editGraph(
+    id: string,
+    filter: GraphEditFilter,
+    callback: (res: Graph) => void
+  ): void {
+    db.updateGraph(this.program.modelGraphs[id], filter, (res: Graph) => {
+      this.program.modelGraphs[id] = res;
+      this.program.updateReceived = true;
+      callback(res);
+    });
   }
 }

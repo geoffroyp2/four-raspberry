@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 
-import { IGraph } from "../../../db/src/models/graph/types";
+import { Graph } from "../../interfaces/Igraph";
 
 interface Props {
-  programList: IGraph[];
+  programList: Graph[];
   programSelectChange: (event: number) => void;
 }
 

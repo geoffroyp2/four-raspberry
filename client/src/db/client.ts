@@ -1,5 +1,4 @@
 import axios from "axios";
-import { IGraph } from "../../../db/src/models/graph/types";
 import { PostRequest, GetRequest } from "./queryFormat";
 
 export const post = (req: PostRequest, callback: (res: any) => void): void => {

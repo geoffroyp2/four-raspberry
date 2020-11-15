@@ -1,4 +1,4 @@
-import { IGraph } from "../models/graph/types";
+import { GraphTypeString, IGraph } from "../models/graph/types";
 import { Color, Point } from "../models/graph/types";
 
 export enum ReqId {
@@ -15,7 +15,7 @@ export enum ReqId {
 export interface NewGraphFilter {
   name: string;
   description?: string;
-  graphType: string;
+  graphType: GraphTypeString;
   color: Color;
   points: Point[];
   date?: Date;
@@ -24,7 +24,7 @@ export interface NewGraphFilter {
 export interface GraphEditFilter {
   name?: string;
   description?: string;
-  graphType?: string;
+  graphType?: GraphTypeString;
   color?: Color;
   points?: Point[];
   date?: Date;
@@ -32,7 +32,7 @@ export interface GraphEditFilter {
 
 export interface GraphFindFilter {
   name?: string;
-  graphType?: string;
+  graphType?: GraphTypeString;
 }
 
 export interface GetRequest {

@@ -1,54 +1,81 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
-import { IGraph } from "../../../../db/src/models/graph/types";
+import { Container, Table } from "react-bootstrap";
 import program from "../../program-logic/program";
 import { formatDate } from "../../utils/timeFormatter";
 
 type Props = {
-  select: (graph: IGraph) => void;
+  id: string;
+  select: () => void;
+  refresh: boolean;
 };
 
-const ProgramTable = ({ select }: Props) => {
-  const [rowSelected, setRowSelected] = useState<number>(0);
+const ProgramTable = ({ id, select, refresh }: Props) => {
+  const [, forceRefresh] = useState<void>();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (program.updateReceived) {
+      forceRefresh();
+      program.updateReceived = false;
+    }
+  });
+
+  const [programId, setProgramId] = useState<string>(id);
 
   useEffect(() => {
-    select(program.modelGraphs[rowSelected]);
-  }, [select, rowSelected]);
+    if (programId !== id) setProgramId(id);
+  }, [programId, id]);
+
+  const [rowSelected, setRowSelected] = useState<string>(
+    program.currentSelectedProgram!._id
+  );
 
   const rowClick = useCallback(
     (e) => {
-      setRowSelected(+e.target.id);
-      select(program.modelGraphs[e.target.id]);
+      setRowSelected(e.target.id);
+      program.currentSelectedProgram = program.modelGraphs[e.target.id];
+      select();
     },
     [select]
   );
 
   return (
-    <Table size="sm" variant="dark" striped bordered hover>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Type</th>
-          <th>Dernière Modification</th>
-        </tr>
-      </thead>
-      <tbody>
-        {program.modelGraphs.map((g, idx) => {
-          return (
-            <tr
-              onClick={rowClick}
-              id={`${idx}`}
-              key={idx}
-              className={idx === rowSelected ? "table-primary" : ""}
-            >
-              <td id={`${idx}`}>{g.name}</td>
-              <td id={`${idx}`}>{g.graphType}</td>
-              <td id={`${idx}`}>{formatDate(g.lastUpdated)}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+    <Container
+      fluid
+      className="p-0 m-0"
+      style={{
+        display: "block",
+        position: "relative",
+        overflow: "auto",
+        height: "100%",
+      }}
+    >
+      <Table size="sm" variant="dark" striped bordered hover>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Dernière Modification</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(program.modelGraphs).map(([key, value]) => {
+            return (
+              <tr
+                onClick={rowClick}
+                id={key}
+                key={key}
+                className={key === rowSelected ? "table-primary" : ""}
+              >
+                <td id={key}>{value.name}</td>
+                <td id={key}>{value.graphType}</td>
+                <td id={key}>{formatDate(value.lastUpdated)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    </Container>
   );
 };
 

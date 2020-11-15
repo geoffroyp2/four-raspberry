@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { SensorValues } from "../interfaces/programInterfaces";
-import program from "../program-logic/program";
+import { SensorValues } from "../../interfaces/programInterfaces";
+import program from "../../program-logic/program";
 
 const ProgramCurrentValues = () => {
   const [sensorValues, setSensorValues] = useState<SensorValues>(

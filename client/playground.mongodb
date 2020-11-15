@@ -16,6 +16,9 @@ export interface Graph {
   points: Point[];
 }
 // */
+use("four");
+db.graphs.updateMany({graphType:"model"},{$set: {graphType: "modèle"}})
+
 
 // use("test");
 // db.dropDatabase();

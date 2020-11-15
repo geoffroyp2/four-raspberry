@@ -1,42 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 
-import { IGraph } from "../../../../db/src/models/graph/types";
-
 import program from "../../program-logic/program";
-import LoadingScreen from "./../loadingScreen";
-// import ProgramSelect from "./../programSelect";
-import ProgramZone from "./../programZone";
+
 import ProgramSelectZone from "../programSelect/programSelectZone";
+import LoadingScreen from "./loadingScreen";
 
 const MainZone = () => {
-  const [programList, setProgramList] = useState<IGraph[]>([]);
-  const [programSelected, setProgramSelected] = useState<IGraph | null>(null);
+  const [finishedLoading, setFinishedLoading] = useState<boolean>(false);
   const [showLoadEditZone, setShowLoadEditZone] = useState<boolean>(true);
 
   useEffect(() => {
-    program.getGraphs((graphs: IGraph[]) => {
-      setProgramList(graphs);
-      setProgramSelected(program.selectProgram(0));
-    });
+    program.loadModelGraphs(() => setFinishedLoading(true));
   }, []);
 
-  const programSelectChange = useCallback((id: number) => {
-    setProgramSelected(program.selectProgram(id));
-  }, []);
-
-  const validate = useCallback((programSelected: IGraph) => {
-    setShowLoadEditZone(false);
-  }, []);
-
-  return programList.length > 0 ? (
+  return finishedLoading ? (
     <Container fluid className="p-1 w-100 h-100">
-      <Row sm={1} className="sm-3 m-2 float-right">
-        <Button onClick={() => setShowLoadEditZone(true)}>Load</Button>
-      </Row>
-      {showLoadEditZone && <ProgramSelectZone validate={validate} />}
-      {!showLoadEditZone && programSelected && (
-        <ProgramZone programSelected={programSelected} />
+      {showLoadEditZone && <ProgramSelectZone />}
+      {!showLoadEditZone && (
+        <>
+          <Row sm={1} className="sm-3 m-2 float-right">
+            <Button onClick={() => setShowLoadEditZone(true)}>Load</Button>
+          </Row>
+          {/* <ProgramZone programSelected={programSelected} /> */}
+        </>
       )}
     </Container>
   ) : (
