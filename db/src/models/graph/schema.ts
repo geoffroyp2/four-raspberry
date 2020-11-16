@@ -23,11 +23,7 @@ const GraphSchema = new Schema(
   {
     name: String,
     description: String,
-    graphType: {
-      type: String,
-      enum: ["modèle", "cuisson"],
-      default: "modèle",
-    },
+    graphType: Boolean,
     color: {
       type: ColorSchema,
       default: { r: 0, g: 0, b: 0, a: 1 },

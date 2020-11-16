@@ -16,6 +16,11 @@ export class GraphController {
 
     try {
       switch (query.id) {
+        case ReqId.getAll: {
+          const result = await GraphModel.find().exec();
+          res.json(result);
+          break;
+        }
         case ReqId.getModels: {
           const result = await GraphModel.findModelGraphs();
           res.json(result);

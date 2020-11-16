@@ -4,6 +4,10 @@ import { GraphEditFilter } from "../../../db/src/controllers/queryFormat";
 import { Graph } from "../interfaces/Igraph";
 
 export default class dbHandler {
+  static getAllGraphs(callback: (res: Graph[]) => void) {
+    get({ id: ReqId.getAll }, callback);
+  }
+
   static getModelGraphs(callback: (res: Graph[]) => void) {
     get({ id: ReqId.getModels }, callback);
   }

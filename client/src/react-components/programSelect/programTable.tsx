@@ -13,31 +13,31 @@ const ProgramTable = ({ id, select, refresh }: Props) => {
   const [, forceRefresh] = useState<void>();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (program.updateReceived) {
-      forceRefresh();
-      program.updateReceived = false;
-    }
-  });
+  // useEffect(() => {
+  //   if (program.updateReceived) {
+  //     forceRefresh();
+  //     program.updateReceived = false;
+  //   }
+  // });
 
-  const [programId, setProgramId] = useState<string>(id);
+  // const [programId, setProgramId] = useState<string>(id);
 
-  useEffect(() => {
-    if (programId !== id) setProgramId(id);
-  }, [programId, id]);
+  // useEffect(() => {
+  //   if (programId !== id) setProgramId(id);
+  // }, [programId, id]);
 
-  const [rowSelected, setRowSelected] = useState<string>(
-    program.currentSelectedProgram!._id
-  );
+  // const [rowSelected, setRowSelected] = useState<string>(
+  //   program.currentSelectedProgram!._id
+  // );
 
-  const rowClick = useCallback(
-    (e) => {
-      setRowSelected(e.target.id);
-      program.currentSelectedProgram = program.modelGraphs[e.target.id];
-      select();
-    },
-    [select]
-  );
+  // const rowClick = useCallback(
+  //   (e) => {
+  //     setRowSelected(e.target.id);
+  //     program.currentSelectedProgram = program.graphs[e.target.id];
+  //     select();
+  //   },
+  //   [select]
+  // );
 
   return (
     <Container
@@ -50,7 +50,7 @@ const ProgramTable = ({ id, select, refresh }: Props) => {
         height: "100%",
       }}
     >
-      <Table size="sm" variant="dark" striped bordered hover>
+      {/* <Table size="sm" variant="dark" striped bordered hover>
         <thead>
           <tr>
             <th>Nom</th>
@@ -59,7 +59,7 @@ const ProgramTable = ({ id, select, refresh }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(program.modelGraphs).map(([key, value]) => {
+          {Object.entries(program.graphs).map(([key, value]) => {
             return (
               <tr
                 onClick={rowClick}
@@ -74,7 +74,7 @@ const ProgramTable = ({ id, select, refresh }: Props) => {
             );
           })}
         </tbody>
-      </Table>
+      </Table> */}
     </Container>
   );
 };

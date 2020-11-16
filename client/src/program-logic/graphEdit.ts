@@ -15,9 +15,8 @@ export default class graphEditor {
     filter: GraphEditFilter,
     callback: (res: Graph) => void
   ): void {
-    db.updateGraph(this.program.modelGraphs[id], filter, (res: Graph) => {
-      this.program.modelGraphs[id] = res;
-      this.program.updateReceived = true;
+    db.updateGraph(this.program.graphs[id], filter, (res: Graph) => {
+      this.program.graphs[id] = res;
       callback(res);
     });
   }

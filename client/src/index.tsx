@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import DisplayFour from "./react-components/displayFour";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import DisplayFour from "./reactComponents/displayFour";
 import "bootswatch/dist/darkly/bootstrap.min.css";
 
+// React.Fragment instead of React.StrictMode because of Bootstrap
+
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <div className="App noselect">
       <DisplayFour />
     </div>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );

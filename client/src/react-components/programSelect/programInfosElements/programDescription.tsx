@@ -7,41 +7,41 @@ import { colsValues } from "../styles/styles";
 type Props = { id: string; refresh: () => void };
 
 const ProgramDescription = ({ id, refresh }: Props) => {
-  // --------------------------------------------
-  //                Internal State
-  const [descriptionText, setDescriptionText] = useState<string>(
-    program.currentSelectedProgram!.description
-  );
-  const [editing, setEditing] = useState<boolean>(false);
-  const [pendingValidation, setPendingValidation] = useState<boolean>(false);
+  // // --------------------------------------------
+  // //                Internal State
+  // const [descriptionText, setDescriptionText] = useState<string>(
+  //   program.currentSelectedProgram!.description
+  // );
+  // const [editing, setEditing] = useState<boolean>(false);
+  // const [pendingValidation, setPendingValidation] = useState<boolean>(false);
 
-  const validate = useCallback(() => {
-    setPendingValidation(true);
-    program.graphEdit.editGraph(
-      id,
-      { description: descriptionText },
-      (newGraph) => {
-        setPendingValidation(false);
-        setEditing(false);
-        setDescriptionText(newGraph.description);
-        refresh();
-      }
-    );
-  }, [id, descriptionText, refresh]);
+  // const validate = useCallback(() => {
+  //   setPendingValidation(true);
+  //   program.graphEdit.editGraph(
+  //     id,
+  //     { description: descriptionText },
+  //     (newGraph) => {
+  //       setPendingValidation(false);
+  //       setEditing(false);
+  //       setDescriptionText(newGraph.description);
+  //       refresh();
+  //     }
+  //   );
+  // }, [id, descriptionText, refresh]);
 
-  // --------------------------------------------
-  // Force Refresh when a new program is selected
-  const [programId, setProgramId] = useState<string>(id);
-  useEffect(() => {
-    if (programId !== id) {
-      setProgramId(id);
-      setDescriptionText(program.currentSelectedProgram!.description);
-    }
-  }, [programId, id]);
+  // // --------------------------------------------
+  // // Force Refresh when a new program is selected
+  // const [programId, setProgramId] = useState<string>(id);
+  // useEffect(() => {
+  //   if (programId !== id) {
+  //     setProgramId(id);
+  //     setDescriptionText(program.currentSelectedProgram!.description);
+  //   }
+  // }, [programId, id]);
 
   return (
     <Row>
-      <Col sm={colsValues[0]}>
+      {/* <Col sm={colsValues[0]}>
         <Form.Label as="h5"> Description </Form.Label>
       </Col>
       <Col sm={colsValues[1]}>
@@ -63,7 +63,7 @@ const ProgramDescription = ({ id, refresh }: Props) => {
           onEdit={() => setEditing(true)}
           onValid={validate}
         />
-      </Col>
+      </Col> */}
     </Row>
   );
 };

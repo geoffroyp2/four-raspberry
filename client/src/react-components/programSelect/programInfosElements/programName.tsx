@@ -9,35 +9,35 @@ type Props = { id: string; refresh: () => void };
 const ProgramName = ({ id, refresh }: Props) => {
   // --------------------------------------------
   //                Internal State
-  const [nameText, setNameText] = useState<string>(
-    program.currentSelectedProgram!.name
-  );
-  const [editing, setEditing] = useState<boolean>(false);
-  const [pendingValidation, setPendingValidation] = useState<boolean>(false);
+  // const [nameText, setNameText] = useState<string>(
+  //   program.currentSelectedProgram!.name
+  // );
+  // const [editing, setEditing] = useState<boolean>(false);
+  // const [pendingValidation, setPendingValidation] = useState<boolean>(false);
 
-  const validate = useCallback(() => {
-    setPendingValidation(true);
-    program.graphEdit.editGraph(id, { name: nameText }, (newGraph) => {
-      setPendingValidation(false);
-      setEditing(false);
-      setNameText(newGraph.name);
-      refresh();
-    });
-  }, [id, nameText, refresh]);
+  // const validate = useCallback(() => {
+  //   setPendingValidation(true);
+  //   program.graphEdit.editGraph(id, { name: nameText }, (newGraph) => {
+  //     setPendingValidation(false);
+  //     setEditing(false);
+  //     setNameText(newGraph.name);
+  //     refresh();
+  //   });
+  // }, [id, nameText, refresh]);
 
-  // --------------------------------------------
-  // Force Refresh when a new program is selected
-  const [programId, setProgramId] = useState<string>(id);
-  useEffect(() => {
-    if (programId !== id) {
-      setProgramId(id);
-      setNameText(program.currentSelectedProgram!.name);
-    }
-  }, [programId, id]);
+  // // --------------------------------------------
+  // // Force Refresh when a new program is selected
+  // const [programId, setProgramId] = useState<string>(id);
+  // useEffect(() => {
+  //   if (programId !== id) {
+  //     setProgramId(id);
+  //     setNameText(program.currentSelectedProgram!.name);
+  //   }
+  // }, [programId, id]);
 
   return (
     <Row>
-      <Col sm={colsValues[0]}>
+      {/* <Col sm={colsValues[0]}>
         <Form.Label as="h5"> Nom </Form.Label>
       </Col>
       <Col sm={colsValues[1]}>
@@ -59,7 +59,7 @@ const ProgramName = ({ id, refresh }: Props) => {
           onEdit={() => setEditing(true)}
           onValid={validate}
         />
-      </Col>
+      </Col> */}
     </Row>
   );
 };

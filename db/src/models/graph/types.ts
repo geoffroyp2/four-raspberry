@@ -13,12 +13,10 @@ export interface Point {
   y: number;
 }
 
-export type GraphTypeString = "modèle" | "cuisson";
-
 export interface IGraph {
   name: string;
   description: string;
-  graphType: GraphTypeString;
+  graphType: boolean;
   color: Color;
   points: Point[];
   date?: Date;

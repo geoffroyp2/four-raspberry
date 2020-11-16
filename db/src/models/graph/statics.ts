@@ -4,13 +4,13 @@ import { IGraph, IGraphDocument, IGraphModel } from "./types";
 export async function findModelGraphs(
   this: IGraphModel
 ): Promise<IGraphDocument[]> {
-  return this.find({ graphType: "modèle" });
+  return this.find({ graphType: true });
 }
 
 export async function findRecordedGraphs(
   this: IGraphModel
 ): Promise<IGraphDocument[]> {
-  return this.find({ graphType: "cuisson" });
+  return this.find({ graphType: false });
 }
 
 export async function createNewGraph(
@@ -20,7 +20,7 @@ export async function createNewGraph(
   return this.create({
     name: filter.name || "Graph Sans Nom",
     description: filter.description || "",
-    graphType: filter.graphType || "cuisson",
+    graphType: filter.graphType || false,
     color: filter.color || { r: 230, g: 30, b: 30, a: 0.9 },
     points: filter.points || [],
     date: filter.date || new Date(),

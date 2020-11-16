@@ -17,7 +17,7 @@ export interface Graph {
 }
 // */
 use("four");
-db.graphs.updateMany({graphType:"model"},{$set: {graphType: "modèle"}})
+db.graphs.updateMany({graphType:"modèle"},{$set: {graphType: true}})
 
 
 // use("test");

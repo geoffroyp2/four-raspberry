@@ -47,21 +47,18 @@ export class Program {
   public currentOxyRecord: Point[] = [];
 
   //cached elements from database
-  public modelGraphs: { [id: string]: Graph } = {};
-  public currentSelectedProgram: Graph | null = null;
-
-  //UI calls
-  public updateReceived: boolean = false;
+  public currentDisplayedGraphID: string = "";
+  public graphs: { [id: string]: Graph } = {};
 
   // --------------------
   // -- Program Select --
   // --------------------
 
   public loadModelGraphs(callback: () => void) {
-    db.getModelGraphs((graphs: Graph[]): void => {
+    db.getAllGraphs((graphs: Graph[]): void => {
       if (graphs.length > 0) {
-        graphs.forEach((g) => (this.modelGraphs[g._id] = g));
-        this.currentSelectedProgram = this.modelGraphs[graphs[0]._id];
+        this.currentDisplayedGraphID = graphs[0]._id;
+        graphs.forEach((g) => (this.graphs[g._id] = g));
         callback();
       } else {
         console.error("No model graph results");
@@ -71,7 +68,7 @@ export class Program {
 
   public selectProgram(id: string): void {
     // load program in memory and returns it
-    this.currentProgram = this.modelGraphs[id];
+    this.currentProgram = this.graphs[id];
   }
 
   // ---------------------

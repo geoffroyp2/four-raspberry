@@ -4,15 +4,15 @@ import ProgramDescription from "./programInfosElements/programDescription";
 import ProgramName from "./programInfosElements/programName";
 import ProgramType from "./programInfosElements/programType";
 
-type Props = { id: string; refresh: () => void };
+type Props = { id: string };
 
-const ProgramInfos = ({ id, refresh }: Props) => {
+const ProgramInfos = ({ id }: Props) => {
   return (
     <Container className="p-1 pl-2 m-0 border">
       <Form>
-        <ProgramName id={id} refresh={refresh} />
-        <ProgramDescription id={id} refresh={refresh} />
-        <ProgramType id={id} refresh={refresh} />
+        {/* <ProgramName id={id} />
+        <ProgramDescription id={id} />
+        <ProgramType id={id} /> */}
       </Form>
     </Container>
   );
