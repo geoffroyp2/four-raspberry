@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Row, Col, Form, FormControl } from "react-bootstrap";
-import program from "../../../program-logic/program";
+import program from "../../../programLogic/program";
 import EditButton from "../editButton";
 import { colsValues } from "../styles/styles";
 

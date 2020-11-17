@@ -1,18 +1,30 @@
-import React, { useRef, useState } from "react";
-import { Button, Overlay, Tooltip } from "react-bootstrap";
+import React, { useCallback, useRef, useState } from "react";
+import { Overlay, Tooltip } from "react-bootstrap";
+
 import { CirclePicker } from "react-color";
+
+import program from "../../../programLogic/program";
+import graphEditor from "../../../programLogic/graphEdit";
 import { Color } from "../../../interfaces/programInterfaces";
-import program from "../../../program-logic/program";
 
 type Props = {
   id: string;
-  onChange: () => void;
 };
 
-const ColorPicker = ({ id, onChange }: Props) => {
+const ColorPicker = ({ id }: Props) => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [color, setColor] = useState<Color>(program.graphs[id].color);
+
   const target = useRef(null);
+
+  const handleClick = useCallback(() => {
+    if (showPicker) {
+      graphEditor.editGraph(id, { color: { ...color, a: 0.9 } }, (newGraph) => {
+        setColor(newGraph.color);
+      });
+    }
+    setShowPicker(!showPicker);
+  }, [showPicker, color, id]);
 
   return (
     <>
@@ -21,7 +33,7 @@ const ColorPicker = ({ id, onChange }: Props) => {
         height="25"
         viewBox="0 0 1 1"
         xmlns="http://www.w3.org/2000/svg"
-        onClick={() => setShowPicker(!showPicker)}
+        onClick={handleClick}
         ref={target}
         style={{ cursor: "pointer" }}
       >
@@ -54,7 +66,6 @@ const ColorPicker = ({ id, onChange }: Props) => {
               ]}
               onChange={(c) => setColor(c.rgb)}
             />
-            {/* <Button className="btn-success">V</Button> */}
           </Tooltip>
         )}
       </Overlay>

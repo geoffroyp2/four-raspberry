@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
-import program from "../../../program-logic/program";
+
 import EditButton from "./editButton";
+
+import program from "../../../programLogic/program";
+import graphEditor from "../../../programLogic/graphEdit";
 
 type Props = {
   id: string;
@@ -22,15 +25,11 @@ const ProgramDescription = ({ id, styles }: Props) => {
 
   const validate = useCallback(() => {
     setPendingValidation(true);
-    program.graphEdit.editGraph(
-      id,
-      { description: description },
-      (newGraph) => {
-        setPendingValidation(false);
-        setEditing(false);
-        setDescription(newGraph.description);
-      }
-    );
+    graphEditor.editGraph(id, { description: description }, (newGraph) => {
+      setPendingValidation(false);
+      setEditing(false);
+      setDescription(newGraph.description);
+    });
   }, [id, description]);
 
   return (
@@ -41,12 +40,14 @@ const ProgramDescription = ({ id, styles }: Props) => {
           <FormControl
             as="textarea"
             value={description}
+            rows={Math.ceil(description.length / 30)}
             onChange={(e) => setDescription(e.target.value)}
           />
         ) : (
           <span>{description}</span>
         )}
       </Col>
+
       <Col className={styles.rightCol}>
         <EditButton
           buttonState={editing}

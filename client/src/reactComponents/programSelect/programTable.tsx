@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Button, ButtonGroup, Container, Row, Table } from "react-bootstrap";
-import program from "../../program-logic/program";
+
+import program from "../../programLogic/program";
 import { formatDate } from "../../utils/timeFormatter";
 
 type Props = {

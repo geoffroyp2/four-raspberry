@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import program from "../../program-logic/program";
+import program from "../../programLogic/program";
 import { formatDate } from "../../utils/timeFormatter";
 
 type Props = {

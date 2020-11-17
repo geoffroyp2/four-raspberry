@@ -14,7 +14,7 @@ const DisplayFour = () => {
         border: "solid",
         borderWidth: 1,
         margin: 20,
-        backgroundColor: "#333333",
+        backgroundColor: "#424242",
       }}
     >
       <Container fluid className="p-0 m-0 w-100 h-100">

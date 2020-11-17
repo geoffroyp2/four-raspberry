@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 
-import program from "../../program-logic/program";
+import program from "../../programLogic/program";
 import ProgramInfoZone from "../programSelect/programInfoZone";
 
 import LoadingScreen from "./loadingScreen";

@@ -5,7 +5,7 @@ import "chartjs-plugin-crosshair";
 
 import { Color, Point } from "../../interfaces/programInterfaces";
 import { formatTime } from "../../utils/timeFormatter";
-import program from "../../program-logic/program";
+import program from "../../programLogic/program";
 
 interface Props {
   name: string;
@@ -102,7 +102,7 @@ const ProgramGraph = ({ name, points, color }: Props) => {
               ticks: {
                 stepSize: 1000 * 60 * 60, // 1 par heure
                 callback: (val: string) => {
-                  return formatTime(val); // formatage du texte
+                  return formatTime(val, true); // formatage du texte
                 },
               },
               position: "bottom",

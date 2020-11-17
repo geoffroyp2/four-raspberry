@@ -16,8 +16,19 @@ export interface Graph {
   points: Point[];
 }
 // */
+
+const generatePoints = () => {
+  return [...Array(20)].map((p,pi)=> {
+    return {
+      x: pi * 1000* 60 * 30, 
+      y: Math.floor(10 + Math.random() * 5  + ((46+ Math.random()*0.5)*3*pi*Math.log10((3*pi) > 0 ? (3*pi) : 1)) - (9*pi*pi))
+    }
+  })
+}
+
+
 use("four");
-db.graphs.updateMany({graphType:"modèle"},{$set: {graphType: true}})
+db.graphs.updateMany({graphType: true},{$set: {points: generatePoints()}})
 
 
 // use("test");

@@ -1,7 +1,6 @@
 import { SensorValues, Point } from "../interfaces/programInterfaces";
 import com from "./i2cCom";
 import db from "../db/handler";
-import graphEditor from "./graphEdit";
 import { Graph } from "../interfaces/Igraph";
 
 // import { addData } from "../db/client";
@@ -28,7 +27,6 @@ export class Program {
   // --------------------
 
   // constants
-  public graphEdit: graphEditor = new graphEditor(this);
   private runLoopInterval: number = 1000; //ms
 
   // program variables
@@ -49,6 +47,7 @@ export class Program {
   //cached elements from database
   public currentDisplayedGraphID: string = "";
   public graphs: { [id: string]: Graph } = {};
+  public UIRefresh: { [id: string]: () => void } = {};
 
   // --------------------
   // -- Program Select --

@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
-import program from "../../../program-logic/program";
+
 import EditButton from "./editButton";
+
+import program from "../../../programLogic/program";
+import graphEditor from "../../../programLogic/graphEdit";
 
 type Props = {
   id: string;
@@ -20,7 +23,7 @@ const ProgramName = ({ id, styles }: Props) => {
 
   const validate = useCallback(() => {
     setPendingValidation(true);
-    program.graphEdit.editGraph(id, { name: name }, (newGraph) => {
+    graphEditor.editGraph(id, { name: name }, (newGraph) => {
       setPendingValidation(false);
       setEditing(false);
       setName(newGraph.name);

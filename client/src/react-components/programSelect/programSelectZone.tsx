@@ -3,7 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import ProgramInfos from "./programInfos";
 import ProgramTable from "./programTable";
 
-import program from "../../program-logic/program";
+import program from "../../programLogic/program";
 import { Graph } from "../../interfaces/Igraph";
 import ProgramPreview from "./programPreview";
 
