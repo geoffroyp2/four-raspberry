@@ -33,17 +33,25 @@ const divider = (
 type Props = {
   id: string;
   select: () => void;
+  controls: {
+    deleteGraph: () => void;
+    createGraph: () => void;
+    deletePending: boolean;
+    createPending: boolean;
+  };
 };
 
-const ProgramInfos = ({ id, select }: Props) => {
+const ProgramInfos = ({ id, select, controls }: Props) => {
   const [p, setP] = useState<Graph>({ ...program.graphs[id] });
+
   useEffect(() => {
+    if (p._id !== id) setP({ ...program.graphs[id] });
     if (!program.UIRefresh["programInfo"])
       program.UIRefresh["programInfo"] = () => setP({ ...program.graphs[id] });
     return () => {
       delete program.UIRefresh["programInfo"];
     };
-  }, [id]);
+  }, [id, p]);
 
   return (
     <div className="d-flex flex-column h-100 justify-content-between">
@@ -86,11 +94,7 @@ const ProgramInfos = ({ id, select }: Props) => {
       <Container>
         <Row className="pt-4">
           <Col>
-            <ProgramInfosButtons
-              suppr={() => {}}
-              create={() => {}}
-              load={select}
-            />
+            <ProgramInfosButtons loadGraph={select} controls={controls} />
           </Col>
         </Row>
       </Container>

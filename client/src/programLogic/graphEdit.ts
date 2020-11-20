@@ -17,4 +17,22 @@ export default class graphEditor {
       callback(res);
     });
   }
+
+  public static delete(
+    id: string,
+    callback: (newSelect: string) => void
+  ): void {
+    db.deleteGraph(id, () => {
+      delete program.graphs[id];
+      const newId = Object.entries(program.graphs)[0][0];
+      callback(newId);
+    });
+  }
+
+  public static create(callback: (newid: string) => void): void {
+    db.createNewGraph({ graphType: true }, (newGraph: Graph) => {
+      program.graphs[newGraph._id] = newGraph;
+      callback(newGraph._id);
+    });
+  }
 }

@@ -7,18 +7,37 @@ import ProgramTable from "./programTable";
 import program from "../../programLogic/program";
 import GraphPreview from "./graphPreview/graphPreview";
 import PointEdit from "./programInfosLeftCard/pointEdit";
+import graphEditor from "../../programLogic/graphEdit";
 
 const ProgramInfoZone = () => {
   const [programId, setProgramId] = useState<string>(
-    program.currentDisplayedGraphID
+    Object.entries(program.graphs)[0][0]
   );
   const [showTable, setShowTable] = useState<boolean>(false);
   const [showPointEdit, setShowPointEdit] = useState<boolean>(false);
 
+  const [deletePendingState, setDeletePendingState] = useState<boolean>(false);
+  const [createPendingState, setCreatePendingState] = useState<boolean>(false);
+
   const open = useCallback((id) => {
     setProgramId(id);
-    program.currentDisplayedGraphID = id;
     setShowTable(false);
+  }, []);
+
+  const deleteGraph = useCallback(() => {
+    setDeletePendingState(true);
+    graphEditor.delete(programId, (id) => {
+      setProgramId(id);
+      setDeletePendingState(false);
+    });
+  }, [programId]);
+
+  const createGraph = useCallback(() => {
+    setCreatePendingState(true);
+    graphEditor.create((id) => {
+      setProgramId(id);
+      setCreatePendingState(false);
+    });
   }, []);
 
   return (
@@ -43,6 +62,12 @@ const ProgramInfoZone = () => {
                   <ProgramInfos
                     select={() => setShowTable(true)}
                     id={programId}
+                    controls={{
+                      deleteGraph: deleteGraph,
+                      createGraph: createGraph,
+                      deletePending: deletePendingState,
+                      createPending: createPendingState,
+                    }}
                   />
                 )}
               </Card>

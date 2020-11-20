@@ -1,12 +1,26 @@
+const hours = (millis: number, showZero: boolean): string => {
+  const hours = Math.floor(millis / (60 * 60 * 1000)) % 24;
+  return (showZero && hours < 10 ? "0" : "") + hours;
+};
+
+const minutes = (millis: number): string => {
+  const minutes = Math.floor(millis / (60 * 1000)) % 60;
+  return (minutes < 10 ? "0" : "") + minutes;
+};
+
 export const formatTime = (time: string, showMinutes: boolean): string => {
   const millis = +time;
-  //   const seconds = Math.floor(millis / 1000) % 60;
-  const minutes = Math.floor(millis / (60 * 1000)) % 60;
-  const hours = Math.floor(millis / (60 * 60 * 1000)) % 24;
+  return `${hours(millis, false)}h${showMinutes ? minutes(millis) : ""}`;
+};
 
-  return `${hours}h${
-    showMinutes ? (minutes < 10 ? "0" + minutes : minutes) : ""
-  }`;
+export const getTimeInputString = (millis: number): string => {
+  return `${hours(millis, true)}:${minutes(millis)}`;
+};
+
+export const getTimeInputMillis = (time: string): number => {
+  const hours = +time.substr(0, 2);
+  const minutes = +time.substr(3, 2);
+  return getMillis(hours, minutes);
 };
 
 export const getHours = (millis: number): number => {

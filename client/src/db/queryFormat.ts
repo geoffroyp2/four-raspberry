@@ -11,13 +11,15 @@ export enum ReqId {
   getAll,
   createOne,
   update,
+  delete,
 }
+
 export interface NewGraphFilter {
-  name: string;
+  name?: string;
   description?: string;
   graphType: boolean;
-  points: Point[];
-  color: Color;
+  points?: Point[];
+  color?: Color;
   date?: Date;
 }
 
@@ -35,9 +37,13 @@ export interface GraphFindFilter {
   graphType?: boolean;
 }
 
+export interface deleteFilter {
+  _id?: string;
+}
+
 export interface GetRequest {
   id: ReqId;
-  filter?: GraphFindFilter | NewGraphFilter;
+  filter?: GraphFindFilter | NewGraphFilter | deleteFilter;
 }
 
 export interface PostRequest {

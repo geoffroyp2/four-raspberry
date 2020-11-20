@@ -45,7 +45,6 @@ export class Program {
   public currentOxyRecord: Point[] = [];
 
   //cached elements from database
-  public currentDisplayedGraphID: string = "";
   public graphs: { [id: string]: Graph } = {};
   public UIRefresh: { [id: string]: () => void } = {};
 
@@ -56,7 +55,6 @@ export class Program {
   public loadModelGraphs(callback: () => void) {
     db.getAllGraphs((graphs: Graph[]): void => {
       if (graphs.length > 0) {
-        this.currentDisplayedGraphID = graphs[0]._id;
         graphs.forEach((g) => (this.graphs[g._id] = g));
         callback();
       } else {

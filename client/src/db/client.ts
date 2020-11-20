@@ -9,18 +9,7 @@ export const post = (req: PostRequest, callback: (res: any) => void): void => {
   axios
     .post("http://localhost:3001/graph", { body })
     .then((res: any) => {
-      const data = res.data;
-      if (data.date) {
-        data.date = new Date(data.date);
-        data.lastUpdated = new Date(data.lastUpdated);
-      } else {
-        for (let d of data) {
-          d.date = new Date(d.date);
-          d.lastUpdated = new Date(d.lastUpdated);
-        }
-      }
-
-      callback(data);
+      callback(res.data);
     })
     .catch((e: Error) => console.error(e));
 };
@@ -31,18 +20,7 @@ export const get = (params: GetRequest, callback: (res: any) => void): void => {
   axios
     .get("http://localhost:3001/graph", { params })
     .then((res: any) => {
-      const data = res.data;
-      if (data.date) {
-        data.date = new Date(data.date);
-        data.lastUpdated = new Date(data.lastUpdated);
-      } else {
-        for (let d of data) {
-          d.date = new Date(d.date);
-          d.lastUpdated = new Date(d.lastUpdated);
-        }
-      }
-
-      callback(data);
+      callback(res.data);
     })
     .catch((e: Error) => console.error(e));
 };
