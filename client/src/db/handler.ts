@@ -3,7 +3,7 @@ import { GraphFindFilter, NewGraphFilter, ReqId } from "./queryFormat";
 import { GraphEditFilter } from "../../../db/src/controllers/queryFormat";
 import { Graph } from "../interfaces/Igraph";
 
-export default class dbHandler {
+export default class db {
   static getAllGraphs(callback: (res: Graph[]) => void) {
     get({ id: ReqId.getAll }, callback);
   }
@@ -20,29 +20,19 @@ export default class dbHandler {
     get({ id: ReqId.getOne, filter: filter }, callback);
   }
 
-  static getManyGraphs(
-    filter: GraphFindFilter,
-    callback: (res: Graph[]) => void
-  ) {
+  static getManyGraphs(filter: GraphFindFilter, callback: (res: Graph[]) => void) {
     get({ id: ReqId.getOne, filter: filter }, callback);
   }
 
   static deleteGraph(id: string, callback: () => void) {
-    get({ id: ReqId.delete, filter: { _id: id } }, callback);
+    get({ id: ReqId.delete, filter: { _id: id } }, (res) => callback());
   }
 
-  static createNewGraph(
-    filter: NewGraphFilter,
-    callback: (res: Graph) => void
-  ) {
+  static createNewGraph(filter: NewGraphFilter, callback: (res: Graph) => void) {
     get({ id: ReqId.createOne, filter: filter }, callback);
   }
 
-  static updateGraph(
-    id: string,
-    filter: GraphEditFilter,
-    callback: (res: Graph) => void
-  ) {
+  static updateGraph(id: string, filter: GraphEditFilter, callback: (res: Graph) => void) {
     post({ id: ReqId.update, graphId: id, filter: filter }, callback);
   }
 }

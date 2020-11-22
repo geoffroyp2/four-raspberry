@@ -17,12 +17,17 @@ const ProgramDescription = () => {
   const [Editing, setEditing] = useState<boolean>(false);
   const [PendingValidation, setPendingValidation] = useState<boolean>(false);
 
+  const toggleEdit = useCallback(() => {
+    setFieldDescription(graphDescription);
+    setEditing(true);
+  }, [graphDescription]);
+
   const validate = useCallback(() => {
     setPendingValidation(true);
     db.updateGraph(graphId, { description: FieldDescription }, (newGraph) => {
       setPendingValidation(false);
       setEditing(false);
-      dispatch(setDescription(newGraph.name));
+      dispatch(setDescription(newGraph.description));
     });
   }, [dispatch, graphId, FieldDescription]);
 
@@ -38,7 +43,7 @@ const ProgramDescription = () => {
             onChange={(e) => setFieldDescription(e.target.value)}
           />
         ) : (
-          <span>{FieldDescription}</span>
+          <span>{graphDescription}</span>
         )}
       </Col>
       <Col className={infoRightCol}>
@@ -46,7 +51,7 @@ const ProgramDescription = () => {
           buttonState={Editing}
           pendingState={PendingValidation}
           disabled={false}
-          onEdit={() => setEditing(true)}
+          onEdit={toggleEdit}
           onValid={validate}
         />
       </Col>

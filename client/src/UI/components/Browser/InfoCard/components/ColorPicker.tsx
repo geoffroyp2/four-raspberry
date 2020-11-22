@@ -8,6 +8,10 @@ import db from "../../../../../db/handler";
 import { Color } from "../../../../../interfaces/programInterfaces";
 import { selectedGraphColor, selectedGraphId, setColor } from "../../../../redux/reducers/graphs/graphSlice";
 
+const colorToString = (c: Color) => {
+  return `rgb(${c.r},${c.g},${c.b})`;
+};
+
 const ColorPicker = () => {
   const graphColor = useSelector(selectedGraphColor);
   const id = useSelector(selectedGraphId);
@@ -27,8 +31,11 @@ const ColorPicker = () => {
         setShowPicker(false);
         dispatch(setColor(newGraph.color));
       });
-    } else setShowPicker(true);
-  }, [ShowPicker, ColorShown, id, dispatch]);
+    } else {
+      setColorShown(graphColor);
+      setShowPicker(true);
+    }
+  }, [ShowPicker, graphColor, ColorShown, id, dispatch]);
 
   return (
     <>
@@ -41,7 +48,13 @@ const ColorPicker = () => {
         ref={target}
         style={{ cursor: "pointer" }}
       >
-        <rect width="1" height="1" rx="0.25" ry="0.25" fill={`rgb(${ColorShown.r},${ColorShown.g},${ColorShown.b})`} />
+        <rect
+          width="1"
+          height="1"
+          rx="0.25"
+          ry="0.25"
+          fill={ShowPicker ? colorToString(ColorShown) : colorToString(graphColor)}
+        />
       </svg>
       {PendingState && (
         <Spinner

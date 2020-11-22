@@ -8,6 +8,7 @@ import ColorPicker from "./components/ColorPicker";
 import InfoCardButtons from "./components/InfoCardButtons";
 import ProgramDescription from "./components/ProgramDescription";
 import ProgramName from "./components/ProgramName";
+import ProgramType from "./components/ProgramType";
 import { divider, infoLeftCol, infoMidCol, infoRow, infoRowSimple } from "./utils/styles";
 
 type Props = {
@@ -23,10 +24,11 @@ const InfoCard = ({ select }: Props) => {
         <Container className="flex-row justify-content-start">
           <ProgramName />
           {divider}
-          <Row className={infoRow}>
+          {/* <Row className={infoRow}>
             <Col className={infoLeftCol}>Type</Col>
             <Col className={infoMidCol}>{graph.graphType ? "Modèle" : "Cuisson"}</Col>
-          </Row>
+          </Row> */}
+          <ProgramType />
           {divider}
           <Row className={infoRow}>
             <Col className={infoLeftCol}>Couleur</Col>

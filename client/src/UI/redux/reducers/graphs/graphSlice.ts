@@ -4,14 +4,23 @@ import { Color, Point } from "../../../../interfaces/programInterfaces";
 import { RootState } from "../../store";
 
 type GraphStateType = {
-  select: string;
+  selected: Graph;
   graphs: {
     [id: string]: Graph;
   };
 };
 
 const initialState: GraphStateType = {
-  select: "",
+  selected: {
+    _id: "",
+    name: "",
+    description: "",
+    graphType: true,
+    color: { r: 0, g: 0, b: 0, a: 0.9 },
+    points: [],
+    date: new Date().toISOString(),
+    lastUpdated: new Date().toISOString(),
+  },
   graphs: {},
 };
 
@@ -23,19 +32,24 @@ export const graphListSlice = createSlice({
       action.payload.forEach((g) => {
         state.graphs[g._id] = g;
       });
-      state.select = action.payload[0]._id;
+      state.selected = action.payload[0];
     },
 
     addGraph: (state, action: PayloadAction<Graph>) => {
       state.graphs[action.payload._id] = action.payload;
+      state.selected = state.graphs[action.payload._id];
     },
 
-    deleteGraph: (state) => {
-      delete state.graphs[state.select];
+    deleteSelectedGraph: (state, action: PayloadAction<void>) => {
+      delete state.graphs[state.selected._id];
+      state.selected = { ...Object.values(state.graphs)[0] };
     },
 
     selectGraph: (state, action: PayloadAction<string>) => {
-      if (state.graphs[action.payload]) state.select = action.payload;
+      if (state.graphs[action.payload]) {
+        state.graphs[state.selected._id] = state.selected;
+        state.selected = state.graphs[action.payload];
+      }
     },
 
     updateGraph: (state, action: PayloadAction<Graph>) => {
@@ -43,41 +57,41 @@ export const graphListSlice = createSlice({
     },
 
     setId: (state, action: PayloadAction<string>) => {
-      state.graphs[state.select]._id = action.payload;
+      state.selected._id = action.payload;
     },
 
     setType: (state, action: PayloadAction<boolean>) => {
-      state.graphs[state.select].graphType = action.payload;
+      state.selected.graphType = action.payload;
     },
 
     setName: (state, action: PayloadAction<string>) => {
-      state.graphs[state.select].name = action.payload;
+      state.selected.name = action.payload;
     },
 
     setDescription: (state, action: PayloadAction<string>) => {
-      state.graphs[state.select].description = action.payload;
+      state.selected.description = action.payload;
     },
 
     setColor: (state, action: PayloadAction<Color>) => {
-      state.graphs[state.select].color = action.payload;
+      state.selected.color = action.payload;
     },
 
     setPoints: (state, action: PayloadAction<Point[]>) => {
-      state.graphs[state.select].points = action.payload;
+      state.selected.points = action.payload;
     },
 
     setPoint: (state, action: PayloadAction<{ idx: number; nPoint: Point }>) => {
-      state.graphs[state.select].points[action.payload.idx] = action.payload.nPoint;
-      state.graphs[state.select].points.sort((a, b) => a.x - b.x);
+      state.selected.points[action.payload.idx] = action.payload.nPoint;
+      state.selected.points.sort((a, b) => a.x - b.x);
     },
 
     deletePoint: (state, action: PayloadAction<number>) => {
-      state.graphs[state.select].points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
+      state.selected.points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
     },
 
     addNewPoint: (state, action: PayloadAction<void>) => {
-      state.graphs[state.select].points.push({ x: 0, y: 0 });
-      state.graphs[state.select].points.sort((a, b) => a.x - b.x);
+      state.selected.points.push({ x: 0, y: 0 });
+      state.selected.points.sort((a, b) => a.x - b.x);
     },
   },
 });
@@ -85,7 +99,7 @@ export const graphListSlice = createSlice({
 export const {
   initGraphs,
   addGraph,
-  deleteGraph,
+  deleteSelectedGraph,
   selectGraph,
   updateGraph,
   setId,
@@ -100,16 +114,15 @@ export const {
 } = graphListSlice.actions;
 
 export const allGraphs = (state: RootState) => state.graphListReducer.graphs;
-export const selectedGraph = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select];
-export const selectedGraphId = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select]._id;
-export const selectedGraphName = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select].name;
-export const selectedGraphDescription = (state: RootState) =>
-  state.graphListReducer.graphs[state.graphListReducer.select].description;
-export const selectedGraphColor = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select].color;
-export const selectedGraphDate = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select].date;
-export const selectedGraphLastUpdate = (state: RootState) =>
-  state.graphListReducer.graphs[state.graphListReducer.select].lastUpdated;
-export const selectedGraphPoints = (state: RootState) => state.graphListReducer.graphs[state.graphListReducer.select].points;
+export const selectedGraph = (state: RootState) => state.graphListReducer.selected;
+export const selectedGraphId = (state: RootState) => state.graphListReducer.selected._id;
+export const selectedGraphName = (state: RootState) => state.graphListReducer.selected.name;
+export const selectedGraphDescription = (state: RootState) => state.graphListReducer.selected.description;
+export const selectedGraphType = (state: RootState) => state.graphListReducer.selected.graphType;
+export const selectedGraphColor = (state: RootState) => state.graphListReducer.selected.color;
+export const selectedGraphDate = (state: RootState) => state.graphListReducer.selected.date;
+export const selectedGraphLastUpdate = (state: RootState) => state.graphListReducer.selected.lastUpdated;
+export const selectedGraphPoints = (state: RootState) => state.graphListReducer.selected.points;
 
 export default graphListSlice.reducer;
 
