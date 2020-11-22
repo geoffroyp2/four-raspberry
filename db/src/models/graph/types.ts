@@ -19,8 +19,8 @@ export interface IGraph {
   graphType: boolean;
   color: Color;
   points: Point[];
-  date?: Date;
-  lastUpdated?: Date;
+  date?: string;
+  lastUpdated?: string;
 }
 
 export interface IGraphDocument extends Document, IGraph {
@@ -36,7 +36,7 @@ export interface IGraphModel extends Model<IGraphDocument>, IGraph {
   ) => Promise<IGraphDocument>;
   updateGraph: (
     this: IGraphModel,
-    graph: IGraph,
+    graphId: string,
     filter: GraphEditFilter
   ) => Promise<IGraphDocument>;
 }

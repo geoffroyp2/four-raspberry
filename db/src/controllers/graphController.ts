@@ -75,17 +75,17 @@ export class GraphController {
     try {
       switch (body.id) {
         case ReqId.createOne: {
-          const newGraph = await GraphModel.create(body.graph);
-          console.log(`New ${body.graph.graphType} graph "${body.graph.name}"`);
+          const newGraph = await GraphModel.create();
+          console.log(`New graph`);
           res.json(newGraph);
           break;
         }
         case ReqId.update: {
           const updatedGraph = await GraphModel.updateGraph(
-            body.graph,
+            body.graphId,
             body.filter
           );
-          console.log(`Updated "${body.graph.name}"`);
+          console.log(`Updated "${updatedGraph.name}"`);
           res.json(updatedGraph);
           break;
         }

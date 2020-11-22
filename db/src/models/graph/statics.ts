@@ -23,18 +23,18 @@ export async function createNewGraph(
     graphType: filter.graphType || false,
     color: filter.color || { r: 230, g: 30, b: 30, a: 0.9 },
     points: filter.points || [],
-    date: filter.date || new Date(),
+    date: filter.date || new Date().toISOString(),
   });
 }
 
 export async function updateGraph(
   this: IGraphModel,
-  graph: IGraph,
+  graphId: string,
   filter: GraphEditFilter
 ): Promise<IGraphDocument> {
   return await this.findOneAndUpdate(
-    { name: graph.name },
-    { ...filter, lastUpdated: new Date() },
+    { _id: graphId },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

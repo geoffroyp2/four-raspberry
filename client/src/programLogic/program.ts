@@ -140,10 +140,7 @@ export class Program {
   private recordSensorValues(): void {
     this.currentSensorValues = com.requestSensorValues();
     this.currentTempRecord.push({
-      x:
-        new Date().getTime() -
-        this.programStartTime!.getTime() -
-        this.pauseTotalTime,
+      x: new Date().getTime() - this.programStartTime!.getTime() - this.pauseTotalTime,
       y: this.currentSensorValues.temp,
     });
   }
@@ -171,8 +168,7 @@ export class Program {
       let i = 1;
       for (; i < points.length; i++) if (points[i].x > programFullTime) break;
 
-      const pente =
-        (points[i].y - points[i - 1].y) / (points[i].x - points[i - 1].x);
+      const pente = (points[i].y - points[i - 1].y) / (points[i].x - points[i - 1].x);
       const yOrigine = points[i].y - pente * points[i].x;
       this.currentTargetTemp = programFullTime * pente + yOrigine;
     }

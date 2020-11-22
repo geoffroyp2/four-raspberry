@@ -34,11 +34,11 @@ const GraphSchema = new Schema(
     },
     date: {
       type: Date,
-      default: new Date(),
+      default: (() => new Date())(),
     },
     lastUpdated: {
       type: Date,
-      default: new Date(),
+      default: (() => new Date())(),
     },
   },
   { collection: "graphs" }

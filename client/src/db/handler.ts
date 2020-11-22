@@ -3,48 +3,28 @@ import { GraphFindFilter, NewGraphFilter, ReqId } from "./queryFormat";
 import { GraphEditFilter } from "../../../db/src/controllers/queryFormat";
 import { Graph } from "../interfaces/Igraph";
 
-const handleDate = (input: any): void => {
-  input.date = new Date(input.date);
-  input.lastUpdated = new Date(input.lastUpdated);
-};
-
 export default class dbHandler {
   static getAllGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getAll }, (res: any[]) => {
-      res.forEach((g) => handleDate(g));
-      callback(res);
-    });
+    get({ id: ReqId.getAll }, callback);
   }
 
   static getModelGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getModels }, (res: any[]) => {
-      res.forEach((g) => handleDate(g));
-      callback(res);
-    });
+    get({ id: ReqId.getModels }, callback);
   }
 
   static getRecordedGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getRecorded }, (res: any[]) => {
-      res.forEach((g) => handleDate(g));
-      callback(res);
-    });
+    get({ id: ReqId.getRecorded }, callback);
   }
 
   static getOneGraph(filter: GraphFindFilter, callback: (res: Graph) => void) {
-    get({ id: ReqId.getOne, filter: filter }, (res: any) => {
-      handleDate(res);
-      callback(res);
-    });
+    get({ id: ReqId.getOne, filter: filter }, callback);
   }
 
   static getManyGraphs(
     filter: GraphFindFilter,
     callback: (res: Graph[]) => void
   ) {
-    get({ id: ReqId.getOne, filter: filter }, (res: any[]) => {
-      res.forEach((g) => handleDate(g));
-      callback(res);
-    });
+    get({ id: ReqId.getOne, filter: filter }, callback);
   }
 
   static deleteGraph(id: string, callback: () => void) {
@@ -55,20 +35,14 @@ export default class dbHandler {
     filter: NewGraphFilter,
     callback: (res: Graph) => void
   ) {
-    get({ id: ReqId.createOne, filter: filter }, (res: any) => {
-      handleDate(res);
-      callback(res);
-    });
+    get({ id: ReqId.createOne, filter: filter }, callback);
   }
 
   static updateGraph(
-    graph: Graph,
+    id: string,
     filter: GraphEditFilter,
     callback: (res: Graph) => void
   ) {
-    post({ id: ReqId.update, graph: graph, filter: filter }, (res: any) => {
-      handleDate(res);
-      callback(res);
-    });
+    post({ id: ReqId.update, graphId: id, filter: filter }, callback);
   }
 }

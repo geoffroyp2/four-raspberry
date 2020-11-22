@@ -33,19 +33,15 @@ export const getMillis = (hours: number, minutes: number): number => {
   return hours * 60 * 60 * 1000 + minutes * 60 * 1000;
 };
 
-// export const formatDate = (date: Date | undefined): string => {
-//   const addZero = (val: number): string => {
-//     return val < 10 ? "0" + val : "" + val;
-//   };
+export const formatDate = (dateString: string | undefined): string => {
+  if (!dateString) return "-";
 
-//   return date
-//     ? `${date.getDate()}/${addZero(
-//         date.getMonth() + 1
-//       )}/${date.getFullYear()} - ${date.getHours()}:${addZero(
-//         date.getMinutes()
-//       )}`
-//     : "-";
-// };
-export const formatDate = (date: string | undefined): string => {
-  return date || "";
+  const addZero = (val: number): string => {
+    return val < 10 ? "0" + val : "" + val;
+  };
+
+  const date = new Date(dateString);
+  return `${date.getDate()}/${addZero(date.getMonth() + 1)}/${date.getFullYear()} - ${date.getHours()}:${addZero(
+    date.getMinutes()
+  )}`;
 };

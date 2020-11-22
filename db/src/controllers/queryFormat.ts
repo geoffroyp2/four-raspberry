@@ -33,7 +33,7 @@ export interface NewGraphFilter {
   graphType: boolean;
   points?: Point[];
   color?: Color;
-  date?: Date;
+  date?: string;
 }
 
 export interface GraphEditFilter {
@@ -42,7 +42,7 @@ export interface GraphEditFilter {
   graphType?: boolean;
   color?: Color;
   points?: Point[];
-  date?: Date;
+  date?: string;
 }
 
 export interface GraphFindFilter {
@@ -61,6 +61,6 @@ export interface GetRequest {
 
 export interface PostRequest {
   id: ReqId;
-  graph: IGraph;
+  graphId: string;
   filter?: GraphEditFilter;
 }
