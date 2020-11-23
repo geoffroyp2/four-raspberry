@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Button, ButtonGroup, Container, Row, Table } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, allGraphs, selectGraph } from "../../redux/reducers/graphs/graphSlice";
+import { selectedGraph, allGraphs, selectGraph } from "../../redux/reducers/graphSlice";
+import { setShowLoadTable } from "../../redux/reducers/UIControlsSlice";
 import { formatDate } from "../../utils/timeFormatting";
 
-type Props = {
-  close: () => void;
-};
-
-const ProgramTable = ({ close }: Props) => {
+const ProgramTable = () => {
   const dispatch = useDispatch();
   const [rowSelected, setRowSelected] = useState<string>(useSelector(selectedGraph)._id);
   const graphs = useSelector(allGraphs);
@@ -56,14 +53,14 @@ const ProgramTable = ({ close }: Props) => {
       </Row>
       <Row className="float-right mr-2 mb-2">
         <ButtonGroup>
-          <Button className="btn-secondary" onClick={close}>
+          <Button className="btn-secondary" onClick={() => dispatch(setShowLoadTable(false))}>
             Annuler
           </Button>
           <Button
             className="btn-primary"
             onClick={() => {
               dispatch(selectGraph(rowSelected));
-              close();
+              dispatch(setShowLoadTable(false));
             }}
           >
             Ouvrir

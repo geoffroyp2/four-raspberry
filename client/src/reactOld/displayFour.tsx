@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import MainZone from "./mainZone/mainZone";
+// import MainZone from "./mainZone";
 
 const DisplayFour = () => {
   return (
@@ -18,7 +18,7 @@ const DisplayFour = () => {
       }}
     >
       <Container fluid className="p-0 m-0 w-100 h-100">
-        <MainZone />
+        {/* <MainZone /> */}
       </Container>
     </div>
   );

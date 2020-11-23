@@ -1,18 +1,16 @@
 import React, { useCallback, useState } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 
-import ProgramInfos from "./programInfosLeftCard/leftInfoCard";
-import ProgramTable from "./programTable";
+// import ProgramInfos from "./programInfosLeftCard/leftInfoCard";
+// import ProgramTable from "./programTable";
 
-import program from "../../programLogic/program";
-import GraphPreview from "./graphPreview/graphPreview";
-import PointEdit from "./programInfosLeftCard/pointEdit";
-import graphEditor from "../../programLogic/graphEdit";
+import program from "../programLogic/program";
+// import GraphPreview from "./graphPreview/graphPreview";
+// import PointEdit from "./programInfosLeftCard/pointEdit";
+import graphEditor from "../programLogic/graphEdit";
 
 const ProgramInfoZone = () => {
-  const [programId, setProgramId] = useState<string>(
-    Object.entries(program.graphs)[0][0]
-  );
+  const [programId, setProgramId] = useState<string>(Object.entries(program.graphs)[0][0]);
   const [showTable, setShowTable] = useState<boolean>(false);
   const [showPointEdit, setShowPointEdit] = useState<boolean>(false);
 
@@ -42,7 +40,7 @@ const ProgramInfoZone = () => {
 
   return (
     <Container fluid className="p-1 w-100 h-100">
-      {showTable ? (
+      {/* {showTable ? (
         <ProgramTable
           id={programId}
           select={open}
@@ -83,7 +81,7 @@ const ProgramInfoZone = () => {
             </Col>
           </Row>
         </Container>
-      )}
+      )} */}
     </Container>
   );
 };

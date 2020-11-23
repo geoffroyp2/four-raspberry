@@ -1,7 +1,7 @@
 import React from "react";
 import { Scatter } from "react-chartjs-2";
 import { useSelector } from "react-redux";
-import { selectedGraph } from "../../../redux/reducers/graphs/graphSlice";
+import { selectedGraph } from "../../../redux/reducers/graphSlice";
 import { formatTime } from "../../../utils/timeFormatting";
 
 const SimpleGraph = () => {
@@ -13,7 +13,7 @@ const SimpleGraph = () => {
         datasets: [
           {
             label: "Température cible",
-            data: [...graph.points],
+            data: [...graph.points].sort((a, b) => a.x - b.x),
             showLine: true,
             fill: false,
 

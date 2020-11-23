@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 import { useDispatch } from "react-redux";
-import { initGraphs } from "../redux/reducers/graphs/graphSlice";
+import { initGraphs } from "../redux/reducers/graphSlice";
 
 import db from "../../db/handler";
 import { Graph } from "../../interfaces/Igraph";
@@ -11,17 +11,25 @@ import ScreenSelect from "./ScreenSelect";
 import LoadingScreen from "./utils/LoadingScreen";
 
 const Four = () => {
-  // Load the graphs from the db once on program start
-
+  // Load the graphs from the db once at program start
+  const dispatch = useDispatch();
   const [Loading, setLoading] = useState<boolean>(true);
 
-  const dispatch = useDispatch();
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     db.getAllGraphs((res: Graph[]) => {
-      dispatch(initGraphs(res));
-      setLoading(false);
+      if (res.length > 0) {
+        dispatch(initGraphs(res));
+        setLoading(false);
+      } else {
+        console.log("No data, retrying...");
+        setTimeout(fetchData, 10000);
+      }
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div

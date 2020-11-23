@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import graphListReducer from "./graphs/graphSlice";
+import graphListReducer from "./graphSlice";
+import UIControlsReducer from "./UIControlsSlice";
 
-export default combineReducers({ graphListReducer });
+export default combineReducers({ graphListReducer, UIControlsReducer });
 
 // import graphListReducer from "./graphs/graphListSlice";
 // import selectedgraphReducer from "./graphs/selectedGraphSlice";

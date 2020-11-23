@@ -8,11 +8,6 @@ const minutes = (millis: number): string => {
   return (minutes < 10 ? "0" : "") + minutes;
 };
 
-export const formatTime = (time: string, showMinutes: boolean): string => {
-  const millis = +time;
-  return `${hours(millis, false)}h${showMinutes ? minutes(millis) : ""}`;
-};
-
 export const getTimeInputString = (millis: number): string => {
   return `${hours(millis, true)}:${minutes(millis)}`;
 };
@@ -31,6 +26,11 @@ export const getMinutes = (millis: number): number => {
 };
 export const getMillis = (hours: number, minutes: number): number => {
   return hours * 60 * 60 * 1000 + minutes * 60 * 1000;
+};
+
+export const formatTime = (time: string | number, showMinutes: boolean): string => {
+  const millis = +time;
+  return `${hours(millis, false)}h${showMinutes ? minutes(millis) : ""}`;
 };
 
 export const formatDate = (dateString: string | undefined): string => {

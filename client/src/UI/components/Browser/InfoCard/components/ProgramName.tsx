@@ -1,54 +1,26 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphId, selectedGraphName, setName } from "../../../../redux/reducers/graphs/graphSlice";
+import { selectedGraphName, setName } from "../../../../redux/reducers/graphSlice";
+import { editState } from "../../../../redux/reducers/UIControlsSlice";
 
-import EditButton from "../utils/EditButton";
-import db from "../../../../../db/handler";
-import { infoLeftCol, infoMidCol, infoRightCol, infoRow } from "../utils/styles";
+import { infoLeftCol, infoMidCol, infoRow } from "../utils/styles";
 
 const ProgramName = () => {
-  const graphName = useSelector(selectedGraphName);
-  const graphId = useSelector(selectedGraphId);
+  const editMode = useSelector(editState);
+  const name = useSelector(selectedGraphName);
   const dispatch = useDispatch();
-
-  const [FieldName, setFieldName] = useState<string>(graphName);
-  const [Editing, setEditing] = useState<boolean>(false);
-  const [PendingValidation, setPendingValidation] = useState<boolean>(false);
-
-  const toggleEdit = useCallback(() => {
-    setFieldName(graphName);
-    setEditing(true);
-  }, [graphName]);
-
-  const validate = useCallback(() => {
-    setPendingValidation(true);
-    db.updateGraph(graphId, { name: FieldName }, (newGraph) => {
-      setPendingValidation(false);
-      setEditing(false);
-      dispatch(setName(newGraph.name));
-    });
-  }, [dispatch, graphId, FieldName]);
 
   return (
     <Row className={infoRow}>
-      <Col className={infoLeftCol}>Nom</Col>
+      <Col className={infoLeftCol}>Description</Col>
       <Col className={infoMidCol}>
-        {Editing ? (
-          <FormControl as="input" value={FieldName} onChange={(e) => setFieldName(e.target.value)} />
+        {editMode ? (
+          <FormControl as="input" value={name} onChange={(e) => dispatch(setName(e.target.value))} />
         ) : (
-          <span>{graphName}</span>
+          <span>{name}</span>
         )}
-      </Col>
-      <Col className={infoRightCol}>
-        <EditButton
-          buttonState={Editing}
-          pendingState={PendingValidation}
-          disabled={false}
-          onEdit={toggleEdit}
-          onValid={validate}
-        />
       </Col>
     </Row>
   );

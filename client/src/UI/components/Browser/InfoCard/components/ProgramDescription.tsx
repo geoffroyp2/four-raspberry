@@ -1,59 +1,31 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphDescription, selectedGraphId, setDescription } from "../../../../redux/reducers/graphs/graphSlice";
+import { selectedGraphDescription, setDescription } from "../../../../redux/reducers/graphSlice";
 
-import EditButton from "../utils/EditButton";
-import db from "../../../../../db/handler";
-import { infoLeftCol, infoMidCol, infoRightCol, infoRow } from "../utils/styles";
+import { infoLeftCol, infoMidCol, infoRow } from "../utils/styles";
+import { editState } from "../../../../redux/reducers/UIControlsSlice";
 
 const ProgramDescription = () => {
-  const graphDescription = useSelector(selectedGraphDescription);
-  const graphId = useSelector(selectedGraphId);
+  const editMode = useSelector(editState);
+  const description = useSelector(selectedGraphDescription);
   const dispatch = useDispatch();
-
-  const [FieldDescription, setFieldDescription] = useState<string>(graphDescription);
-  const [Editing, setEditing] = useState<boolean>(false);
-  const [PendingValidation, setPendingValidation] = useState<boolean>(false);
-
-  const toggleEdit = useCallback(() => {
-    setFieldDescription(graphDescription);
-    setEditing(true);
-  }, [graphDescription]);
-
-  const validate = useCallback(() => {
-    setPendingValidation(true);
-    db.updateGraph(graphId, { description: FieldDescription }, (newGraph) => {
-      setPendingValidation(false);
-      setEditing(false);
-      dispatch(setDescription(newGraph.description));
-    });
-  }, [dispatch, graphId, FieldDescription]);
 
   return (
     <Row className={infoRow}>
-      <Col className={infoLeftCol}>Nom</Col>
+      <Col className={infoLeftCol}>Description</Col>
       <Col className={infoMidCol}>
-        {Editing ? (
+        {editMode ? (
           <FormControl
             as="textarea"
-            value={FieldDescription}
-            rows={Math.ceil(FieldDescription.length / 33)}
-            onChange={(e) => setFieldDescription(e.target.value)}
+            value={description}
+            rows={Math.ceil(description.length / 33)}
+            onChange={(e) => dispatch(setDescription(e.target.value))}
           />
         ) : (
-          <span>{graphDescription}</span>
+          <span>{description}</span>
         )}
-      </Col>
-      <Col className={infoRightCol}>
-        <EditButton
-          buttonState={Editing}
-          pendingState={PendingValidation}
-          disabled={false}
-          onEdit={toggleEdit}
-          onValid={validate}
-        />
       </Col>
     </Row>
   );

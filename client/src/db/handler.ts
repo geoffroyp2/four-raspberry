@@ -32,7 +32,15 @@ export default class db {
     get({ id: ReqId.createOne, filter: filter }, callback);
   }
 
-  static updateGraph(id: string, filter: GraphEditFilter, callback: (res: Graph) => void) {
-    post({ id: ReqId.update, graphId: id, filter: filter }, callback);
+  static updateGraph(graph: Graph, callback: (res: Graph) => void) {
+    const filter: GraphEditFilter = {
+      name: graph.name,
+      description: graph.description,
+      graphType: graph.graphType,
+      color: graph.color,
+      points: [...graph.points].sort((a, b) => a.x - b.x),
+    };
+
+    post({ id: ReqId.update, graphId: graph._id, filter: filter }, callback);
   }
 }

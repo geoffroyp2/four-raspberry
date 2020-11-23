@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Row } from "react-bootstrap";
 
-import program from "../../programLogic/program";
-import ProgramInfoZone from "../programSelect/programInfoZone";
+import program from "../programLogic/program";
+import ProgramInfoZone from "./programInfoZone";
 
-import LoadingScreen from "./loadingScreen";
+// import LoadingScreen from "./loadingScreen";
 
 const MainZone = () => {
   const [finishedLoading, setFinishedLoading] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const MainZone = () => {
       )}
     </Container>
   ) : (
-    <LoadingScreen />
+    <div></div> // <LoadingScreen />
   );
 };
 
