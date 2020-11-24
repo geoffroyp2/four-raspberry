@@ -1,45 +1,33 @@
 import { Schema } from "mongoose";
 import { setLastUpdated } from "./methods";
-import {
-  findModelGraphs,
-  findRecordedGraphs,
-  createNewGraph,
-  updateGraph,
-} from "./statics";
-
-const ColorSchema = new Schema({
-  r: Number,
-  g: Number,
-  b: Number,
-  a: Number,
-});
-
-const PointSchema = new Schema({
-  x: Number,
-  y: Number,
-});
+import { findModelGraphs, findRecordedGraphs, createNewGraph, updateGraph } from "./statics";
 
 const GraphSchema = new Schema(
   {
     name: String,
     description: String,
     graphType: Boolean,
+    graphRef: String,
     color: {
-      type: ColorSchema,
-      default: { r: 0, g: 0, b: 0, a: 1 },
+      type: {
+        r: Number,
+        g: Number,
+        b: Number,
+        a: Number,
+      },
+      default: { r: 210, g: 210, b: 210, a: 0.9 },
     },
     points: {
-      type: [PointSchema],
+      type: [
+        {
+          x: Number,
+          y: Number,
+        },
+      ],
       default: [],
     },
-    date: {
-      type: Date,
-      default: (() => new Date())(),
-    },
-    lastUpdated: {
-      type: Date,
-      default: (() => new Date())(),
-    },
+    date: Date,
+    lastUpdated: Date,
   },
   { collection: "graphs" }
 );

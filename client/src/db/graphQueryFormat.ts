@@ -1,23 +1,23 @@
 // import { Graph } from "../interfaces/Igraph";
 import { Color, Point } from "../interfaces/programInterfaces";
 
-export enum ReqId {
-  postOne,
-  postMany,
+export enum GraphGetId {
   getOne,
   getMany,
-  getModels,
-  getRecorded,
   getAll,
   createOne,
-  update,
-  delete,
+  deleteOne,
+}
+
+export enum GraphPostId {
+  updateOne,
 }
 
 export interface NewGraphFilter {
   name?: string;
   description?: string;
-  graphType: boolean;
+  graphType?: boolean;
+  graphRef?: string;
   points?: Point[];
   color?: Color;
   date?: string;
@@ -27,14 +27,17 @@ export interface GraphEditFilter {
   name?: string;
   description?: string;
   graphType?: boolean;
+  graphRef?: string;
   color?: Color;
   points?: Point[];
   date?: string;
 }
 
 export interface GraphFindFilter {
+  _id?: string;
   name?: string;
   graphType?: boolean;
+  graphRef?: string;
 }
 
 export interface deleteFilter {
@@ -42,12 +45,12 @@ export interface deleteFilter {
 }
 
 export interface GetRequest {
-  id: ReqId;
+  id: GraphGetId;
   filter?: GraphFindFilter | NewGraphFilter | deleteFilter;
 }
 
 export interface PostRequest {
-  id: ReqId;
+  id: GraphPostId;
   graphId: string;
   filter?: GraphEditFilter;
 }

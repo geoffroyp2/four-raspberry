@@ -1,35 +1,27 @@
 import { get, post } from "./client";
-import { GraphFindFilter, NewGraphFilter, ReqId } from "./queryFormat";
-import { GraphEditFilter } from "../../../db/src/controllers/queryFormat";
+import { GraphFindFilter, NewGraphFilter, GraphGetId, GraphPostId } from "./graphQueryFormat";
+import { GraphEditFilter } from "../../../db/src/controllers/graphQueryFormat";
 import { Graph } from "../interfaces/Igraph";
 
 export default class db {
-  static getAllGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getAll }, callback);
-  }
-
-  static getModelGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getModels }, callback);
-  }
-
-  static getRecordedGraphs(callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getRecorded }, callback);
-  }
-
   static getOneGraph(filter: GraphFindFilter, callback: (res: Graph) => void) {
-    get({ id: ReqId.getOne, filter: filter }, callback);
+    get({ id: GraphGetId.getOne, filter: filter }, callback);
   }
 
   static getManyGraphs(filter: GraphFindFilter, callback: (res: Graph[]) => void) {
-    get({ id: ReqId.getOne, filter: filter }, callback);
+    get({ id: GraphGetId.getMany, filter: filter }, callback);
+  }
+
+  static getAllGraphs(callback: (res: Graph[]) => void) {
+    get({ id: GraphGetId.getAll }, callback);
   }
 
   static deleteGraph(id: string, callback: () => void) {
-    get({ id: ReqId.delete, filter: { _id: id } }, (res) => callback());
+    get({ id: GraphGetId.deleteOne, filter: { _id: id } }, (res) => callback());
   }
 
   static createNewGraph(filter: NewGraphFilter, callback: (res: Graph) => void) {
-    get({ id: ReqId.createOne, filter: filter }, callback);
+    get({ id: GraphGetId.createOne, filter: filter }, callback);
   }
 
   static updateGraph(graph: Graph, callback: (res: Graph) => void) {
@@ -37,10 +29,11 @@ export default class db {
       name: graph.name,
       description: graph.description,
       graphType: graph.graphType,
+      graphRef: graph.graphRef,
       color: graph.color,
       points: [...graph.points].sort((a, b) => a.x - b.x),
     };
 
-    post({ id: ReqId.update, graphId: graph._id, filter: filter }, callback);
+    post({ id: GraphPostId.updateOne, graphId: graph._id, filter: filter }, callback);
   }
 }

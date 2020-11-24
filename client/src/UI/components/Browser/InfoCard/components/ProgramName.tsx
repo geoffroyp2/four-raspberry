@@ -14,7 +14,7 @@ const ProgramName = () => {
 
   return (
     <Row className={infoRow}>
-      <Col className={infoLeftCol}>Description</Col>
+      <Col className={infoLeftCol}>Nom</Col>
       <Col className={infoMidCol}>
         {editMode ? (
           <FormControl as="input" value={name} onChange={(e) => dispatch(setName(e.target.value))} />

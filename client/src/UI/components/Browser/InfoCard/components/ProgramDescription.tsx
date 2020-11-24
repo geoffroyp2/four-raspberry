@@ -20,7 +20,7 @@ const ProgramDescription = () => {
           <FormControl
             as="textarea"
             value={description}
-            rows={Math.ceil(description.length / 33)}
+            rows={Math.ceil(description.length / 45)}
             onChange={(e) => dispatch(setDescription(e.target.value))}
           />
         ) : (

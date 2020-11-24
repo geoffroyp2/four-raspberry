@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PostRequest, GetRequest } from "./queryFormat";
+import { PostRequest, GetRequest } from "./graphQueryFormat";
 
 export const post = (req: PostRequest, callback: (res: any) => void): void => {
   const body = JSON.stringify(req);

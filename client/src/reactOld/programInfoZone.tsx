@@ -7,7 +7,7 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import program from "../programLogic/program";
 // import GraphPreview from "./graphPreview/graphPreview";
 // import PointEdit from "./programInfosLeftCard/pointEdit";
-import graphEditor from "../programLogic/graphEdit";
+// import graphEditor from "../programLogic/graphEdit";
 
 const ProgramInfoZone = () => {
   const [programId, setProgramId] = useState<string>(Object.entries(program.graphs)[0][0]);
@@ -22,21 +22,21 @@ const ProgramInfoZone = () => {
     setShowTable(false);
   }, []);
 
-  const deleteGraph = useCallback(() => {
-    setDeletePendingState(true);
-    graphEditor.delete(programId, (id) => {
-      setProgramId(id);
-      setDeletePendingState(false);
-    });
-  }, [programId]);
+  // const deleteGraph = useCallback(() => {
+  //   setDeletePendingState(true);
+  //   graphEditor.delete(programId, (id) => {
+  //     setProgramId(id);
+  //     setDeletePendingState(false);
+  //   });
+  // }, [programId]);
 
-  const createGraph = useCallback(() => {
-    setCreatePendingState(true);
-    graphEditor.create((id) => {
-      setProgramId(id);
-      setCreatePendingState(false);
-    });
-  }, []);
+  // const createGraph = useCallback(() => {
+  //   setCreatePendingState(true);
+  //   graphEditor.create((id) => {
+  //     setProgramId(id);
+  //     setCreatePendingState(false);
+  //   });
+  // }, []);
 
   return (
     <Container fluid className="p-1 w-100 h-100">

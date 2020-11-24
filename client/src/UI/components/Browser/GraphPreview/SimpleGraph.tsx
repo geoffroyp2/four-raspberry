@@ -1,33 +1,46 @@
 import React from "react";
 import { Scatter } from "react-chartjs-2";
 import { useSelector } from "react-redux";
-import { selectedGraph } from "../../../redux/reducers/graphSlice";
+import { selectedGraph, selectedGraphReference } from "../../../redux/reducers/graphSlice";
 import { formatTime } from "../../../utils/timeFormatting";
+
+const dataSetOptions = {
+  showLine: true,
+  fill: false,
+  backgroundColor: "rgb(0, 0, 0)", // couleur de remplissage de la courbe
+  pointRadius: 2,
+  pointBorderWidth: 0, // épaisseur de la bordure
+  pointHitRadius: 10, // rayon de hover
+  pointHoverBorderWidth: 0,
+  lineTension: 0.3,
+  yAxisID: "temp",
+};
 
 const SimpleGraph = () => {
   const graph = useSelector(selectedGraph);
+  const refGraph = useSelector(selectedGraphReference);
+
+  const dataSets = [
+    {
+      ...dataSetOptions,
+      label: "Température",
+      data: [...graph.points].sort((a, b) => a.x - b.x),
+      borderColor: `rgba(${graph.color.r},${graph.color.g},${graph.color.b},${graph.color.a})`, // couleur de la courbe
+    },
+  ];
+
+  if (refGraph)
+    dataSets.push({
+      ...dataSetOptions,
+      data: [...refGraph.points].sort((a, b) => a.x - b.x),
+      label: "Température de référence",
+      borderColor: `rgba(210,210,210,0.9)`, // courbe de référence toujours blanche ?
+    });
 
   return (
     <Scatter
       data={{
-        datasets: [
-          {
-            label: "Température cible",
-            data: [...graph.points].sort((a, b) => a.x - b.x),
-            showLine: true,
-            fill: false,
-
-            backgroundColor: "rgb(0, 0, 0)", // couleur de remplissage de la courbe
-            borderColor: `rgba(${graph.color.r},${graph.color.g},${graph.color.b},${graph.color.a})`, // couleur de la courbe
-            pointRadius: 2,
-            pointBorderWidth: 0, // épaisseur de la bordure
-            pointHitRadius: 10, // rayon de hover
-            pointHoverBorderWidth: 0,
-
-            lineTension: 0.3,
-            yAxisID: "temp",
-          },
-        ],
+        datasets: [...dataSets],
       }}
       options={{
         responsiveAnimationDuration: 0, // resize animation
@@ -58,7 +71,6 @@ const SimpleGraph = () => {
                 },
                 stepSize: 300,
                 min: 0,
-                max: 1500,
               },
             },
           ],

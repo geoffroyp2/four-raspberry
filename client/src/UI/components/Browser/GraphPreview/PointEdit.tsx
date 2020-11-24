@@ -36,8 +36,11 @@ const PointEdit = () => {
 
   return (
     <div className="d-flex flex-column h-100 justify-content-between">
-      <Scrollbars style={{ height: "100%" }}>
-        <Container className="flex-row justify-content-start rounded shadow pt-2 pb-1" style={{ backgroundColor: "#232323" }}>
+      <Scrollbars
+        className="rounded"
+        style={{ height: "100%", border: "solid 1px rgba(10,10,10,0.8)", backgroundColor: "#232323", overflow: "hidden" }}
+      >
+        <Container className="flex-row justify-content-start rounded  pt-2 pb-1">
           <EditTable />
         </Container>
       </Scrollbars>

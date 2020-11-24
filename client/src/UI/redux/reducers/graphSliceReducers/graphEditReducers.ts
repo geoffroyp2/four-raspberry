@@ -1,7 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
 import { Color, Point } from "../../../../interfaces/programInterfaces";
-import { getHours } from "../../../utils/timeFormatting";
 import { GraphStateType } from "../graphSlice";
 
 // Memorize selected graph before editing to be able to cancel changes
@@ -28,6 +27,10 @@ const setDescription = (state: WritableDraft<GraphStateType>, action: PayloadAct
 
 const setColor = (state: WritableDraft<GraphStateType>, action: PayloadAction<Color>) => {
   state.selected.color = action.payload;
+};
+
+const setReference = (state: WritableDraft<GraphStateType>, action: PayloadAction<string>) => {
+  state.selected.graphRef = action.payload;
 };
 
 const setPoints = (state: WritableDraft<GraphStateType>, action: PayloadAction<Point[]>) => {
@@ -65,6 +68,7 @@ export const graphEditReducers = {
   setName,
   setDescription,
   setColor,
+  setReference,
   setPoints,
   setPoint,
   setPointHour,

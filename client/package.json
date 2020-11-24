@@ -19,6 +19,7 @@
     "@types/react-redux": "^7.1.11",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "bootstrap-switch-button-react": "^1.2.0",
     "bootswatch": "^4.5.3",
     "chart.js": "^2.9.4",
     "chartjs-plugin-crosshair": "^1.1.6",

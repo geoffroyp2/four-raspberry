@@ -18,6 +18,7 @@ const emptyGraph: Graph = {
   name: "",
   description: "",
   graphType: true,
+  graphRef: "",
   points: [],
   color: { r: 0, g: 0, b: 0 },
   date: "",
@@ -50,6 +51,7 @@ export const {
   setName,
   setDescription,
   setColor,
+  setReference,
   setPoints,
   setPoint,
   setPointHour,
@@ -65,6 +67,8 @@ export const selectedGraphName = (state: RootState) => state.graphListReducer.se
 export const selectedGraphDescription = (state: RootState) => state.graphListReducer.selected.description;
 export const selectedGraphType = (state: RootState) => state.graphListReducer.selected.graphType;
 export const selectedGraphColor = (state: RootState) => state.graphListReducer.selected.color;
+export const selectedGraphReference = (state: RootState) =>
+  state.graphListReducer.graphs[state.graphListReducer.selected.graphRef];
 export const selectedGraphDate = (state: RootState) => state.graphListReducer.selected.date;
 export const selectedGraphLastUpdate = (state: RootState) => state.graphListReducer.selected.lastUpdated;
 export const selectedGraphPoints = (state: RootState) => state.graphListReducer.selected.points;
