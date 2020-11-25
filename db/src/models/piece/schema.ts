@@ -1,21 +1,6 @@
 import { Schema } from "mongoose";
-import { ColorSchema } from "../shared/schema";
 // import { setLastUpdated } from "./methods";
 // import { findModelGraphs, findRecordedGraphs, createNewGraph, updateGraph } from "./statics";
-
-// const IngredientSchema = new Schema({
-//   chemical: {
-//     name: String,
-//     composition: String,
-//     color: {
-//       r: Number,
-//       g: Number,
-//       b: Number,
-//       a: Number,
-//     },
-//   },
-//   amount: Number,
-// });
 
 const PieceSchema = new Schema(
   {

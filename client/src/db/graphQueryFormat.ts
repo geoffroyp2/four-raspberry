@@ -30,6 +30,7 @@ export interface GraphEditFilter {
   graphRef?: string;
   color?: Color;
   points?: Point[];
+  pieces?: string[];
   date?: string;
 }
 

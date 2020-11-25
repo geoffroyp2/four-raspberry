@@ -20,6 +20,7 @@ const emptyGraph: Graph = {
   graphType: true,
   graphRef: "",
   points: [],
+  pieces: [],
   color: { r: 0, g: 0, b: 0 },
   date: "",
 };
@@ -52,6 +53,7 @@ export const {
   setDescription,
   setColor,
   setReference,
+  setDate,
   setPoints,
   setPoint,
   setPointHour,

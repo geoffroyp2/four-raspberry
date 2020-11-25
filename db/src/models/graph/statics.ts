@@ -17,6 +17,7 @@ export async function createNewGraph(this: IGraphModel, filter: GraphEditFilter)
     graphRef: filter.graphRef || "",
     color: filter.color || { r: 230, g: 30, b: 30, a: 0.9 },
     points: filter.points || [],
+    pieces: filter.pieces || [],
     date: filter.date || new Date().toISOString(),
     lastUpdated: new Date().toISOString(),
   });

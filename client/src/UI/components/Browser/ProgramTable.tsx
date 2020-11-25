@@ -1,106 +1,107 @@
-import React, { useCallback, useState } from "react";
-import { Button, ButtonGroup, Container, Row, Spinner, Table } from "react-bootstrap";
+import React, { useCallback, useEffect } from "react";
+import { Table } from "react-bootstrap";
+
+import SortSVG from "./utils/sortSVG";
+import Scrollbars from "react-custom-scrollbars";
 
 import { useDispatch, useSelector } from "react-redux";
-import db from "../../../db/handler";
-import { Graph } from "../../../interfaces/Igraph";
-import { selectedGraph, allGraphs, selectGraph, updateGraph } from "../../redux/reducers/graphSlice";
-import { loadTableProps, setLoadTableProps, setShowLoadTable } from "../../redux/reducers/UIControlsSlice";
+import { selectedGraph, allGraphs } from "../../redux/reducers/graphSlice";
+import {
+  loadTableProps,
+  loadTableRowSelected,
+  loadTableSort,
+  setRowSelected,
+  setTableSort,
+} from "../../redux/reducers/UIControlsSlice";
 
-import { graphFilterResult } from "../../utils/graphFilter";
-import { formatDate } from "../../utils/timeFormatting";
+import { dateToDisplayString } from "../../utils/dateFormatting";
+import { graphFilter, graphSort } from "./utils/graphTable";
 
 const ProgramTable = () => {
   const dispatch = useDispatch();
 
   const graphs = useSelector(allGraphs);
   const currentGraph = useSelector(selectedGraph);
-  const { setRef, filter } = useSelector(loadTableProps);
+  const { filter } = useSelector(loadTableProps);
+  const { sortParam, sortDirection } = useSelector(loadTableSort);
+  const rowSelected = useSelector(loadTableRowSelected);
 
-  const [rowSelected, setRowSelected] = useState<string>(currentGraph._id);
-  const [PendingState, setPendingState] = useState<boolean>(false);
+  useEffect(() => {
+    if (rowSelected.length === 0) dispatch(setRowSelected(currentGraph._id));
+  }, [dispatch, rowSelected, currentGraph]);
 
-  const handleSelect = useCallback(() => {
-    if (setRef) {
-      // set Current Graph reference
-      setPendingState(true);
-
-      // Give the new reference at the same time to avoid async problems
-      db.updateGraph({ ...currentGraph, graphRef: rowSelected }, (res: Graph) => {
-        setPendingState(false);
-        dispatch(updateGraph(res));
-        dispatch(setLoadTableProps({ setRef: false }));
-        dispatch(setShowLoadTable(false));
-      });
-    } else {
-      // Open Graph
-      dispatch(selectGraph(rowSelected));
-      dispatch(setShowLoadTable(false));
-    }
-  }, [dispatch, rowSelected, setRef, currentGraph]);
-
-  const handleCancel = useCallback(() => {
-    dispatch(setLoadTableProps({ setRef: false }));
-    dispatch(setShowLoadTable(false));
-  }, [dispatch]);
+  const handleSort = useCallback(
+    (e) => {
+      if (e.target.id === sortParam) dispatch(setTableSort({ sortParam: e.target.id, sortDirection: !sortDirection }));
+      else dispatch(setTableSort({ sortParam: e.target.id, sortDirection: true }));
+    },
+    [dispatch, sortDirection, sortParam]
+  );
 
   return (
-    <Container fluid>
-      <Row>
-        <Container
-          fluid
-          className="p-0 m-0"
-          style={{
-            display: "block",
-            position: "relative",
-            overflow: "auto",
-            height: "100%",
-          }}
-        >
-          <Table size="sm" variant="dark" striped bordered hover>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Type</th>
-                <th>Dernière Modification</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(graphs)
-                .filter(([key, value]) => {
-                  return filter ? currentGraph._id !== key && graphFilterResult(value, filter) : true;
-                })
-                .map(([key, value]) => {
-                  return (
-                    <tr
-                      onClick={(e) => setRowSelected((e.target as HTMLTableRowElement).id)}
-                      id={key}
-                      key={key}
-                      className={key === rowSelected ? "table-primary" : ""}
-                    >
-                      <td id={key}>{value.name}</td>
-                      <td id={key}>{value.graphType ? "Modèle" : "Cuisson"}</td>
-                      <td id={key}>{formatDate(value.lastUpdated)}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
-        </Container>
-      </Row>
-      <Row className="float-right mr-2 mb-2">
-        <ButtonGroup>
-          <Button className="btn-secondary" onClick={handleCancel}>
-            Annuler
-          </Button>
-          <Button className="btn-primary" onClick={handleSelect}>
-            {PendingState && <Spinner as="span" animation="border" size="sm" role="status" />}
-            <span className="pl-1 pr-1">{setRef ? "Sélectionner" : "Ouvrir"}</span>
-          </Button>
-        </ButtonGroup>
-      </Row>
-    </Container>
+    <Scrollbars
+      className="rounded"
+      style={{ height: "100%", border: "solid 1px rgba(10,10,10,0.8)", backgroundColor: "#232323", overflow: "hidden" }}
+    >
+      <Table size="sm" variant="dark" striped bordered hover className="mb-0">
+        <thead>
+          <tr>
+            <TableHeader id={"name"} label={"Nom"} width={25} onClick={handleSort} />
+            <TableHeader id={"type"} label={"Type"} width={10} onClick={handleSort} />
+            <TableHeader id={"ref"} label={"Courbe de Référence"} width={25} onClick={handleSort} />
+            <TableHeader id={"date"} label={"Date de cuisson"} width={20} onClick={handleSort} />
+            <TableHeader id={"lastUpdated"} label={"Dernière modification"} width={20} onClick={handleSort} />
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(graphs)
+            .filter(([key, value]) => {
+              return filter ? currentGraph._id !== key && graphFilter(value, filter) : true;
+            })
+            .sort((a, b) => graphSort(a, b, sortParam, sortDirection))
+            .map(([key, value]) => {
+              return (
+                <tr
+                  onClick={(e) => dispatch(setRowSelected((e.target as HTMLTableRowElement).id))}
+                  id={key}
+                  key={key}
+                  className={key === rowSelected ? "table-primary" : ""}
+                >
+                  <td id={key}>{value.name}</td>
+                  <td id={key}>{value.graphType ? "Modèle" : "Cuisson"}</td>
+                  <td id={key}>{value.graphRef ? graphs[value.graphRef].name : "-"}</td>
+                  <td id={key}>{dateToDisplayString(value.date, false)}</td>
+                  <td id={key}>{dateToDisplayString(value.lastUpdated, true)}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </Scrollbars>
   );
 };
 
 export default ProgramTable;
+
+type THProps = {
+  id: string;
+  label: string;
+  width: number;
+  onClick: (e: any) => void;
+};
+
+const TableHeader = ({ id, label, width, onClick }: THProps) => {
+  const { sortParam, sortDirection } = useSelector(loadTableSort);
+  return (
+    <th id={id} onClick={onClick} style={{ width: `${width}%`, pointerEvents: "auto" }}>
+      <span className="ml-1 mr-2" style={{ pointerEvents: "none" }}>
+        {label}
+      </span>
+      {sortParam === id && (
+        <span className="ml-2 mr-1 float-right" style={{ pointerEvents: "none" }}>
+          <SortSVG direction={sortDirection} />
+        </span>
+      )}
+    </th>
+  );
+};

@@ -32,16 +32,3 @@ export const formatTime = (time: string | number, showMinutes: boolean): string 
   const millis = +time;
   return `${hours(millis, false)}h${showMinutes ? minutes(millis) : ""}`;
 };
-
-export const formatDate = (dateString: string | undefined): string => {
-  if (!dateString) return "-";
-
-  const addZero = (val: number): string => {
-    return val < 10 ? "0" + val : "" + val;
-  };
-
-  const date = new Date(dateString);
-  return `${date.getDate()}/${addZero(date.getMonth() + 1)}/${date.getFullYear()} - ${date.getHours()}:${addZero(
-    date.getMinutes()
-  )}`;
-};

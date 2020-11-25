@@ -33,6 +33,10 @@ const setReference = (state: WritableDraft<GraphStateType>, action: PayloadActio
   state.selected.graphRef = action.payload;
 };
 
+const setDate = (state: WritableDraft<GraphStateType>, action: PayloadAction<string>) => {
+  state.selected.date = action.payload;
+};
+
 const setPoints = (state: WritableDraft<GraphStateType>, action: PayloadAction<Point[]>) => {
   state.selected.points = action.payload;
 };
@@ -69,6 +73,7 @@ export const graphEditReducers = {
   setDescription,
   setColor,
   setReference,
+  setDate,
   setPoints,
   setPoint,
   setPointHour,

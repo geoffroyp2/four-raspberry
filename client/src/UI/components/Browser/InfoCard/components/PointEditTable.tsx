@@ -9,16 +9,16 @@ import {
   setPoint,
   setPointHour,
   setPointMinute,
-} from "../../../redux/reducers/graphSlice";
+} from "../../../../redux/reducers/graphSlice";
 
-import { getHours, getMinutes } from "../../../utils/timeFormatting";
+import { getHours, getMinutes } from "../../../../utils/timeFormatting";
 
-const EditTable = () => {
+const PointEditTable = () => {
   const points = useSelector(selectedGraphPoints);
   const dispatch = useDispatch();
 
   return (
-    <Table size="sm" variant="dark" striped bordered>
+    <Table size="sm" variant="dark" striped bordered className="mb-1">
       <thead>
         <tr>
           <th>Temps</th>
@@ -123,4 +123,4 @@ const EditTable = () => {
   );
 };
 
-export default EditTable;
+export default PointEditTable;

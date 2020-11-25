@@ -14,6 +14,7 @@ export interface IGraph {
   color: Color; // Graph display color
   points: Point[]; // Graph Points
   graphRef: string; // for a Cuisson: target Modèle Graph used for reference
+  pieces: string[];
   date: string; // date of creation
   lastUpdated?: string;
 }

@@ -31,7 +31,9 @@ export default class db {
       graphType: graph.graphType,
       graphRef: graph.graphRef,
       color: graph.color,
+      pieces: graph.pieces,
       points: [...graph.points].sort((a, b) => a.x - b.x),
+      date: graph.date,
     };
 
     post({ id: GraphPostId.updateOne, graphId: graph._id, filter: filter }, callback);

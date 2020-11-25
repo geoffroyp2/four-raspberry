@@ -2,11 +2,11 @@ import React, { useCallback, useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateGraph, selectedGraph } from "../../../redux/reducers/graphSlice";
-import { editState, setEdit } from "../../../redux/reducers/UIControlsSlice";
+import { updateGraph, selectedGraph, memorizeGraph } from "../../../../redux/reducers/graphSlice";
+import { editState, setEdit } from "../../../../redux/reducers/UIControlsSlice";
 
-import db from "../../../../db/handler";
-import { Graph } from "../../../../interfaces/Igraph";
+import db from "../../../../../db/handler";
+import { Graph } from "../../../../../interfaces/Igraph";
 
 const EditButton = () => {
   const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const EditButton = () => {
   }, [dispatch, graph]);
 
   const edit = useCallback(() => {
+    dispatch(memorizeGraph());
     dispatch(setEdit(true));
   }, [dispatch]);
 

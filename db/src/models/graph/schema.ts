@@ -26,6 +26,10 @@ const GraphSchema = new Schema(
       ],
       default: [],
     },
+    pieces: {
+      type: [String],
+      default: [],
+    },
     date: Date,
     lastUpdated: Date,
   },

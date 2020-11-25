@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { initGraphs } from "../redux/reducers/graphSlice";
 
 import db from "../../db/handler";
@@ -9,18 +9,17 @@ import { Graph } from "../../interfaces/Igraph";
 
 import ScreenSelect from "./ScreenSelect";
 import LoadingScreen from "./utils/LoadingScreen";
-import { displaySize } from "../redux/reducers/UIControlsSlice";
 
-const small: React.CSSProperties = {
-  width: 1024,
-  height: 600,
-  borderColor: "#888888",
-  color: "#CCCCCC",
-  border: "solid",
-  borderWidth: 1,
-  margin: 20,
-  backgroundColor: "#424242",
-};
+// const small: React.CSSProperties = {
+//   width: 1024,
+//   height: 600,
+//   borderColor: "#888888",
+//   color: "#CCCCCC",
+//   border: "solid",
+//   borderWidth: 1,
+//   margin: 20,
+//   backgroundColor: "#424242",
+// };
 
 const large: React.CSSProperties = {
   backgroundColor: "#424242",
@@ -32,7 +31,6 @@ const large: React.CSSProperties = {
 const Four = () => {
   // Load the graphs from the db once at program start
   const dispatch = useDispatch();
-  const currentSize = useSelector(displaySize);
   const [Loading, setLoading] = useState<boolean>(true);
   const [CreatedOne, setCreatedOne] = useState<boolean>(false);
 
@@ -64,7 +62,7 @@ const Four = () => {
   }, [fetchData]);
 
   return (
-    <div style={currentSize ? small : large}>
+    <div style={large}>
       <Container fluid className="p-0 m-0 w-100 h-100">
         {Loading ? <LoadingScreen /> : <ScreenSelect />}
       </Container>

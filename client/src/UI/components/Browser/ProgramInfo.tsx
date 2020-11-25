@@ -1,38 +1,60 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+
 import { useSelector } from "react-redux";
 import { loadTableState, pointEditState } from "../../redux/reducers/UIControlsSlice";
-import GraphPreview from "./GraphPreview/GraphPreview";
-import PointEdit from "./GraphPreview/PointEdit";
-import InfoCard from "./InfoCard/InfoCard";
-import PiecesPreview from "./PiecesPreview/PiecesPreview";
+
 import ProgramTable from "./ProgramTable";
+import InfoCard from "./InfoCard/InfoCard";
+import PointEdit from "./InfoCard/PointEdit";
+import GraphPreview from "./GraphPreview/GraphPreview";
+import PiecesPreview from "./PiecesPreview/PiecesPreview";
+
+import InfoCardButtons from "./Buttons/Zones/InfoCardButtons";
+import PointEditModeButtons from "./Buttons/Zones/PointEditModeButtons";
+import ProgramTableButtons from "./Buttons/Zones/ProgramTableButtons";
+import ProgramRunButtons from "./Buttons/Zones/RightSideButtons";
 
 const ProgramInfo = () => {
   const pointEditMode = useSelector(pointEditState);
   const showLoadTable = useSelector(loadTableState);
 
+  const buttonCardStyle = { className: "shadow p-2 mt-1 justify-content-center", style: { height: "60px" } };
+  const contentCardStyle = "shadow p-2 flex-grow-1 ";
+  const colStyle = "flex-column d-flex ";
+
   return (
     <Container fluid className="p-1 w-100 h-100">
-      {showLoadTable ? (
-        <ProgramTable />
-      ) : (
-        <Container fluid className="h-100 p-0 m-0">
-          <Row className="h-100 m-0 p-0">
-            <Col className="h-100 pr-1 pl-0">
-              <Card className="h-100 shadow p-2">{pointEditMode ? <PointEdit /> : <InfoCard />}</Card>
+      <Row className="h-100 m-0 p-0">
+        {showLoadTable ? (
+          <Col className={colStyle + "p-0"}>
+            <Card className={contentCardStyle}>
+              <ProgramTable />
+            </Card>
+            <Card {...buttonCardStyle}>
+              <ProgramTableButtons />
+            </Card>
+          </Col>
+        ) : (
+          <>
+            <Col className={colStyle + "pr-1 pl-0 col-6"}>
+              <Card className={contentCardStyle}>{pointEditMode ? <PointEdit /> : <InfoCard />}</Card>
+              <Card {...buttonCardStyle}>{pointEditMode ? <PointEditModeButtons /> : <InfoCardButtons />}</Card>
             </Col>
-            <Col className="w-100 pl-1 pr-0">
-              <Row className="w-100 m-0 mb-1">
+            <Col className={colStyle + "pl-1 pr-0 col-6"}>
+              <Card className="shadow p-2">
                 <GraphPreview />
-              </Row>
-              <Row className="w-100 m-0">
+              </Card>
+              <Card className={contentCardStyle + "mt-1"}>
                 <PiecesPreview />
-              </Row>
+              </Card>
+              <Card {...buttonCardStyle}>
+                <ProgramRunButtons />
+              </Card>
             </Col>
-          </Row>
-        </Container>
-      )}
+          </>
+        )}
+      </Row>
     </Container>
   );
 };
