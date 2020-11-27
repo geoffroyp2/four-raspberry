@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 import { useDispatch } from "react-redux";
-import { initGraphs } from "../redux/reducers/graphSlice";
+import { initGraphs } from "@redux/graphSlice";
 
-import db from "../../db/handler";
-import { Graph } from "../../interfaces/Igraph";
+import db from "@db/handler";
 
 import ScreenSelect from "./ScreenSelect";
 import LoadingScreen from "./utils/LoadingScreen";
@@ -34,8 +33,8 @@ const Four = () => {
   const [Loading, setLoading] = useState<boolean>(true);
   const [CreatedOne, setCreatedOne] = useState<boolean>(false);
 
-  const fetchData = useCallback(() => {
-    db.getAllGraphs((res: Graph[]) => {
+  const fetchData = useCallback(async () => {
+    await db.getAllGraphs().then((res) => {
       if (res.length > 0) {
         dispatch(initGraphs(res));
         setLoading(false);
@@ -43,10 +42,10 @@ const Four = () => {
         if (!CreatedOne) {
           console.log("No data, trying to create a graph...");
           setCreatedOne(true);
-          db.createNewGraph({}, (res: Graph) => {
-            dispatch(initGraphs([res]));
-            setLoading(false);
-          });
+          // await db.createNewGraph().then((res: Graph) => {
+          //   dispatch(initGraphs([res]));
+          //   setLoading(false);
+          // });
         } else {
           console.log("No answer, retrying to connect...");
           setTimeout(() => {

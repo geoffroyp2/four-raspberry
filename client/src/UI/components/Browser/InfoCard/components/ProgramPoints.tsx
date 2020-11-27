@@ -3,10 +3,10 @@ import { Col, Row, Table } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useSelector } from "react-redux";
-import { selectedGraphPoints } from "../../../../redux/reducers/graphSlice";
-import PointEditButton from "../../Buttons/Individual/PointEditButton";
+import { selectedGraphPoints } from "@redux/graphSlice";
+import PointEditButton from "@UIBrowser/Buttons/Individual/PointEditButton";
 
-import { formatTime } from "../../../../utils/timeFormatting";
+import { formatTime } from "@UIutils/timeFormatting";
 
 const ProgramPoints = () => {
   const points = useSelector(selectedGraphPoints);

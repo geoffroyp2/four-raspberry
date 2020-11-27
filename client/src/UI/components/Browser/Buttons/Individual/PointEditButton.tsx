@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Button } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { pointEditState, setEdit, setPointEdit } from "../../../../redux/reducers/UIControlsSlice";
+import { pointEditState, setEdit, setPointEdit } from "@redux/UIControlsSlice";
 
 const PointEditButton = () => {
   const dispatch = useDispatch();

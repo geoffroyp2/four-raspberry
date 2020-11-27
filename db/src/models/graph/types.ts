@@ -1,5 +1,5 @@
 import { Document, Model } from "mongoose";
-import { GraphEditFilter } from "../../controllers/graphQueryFormat";
+import { GraphEditFilter } from "../../controllers/graph/types/postTypes";
 import { Color } from "../shared/types";
 
 export interface Point {
@@ -24,8 +24,6 @@ export interface IGraphDocument extends Document, IGraph {
 }
 
 export interface IGraphModel extends Model<IGraphDocument>, IGraph {
-  findModelGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
-  findRecordedGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
-  createNewGraph: (this: IGraphModel, filter: GraphEditFilter) => Promise<IGraphDocument>;
-  updateGraph: (this: IGraphModel, graphId: string, filter: GraphEditFilter) => Promise<IGraphDocument>;
+  createNewGraph: (this: IGraphModel) => Promise<IGraphDocument>;
+  updateGraph: (this: IGraphModel, data: GraphEditFilter) => Promise<IGraphDocument>;
 }

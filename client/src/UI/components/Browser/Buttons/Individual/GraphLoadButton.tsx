@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { editState, setShowLoadTable } from "../../../../redux/reducers/UIControlsSlice";
+import { editState, setShowLoadTable } from "@redux/UIControlsSlice";
 
 const GraphLoadButton = () => {
   const dispatch = useDispatch();

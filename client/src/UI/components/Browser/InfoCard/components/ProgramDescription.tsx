@@ -2,10 +2,10 @@ import React from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphDescription, setDescription } from "../../../../redux/reducers/graphSlice";
+import { selectedGraphDescription, setDescription } from "@redux/graphSlice";
+import { editState } from "@redux/UIControlsSlice";
 
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
-import { editState } from "../../../../redux/reducers/UIControlsSlice";
 
 const ProgramDescription = () => {
   const editMode = useSelector(editState);

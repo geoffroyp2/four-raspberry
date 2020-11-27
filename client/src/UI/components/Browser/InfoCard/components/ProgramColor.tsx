@@ -4,10 +4,10 @@ import { CirclePicker } from "react-color";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphColor, setColor } from "../../../../redux/reducers/graphSlice";
-import { editState } from "../../../../redux/reducers/UIControlsSlice";
+import { selectedGraphColor, setColor } from "@redux/graphSlice";
+import { editState } from "@redux/UIControlsSlice";
 
-import { Color } from "../../../../../interfaces/programInterfaces";
+import { Color } from "@clientTypes/programInterfaces";
 
 const colorToString = (c: Color) => {
   return `rgb(${c.r},${c.g},${c.b})`;

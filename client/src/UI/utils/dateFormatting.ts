@@ -15,7 +15,7 @@ export const dateToInputFormat = (ISOString: string): string => {
   if (!ISOString) return "-";
 
   const date = new Date(ISOString);
-  return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${date.getDate()}`;
+  return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${addZero(date.getDate())}`;
 };
 
 export const dateToISOString = (inputString: string): string => {

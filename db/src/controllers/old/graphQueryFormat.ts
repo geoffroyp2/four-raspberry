@@ -16,16 +16,16 @@ export enum GraphPostId {
   updateOne,
 }
 
-export interface GraphEditFilter {
-  name?: string;
-  description?: string;
-  graphType?: boolean;
-  graphRef?: string;
-  color?: Color;
-  points?: Point[];
-  pieces?: string[];
-  date?: string;
-}
+// export interface GraphEditFilter {
+//   name?: string;
+//   description?: string;
+//   graphType?: boolean;
+//   graphRef?: string;
+//   color?: Color;
+//   points?: Point[];
+//   pieces?: string[];
+//   date?: string;
+// }
 
 export interface GraphFindFilter {
   _id?: string;

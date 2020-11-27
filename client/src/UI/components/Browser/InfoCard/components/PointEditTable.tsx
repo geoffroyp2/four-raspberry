@@ -2,16 +2,9 @@ import React from "react";
 import { Button, Col, FormControl, InputGroup, Row, Table } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addNewPoint,
-  deletePoint,
-  selectedGraphPoints,
-  setPoint,
-  setPointHour,
-  setPointMinute,
-} from "../../../../redux/reducers/graphSlice";
+import { addNewPoint, deletePoint, selectedGraphPoints, setPoint, setPointHour, setPointMinute } from "@redux/graphSlice";
 
-import { getHours, getMinutes } from "../../../../utils/timeFormatting";
+import { getHours, getMinutes } from "@UIutils/timeFormatting";
 
 const PointEditTable = () => {
   const points = useSelector(selectedGraphPoints);

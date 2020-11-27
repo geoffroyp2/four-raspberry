@@ -1,8 +1,8 @@
-import { GraphEditFilter } from "../../../../db/graphQueryFormat";
-import { Graph } from "../../../../interfaces/Igraph";
-import { TableSortType } from "../../../redux/reducers/UIControlsSlice";
+import { Graph } from "@clientTypes/Graph";
+import { GraphEditFilter } from "@db/types/postTypes";
+import { TableSortType } from "@redux/UIControlsSlice";
 
-export const graphFilter = (graph: Graph, filter: GraphEditFilter): boolean => {
+export const graphFilter = (graph: Graph, filter: GraphEditFilter["filter"]): boolean => {
   return (
     (filter.name !== undefined ? graph.name === filter.name : true) &&
     (filter.description !== undefined ? graph.description === filter.description : true) &&

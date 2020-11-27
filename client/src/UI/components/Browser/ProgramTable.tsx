@@ -5,16 +5,10 @@ import SortSVG from "./utils/sortSVG";
 import Scrollbars from "react-custom-scrollbars";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, allGraphs } from "../../redux/reducers/graphSlice";
-import {
-  loadTableProps,
-  loadTableRowSelected,
-  loadTableSort,
-  setRowSelected,
-  setTableSort,
-} from "../../redux/reducers/UIControlsSlice";
+import { selectedGraph, allGraphs } from "@redux/graphSlice";
+import { loadTableProps, loadTableRowSelected, loadTableSort, setRowSelected, setTableSort } from "@redux/UIControlsSlice";
 
-import { dateToDisplayString } from "../../utils/dateFormatting";
+import { dateToDisplayString } from "@UIutils/dateFormatting";
 import { graphFilter, graphSort } from "./utils/graphTable";
 
 const ProgramTable = () => {

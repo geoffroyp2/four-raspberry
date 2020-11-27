@@ -2,16 +2,10 @@ import React, { useCallback, useState } from "react";
 import { Button, ButtonGroup, Container, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, selectGraph, updateGraph } from "../../../../redux/reducers/graphSlice";
-import {
-  loadTableProps,
-  loadTableRowSelected,
-  setLoadTableProps,
-  setShowLoadTable,
-} from "../../../../redux/reducers/UIControlsSlice";
+import { selectedGraph, selectGraph, updateGraph } from "@redux/graphSlice";
+import { loadTableProps, loadTableRowSelected, setLoadTableProps, setShowLoadTable } from "@redux/UIControlsSlice";
 
-import db from "../../../../../db/handler";
-import { Graph } from "../../../../../interfaces/Igraph";
+import db from "@db/handler";
 
 const ProgramTableButtons = () => {
   const dispatch = useDispatch();
@@ -21,11 +15,11 @@ const ProgramTableButtons = () => {
 
   const [PendingState, setPendingState] = useState<boolean>(false);
 
-  const handleSelect = useCallback(() => {
+  const handleSelect = useCallback(async () => {
     if (setRef) {
       setPendingState(true);
       // Give the new reference at the same time to avoid async problems
-      db.updateGraph({ ...currentGraph, graphRef: rowSelected }, (res: Graph) => {
+      await db.updateGraph({ ...currentGraph, graphRef: rowSelected }).then((res) => {
         setPendingState(false);
         dispatch(updateGraph(res));
         dispatch(setLoadTableProps({ setRef: false }));

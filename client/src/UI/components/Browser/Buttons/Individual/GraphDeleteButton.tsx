@@ -2,26 +2,27 @@ import React, { useCallback, useState } from "react";
 import { Button, ButtonGroup, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSelectedGraph, selectedGraphId, rollbackChanges } from "../../../../redux/reducers/graphSlice";
+import { deleteSelectedGraph, rollbackChanges, selectedGraph } from "@redux/graphSlice";
+import { setEdit, editState } from "@redux/UIControlsSlice";
 
-import db from "../../../../../db/handler";
-import { setEdit, editState } from "../../../../redux/reducers/UIControlsSlice";
+import db from "@db/handler";
 
 const GraphDeleteButton = () => {
   const dispatch = useDispatch();
-  const graphId = useSelector(selectedGraphId);
+  const graph = useSelector(selectedGraph);
   const editMode = useSelector(editState);
   const [Pending, setPending] = useState<boolean>(false);
   const [Confirm, setConfirm] = useState<boolean>(false);
 
-  const handleDeleteGraph = useCallback(() => {
+  const handleDeleteGraph = useCallback(async () => {
     setPending(true);
     setConfirm(false);
-    db.deleteGraph(graphId, () => {
+
+    await db.deleteGraph(graph).then(() => {
       setPending(false);
       dispatch(deleteSelectedGraph());
     });
-  }, [graphId, dispatch]);
+  }, [graph, dispatch]);
 
   const handleClick = useCallback(() => {
     if (editMode) {

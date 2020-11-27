@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 
 import { useSelector } from "react-redux";
-import { selectedGraph } from "../../../redux/reducers/graphSlice";
+import { selectedGraph } from "@redux/graphSlice";
 
 import ProgramName from "./components/ProgramName";
 import ProgramType from "./components/ProgramType";

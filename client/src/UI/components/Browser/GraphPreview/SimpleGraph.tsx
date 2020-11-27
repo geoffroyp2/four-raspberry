@@ -1,8 +1,10 @@
 import React from "react";
 import { Scatter } from "react-chartjs-2";
+
 import { useSelector } from "react-redux";
-import { selectedGraph, selectedGraphReference } from "../../../redux/reducers/graphSlice";
-import { formatTime } from "../../../utils/timeFormatting";
+import { selectedGraph, selectedGraphReference } from "@redux/graphSlice";
+
+import { formatTime } from "@UIutils/timeFormatting";
 
 const dataSetOptions = {
   showLine: true,

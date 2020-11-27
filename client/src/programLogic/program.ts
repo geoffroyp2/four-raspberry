@@ -1,7 +1,8 @@
-import { SensorValues, Point } from "../interfaces/programInterfaces";
+import { SensorValues, Point } from "../types/programInterfaces";
 import com from "./i2cCom";
-import db from "../db/handler";
-import { Graph } from "../interfaces/Igraph";
+import db from "../network/db/handler";
+// import { Graph } from "../types/Graph";
+import { Graph } from "@clientTypes/Graph";
 
 // import { addData } from "../db/client";
 
@@ -53,14 +54,14 @@ export class Program {
   // --------------------
 
   public loadModelGraphs(callback: () => void) {
-    db.getAllGraphs((graphs: Graph[]): void => {
-      if (graphs.length > 0) {
-        graphs.forEach((g) => (this.graphs[g._id] = g));
-        callback();
-      } else {
-        console.error("No model graph results");
-      }
-    });
+    // db.getAllGraphs((graphs: Graph[]): void => {
+    //   if (graphs.length > 0) {
+    //     graphs.forEach((g) => (this.graphs[g._id] = g));
+    //     callback();
+    //   } else {
+    //     console.error("No model graph results");
+    //   }
+    // });
   }
 
   public selectProgram(id: string): void {

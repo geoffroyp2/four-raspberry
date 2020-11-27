@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import { setLastUpdated } from "./methods";
-import { findModelGraphs, findRecordedGraphs, createNewGraph, updateGraph } from "./statics";
+import { createNewGraph, updateGraph } from "./statics";
 
 const GraphSchema = new Schema(
   {
@@ -36,8 +36,6 @@ const GraphSchema = new Schema(
   { collection: "graphs" }
 );
 
-GraphSchema.statics.findModelGraphs = findModelGraphs;
-GraphSchema.statics.findRecordedGraphs = findRecordedGraphs;
 GraphSchema.statics.createNewGraph = createNewGraph;
 GraphSchema.statics.updateGraph = updateGraph;
 

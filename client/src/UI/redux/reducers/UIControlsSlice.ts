@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GraphEditFilter } from "../../../db/graphQueryFormat";
+import { GraphEditFilter } from "@db/types/postTypes";
 import { RootState } from "../store";
 
 export type TableSortType = "name" | "date" | "lastUpdated" | "type" | "ref";
 
 type UIControlsType = {
+  programStart: boolean;
   editMode: boolean;
   pointEditMode: boolean;
   showLoadTable: boolean;
@@ -15,11 +16,12 @@ type UIControlsType = {
   };
   tableProps: {
     setRef: boolean;
-    filter?: GraphEditFilter;
+    filter?: GraphEditFilter["filter"];
   };
 };
 
 const initialState: UIControlsType = {
+  programStart: false,
   editMode: false,
   pointEditMode: false,
   showLoadTable: false,
@@ -37,7 +39,11 @@ const UIControlsSlice = createSlice({
   name: "UIControls",
   initialState,
   reducers: {
-    setLoadTableProps: (state, action: PayloadAction<{ setRef: boolean; filter?: GraphEditFilter }>) => {
+    setProgramStart: (state, action: PayloadAction<boolean>) => {
+      state.programStart = action.payload;
+    },
+
+    setLoadTableProps: (state, action: PayloadAction<{ setRef: boolean; filter?: GraphEditFilter["filter"] }>) => {
       state.tableProps = action.payload;
     },
 
@@ -64,6 +70,7 @@ const UIControlsSlice = createSlice({
 });
 
 export const {
+  setProgramStart,
   setEdit,
   setPointEdit,
   setRowSelected,
@@ -72,6 +79,7 @@ export const {
   setLoadTableProps,
 } = UIControlsSlice.actions;
 
+export const programStart = (state: RootState) => state.UIControlsReducer.programStart;
 export const editState = (state: RootState) => state.UIControlsReducer.editMode;
 export const pointEditState = (state: RootState) => state.UIControlsReducer.pointEditMode;
 export const loadTableState = (state: RootState) => state.UIControlsReducer.showLoadTable;

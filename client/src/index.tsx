@@ -10,10 +10,11 @@ import "./index.css";
 import "bootswatch/dist/darkly/bootstrap.min.css";
 
 // React.Fragment instead of React.StrictMode because of Bootstrap
+//className="App noselect"
 
 ReactDOM.render(
   <Provider store={store}>
-    <div className="App noselect">
+    <div className="App">
       <Four />
     </div>
   </Provider>,

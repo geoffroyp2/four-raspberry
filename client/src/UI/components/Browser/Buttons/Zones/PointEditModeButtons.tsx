@@ -2,12 +2,11 @@ import React, { useCallback, useState } from "react";
 import { Button, Container, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphPoints, setPoints, selectedGraph, updateGraph } from "../../../../redux/reducers/graphSlice";
-import { setPointEdit } from "../../../../redux/reducers/UIControlsSlice";
+import { selectedGraphPoints, setPoints, selectedGraph, updateGraph } from "@redux/graphSlice";
+import { setPointEdit } from "@redux/UIControlsSlice";
 
-import db from "../../../../../db/handler";
-import { Point } from "../../../../../interfaces/programInterfaces";
-import { Graph } from "../../../../../interfaces/Igraph";
+import db from "@db/handler";
+import { Point } from "@clientTypes/programInterfaces";
 
 const PointEditModeButtons = () => {
   const points = useSelector(selectedGraphPoints);
@@ -22,9 +21,10 @@ const PointEditModeButtons = () => {
     dispatch(setPointEdit(false));
   }, [PointsMem, dispatch]);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
     setPendingState(true);
-    db.updateGraph(graph, (res: Graph) => {
+
+    await db.updateGraph(graph).then((res) => {
       setPendingState(false);
       dispatch(updateGraph(res));
       dispatch(setPointEdit(false));

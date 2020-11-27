@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
-import { Graph } from "../../../../interfaces/Igraph";
+import { Graph } from "@clientTypes/Graph";
 import { GraphStateType } from "../graphSlice";
 
 const initGraphs = (state: WritableDraft<GraphStateType>, action: PayloadAction<Graph[]>) => {

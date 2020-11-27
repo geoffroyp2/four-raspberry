@@ -1,7 +1,7 @@
 // Empty for now.
 // Need to build it on the raspberry
 
-import { SensorValues } from "../interfaces/programInterfaces";
+import { SensorValues } from "../types/programInterfaces";
 
 export class i2cCom {
   comAdress: number = 0x20;

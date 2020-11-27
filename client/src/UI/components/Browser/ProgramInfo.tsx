@@ -13,7 +13,7 @@ import PiecesPreview from "./PiecesPreview/PiecesPreview";
 import InfoCardButtons from "./Buttons/Zones/InfoCardButtons";
 import PointEditModeButtons from "./Buttons/Zones/PointEditModeButtons";
 import ProgramTableButtons from "./Buttons/Zones/ProgramTableButtons";
-import ProgramRunButtons from "./Buttons/Zones/RightSideButtons";
+import StartButton from "./Buttons/Zones/StartButton";
 
 const ProgramInfo = () => {
   const pointEditMode = useSelector(pointEditState);
@@ -49,7 +49,7 @@ const ProgramInfo = () => {
                 <PiecesPreview />
               </Card>
               <Card {...buttonCardStyle}>
-                <ProgramRunButtons />
+                <StartButton />
               </Card>
             </Col>
           </>

@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
-import { Color, Point } from "../../../../interfaces/programInterfaces";
+import { Color, Point } from "@clientTypes/programInterfaces";
 import { GraphStateType } from "../graphSlice";
 
 // Memorize selected graph before editing to be able to cancel changes
