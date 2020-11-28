@@ -1,7 +1,8 @@
 import { get, post } from "./client";
-import { Graph } from "@clientTypes/Graph";
 import { GraphFindFilter, GraphGetId } from "./types/getTypes";
 import { GraphPostId, GraphEditFilter } from "./types/postTypes";
+
+import { Graph } from "@clientTypes/Graph";
 
 export default class db {
   public static async getOneGraph(filter: GraphFindFilter): Promise<Graph> {

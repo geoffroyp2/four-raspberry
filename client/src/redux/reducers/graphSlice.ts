@@ -13,7 +13,7 @@ export type GraphStateType = {
   };
 };
 
-const emptyGraph: Graph = {
+export const emptyGraph: Graph = {
   _id: "",
   name: "",
   description: "",

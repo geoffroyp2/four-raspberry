@@ -1,13 +1,13 @@
 // Empty for now.
 // Need to build it on the raspberry
 
-import { SensorValues } from "../types/programInterfaces";
+// import { SensorValues } from "../types/programInterfaces";
 
 export class i2cCom {
   comAdress: number = 0x20;
 
   // temp for testing
-  targetValues: SensorValues | null = null;
+  targetValues: any | null = null;
 
   setAdress(newAdress: number): void {
     this.comAdress = newAdress;
@@ -19,11 +19,11 @@ export class i2cCom {
     return true;
   }
 
-  sendTargetValues(targetValues: SensorValues): void {
+  sendTargetValues(targetValues: any): void {
     this.targetValues = targetValues;
   }
 
-  requestSensorValues(): SensorValues {
+  requestSensorValues(): any {
     // console.log("sensor sending values");
 
     return {

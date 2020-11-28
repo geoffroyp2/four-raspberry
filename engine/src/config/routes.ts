@@ -1,4 +1,4 @@
-import { EngineController } from "../controllers/engineController";
+import { EngineController } from "../controllers/controller";
 export class Routes {
   public engineController: EngineController = new EngineController();
 

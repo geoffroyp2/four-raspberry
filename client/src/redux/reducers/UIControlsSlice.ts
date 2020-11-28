@@ -5,6 +5,7 @@ import { RootState } from "../store";
 export type TableSortType = "name" | "date" | "lastUpdated" | "type" | "ref";
 
 type UIControlsType = {
+  screenSelect: "browse" | "run";
   programStart: boolean;
   editMode: boolean;
   pointEditMode: boolean;
@@ -21,6 +22,7 @@ type UIControlsType = {
 };
 
 const initialState: UIControlsType = {
+  screenSelect: "browse",
   programStart: false,
   editMode: false,
   pointEditMode: false,
@@ -41,6 +43,10 @@ const UIControlsSlice = createSlice({
   reducers: {
     setProgramStart: (state, action: PayloadAction<boolean>) => {
       state.programStart = action.payload;
+    },
+
+    setScreenSelect: (state, action: PayloadAction<UIControlsType["screenSelect"]>) => {
+      state.screenSelect = action.payload;
     },
 
     setLoadTableProps: (state, action: PayloadAction<{ setRef: boolean; filter?: GraphEditFilter["filter"] }>) => {
@@ -71,6 +77,7 @@ const UIControlsSlice = createSlice({
 
 export const {
   setProgramStart,
+  setScreenSelect,
   setEdit,
   setPointEdit,
   setRowSelected,
@@ -79,6 +86,7 @@ export const {
   setLoadTableProps,
 } = UIControlsSlice.actions;
 
+export const screenSelect = (state: RootState) => state.UIControlsReducer.screenSelect;
 export const programStart = (state: RootState) => state.UIControlsReducer.programStart;
 export const editState = (state: RootState) => state.UIControlsReducer.editMode;
 export const pointEditState = (state: RootState) => state.UIControlsReducer.pointEditMode;

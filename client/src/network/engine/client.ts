@@ -1,20 +1,21 @@
-import { Graph } from "@clientTypes/Graph";
 import axios from "axios";
-import { GraphGetRequest, GraphGetIdString } from "./types/getTypes";
-import { GraphPostIdString, GraphPostRequest } from "./types/postTypes";
-import { GraphResId } from "./types/resTypes";
+import { EngineGetRequest, EngineGetIdString } from "./types/getTypes";
+import { EnginePostIdString, EnginePostRequest } from "./types/postTypes";
+import { EngineResId } from "./types/resTypes";
+import { EngineStatus } from "@clientTypes/programInterfaces";
+import { Graph } from "@clientTypes/Graph";
 
-export const post = async (req: GraphPostRequest): Promise<Graph[]> => {
-  console.log("Post:", GraphPostIdString[req.id]);
+export const post = async (req: EnginePostRequest): Promise<EngineStatus> => {
+  console.log("engine post:", EnginePostIdString[req.id]);
   const body = JSON.stringify(req);
 
   return await axios
-    .post("http://localhost:3001/graph", { body })
+    .post("http://localhost:3002/engine", { body })
     .then((res: any) => {
       switch (+res.data.id) {
-        case GraphResId.succes:
+        case EngineResId.succes:
           return res.data.data;
-        case GraphResId.error:
+        case EngineResId.error:
         default:
           throw new Error(res.data.data || res.data || "No answer");
       }
@@ -22,16 +23,16 @@ export const post = async (req: GraphPostRequest): Promise<Graph[]> => {
     .catch((e: Error) => console.error(e));
 };
 
-export const get = async (req: GraphGetRequest): Promise<Graph[]> => {
-  console.log("Get:", GraphGetIdString[req.id]);
+export const get = async (req: EngineGetRequest): Promise<EngineStatus | Graph> => {
+  console.log("engine get:", EngineGetIdString[req.id]);
 
   return await axios
-    .get("http://localhost:3001/graph", { params: req })
+    .get("http://localhost:3002/engine", { params: req })
     .then((res: any) => {
       switch (+res.data.id) {
-        case GraphResId.succes:
+        case EngineResId.succes:
           return res.data.data;
-        case GraphResId.error:
+        case EngineResId.error:
         default:
           throw new Error(res.data.data || res.data || "No answer");
       }

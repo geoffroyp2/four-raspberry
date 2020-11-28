@@ -1,26 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { initGraphs } from "@redux/graphSlice";
 
 import db from "@db/handler";
 
-import ScreenSelect from "./ScreenSelect";
 import LoadingScreen from "./utils/LoadingScreen";
+import { screenSelect } from "@redux/UIControlsSlice";
+import ProgramInfo from "@UIBrowser/ProgramInfo";
+import ProgramRun from "@UIRun/ProgramRun";
 
-// const small: React.CSSProperties = {
-//   width: 1024,
-//   height: 600,
-//   borderColor: "#888888",
-//   color: "#CCCCCC",
-//   border: "solid",
-//   borderWidth: 1,
-//   margin: 20,
-//   backgroundColor: "#424242",
-// };
-
-const large: React.CSSProperties = {
+const appStyle: React.CSSProperties = {
   backgroundColor: "#424242",
   display: "flex",
   width: "100%",
@@ -30,6 +21,7 @@ const large: React.CSSProperties = {
 const Four = () => {
   // Load the graphs from the db once at program start
   const dispatch = useDispatch();
+  const screen = useSelector(screenSelect);
   const [Loading, setLoading] = useState<boolean>(true);
   const [CreatedOne, setCreatedOne] = useState<boolean>(false);
 
@@ -61,9 +53,9 @@ const Four = () => {
   }, [fetchData]);
 
   return (
-    <div style={large}>
-      <Container fluid className="p-0 m-0 w-100 h-100">
-        {Loading ? <LoadingScreen /> : <ScreenSelect />}
+    <div style={appStyle}>
+      <Container fluid className="p-1 m-0 w-100 h-100">
+        {Loading ? <LoadingScreen /> : screen === "browse" ? <ProgramInfo /> : <ProgramRun />}
       </Container>
     </div>
   );

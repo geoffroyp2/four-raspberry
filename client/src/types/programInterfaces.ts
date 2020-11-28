@@ -10,7 +10,19 @@ export interface Point {
   y: number;
 }
 
-export interface SensorValues {
-  temp: number;
-  oxy: number;
+export interface EngineStatus {
+  runStatus: "run" | "pause" | "stop";
+  driverMode: "auto" | "manual";
+  connected: boolean;
+  sensors: {
+    temp: number;
+    oxy: number;
+  };
+  target: {
+    temp: number;
+    oxy: number;
+  };
+  valves: {
+    angle: number;
+  };
 }

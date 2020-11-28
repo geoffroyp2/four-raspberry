@@ -1,5 +1,4 @@
-import { Graph } from "@clientTypes/Graph";
-import { EngineStatus } from "@clientTypes/programInterfaces";
+import { EngineStatus } from "../../engine/types";
 
 export enum EngineResId {
   error,
@@ -9,7 +8,7 @@ export enum EngineResId {
 export type EngineRes =
   | {
       id: EngineResId.succes;
-      data: EngineStatus | Graph;
+      data: EngineStatus;
     }
   | {
       id: EngineResId.error;

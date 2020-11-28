@@ -41,7 +41,7 @@ export default class GraphController {
           break;
         }
         default:
-          res.json({ id: GraphResId.error, data: "no data" });
+          res.json({ id: GraphResId.error, data: "bad id" });
           break;
       }
     } catch (e) {

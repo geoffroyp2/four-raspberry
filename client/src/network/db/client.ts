@@ -1,11 +1,11 @@
-import { Graph } from "@clientTypes/Graph";
 import axios from "axios";
 import { GraphGetRequest, GraphGetIdString } from "./types/getTypes";
 import { GraphPostIdString, GraphPostRequest } from "./types/postTypes";
 import { GraphResId } from "./types/resTypes";
+import { Graph } from "@clientTypes/Graph";
 
 export const post = async (req: GraphPostRequest): Promise<Graph[]> => {
-  console.log("Post:", GraphPostIdString[req.id]);
+  console.log("db post:", GraphPostIdString[req.id]);
   const body = JSON.stringify(req);
 
   return await axios
@@ -23,7 +23,7 @@ export const post = async (req: GraphPostRequest): Promise<Graph[]> => {
 };
 
 export const get = async (req: GraphGetRequest): Promise<Graph[]> => {
-  console.log("Get:", GraphGetIdString[req.id]);
+  console.log("db get:", GraphGetIdString[req.id]);
 
   return await axios
     .get("http://localhost:3001/graph", { params: req })
