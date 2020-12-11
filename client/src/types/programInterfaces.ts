@@ -14,6 +14,7 @@ export interface EngineStatus {
   runStatus: "run" | "pause" | "stop";
   driverMode: "auto" | "manual";
   connected: boolean;
+  targetGraphID: string;
   sensors: {
     temp: number;
     oxy: number;

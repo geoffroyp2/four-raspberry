@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GraphEditFilter } from "@db/types/postTypes";
+import { GraphEditFilter } from "@db/+old/types/postTypes";
 import { RootState } from "../store";
 
 export type TableSortType = "name" | "date" | "lastUpdated" | "type" | "ref";

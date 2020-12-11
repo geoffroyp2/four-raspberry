@@ -1,5 +1,5 @@
 import { Graph } from "@clientTypes/Graph";
-import { GraphEditFilter } from "@db/types/postTypes";
+import { GraphEditFilter } from "@db/+old/types/postTypes";
 import { TableSortType } from "@redux/UIControlsSlice";
 
 export const graphFilter = (graph: Graph, filter: GraphEditFilter["filter"]): boolean => {

@@ -15,16 +15,16 @@ const RunInfos = () => {
       <p>{"Status: " + status}</p>
       <p>{"Mode: " + mode}</p>
       <p>{"Connection: " + (connected ? "Ok" : "Not connected")}</p>
-      <p>
+      <div>
         Valeurs mesurées:
         <p>{"Température: " + sensors.temp}</p>
         <p>{"Oxygène: " + sensors.oxy}</p>
-      </p>
-      <p>
+      </div>
+      <div>
         Valeurs cibles:
         <p>{"Température: " + target.temp}</p>
         <p>{"Oxygène: " + target.oxy}</p>
-      </p>
+      </div>
       <p>{"Angle de valve: " + valve.angle}</p>
     </div>
   );

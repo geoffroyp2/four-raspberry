@@ -6,7 +6,7 @@ import { initGraphs } from "@redux/graphSlice";
 
 import db from "@db/handler";
 
-import LoadingScreen from "./utils/LoadingScreen";
+import LoadingScreen from "./Generic/LoadingScreen";
 import { screenSelect } from "@redux/UIControlsSlice";
 import ProgramInfo from "@UIBrowser/ProgramInfo";
 import ProgramRun from "@UIRun/ProgramRun";

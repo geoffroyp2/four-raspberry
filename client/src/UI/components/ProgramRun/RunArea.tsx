@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
-import { setTargetGraph } from "@redux/engineStatusSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { targetGraphID, setTargetGraph, targetGraph } from "@redux/engineStatusSlice";
 
-import LoadingScreen from "../utils/LoadingScreen";
+import LoadingScreen from "../Generic/LoadingScreen";
 import engine from "@engine/handler";
 import RunGraph from "./Graph/RunGraph";
 import { Col, Container } from "react-bootstrap";
@@ -11,15 +11,21 @@ import RunInfos from "./Infos/RunInfos";
 
 const RunArea = () => {
   const dispatch = useDispatch();
+  const ID1 = useSelector(targetGraph)._id;
+  const ID2 = useSelector(targetGraphID);
   const [GraphLoaded, setGraphLoaded] = useState<boolean>(false);
 
-  // TODO : don't reload every single time
   useEffect(() => {
-    engine.getGraph().then((res) => {
+    // Refresh the graph to display if the target graph has changed
+    if (ID1 !== ID2) {
+      engine.getGraph().then((res) => {
+        dispatch(setTargetGraph(res));
+        setGraphLoaded(true);
+      });
+    } else {
       setGraphLoaded(true);
-      dispatch(setTargetGraph(res));
-    });
-  });
+    }
+  }, [ID1, ID2, dispatch]);
 
   return GraphLoaded ? (
     <Container fluid className="m-0 p-0 d-flex flex-direction-row">

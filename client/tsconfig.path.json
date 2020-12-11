@@ -9,6 +9,7 @@
       "@UIRun/*": ["UI/components/ProgramRun/*"],
       "@UIBrowser/*": ["UI/components/Browser/*"],
       "@redux/*": ["redux/reducers/*"],
+      "@sharedTypes/*": ["sharedTypes/*"],
       "@src/*": ["*"]
     }
   }

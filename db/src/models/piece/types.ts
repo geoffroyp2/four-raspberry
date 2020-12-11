@@ -1,35 +1,23 @@
 import { Document, Model } from "mongoose";
-import { Color } from "../shared/types";
-
-export interface Chemical {
-  name: string;
-  composition: string;
-  color: Color;
-}
-
-export interface Ingredient {
-  chemical: Chemical;
-  amount: number;
-}
+import { PieceEditFilter } from "../../controllers/piece/types";
 
 export interface IPiece {
   name: string;
   description: string;
-  type: "string";
-  graphRef: "string"; // Graph _id
-  composition: Ingredient[];
+  records: string[];
   images: string[];
-  date?: string;
-  lastUpdated?: string;
+  formula: string;
+  date: string;
+  lastUpdated: string;
 }
 
-export interface IPieceDocument extends Document, IPiece {
-  //   setLastUpdated: (this: IGraphDocument) => Promise<void>;
+export interface Piece extends IPiece {
+  _id: string; // to match the _id from the model
 }
+
+export interface IPieceDocument extends Document, IPiece {}
 
 export interface IPieceModel extends Model<IPieceDocument>, IPiece {
-  //   findModelGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
-  //   findRecordedGraphs: (this: IGraphModel) => Promise<IGraphDocument[]>;
-  //   createNewGraph: (this: IGraphModel, filter: NewGraphFilter) => Promise<IGraphDocument>;
-  //   updateGraph: (this: IGraphModel, graphId: string, filter: GraphEditFilter) => Promise<IGraphDocument>;
+  createPiece: (this: IPieceModel) => Promise<IPieceDocument>;
+  updatePiece: (this: IPieceModel, data: PieceEditFilter) => Promise<IPieceDocument>;
 }

@@ -1,5 +1,5 @@
 import { model } from "mongoose";
 import { IPieceDocument, IPieceModel } from "./types";
-import PieceSchema from "./schema";
+import GraphSchema from "./schema";
 
-export const PieceModel = model<IPieceDocument, IPieceModel>("piece", PieceSchema);
+export const PieceModel = model<IPieceDocument, IPieceModel>("piece", GraphSchema);

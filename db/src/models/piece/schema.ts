@@ -1,40 +1,26 @@
 import { Schema } from "mongoose";
-// import { setLastUpdated } from "./methods";
-// import { findModelGraphs, findRecordedGraphs, createNewGraph, updateGraph } from "./statics";
+import { createPiece, updatePiece } from "./statics";
 
 const PieceSchema = new Schema(
   {
     name: String,
     description: String,
-    type: String,
-    graphRef: String,
-    composition: [
-      {
-        chemical: {
-          name: String,
-          composition: String,
-          color: {
-            r: Number,
-            g: Number,
-            b: Number,
-            a: Number,
-          },
-        },
-        amount: Number,
-      },
-    ],
-    images: [String],
+    records: {
+      type: [String],
+      default: [],
+    },
+    images: {
+      type: [String],
+      default: [],
+    },
+    formula: String,
     date: Date,
     lastUpdated: Date,
   },
-  { collection: "pieces" }
+  { collection: "piece" }
 );
 
-// GraphSchema.statics.findModelGraphs = findModelGraphs;
-// GraphSchema.statics.findRecordedGraphs = findRecordedGraphs;
-// GraphSchema.statics.createNewGraph = createNewGraph;
-// GraphSchema.statics.updateGraph = updateGraph;
-
-// GraphSchema.methods.setLastUpdated = setLastUpdated;
+PieceSchema.statics.createPiece = createPiece;
+PieceSchema.statics.updatePiece = updatePiece;
 
 export default PieceSchema;

@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { emptyGraph } from "./graphSlice";
 import { RootState } from "../store";
+
 import { EngineStatus } from "@clientTypes/programInterfaces";
 import { Graph } from "@clientTypes/Graph";
-import { emptyGraph } from "./graphSlice";
 
 type EngineStatusType = {
   status: EngineStatus;
@@ -15,6 +16,7 @@ const initialState: EngineStatusType = {
     runStatus: "stop",
     driverMode: "auto",
     connected: true,
+    targetGraphID: "",
     sensors: {
       temp: 20,
       oxy: 0.5,
@@ -59,6 +61,7 @@ export const sensorValues = (state: RootState) => state.EngineStatusReducer.stat
 export const targetValues = (state: RootState) => state.EngineStatusReducer.status.target;
 export const valveValues = (state: RootState) => state.EngineStatusReducer.status.valves;
 export const runGraph = (state: RootState) => state.EngineStatusReducer.runGraph;
+export const targetGraphID = (state: RootState) => state.EngineStatusReducer.status.targetGraphID;
 export const targetGraph = (state: RootState) => state.EngineStatusReducer.targetGraph;
 
 export default EngineStatusSlice.reducer;

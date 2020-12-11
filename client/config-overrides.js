@@ -11,5 +11,6 @@ module.exports = override(
     "@UIutils": path.resolve(__dirname, "./src/UI/utils"),
     "@UIRun": path.resolve(__dirname, "./src/UI/components/ProgramRun"),
     "@UIBrowser": path.resolve(__dirname, "./src/UI/components/Browser"),
+    "@sharedTypes": path.resolve(__dirname, "./src/sharedTypes"),
   })
 );

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PieceModel } from "../models/piece/model";
+import { PieceModel } from "../../models/piece/model";
 
 import { PieceGetRequest, logStringGet, logStringPost, PiecePostRequest, PieceGetId, PiecePostId } from "./pieceQueryFormat";
 

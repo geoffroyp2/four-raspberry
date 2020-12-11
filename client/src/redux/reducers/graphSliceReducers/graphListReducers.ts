@@ -1,7 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { WritableDraft } from "immer/dist/internal";
-import { Graph } from "@clientTypes/Graph";
 import { GraphStateType } from "../graphSlice";
+
+import { Graph } from "@clientTypes/Graph";
 
 const initGraphs = (state: WritableDraft<GraphStateType>, action: PayloadAction<Graph[]>) => {
   action.payload.forEach((g) => {

@@ -4,3 +4,8 @@ export interface Color {
   b: number;
   a?: number;
 }
+
+export interface Point {
+  x: number;
+  y: number;
+}
