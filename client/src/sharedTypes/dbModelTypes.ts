@@ -43,11 +43,16 @@ export interface Piece {
   lastUpdated: string;
 }
 
+export type CompositionElement = {
+  id: string;
+  amount: number;
+};
+
 export interface Formula {
   _id: string;
   name: string;
   description: string;
-  composition: { chem: string; amount: number }[];
+  composition: CompositionElement[];
   lastUpdated: string;
 }
 

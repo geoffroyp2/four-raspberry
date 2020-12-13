@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { emptyGraph } from "./graphSlice";
-import { RootState } from "../store";
+import { RootState } from "../../store";
 
 import { EngineStatus } from "@clientTypes/programInterfaces";
 import { Graph } from "@clientTypes/Graph";

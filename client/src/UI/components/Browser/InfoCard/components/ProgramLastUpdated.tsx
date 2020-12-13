@@ -3,7 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow } from "../utils/styles";
 
 import { useSelector } from "react-redux";
-import { selectedGraphLastUpdate } from "@redux/graphSlice";
+import { selectedGraphLastUpdate } from "@redux/+old/graphSlice";
 import { dateToDisplayString } from "@UIutils/dateFormatting";
 
 const ProgramLastUpdated = () => {

@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphType, setType } from "@redux/graphSlice";
+import { selectedGraphType, setType } from "@redux/+old/graphSlice";
 import { editState } from "@redux/UIControlsSlice";
 
 const ProgramType = () => {

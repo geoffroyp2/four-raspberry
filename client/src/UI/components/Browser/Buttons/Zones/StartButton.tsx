@@ -2,9 +2,9 @@ import React, { useCallback, useState } from "react";
 import { Button, Container, OverlayTrigger, Spinner, Tooltip } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, selectedGraphType } from "@redux/graphSlice";
+import { selectedGraph, selectedGraphType } from "@redux/+old/graphSlice";
 import { setScreenSelect } from "@redux/UIControlsSlice";
-import { setStatus } from "@redux/engineStatusSlice";
+import { setStatus } from "@redux/+old/engineStatusSlice";
 
 import engine from "@engine/handler";
 

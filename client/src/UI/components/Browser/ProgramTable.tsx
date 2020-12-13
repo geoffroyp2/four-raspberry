@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import { Table } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, allGraphs } from "@redux/graphSlice";
+import { selectedGraph, allGraphs } from "@redux/+old/graphSlice";
 import { loadTableProps, loadTableRowSelected, loadTableSort, setRowSelected, setTableSort } from "@redux/UIControlsSlice";
 
 import { dateToDisplayString } from "@UIutils/dateFormatting";

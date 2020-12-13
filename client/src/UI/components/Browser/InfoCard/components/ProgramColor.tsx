@@ -4,7 +4,7 @@ import { CirclePicker } from "react-color";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphColor, setColor } from "@redux/graphSlice";
+import { selectedGraphColor, setColor } from "@redux/+old/graphSlice";
 import { editState } from "@redux/UIControlsSlice";
 
 import { Color } from "@clientTypes/programInterfaces";

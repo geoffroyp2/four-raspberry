@@ -2,7 +2,7 @@ import React from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphDescription, setDescription } from "@redux/graphSlice";
+import { selectedGraphDescription, setDescription } from "@redux/+old/graphSlice";
 import { editState } from "@redux/UIControlsSlice";
 
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";

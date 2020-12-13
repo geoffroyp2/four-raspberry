@@ -3,7 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphReference } from "@redux/graphSlice";
+import { selectedGraphReference } from "@redux/+old/graphSlice";
 import { setEdit, setLoadTableProps, setPointEdit, setShowLoadTable } from "@redux/UIControlsSlice";
 
 const ProgramGraphRef = () => {

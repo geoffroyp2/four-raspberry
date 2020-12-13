@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, FormControl, InputGroup, Row, Table } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addNewPoint, deletePoint, selectedGraphPoints, setPoint, setPointHour, setPointMinute } from "@redux/graphSlice";
+import { addNewPoint, deletePoint, selectedGraphPoints, setPoint, setPointHour, setPointMinute } from "@redux/+old/graphSlice";
 
 import { getHours, getMinutes } from "@UIutils/timeFormatting";
 

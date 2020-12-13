@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Graph } from "@clientTypes/Graph";
-import { RootState } from "../store";
+import { RootState } from "../../store";
 
 import { graphListReducers } from "./graphSliceReducers/graphListReducers";
 import { graphEditReducers } from "./graphSliceReducers/graphEditReducers";

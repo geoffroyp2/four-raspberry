@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphDate, setDate } from "@redux/graphSlice";
+import { selectedGraphDate, setDate } from "@redux/+old/graphSlice";
 import { editState } from "@redux/UIControlsSlice";
 
 import { dateToDisplayString, dateToInputFormat, dateToISOString } from "@UIutils/dateFormatting";

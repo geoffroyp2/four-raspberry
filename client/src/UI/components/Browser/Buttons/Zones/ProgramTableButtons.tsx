@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Button, ButtonGroup, Container, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraph, selectGraph, updateGraph } from "@redux/graphSlice";
+import { selectedGraph, selectGraph, updateGraph } from "@redux/+old/graphSlice";
 import { loadTableProps, loadTableRowSelected, setLoadTableProps, setShowLoadTable } from "@redux/UIControlsSlice";
 
 import db from "@db/handler";

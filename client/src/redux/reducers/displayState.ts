@@ -21,6 +21,6 @@ const RGraphSlice = createSlice({
 
 export const { setCurrentTab } = RGraphSlice.actions;
 
-// export const CurrentTab = (state: RootState) =>
+export const CurrentTab = (state: RootState) => state.displayStateReducer.currentTab;
 
 export default RGraphSlice.reducer;

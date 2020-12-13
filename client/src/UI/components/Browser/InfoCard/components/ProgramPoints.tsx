@@ -3,7 +3,7 @@ import { Col, Row, Table } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../utils/styles";
 
 import { useSelector } from "react-redux";
-import { selectedGraphPoints } from "@redux/graphSlice";
+import { selectedGraphPoints } from "@redux/+old/graphSlice";
 import PointEditButton from "@UIBrowser/Buttons/Individual/PointEditButton";
 
 import { formatTime } from "@UIutils/timeFormatting";

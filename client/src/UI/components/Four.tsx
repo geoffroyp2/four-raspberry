@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { initGraphs } from "@redux/graphSlice";
+import { initGraphs } from "@redux/+old/graphSlice";
 
 import db from "@db/handler";
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 
 import { useSelector } from "react-redux";
-import { selectedGraph } from "@redux/graphSlice";
+import { selectedGraph } from "@redux/+old/graphSlice";
 
 import ProgramName from "./components/ProgramName";
 import ProgramType from "./components/ProgramType";

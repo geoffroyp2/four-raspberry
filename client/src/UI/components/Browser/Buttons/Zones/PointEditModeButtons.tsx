@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Button, Container, Spinner } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectedGraphPoints, setPoints, selectedGraph, updateGraph } from "@redux/graphSlice";
+import { selectedGraphPoints, setPoints, selectedGraph, updateGraph } from "@redux/+old/graphSlice";
 import { setPointEdit } from "@redux/UIControlsSlice";
 
 import db from "@db/handler";

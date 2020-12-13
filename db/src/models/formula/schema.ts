@@ -9,7 +9,7 @@ const FormulaSchema = new Schema(
     composition: {
       type: [
         {
-          chem: String,
+          id: String,
           amount: Number,
         },
       ],

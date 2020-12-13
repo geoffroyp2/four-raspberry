@@ -2,7 +2,7 @@ import React from "react";
 import { Scatter } from "react-chartjs-2";
 
 import { useSelector } from "react-redux";
-import { selectedGraph, selectedGraphReference } from "@redux/graphSlice";
+import { selectedGraph, selectedGraphReference } from "@redux/+old/graphSlice";
 
 import { formatTime } from "@UIutils/timeFormatting";
 

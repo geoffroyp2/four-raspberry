@@ -4,7 +4,7 @@ import { Scatter } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 
 import { formatTime } from "@UIutils/timeFormatting";
-import { runGraph, targetGraph } from "@redux/engineStatusSlice";
+import { runGraph, targetGraph } from "@redux/+old/engineStatusSlice";
 
 const dataSetOptions = {
   showLine: true,
