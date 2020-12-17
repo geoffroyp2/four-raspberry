@@ -4,12 +4,12 @@
     "paths": {
       "@db/*": ["network/db/*"],
       "@engine/*": ["network/engine/*"],
-      "@clientTypes/*": ["types/*"],
-      "@UIutils/*": ["UI/utils/*"],
-      "@UIRun/*": ["UI/components/ProgramRun/*"],
-      "@UIBrowser/*": ["UI/components/Browser/*"],
-      "@redux/*": ["redux/reducers/*"],
       "@sharedTypes/*": ["sharedTypes/*"],
+      "@UIutils/*": ["UI/utils/*"],
+      "@UITabs/*": ["UI/components/Tabs/*"],
+      "@UIMain/*": ["UI/components/Main/*"],
+      "@UIGeneric/*": ["UI/components/Generic/*"],
+      "@redux/*": ["redux/reducers/*"],
       "@src/*": ["*"]
     }
   }

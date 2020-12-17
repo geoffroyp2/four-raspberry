@@ -2,8 +2,8 @@ import axios from "axios";
 import { EngineGetRequest, EngineGetIdString } from "./types/getTypes";
 import { EnginePostIdString, EnginePostRequest } from "./types/postTypes";
 import { EngineResId } from "./types/resTypes";
-import { EngineStatus } from "@clientTypes/programInterfaces";
-import { Graph } from "@clientTypes/Graph";
+import { EngineStatus } from "@src/../../cy/types/programInterfaces";
+import { Graph } from "@src/../../cy/types/Graph";
 
 export const post = async (req: EnginePostRequest): Promise<EngineStatus> => {
   console.log("engine post:", EnginePostIdString[req.id]);

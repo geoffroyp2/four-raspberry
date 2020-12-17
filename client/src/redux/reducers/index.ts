@@ -1,19 +1,20 @@
 import { combineReducers } from "redux";
-// import graphListReducer from "./+old/graphSlice";
-// import UIControlsReducer from "./UIControlsSlice";
-// import EngineStatusReducer from "./+old/engineStatusSlice";
-import recordReducer from "./recordSlice";
-import referenceReducer from "./referenceSlice";
-import pieceReducer from "./pieceSlice";
-import formulaReducer from "./formulaSlice";
-import dbDataReducer from "./dbDataSlice";
-import displayStateReducer from "./displayState";
+
+import record from "./dataReducers/recordSlice";
+import reference from "./dataReducers/referenceSlice";
+import piece from "./dataReducers/pieceSlice";
+import formula from "./dataReducers/formulaSlice";
+import dbData from "./dataReducers/dbDataSlice";
+
+import generalDisplay from "./displayStateReducers/generalDisplaySlice";
+import recordDisplay from "./displayStateReducers/recordDisplaySlice";
 
 export default combineReducers({
-  recordReducer,
-  referenceReducer,
-  pieceReducer,
-  formulaReducer,
-  dbDataReducer,
-  displayStateReducer,
+  record,
+  reference,
+  piece,
+  formula,
+  dbData,
+  generalDisplay,
+  recordDisplay,
 });

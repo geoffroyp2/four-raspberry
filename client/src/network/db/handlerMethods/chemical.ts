@@ -5,11 +5,10 @@ import {
   ChemicalGetAllType,
   ChemicalCreateType,
   ChemicalDeleteType,
-  ChemicalEditFilter,
   ChemicalEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Chemical } from "@sharedTypes/dbModelTypes";
-import { get } from "../client";
+import { get, post } from "../client";
 
 export const chemicalMethods = {
   getAll: async (): Promise<Chemical[]> => {
@@ -19,6 +18,7 @@ export const chemicalMethods = {
     };
     return get<Chemical>(req, "chemical").then((data) => data);
   },
+
   getMany: async (filter: ChemicalFindFilter): Promise<Chemical[]> => {
     const req: ChemicalFindType = {
       id: ReqID.getMany,
@@ -26,6 +26,7 @@ export const chemicalMethods = {
     };
     return get<Chemical>(req, "chemical").then((data) => data);
   },
+
   getOne: async (filter: ChemicalFindFilter): Promise<Chemical> => {
     const req: ChemicalFindType = {
       id: ReqID.getOne,
@@ -33,6 +34,7 @@ export const chemicalMethods = {
     };
     return get<Chemical>(req, "chemical").then((data) => data[0]);
   },
+
   createOne: async (): Promise<Chemical> => {
     const req: ChemicalCreateType = {
       id: ReqID.createOne,
@@ -40,6 +42,7 @@ export const chemicalMethods = {
     };
     return get<Chemical>(req, "chemical").then((data) => data[0]);
   },
+
   deleteOne: async (id: string): Promise<void> => {
     const req: ChemicalDeleteType = {
       id: ReqID.deleteOne,
@@ -49,14 +52,20 @@ export const chemicalMethods = {
     };
     return get<Chemical>(req, "chemical").then();
   },
-  updateOne: async (id: string, filter: ChemicalEditFilter["filter"]): Promise<Chemical> => {
+
+  updateOne: async (chemical: Chemical): Promise<Chemical> => {
+    // remove unchangeable fields
+    const filter: any = { ...chemical };
+    delete filter["_id"];
+    delete filter["lastUpdated"];
+
     const req: ChemicalEditType = {
       id: ReqID.updateOne,
       data: {
-        id: id,
+        id: chemical._id,
         filter: filter,
       },
     };
-    return get<Chemical>(req, "chemical").then((data) => data[0]);
+    return post<Chemical>(req, "chemical").then((data) => data[0]);
   },
 };

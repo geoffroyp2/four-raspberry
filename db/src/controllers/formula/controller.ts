@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FormulaDeleteType, FormulaEditType, FormulaFindType } from "./types";
+import { FormulaDeleteFilter, FormulaDeleteType, FormulaEditType, FormulaFindFilter, FormulaFindType } from "./types";
 import { ReqID } from "../shared/reqTypes";
 import { ResID } from "../shared/resTypes";
 import { FormulaModel } from "../../models/formula/model";
@@ -16,14 +16,14 @@ export default class FormulaController {
           break;
         }
         case ReqID.getOne: {
-          const query: FormulaFindType = JSON.parse(req.query as any);
-          const result = await FormulaModel.findOne(query.data).exec();
+          const query: FormulaFindFilter = JSON.parse(req.query.data as string);
+          const result = await FormulaModel.findOne(query).exec();
           res.json({ id: ResID.success, data: [result] });
           break;
         }
         case ReqID.getMany: {
-          const query: FormulaFindType = JSON.parse(req.query as any);
-          const result = await FormulaModel.find(query.data).exec();
+          const query: FormulaFindFilter = JSON.parse(req.query.data as string);
+          const result = await FormulaModel.find(query).exec();
           res.json({ id: ResID.success, data: result });
           break;
         }
@@ -33,8 +33,8 @@ export default class FormulaController {
           break;
         }
         case ReqID.deleteOne: {
-          const query: FormulaDeleteType = JSON.parse(req.query as any);
-          await FormulaModel.deleteOne(query.data).exec();
+          const query: FormulaDeleteFilter = JSON.parse(req.query.data as string);
+          await FormulaModel.deleteOne(query).exec();
           res.json({ id: ResID.success, data: [] });
           break;
         }

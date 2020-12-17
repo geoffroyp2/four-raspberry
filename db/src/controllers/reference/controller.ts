@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ReferenceDeleteType, ReferenceEditType, ReferenceFindType } from "./types";
+import { ReferenceDeleteFilter, ReferenceEditType, ReferenceFindFilter } from "./types";
 import { ReqID } from "../shared/reqTypes";
 import { ResID } from "../shared/resTypes";
 import { ReferenceModel } from "../../models/reference/model";
@@ -16,14 +16,14 @@ export default class ReferenceController {
           break;
         }
         case ReqID.getOne: {
-          const query: ReferenceFindType = JSON.parse(req.query as any);
-          const result = await ReferenceModel.findOne(query.data).exec();
+          const query: ReferenceFindFilter = JSON.parse(req.query.data as string);
+          const result = await ReferenceModel.findOne(query).exec();
           res.json({ id: ResID.success, data: [result] });
           break;
         }
         case ReqID.getMany: {
-          const query: ReferenceFindType = JSON.parse(req.query as any);
-          const result = await ReferenceModel.find(query.data).exec();
+          const query: ReferenceFindFilter = JSON.parse(req.query.data as string);
+          const result = await ReferenceModel.find(query).exec();
           res.json({ id: ResID.success, data: result });
           break;
         }
@@ -33,8 +33,8 @@ export default class ReferenceController {
           break;
         }
         case ReqID.deleteOne: {
-          const query: ReferenceDeleteType = JSON.parse(req.query as any);
-          await ReferenceModel.deleteOne(query.data).exec();
+          const query: ReferenceDeleteFilter = JSON.parse(req.query.data as string);
+          await ReferenceModel.deleteOne(query).exec();
           res.json({ id: ResID.success, data: [] });
           break;
         }

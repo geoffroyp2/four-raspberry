@@ -5,11 +5,10 @@ import {
   ReferenceGetAllType,
   ReferenceCreateType,
   ReferenceDeleteType,
-  ReferenceEditFilter,
   ReferenceEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Reference } from "@sharedTypes/dbModelTypes";
-import { get } from "../client";
+import { get, post } from "../client";
 
 export const referenceMethods = {
   getAll: async (): Promise<Reference[]> => {
@@ -19,6 +18,7 @@ export const referenceMethods = {
     };
     return get<Reference>(req, "reference").then((data) => data);
   },
+
   getMany: async (filter: ReferenceFindFilter): Promise<Reference[]> => {
     const req: ReferenceFindType = {
       id: ReqID.getMany,
@@ -26,6 +26,7 @@ export const referenceMethods = {
     };
     return get<Reference>(req, "reference").then((data) => data);
   },
+
   getOne: async (filter: ReferenceFindFilter): Promise<Reference> => {
     const req: ReferenceFindType = {
       id: ReqID.getOne,
@@ -33,6 +34,7 @@ export const referenceMethods = {
     };
     return get<Reference>(req, "reference").then((data) => data[0]);
   },
+
   createOne: async (): Promise<Reference> => {
     const req: ReferenceCreateType = {
       id: ReqID.createOne,
@@ -40,6 +42,7 @@ export const referenceMethods = {
     };
     return get<Reference>(req, "reference").then((data) => data[0]);
   },
+
   deleteOne: async (id: string): Promise<void> => {
     const req: ReferenceDeleteType = {
       id: ReqID.deleteOne,
@@ -49,14 +52,20 @@ export const referenceMethods = {
     };
     return get<Reference>(req, "reference").then();
   },
-  updateOne: async (id: string, filter: ReferenceEditFilter["filter"]): Promise<Reference> => {
+
+  updateOne: async (reference: Reference): Promise<Reference> => {
+    // remove unchangeable fields
+    const filter: any = { ...reference };
+    delete filter["_id"];
+    delete filter["lastUpdated"];
+
     const req: ReferenceEditType = {
       id: ReqID.updateOne,
       data: {
-        id: id,
+        id: reference._id,
         filter: filter,
       },
     };
-    return get<Reference>(req, "reference").then((data) => data[0]);
+    return post<Reference>(req, "reference").then((data) => data[0]);
   },
 };

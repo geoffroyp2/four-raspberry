@@ -5,11 +5,10 @@ import {
   PieceGetAllType,
   PieceCreateType,
   PieceDeleteType,
-  PieceEditFilter,
   PieceEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Piece } from "@sharedTypes/dbModelTypes";
-import { get } from "../client";
+import { get, post } from "../client";
 
 export const pieceMethods = {
   getAll: async (): Promise<Piece[]> => {
@@ -19,6 +18,7 @@ export const pieceMethods = {
     };
     return get<Piece>(req, "piece").then((data) => data);
   },
+
   getMany: async (filter: PieceFindFilter): Promise<Piece[]> => {
     const req: PieceFindType = {
       id: ReqID.getMany,
@@ -26,6 +26,7 @@ export const pieceMethods = {
     };
     return get<Piece>(req, "piece").then((data) => data);
   },
+
   getOne: async (filter: PieceFindFilter): Promise<Piece> => {
     const req: PieceFindType = {
       id: ReqID.getOne,
@@ -33,6 +34,7 @@ export const pieceMethods = {
     };
     return get<Piece>(req, "piece").then((data) => data[0]);
   },
+
   createOne: async (): Promise<Piece> => {
     const req: PieceCreateType = {
       id: ReqID.createOne,
@@ -40,6 +42,7 @@ export const pieceMethods = {
     };
     return get<Piece>(req, "piece").then((data) => data[0]);
   },
+
   deleteOne: async (id: string): Promise<void> => {
     const req: PieceDeleteType = {
       id: ReqID.deleteOne,
@@ -49,14 +52,20 @@ export const pieceMethods = {
     };
     return get<Piece>(req, "piece").then();
   },
-  updateOne: async (id: string, filter: PieceEditFilter["filter"]): Promise<Piece> => {
+
+  updateOne: async (piece: Piece): Promise<Piece> => {
+    // remove unchangeable fields
+    const filter: any = { ...piece };
+    delete filter["_id"];
+    delete filter["lastUpdated"];
+
     const req: PieceEditType = {
       id: ReqID.updateOne,
       data: {
-        id: id,
+        id: piece._id,
         filter: filter,
       },
     };
-    return get<Piece>(req, "piece").then((data) => data[0]);
+    return post<Piece>(req, "piece").then((data) => data[0]);
   },
 };

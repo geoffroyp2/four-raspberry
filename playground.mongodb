@@ -4,31 +4,93 @@
 // Use Ctrl+Space inside a snippet or a string literal to trigger completions.
 
 /*
-export interface ProgramInfo {
-  id: number;
+
+
+
+export interface Piece {
+  _id: string;
   name: string;
-  description?: string;
-  graph: Graph;
+  description: string;
+  records: string[];
+  images: string[];
+  formula: string;
+  date: string;
+  lastUpdated: string;
 }
 
-export interface Graph {
+export type CompositionElement = {
+  id: string;
+  amount: number;
+};
+
+export interface Formula {
+  _id: string;
+  name: string;
+  description: string;
+  composition: CompositionElement[];
+  lastUpdated: string;
+}
+
+export interface Chemical {
+  _id: string;
+  name: string;
+  chemicalName: string;
+  mass: number;
+  lastUpdated: string;
+}
+
+export interface Reference {
+  _id: string;
+  name: string;
+  description: string;
   color: Color;
   points: Point[];
+  records: string[];
+  lastUpdated: string;
 }
-// */
 
-const generatePoints = () => {
-  return [...Array(20)].map((p,pi)=> {
-    return {
-      x: pi * 1000* 60 * 30, 
-      y: Math.floor(10 + Math.random() * 5  + ((46+ Math.random()*0.5)*3*pi*Math.log10((3*pi) > 0 ? (3*pi) : 1)) - (9*pi*pi))
-    }
-  })
+export interface Record {
+  _id: string;
+  name: string;
+  description: string;
+  reference: string;
+  color: Color;
+  points: Point[];
+  pieces: string[];
+  date: string;
+  lastUpdated: string;
 }
+
+*/
 
 
 use("four");
-db.graphs.updateMany({graphType: true},{$set: {points: generatePoints()}})
+const graphs = db.graphs.find();
+
+graphs.forEach(g => {
+  print(g.name);
+  if (g.graphType) {
+    db.reference.insertOne({
+      name: g.name,
+      description: g.description,
+      color: {...g.color},
+      points: [...g.points],
+      records: [],
+      lastUpdated: g.lastUpdated,
+    }) 
+  } else {
+    db.record.insertOne({
+      name: g.name,
+      description: g.description,
+      reference: "",
+      color:  {...g.color},
+      points: [...g.points],
+      pieces: [],
+      date: g.date,
+      lastUpdated: g.lastUpdated,
+    })
+  }
+})
 
 
 // use("test");

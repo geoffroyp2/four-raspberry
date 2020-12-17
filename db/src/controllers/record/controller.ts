@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { RecordDeleteType, RecordEditType, RecordFindType } from "./types";
+import { RecordEditType, RecordFindFilter } from "./types";
 import { ReqID } from "../shared/reqTypes";
 import { ResID } from "../shared/resTypes";
 import { RecordModel } from "../../models/record/model";
@@ -16,14 +16,14 @@ export default class RecordController {
           break;
         }
         case ReqID.getOne: {
-          const query: RecordFindType = JSON.parse(req.query as any);
-          const result = await RecordModel.findOne(query.data).exec();
+          const query: RecordFindFilter = JSON.parse(req.query.data as string);
+          const result = await RecordModel.findOne(query).exec();
           res.json({ id: ResID.success, data: [result] });
           break;
         }
         case ReqID.getMany: {
-          const query: RecordFindType = JSON.parse(req.query as any);
-          const result = await RecordModel.find(query.data).exec();
+          const query: RecordFindFilter = JSON.parse(req.query.data as string);
+          const result = await RecordModel.find(query).exec();
           res.json({ id: ResID.success, data: result });
           break;
         }
@@ -33,8 +33,8 @@ export default class RecordController {
           break;
         }
         case ReqID.deleteOne: {
-          const query: RecordDeleteType = JSON.parse(req.query as any);
-          await RecordModel.deleteOne(query.data).exec();
+          const query: RecordFindFilter = JSON.parse(req.query.data as string);
+          await RecordModel.deleteOne(query).exec();
           res.json({ id: ResID.success, data: [] });
           break;
         }

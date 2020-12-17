@@ -1,4 +1,4 @@
-import { Graph } from "@clientTypes/Graph";
+import { Graph } from "@src/../../cy/types/Graph";
 
 export const EnginePostIdString = ["Post Graph"];
 export enum EnginePostId {

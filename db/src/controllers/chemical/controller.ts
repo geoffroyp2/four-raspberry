@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ChemicalDeleteType, ChemicalEditType, ChemicalFindType } from "./types";
+import { ChemicalDeleteFilter, ChemicalEditType, ChemicalFindFilter, ChemicalFindType } from "./types";
 import { ReqID } from "../shared/reqTypes";
 import { ResID } from "../shared/resTypes";
 import { ChemicalModel } from "../../models/chemical/model";
@@ -16,14 +16,14 @@ export default class ChemicalController {
           break;
         }
         case ReqID.getOne: {
-          const query: ChemicalFindType = JSON.parse(req.query as any);
-          const result = await ChemicalModel.findOne(query.data).exec();
+          const query: ChemicalFindFilter = JSON.parse(req.query.data as string);
+          const result = await ChemicalModel.findOne(query).exec();
           res.json({ id: ResID.success, data: [result] });
           break;
         }
         case ReqID.getMany: {
-          const query: ChemicalFindType = JSON.parse(req.query as any);
-          const result = await ChemicalModel.find(query.data).exec();
+          const query: ChemicalFindType = JSON.parse(req.query.data as string);
+          const result = await ChemicalModel.find(query).exec();
           res.json({ id: ResID.success, data: result });
           break;
         }
@@ -33,8 +33,8 @@ export default class ChemicalController {
           break;
         }
         case ReqID.deleteOne: {
-          const query: ChemicalDeleteType = JSON.parse(req.query as any);
-          await ChemicalModel.deleteOne(query.data).exec();
+          const query: ChemicalDeleteFilter = JSON.parse(req.query.data as string);
+          await ChemicalModel.deleteOne(query).exec();
           res.json({ id: ResID.success, data: [] });
           break;
         }
@@ -47,6 +47,7 @@ export default class ChemicalController {
       res.json({ id: ResID.error, data: "communication error" });
     }
   }
+
   public async post(req: Request, res: Response): Promise<void> {
     console.log("Chemical post");
 

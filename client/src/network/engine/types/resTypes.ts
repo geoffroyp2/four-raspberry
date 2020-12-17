@@ -1,5 +1,5 @@
-import { Graph } from "@clientTypes/Graph";
-import { EngineStatus } from "@clientTypes/programInterfaces";
+import { Graph } from "@src/../../cy/types/Graph";
+import { EngineStatus } from "@src/../../cy/types/programInterfaces";
 
 export enum EngineResId {
   error,

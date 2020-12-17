@@ -3,6 +3,7 @@ import { ResID } from "@sharedTypes/dbAPITypes";
 
 export const post = async <T>(req: any, route: string): Promise<T[]> => {
   const body = JSON.stringify(req);
+  console.log("post", req);
 
   return await axios
     .post(`http://localhost:3001/${route}`, { body })
@@ -19,6 +20,8 @@ export const post = async <T>(req: any, route: string): Promise<T[]> => {
 };
 
 export const get = async <T>(req: any, route: string): Promise<T[]> => {
+  console.log("get", req);
+
   return await axios
     .get(`http://localhost:3001/${route}`, { params: req })
     .then((res: any) => {

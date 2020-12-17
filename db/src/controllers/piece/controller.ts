@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PieceDeleteType, PieceEditType, PieceFindType } from "./types";
+import { PieceDeleteFilter, PieceEditType, PieceFindFilter } from "./types";
 import { ReqID } from "../shared/reqTypes";
 import { ResID } from "../shared/resTypes";
 import { PieceModel } from "../../models/piece/model";
@@ -16,14 +16,14 @@ export default class PieceController {
           break;
         }
         case ReqID.getOne: {
-          const query: PieceFindType = JSON.parse(req.query as any);
-          const result = await PieceModel.findOne(query.data).exec();
+          const query: PieceFindFilter = JSON.parse(req.query.data as string);
+          const result = await PieceModel.findOne(query).exec();
           res.json({ id: ResID.success, data: [result] });
           break;
         }
         case ReqID.getMany: {
-          const query: PieceFindType = JSON.parse(req.query as any);
-          const result = await PieceModel.find(query.data).exec();
+          const query: PieceFindFilter = JSON.parse(req.query.data as string);
+          const result = await PieceModel.find(query).exec();
           res.json({ id: ResID.success, data: result });
           break;
         }
@@ -33,8 +33,8 @@ export default class PieceController {
           break;
         }
         case ReqID.deleteOne: {
-          const query: PieceDeleteType = JSON.parse(req.query as any);
-          await PieceModel.deleteOne(query.data).exec();
+          const query: PieceDeleteFilter = JSON.parse(req.query.data as string);
+          await PieceModel.deleteOne(query).exec();
           res.json({ id: ResID.success, data: [] });
           break;
         }

@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
-import { useDispatch, useSelector } from "react-redux";
-import { initGraphs } from "@redux/+old/graphSlice";
-
-import db from "@db/handler";
+import { useDispatch } from "react-redux";
 
 import LoadingScreen from "./Generic/LoadingScreen";
-import { screenSelect } from "@redux/UIControlsSlice";
-import ProgramInfo from "@UIBrowser/ProgramInfo";
-import ProgramRun from "@UIRun/ProgramRun";
+import { loadData } from "@UIutils/loadData";
+import { loadAllData } from "@redux/dataReducers/dbDataSlice";
+import MainZone from "./Main/MainZone";
 
 const appStyle: React.CSSProperties = {
   backgroundColor: "#424242",
@@ -19,34 +16,18 @@ const appStyle: React.CSSProperties = {
 };
 
 const Four = () => {
-  // Load the graphs from the db once at program start
+  // Load all data at program start
+  // TODO: load when needed
   const dispatch = useDispatch();
-  const screen = useSelector(screenSelect);
   const [Loading, setLoading] = useState<boolean>(true);
-  const [CreatedOne, setCreatedOne] = useState<boolean>(false);
 
   const fetchData = useCallback(async () => {
-    await db.getAllGraphs().then((res) => {
-      if (res.length > 0) {
-        dispatch(initGraphs(res));
-        setLoading(false);
-      } else {
-        if (!CreatedOne) {
-          console.log("No data, trying to create a graph...");
-          setCreatedOne(true);
-          // await db.createNewGraph().then((res: Graph) => {
-          //   dispatch(initGraphs([res]));
-          //   setLoading(false);
-          // });
-        } else {
-          console.log("No answer, retrying to connect...");
-          setTimeout(() => {
-            fetchData();
-          }, 15000);
-        }
-      }
+    await loadData().then((res) => {
+      console.log(res);
+      dispatch(loadAllData(res));
+      setLoading(false);
     });
-  }, [dispatch, CreatedOne]);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchData();
@@ -55,7 +36,7 @@ const Four = () => {
   return (
     <div style={appStyle}>
       <Container fluid className="p-1 m-0 w-100 h-100">
-        {Loading ? <LoadingScreen /> : screen === "browse" ? <ProgramInfo /> : <ProgramRun />}
+        {Loading ? <LoadingScreen /> : <MainZone />}
       </Container>
     </div>
   );

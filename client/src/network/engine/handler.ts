@@ -2,8 +2,8 @@ import { get, post } from "./client";
 import { EngineCommand, EngineGetId } from "./types/getTypes";
 import { EnginePostId } from "./types/postTypes";
 
-import { Graph } from "@clientTypes/Graph";
-import { EngineStatus } from "@clientTypes/programInterfaces";
+import { Graph } from "@src/../../cy/types/Graph";
+import { EngineStatus } from "@src/../../cy/types/programInterfaces";
 
 export default class engine {
   public static async ping(): Promise<boolean> {

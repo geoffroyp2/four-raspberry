@@ -5,11 +5,10 @@ import {
   FormulaGetAllType,
   FormulaCreateType,
   FormulaDeleteType,
-  FormulaEditFilter,
   FormulaEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Formula } from "@sharedTypes/dbModelTypes";
-import { get } from "../client";
+import { get, post } from "../client";
 
 export const formulaMethods = {
   getAll: async (): Promise<Formula[]> => {
@@ -19,6 +18,7 @@ export const formulaMethods = {
     };
     return get<Formula>(req, "formula").then((data) => data);
   },
+
   getMany: async (filter: FormulaFindFilter): Promise<Formula[]> => {
     const req: FormulaFindType = {
       id: ReqID.getMany,
@@ -26,6 +26,7 @@ export const formulaMethods = {
     };
     return get<Formula>(req, "formula").then((data) => data);
   },
+
   getOne: async (filter: FormulaFindFilter): Promise<Formula> => {
     const req: FormulaFindType = {
       id: ReqID.getOne,
@@ -33,6 +34,7 @@ export const formulaMethods = {
     };
     return get<Formula>(req, "formula").then((data) => data[0]);
   },
+
   createOne: async (): Promise<Formula> => {
     const req: FormulaCreateType = {
       id: ReqID.createOne,
@@ -40,6 +42,7 @@ export const formulaMethods = {
     };
     return get<Formula>(req, "formula").then((data) => data[0]);
   },
+
   deleteOne: async (id: string): Promise<void> => {
     const req: FormulaDeleteType = {
       id: ReqID.deleteOne,
@@ -49,14 +52,20 @@ export const formulaMethods = {
     };
     return get<Formula>(req, "formula").then();
   },
-  updateOne: async (id: string, filter: FormulaEditFilter["filter"]): Promise<Formula> => {
+
+  updateOne: async (formula: Formula): Promise<Formula> => {
+    // remove unchangeable fields
+    const filter: any = { ...formula };
+    delete filter["_id"];
+    delete filter["lastUpdated"];
+
     const req: FormulaEditType = {
       id: ReqID.updateOne,
       data: {
-        id: id,
+        id: formula._id,
         filter: filter,
       },
     };
-    return get<Formula>(req, "formula").then((data) => data[0]);
+    return post<Formula>(req, "formula").then((data) => data[0]);
   },
 };

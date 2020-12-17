@@ -5,11 +5,10 @@ import {
   RecordGetAllType,
   RecordCreateType,
   RecordDeleteType,
-  RecordEditFilter,
   RecordEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Record } from "@sharedTypes/dbModelTypes";
-import { get } from "../client";
+import { get, post } from "../client";
 
 export const recordMethods = {
   getAll: async (): Promise<Record[]> => {
@@ -19,6 +18,7 @@ export const recordMethods = {
     };
     return get<Record>(req, "record").then((data) => data);
   },
+
   getMany: async (filter: RecordFindFilter): Promise<Record[]> => {
     const req: RecordFindType = {
       id: ReqID.getMany,
@@ -26,6 +26,7 @@ export const recordMethods = {
     };
     return get<Record>(req, "record").then((data) => data);
   },
+
   getOne: async (filter: RecordFindFilter): Promise<Record> => {
     const req: RecordFindType = {
       id: ReqID.getOne,
@@ -33,6 +34,7 @@ export const recordMethods = {
     };
     return get<Record>(req, "record").then((data) => data[0]);
   },
+
   createOne: async (): Promise<Record> => {
     const req: RecordCreateType = {
       id: ReqID.createOne,
@@ -40,6 +42,7 @@ export const recordMethods = {
     };
     return get<Record>(req, "record").then((data) => data[0]);
   },
+
   deleteOne: async (id: string): Promise<void> => {
     const req: RecordDeleteType = {
       id: ReqID.deleteOne,
@@ -49,14 +52,20 @@ export const recordMethods = {
     };
     return get<Record>(req, "record").then();
   },
-  updateOne: async (id: string, filter: RecordEditFilter["filter"]): Promise<Record> => {
+
+  updateOne: async (record: Record): Promise<Record> => {
+    // remove unchangeable fields from the Record
+    const filter: any = { ...record };
+    delete filter["_id"];
+    delete filter["lastUpdated"];
+
     const req: RecordEditType = {
       id: ReqID.updateOne,
       data: {
-        id: id,
+        id: record._id,
         filter: filter,
       },
     };
-    return get<Record>(req, "record").then((data) => data[0]);
+    return post<Record>(req, "record").then((data) => data[0]);
   },
 };
