@@ -41,62 +41,58 @@ const referenceSlice = createSlice({
 
     // FIELD EDITS
     setReferenceName: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.name = action.payload;
+      state.selected.name = action.payload;
     },
 
     setReferenceDescription: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.description = action.payload;
+      state.selected.description = action.payload;
     },
 
     setReferenceColor: (state, action: PayloadAction<Color>) => {
-      if (state.selected) state.selected.color = action.payload;
+      state.selected.color = action.payload;
     },
 
     //RECORDS
     setReferenceRecords: (state, action: PayloadAction<string[]>) => {
-      if (state.selected) state.selected.records = action.payload;
+      state.selected.records = action.payload;
     },
 
     addReferenceRecord: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.records.push(action.payload);
+      state.selected.records.push(action.payload);
     },
 
     deleteReferenceRecord: (state, action: PayloadAction<string>) => {
       // remove 1 element at the index specified
-      if (state.selected) state.selected.records.splice(state.selected.records.indexOf(action.payload), 1);
+      state.selected.records.splice(state.selected.records.indexOf(action.payload), 1);
     },
 
     // POINTS
     setReferenceAllPoints: (state, action: PayloadAction<Point[]>) => {
-      if (state.selected) state.selected.points = action.payload;
+      state.selected.points = action.payload;
     },
 
     setReferenceOnePoint: (state, action: PayloadAction<{ idx: number; point: Point }>) => {
-      if (state.selected) state.selected.points[action.payload.idx] = action.payload.point;
+      state.selected.points[action.payload.idx] = action.payload.point;
     },
 
     setReferencePointHour: (state, action: PayloadAction<{ idx: number; val: number }>) => {
-      if (state.selected) {
-        const point = state.selected.points[action.payload.idx];
-        const prevHours = Math.floor(point.x / (60 * 60 * 1000)) % 24;
-        point.x = point.x + (action.payload.val - prevHours) * 60 * 60 * 1000;
-      }
+      const point = state.selected.points[action.payload.idx];
+      const prevHours = Math.floor(point.x / (60 * 60 * 1000)) % 24;
+      point.x = point.x + (action.payload.val - prevHours) * 60 * 60 * 1000;
     },
 
     setReferencePointMinute: (state, action: PayloadAction<{ idx: number; val: number }>) => {
-      if (state.selected) {
-        const point = state.selected.points[action.payload.idx];
-        const prevMinutes = Math.floor(point.x / (60 * 1000)) % 60;
-        point.x = point.x + (action.payload.val - prevMinutes) * 60 * 1000;
-      }
+      const point = state.selected.points[action.payload.idx];
+      const prevMinutes = Math.floor(point.x / (60 * 1000)) % 60;
+      point.x = point.x + (action.payload.val - prevMinutes) * 60 * 1000;
     },
 
     deleteReferencePoint: (state, action: PayloadAction<number>) => {
-      if (state.selected) state.selected.points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
+      state.selected.points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
     },
 
     addReferenceNewPoint: (state, action: PayloadAction<void>) => {
-      if (state.selected) state.selected.points.push({ x: 0, y: 0 });
+      state.selected.points.push({ x: 0, y: 0 });
     },
   },
 });

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { ButtonGroup, Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { dbDataRecord, deleteRecord, updateRecord } from "@redux/dataReducers/dbDataSlice";
+import { dbDataPiece, dbDataRecord, deleteRecord, updateRecord } from "@redux/dataReducers/dbDataSlice";
 import {
   CurrentRecord,
   CurrentRecordID,
@@ -36,6 +36,7 @@ const RecordInfoCardButtons = () => {
 
   const handleDelete = useCallback(async () => {
     setDeletePending(true);
+
     await db.record.deleteOne(currentRecordID).then(() => {
       setDeletePending(false);
       dispatch(deleteRecord(currentRecordID)); // delete from the cached elements

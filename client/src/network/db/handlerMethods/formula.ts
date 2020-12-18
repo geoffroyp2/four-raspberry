@@ -1,3 +1,6 @@
+import { store } from "@src/redux/store";
+import { updatePiece } from "@redux/dataReducers/dbDataSlice";
+
 import {
   ReqID,
   FormulaFindType,
@@ -6,8 +9,10 @@ import {
   FormulaCreateType,
   FormulaDeleteType,
   FormulaEditType,
+  PieceEditType,
 } from "@sharedTypes/dbAPITypes";
-import { Formula } from "@sharedTypes/dbModelTypes";
+import { Formula, Piece } from "@sharedTypes/dbModelTypes";
+
 import { get, post } from "../client";
 
 export const formulaMethods = {
@@ -44,6 +49,23 @@ export const formulaMethods = {
   },
 
   deleteOne: async (id: string): Promise<void> => {
+    const { piece, formula } = store.getState().dbData;
+
+    // unlink pieces
+    formula[id].pieces.forEach(async (p) => {
+      const req: PieceEditType = {
+        id: ReqID.updateOne,
+        data: {
+          id: piece[p]._id,
+          filter: { ...piece[p], formula: "" },
+        },
+      };
+      await get<Piece>(req, "piece").then((res) => {
+        store.dispatch(updatePiece(res[0]));
+      });
+    });
+
+    // delete formula
     const req: FormulaDeleteType = {
       id: ReqID.deleteOne,
       data: {
@@ -54,16 +76,11 @@ export const formulaMethods = {
   },
 
   updateOne: async (formula: Formula): Promise<Formula> => {
-    // remove unchangeable fields
-    const filter: any = { ...formula };
-    delete filter["_id"];
-    delete filter["lastUpdated"];
-
     const req: FormulaEditType = {
       id: ReqID.updateOne,
       data: {
         id: formula._id,
-        filter: filter,
+        filter: { ...formula },
       },
     };
     return post<Formula>(req, "formula").then((data) => data[0]);

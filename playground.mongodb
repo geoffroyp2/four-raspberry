@@ -65,32 +65,45 @@ export interface Record {
 
 
 use("four");
-const graphs = db.graphs.find();
-
-graphs.forEach(g => {
-  print(g.name);
-  if (g.graphType) {
-    db.reference.insertOne({
-      name: g.name,
-      description: g.description,
-      color: {...g.color},
-      points: [...g.points],
-      records: [],
-      lastUpdated: g.lastUpdated,
-    }) 
-  } else {
-    db.record.insertOne({
-      name: g.name,
-      description: g.description,
-      reference: "",
-      color:  {...g.color},
-      points: [...g.points],
-      pieces: [],
-      date: g.date,
-      lastUpdated: g.lastUpdated,
-    })
+db.reference.updateOne(
+  {  "name": "Email 1250°C" }, 
+  { 
+    $set: {
+      "records": [    
+    "5fd90495e9dee94ff48f4a12",
+    "5fd90495e9dee94ff48f4a18",
+    "5fd90495e9dee94ff48f4a11",
+    "5fd90495e9dee94ff48f4a14",
+    "5fd90495e9dee94ff48f4a10",
+      ]
+    }
   }
-})
+);
+
+// graphs.forEach(g => {
+//   print(g.name);
+//   if (g.graphType) {
+//     db.reference.insertOne({
+//       name: g.name,
+//       description: g.description,
+//       color: {...g.color},
+//       points: [...g.points],
+//       records: [],
+//       lastUpdated: g.lastUpdated,
+//     }) 
+//   } else {
+//     db.record.insertOne({
+//       name: g.name,
+//       description: g.description,
+//       reference: "",
+//       color:  {...g.color},
+//       points: [...g.points],
+//       pieces: [],
+//       date: g.date,
+//       lastUpdated: g.lastUpdated,
+//     })
+//   }
+// })
 
 
 // use("test");

@@ -5,6 +5,7 @@ import { Color, Point } from "../shared/types";
 export interface IFormula {
   name: string;
   description: string;
+  pieces: string[];
   composition: { id: string; amount: number }[];
   lastUpdated: string;
 }

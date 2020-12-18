@@ -8,6 +8,7 @@ import dbData from "./dataReducers/dbDataSlice";
 
 import generalDisplay from "./displayStateReducers/generalDisplaySlice";
 import recordDisplay from "./displayStateReducers/recordDisplaySlice";
+import referenceDisplay from "./displayStateReducers/referenceDisplaySlice";
 
 export default combineReducers({
   record,
@@ -17,4 +18,5 @@ export default combineReducers({
   dbData,
   generalDisplay,
   recordDisplay,
+  referenceDisplay,
 });

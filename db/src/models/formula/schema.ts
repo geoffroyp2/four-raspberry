@@ -6,6 +6,7 @@ const FormulaSchema = new Schema(
   {
     name: String,
     description: String,
+    pieces: [String],
     composition: {
       type: [
         {

@@ -1,3 +1,6 @@
+import { store } from "@src/redux/store";
+import { updateFormula, updateRecord } from "@redux/dataReducers/dbDataSlice";
+
 import {
   ReqID,
   PieceFindType,
@@ -6,8 +9,11 @@ import {
   PieceCreateType,
   PieceDeleteType,
   PieceEditType,
+  RecordEditType,
+  FormulaEditType,
 } from "@sharedTypes/dbAPITypes";
-import { Piece } from "@sharedTypes/dbModelTypes";
+import { Formula, Piece, Record } from "@sharedTypes/dbModelTypes";
+
 import { get, post } from "../client";
 
 export const pieceMethods = {
@@ -44,26 +50,55 @@ export const pieceMethods = {
   },
 
   deleteOne: async (id: string): Promise<void> => {
-    const req: PieceDeleteType = {
+    const { record, piece, formula } = store.getState().dbData;
+
+    //unlink records
+    piece[id].records.forEach(async (r) => {
+      const req: RecordEditType = {
+        id: ReqID.updateOne,
+        data: {
+          id: record[r]._id,
+          filter: { ...record[r], pieces: [...record[r].pieces].filter((p) => p !== id) },
+        },
+      };
+      await get<Record>(req, "record").then((res) => {
+        store.dispatch(updateRecord(res[0]));
+      });
+    });
+
+    //unlink formula
+    if (piece[id].formula) {
+      const formulaID = piece[id].formula;
+      const req1: FormulaEditType = {
+        id: ReqID.updateOne,
+        data: {
+          id: formulaID,
+          filter: { ...formula[formulaID], pieces: [...formula[formulaID].pieces].filter((p) => p !== id) },
+        },
+      };
+      await get<Formula>(req1, "formula").then((res) => {
+        store.dispatch(updateFormula(res[0]));
+      });
+    }
+
+    //Need to delete photos ?
+
+    //delete Piece
+    const req2: PieceDeleteType = {
       id: ReqID.deleteOne,
       data: {
         _id: id,
       },
     };
-    return get<Piece>(req, "piece").then();
+    return get<Piece>(req2, "piece").then();
   },
 
   updateOne: async (piece: Piece): Promise<Piece> => {
-    // remove unchangeable fields
-    const filter: any = { ...piece };
-    delete filter["_id"];
-    delete filter["lastUpdated"];
-
     const req: PieceEditType = {
       id: ReqID.updateOne,
       data: {
         id: piece._id,
-        filter: filter,
+        filter: { ...piece },
       },
     };
     return post<Piece>(req, "piece").then((data) => data[0]);

@@ -52,6 +52,7 @@ export interface Formula {
   _id: string;
   name: string;
   description: string;
+  pieces: string[];
   composition: CompositionElement[];
   lastUpdated: string;
 }

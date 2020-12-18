@@ -43,70 +43,66 @@ const recordSlice = createSlice({
 
     // FIELD EDITS
     setRecordName: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.name = action.payload;
+      state.selected.name = action.payload;
     },
 
     setRecordDescription: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.description = action.payload;
+      state.selected.description = action.payload;
     },
 
     setRecordReference: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.reference = action.payload;
+      state.selected.reference = action.payload;
     },
 
     setRecordColor: (state, action: PayloadAction<Color>) => {
-      if (state.selected) state.selected.color = action.payload;
+      state.selected.color = action.payload;
     },
 
     setRecordDate: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.date = action.payload;
+      state.selected.date = action.payload;
     },
 
     //PIECES
     setRecordPieces: (state, action: PayloadAction<string[]>) => {
-      if (state.selected) state.selected.pieces = action.payload;
+      state.selected.pieces = action.payload;
     },
 
     addRecordPiece: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.pieces.push(action.payload);
+      state.selected.pieces.push(action.payload);
     },
 
     deleteRecordPiece: (state, action: PayloadAction<string>) => {
       // remove 1 element at the index specified
-      if (state.selected) state.selected.pieces.splice(state.selected.pieces.indexOf(action.payload), 1);
+      state.selected.pieces.splice(state.selected.pieces.indexOf(action.payload), 1);
     },
 
     //POINTS
     setRecordAllPoints: (state, action: PayloadAction<Point[]>) => {
-      if (state.selected) state.selected.points = action.payload;
+      state.selected.points = action.payload;
     },
 
     setRecordOnePoint: (state, action: PayloadAction<{ idx: number; point: Point }>) => {
-      if (state.selected) state.selected.points[action.payload.idx] = action.payload.point;
+      state.selected.points[action.payload.idx] = action.payload.point;
     },
 
     setRecordPointHour: (state, action: PayloadAction<{ idx: number; val: number }>) => {
-      if (state.selected) {
-        const point = state.selected.points[action.payload.idx];
-        const prevHours = Math.floor(point.x / (60 * 60 * 1000)) % 24;
-        point.x = point.x + (action.payload.val - prevHours) * 60 * 60 * 1000;
-      }
+      const point = state.selected.points[action.payload.idx];
+      const prevHours = Math.floor(point.x / (60 * 60 * 1000)) % 24;
+      point.x = point.x + (action.payload.val - prevHours) * 60 * 60 * 1000;
     },
 
     setRecordPointMinute: (state, action: PayloadAction<{ idx: number; val: number }>) => {
-      if (state.selected) {
-        const point = state.selected.points[action.payload.idx];
-        const prevMinutes = Math.floor(point.x / (60 * 1000)) % 60;
-        point.x = point.x + (action.payload.val - prevMinutes) * 60 * 1000;
-      }
+      const point = state.selected.points[action.payload.idx];
+      const prevMinutes = Math.floor(point.x / (60 * 1000)) % 60;
+      point.x = point.x + (action.payload.val - prevMinutes) * 60 * 1000;
     },
 
     deleteRecordPoint: (state, action: PayloadAction<number>) => {
-      if (state.selected) state.selected.points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
+      state.selected.points.splice(action.payload, 1).sort((a, b) => a.x - b.x);
     },
 
     addRecordNewPoint: (state, action: PayloadAction<void>) => {
-      if (state.selected) state.selected.points.push({ x: 0, y: 0 });
+      state.selected.points.push({ x: 0, y: 0 });
     },
   },
 });

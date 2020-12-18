@@ -22,6 +22,7 @@ const GraphColorField = ({ editSelector, valueSelector, changeHandler }: Props) 
 
   const target = useRef(null);
   const [ShowPicker, setShowPicker] = useState<boolean>(false);
+
   useEffect(() => {
     if (!edit) setShowPicker(false);
   }, [edit]);

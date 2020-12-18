@@ -43,7 +43,11 @@ const RecordInfoCard = () => {
       content={
         <Container className="pt-1 pr-2 pl-2 flex-row justify-content-start rounded" style={{ overflow: "hidden" }}>
           <NameField editSelector={RecordInfosEditMode} valueSelector={CurrentRecordName} changeHandler={setRecordName} />
-          <ReferenceField valueSelector={CurrentRecordReference} buttonCallback={handleReferenceSelect} />
+          <ReferenceField
+            editSelector={RecordInfosEditMode}
+            valueSelector={CurrentRecordReference}
+            selectHandler={handleReferenceSelect}
+          />
           <DateField editSelector={RecordInfosEditMode} valueSelector={CurrentRecordDate} changeHandler={setRecordDate} />
           <GraphColorField editSelector={RecordInfosEditMode} valueSelector={CurrentRecordColor} changeHandler={setRecordColor} />
           <DescriptionField

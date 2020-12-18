@@ -23,12 +23,14 @@ export const graphFormatTime = (time: string | number, showMinutes: boolean): st
 //   return getMillis(hours, minutes);
 // };
 
-// export const getHours = (millis: number): number => {
-//   return Math.floor(millis / (60 * 60 * 1000)) % 24;
-// };
-// export const getMinutes = (millis: number): number => {
-//   return Math.floor(millis / (60 * 1000)) % 60;
-// };
+export const getHours = (millis: number): number => {
+  return Math.floor(millis / (60 * 60 * 1000)) % 24;
+};
+
+export const getMinutes = (millis: number): number => {
+  return Math.floor(millis / (60 * 1000)) % 60;
+};
+
 // export const getMillis = (hours: number, minutes: number): number => {
 //   return hours * 60 * 60 * 1000 + minutes * 60 * 1000;
 // };

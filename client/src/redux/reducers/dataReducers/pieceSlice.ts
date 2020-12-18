@@ -3,13 +3,24 @@ import { Piece } from "@sharedTypes/dbModelTypes";
 import { RootState } from "../../store";
 
 type PieceSliceType = {
-  selected: Piece | null;
-  memo: Piece | null;
+  selected: Piece;
+  memo: Piece;
+};
+
+const emptyPiece: Piece = {
+  _id: "default",
+  name: "",
+  description: "",
+  records: [],
+  images: [],
+  formula: "",
+  date: "",
+  lastUpdated: "",
 };
 
 const initialState: PieceSliceType = {
-  selected: null,
-  memo: null,
+  selected: emptyPiece,
+  memo: emptyPiece,
 };
 
 const pieceReducer = createSlice({
@@ -31,45 +42,45 @@ const pieceReducer = createSlice({
 
     // FIELD EDITS
     setPieceName: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.name = action.payload;
+      state.selected.name = action.payload;
     },
 
     setPieceDescription: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.description = action.payload;
+      state.selected.description = action.payload;
     },
 
     setPieceFormula: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.formula = action.payload;
+      state.selected.formula = action.payload;
     },
 
     setPieceDate: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.date = action.payload;
+      state.selected.date = action.payload;
     },
 
     // RECORDS
     setPieceRecords: (state, action: PayloadAction<string[]>) => {
-      if (state.selected) state.selected.records = action.payload;
+      state.selected.records = action.payload;
     },
 
     addPieceRecord: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.records.push(action.payload);
+      state.selected.records.push(action.payload);
     },
 
     deletePieceRecord: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.records.splice(state.selected.records.indexOf(action.payload), 1);
+      state.selected.records.splice(state.selected.records.indexOf(action.payload), 1);
     },
 
     // IMAGES
     setPieceImages: (state, action: PayloadAction<string[]>) => {
-      if (state.selected) state.selected.images = action.payload;
+      state.selected.images = action.payload;
     },
 
     addPieceImage: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.images.push(action.payload);
+      state.selected.images.push(action.payload);
     },
 
     deletePieceImage: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.images.splice(state.selected.images.indexOf(action.payload), 1);
+      state.selected.images.splice(state.selected.images.indexOf(action.payload), 1);
     },
   },
 });
@@ -94,13 +105,13 @@ export const {
 } = pieceReducer.actions;
 
 export const CurrentPiece = (state: RootState) => state.piece.selected;
-export const CurrentPieceID = (state: RootState) => state.piece.selected!._id;
-export const CurrentPieceName = (state: RootState) => state.piece.selected!.name;
-export const CurrentPieceDescription = (state: RootState) => state.piece.selected!.description;
-export const CurrentPieceFormula = (state: RootState) => state.piece.selected!.formula;
-export const CurrentPieceDate = (state: RootState) => state.piece.selected!.date;
-export const CurrentPieceRecords = (state: RootState) => state.piece.selected!.records;
-export const CurrentPieceImages = (state: RootState) => state.piece.selected!.images;
-export const CurrentPieceLastUpdate = (state: RootState) => state.piece.selected!.lastUpdated;
+export const CurrentPieceID = (state: RootState) => state.piece.selected._id;
+export const CurrentPieceName = (state: RootState) => state.piece.selected.name;
+export const CurrentPieceDescription = (state: RootState) => state.piece.selected.description;
+export const CurrentPieceFormula = (state: RootState) => state.piece.selected.formula;
+export const CurrentPieceDate = (state: RootState) => state.piece.selected.date;
+export const CurrentPieceRecords = (state: RootState) => state.piece.selected.records;
+export const CurrentPieceImages = (state: RootState) => state.piece.selected.images;
+export const CurrentPieceLastUpdate = (state: RootState) => state.piece.selected.lastUpdated;
 
 export default pieceReducer.reducer;

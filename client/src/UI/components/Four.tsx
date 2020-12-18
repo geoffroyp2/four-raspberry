@@ -4,9 +4,11 @@ import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import LoadingScreen from "./Generic/LoadingScreen";
+import MainZone from "./Main/MainZone";
+
 import { loadData } from "@UIutils/loadData";
 import { loadAllData } from "@redux/dataReducers/dbDataSlice";
-import MainZone from "./Main/MainZone";
+import { loadReference } from "@redux/dataReducers/referenceSlice";
 
 const appStyle: React.CSSProperties = {
   backgroundColor: "#424242",
@@ -25,6 +27,7 @@ const Four = () => {
     await loadData().then((res) => {
       console.log(res);
       dispatch(loadAllData(res));
+      if (res.reference[0]) dispatch(loadReference(res.reference[0]));
       setLoading(false);
     });
   }, [dispatch]);

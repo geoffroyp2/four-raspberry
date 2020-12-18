@@ -6,6 +6,7 @@ export async function createFormula(this: IFormulaModel): Promise<IFormulaDocume
   return this.create({
     name: "Sans nom",
     description: "",
+    pieces: [],
     composition: [],
     lastUpdated: new Date().toISOString(),
   });

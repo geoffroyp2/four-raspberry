@@ -1,3 +1,6 @@
+import { store } from "@src/redux/store";
+import { updateRecord } from "@redux/dataReducers/dbDataSlice";
+
 import {
   ReqID,
   ReferenceFindType,
@@ -6,8 +9,10 @@ import {
   ReferenceCreateType,
   ReferenceDeleteType,
   ReferenceEditType,
+  RecordEditType,
 } from "@sharedTypes/dbAPITypes";
-import { Reference } from "@sharedTypes/dbModelTypes";
+import { Record, Reference } from "@sharedTypes/dbModelTypes";
+
 import { get, post } from "../client";
 
 export const referenceMethods = {
@@ -44,6 +49,21 @@ export const referenceMethods = {
   },
 
   deleteOne: async (id: string): Promise<void> => {
+    const { record, reference } = store.getState().dbData;
+
+    // unlink Records
+    reference[id].records.forEach(async (r) => {
+      const req: RecordEditType = {
+        id: ReqID.updateOne,
+        data: {
+          id: record[r]._id,
+          filter: { ...record[r], reference: "" },
+        },
+      };
+      await get<Record>(req, "record").then((res) => store.dispatch(updateRecord(res[0])));
+    });
+
+    // delete reference
     const req: ReferenceDeleteType = {
       id: ReqID.deleteOne,
       data: {
@@ -54,16 +74,11 @@ export const referenceMethods = {
   },
 
   updateOne: async (reference: Reference): Promise<Reference> => {
-    // remove unchangeable fields
-    const filter: any = { ...reference };
-    delete filter["_id"];
-    delete filter["lastUpdated"];
-
     const req: ReferenceEditType = {
       id: ReqID.updateOne,
       data: {
         id: reference._id,
-        filter: filter,
+        filter: { ...reference },
       },
     };
     return post<Reference>(req, "reference").then((data) => data[0]);

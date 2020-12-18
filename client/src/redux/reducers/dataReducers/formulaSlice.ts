@@ -3,13 +3,22 @@ import { CompositionElement, Formula } from "@sharedTypes/dbModelTypes";
 import { RootState } from "../../store";
 
 type FormulaSliceType = {
-  selected: Formula | null;
-  memo: Formula | null;
+  selected: Formula;
+  memo: Formula;
+};
+
+const emptyFormula: Formula = {
+  _id: "default",
+  name: "",
+  description: "",
+  pieces: [],
+  composition: [],
+  lastUpdated: "",
 };
 
 const initialState: FormulaSliceType = {
-  selected: null,
-  memo: null,
+  selected: emptyFormula,
+  memo: emptyFormula,
 };
 
 const formulaReducer = createSlice({
@@ -31,30 +40,44 @@ const formulaReducer = createSlice({
 
     // FIELD EDITS
     setFormulaName: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.name = action.payload;
+      state.selected.name = action.payload;
     },
 
     setFormulaDescription: (state, action: PayloadAction<string>) => {
-      if (state.selected) state.selected.description = action.payload;
+      state.selected.description = action.payload;
+    },
+
+    // PIECES
+
+    setFormulaPieces: (state, action: PayloadAction<string[]>) => {
+      state.selected.pieces = action.payload;
+    },
+
+    addFormulaPiece: (state, action: PayloadAction<string>) => {
+      state.selected.pieces.push(action.payload);
+    },
+
+    deleteFormulaPiece: (state, action: PayloadAction<string>) => {
+      state.selected.pieces.splice(
+        state.selected.pieces.findIndex((x) => x === action.payload),
+        1
+      );
     },
 
     // COMPOSITION
-
     setFormulaComposition: (state, action: PayloadAction<CompositionElement[]>) => {
-      if (state.selected) state.selected.composition = action.payload;
+      state.selected.composition = action.payload;
     },
 
     addFormulaChemical: (state, action: PayloadAction<{ id: string; amount: number }>) => {
-      if (state.selected) state.selected.composition.push(action.payload);
+      state.selected.composition.push(action.payload);
     },
 
     deleteFormulaChemical: (state, action: PayloadAction<string>) => {
-      if (state.selected) {
-        state.selected.composition.splice(
-          state.selected.composition.findIndex((x) => x.id === action.payload),
-          1
-        );
-      }
+      state.selected.composition.splice(
+        state.selected.composition.findIndex((x) => x.id === action.payload),
+        1
+      );
     },
   },
 });
@@ -73,10 +96,10 @@ export const {
 } = formulaReducer.actions;
 
 export const CurrentFormula = (state: RootState) => state.formula.selected;
-export const CurrentFormulaID = (state: RootState) => state.formula.selected!._id;
-export const CurrentFormulaName = (state: RootState) => state.formula.selected!.name;
-export const CurrentFormulaDescription = (state: RootState) => state.formula.selected!.description;
-export const CurrentFormulaComposition = (state: RootState) => state.formula.selected!.composition;
-export const CurrentFormulaLastUpdate = (state: RootState) => state.formula.selected!.lastUpdated;
+export const CurrentFormulaID = (state: RootState) => state.formula.selected._id;
+export const CurrentFormulaName = (state: RootState) => state.formula.selected.name;
+export const CurrentFormulaDescription = (state: RootState) => state.formula.selected.description;
+export const CurrentFormulaComposition = (state: RootState) => state.formula.selected.composition;
+export const CurrentFormulaLastUpdate = (state: RootState) => state.formula.selected.lastUpdated;
 
 export default formulaReducer.reducer;

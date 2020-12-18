@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 
 import ScrollZone from "@UITabs/sharedComponents/ScrollZone";
-import SortSVG from "./SortSVG";
+import SortSVG from "../../SVG/SortSVG";
 
 type LoadTableProps = {
   header: JSX.Element;

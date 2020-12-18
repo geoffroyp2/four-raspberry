@@ -2,7 +2,7 @@ const addZero = (val: number): string => {
   return val < 10 ? "0" + val : "" + val;
 };
 
-export const dateToDisplayString = (dateString: string | undefined, showTime: boolean): string => {
+export const dateToDisplayString = (dateString: string, showTime: boolean): string => {
   if (!dateString) return "-";
 
   const date = new Date(dateString);

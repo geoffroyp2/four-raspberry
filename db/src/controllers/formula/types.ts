@@ -7,6 +7,7 @@ export interface FormulaEditFilter {
   filter: {
     name?: string;
     description?: string;
+    pieces?: string[];
     composition?: { id: string; amount: number }[];
   };
 }

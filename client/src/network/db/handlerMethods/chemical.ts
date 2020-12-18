@@ -8,6 +8,7 @@ import {
   ChemicalEditType,
 } from "@sharedTypes/dbAPITypes";
 import { Chemical } from "@sharedTypes/dbModelTypes";
+
 import { get, post } from "../client";
 
 export const chemicalMethods = {
@@ -54,16 +55,11 @@ export const chemicalMethods = {
   },
 
   updateOne: async (chemical: Chemical): Promise<Chemical> => {
-    // remove unchangeable fields
-    const filter: any = { ...chemical };
-    delete filter["_id"];
-    delete filter["lastUpdated"];
-
     const req: ChemicalEditType = {
       id: ReqID.updateOne,
       data: {
         id: chemical._id,
-        filter: filter,
+        filter: { ...chemical },
       },
     };
     return post<Chemical>(req, "chemical").then((data) => data[0]);

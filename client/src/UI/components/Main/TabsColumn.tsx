@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { CurrentTab, setCurrentTab } from "@redux/displayStateReducers/generalDisplaySlice";
+import { CurrentTab, setCurrentTab, TabIDType } from "@redux/displayStateReducers/generalDisplaySlice";
 
 const TabsColumn = () => {
   return (
@@ -9,32 +9,32 @@ const TabsColumn = () => {
       <TabElement
         text="Run"
         color={{ normal: "#407a45", selected: "#12751b" }}
-        index={0}
+        id={"Run"}
         height={20}
         additionalStyle="border-bottom-0"
       />
       <TabElement
         text="Reference"
         color={{ normal: "#625694", selected: "#371f99" }}
-        index={1}
+        id={"Reference"}
         height={20}
         additionalStyle="border-bottom-0"
       />
       <TabElement
         text="Record"
         color={{ normal: "#8a5091", selected: "#8a1a99" }}
-        index={2}
+        id={"Record"}
         height={20}
         additionalStyle="border-bottom-0"
       />
       <TabElement
         text="Piece"
         color={{ normal: "#945050", selected: "#941616" }}
-        index={3}
+        id={"Piece"}
         height={20}
         additionalStyle="border-bottom-0"
       />
-      <TabElement text="Formula" color={{ normal: "#bf934d", selected: "#c78214" }} index={4} height={20} />
+      <TabElement text="Formula" color={{ normal: "#bf934d", selected: "#c78214" }} id={"Formula"} height={20} />
     </div>
   );
 };
@@ -44,20 +44,20 @@ export default TabsColumn;
 type TabElementProps = {
   text: string;
   color: { normal: string; selected: string };
-  index: 0 | 1 | 2 | 3 | 4;
+  id: TabIDType;
   height: number;
   additionalStyle?: string;
 };
 
-const TabElement = ({ text, color, index, height, additionalStyle }: TabElementProps) => {
+const TabElement = ({ text, color, id, height, additionalStyle }: TabElementProps) => {
   const currentTab = useSelector(CurrentTab);
   const dispatch = useDispatch();
   return (
     <Container
       fluid
       className={`m-0 p-1 border border-dark rounded-right shadow ${additionalStyle}`}
-      style={{ height: `${height}%`, background: currentTab === index ? color.selected : color.normal }}
-      onClick={() => dispatch(setCurrentTab(index))}
+      style={{ height: `${height}%`, background: currentTab === id ? color.selected : color.normal }}
+      onClick={() => dispatch(setCurrentTab(id))}
     >
       {text}
     </Container>

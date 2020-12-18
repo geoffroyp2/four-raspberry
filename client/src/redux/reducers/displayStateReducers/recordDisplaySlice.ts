@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@src/redux/store";
 
-export type RecordTableSortType = "name" | "date" | "lastUpdated" | "ref";
-
 type RecordDisplayType = {
   infosEditMode: boolean;
   pointEditMode: boolean;

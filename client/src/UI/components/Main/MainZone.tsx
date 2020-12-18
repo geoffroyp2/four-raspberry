@@ -13,7 +13,13 @@ import PieceTab from "@UITabs/Piece/PieceTab";
 import FormulaTab from "@UITabs/Formula/FormulaTab";
 import { Col } from "react-bootstrap";
 
-const tabs = [<RunTab />, <ReferenceTab />, <RecordTab />, <PieceTab />, <FormulaTab />];
+const tabs = {
+  Run: <RunTab />,
+  Reference: <ReferenceTab />,
+  Record: <RecordTab />,
+  Piece: <PieceTab />,
+  Formula: <FormulaTab />,
+};
 
 const MainZone = () => {
   const currentTab = useSelector(CurrentTab);

@@ -3,9 +3,10 @@ import { RootState } from "@src/redux/store";
 
 export type LoadTableSortType = "name" | "date" | "lastUpdated" | "reference" | "record" | "piece";
 export type LoadTableContentType = "Record" | "Reference" | "Piece" | "Formula";
+export type TabIDType = "Run" | "Reference" | "Record" | "Piece" | "Formula";
 
-export type GeneralDisplaySlice = {
-  currentTab: 0 | 1 | 2 | 3 | 4;
+export type GeneralDisplayType = {
+  currentTab: TabIDType;
   loadTable: {
     show: boolean;
     content: LoadTableContentType;
@@ -17,11 +18,11 @@ export type GeneralDisplaySlice = {
   };
 };
 
-const initialState: GeneralDisplaySlice = {
-  currentTab: 2,
+const initialState: GeneralDisplayType = {
+  currentTab: "Reference",
   loadTable: {
     show: false,
-    content: "Record",
+    content: "Reference",
     rowSelected: "",
     sort: {
       param: "name",
@@ -35,7 +36,7 @@ const generalDisplaySlice = createSlice({
   initialState,
 
   reducers: {
-    setCurrentTab: (state, action: PayloadAction<GeneralDisplaySlice["currentTab"]>) => {
+    setCurrentTab: (state, action: PayloadAction<GeneralDisplayType["currentTab"]>) => {
       state.loadTable.show = false;
       state.loadTable.sort = { param: "name", direction: true }; // Maybe not ?
       state.currentTab = action.payload;
@@ -46,7 +47,7 @@ const generalDisplaySlice = createSlice({
       state.loadTable.show = action.payload;
     },
 
-    setLoadTableContent: (state, action: PayloadAction<GeneralDisplaySlice["loadTable"]["content"]>) => {
+    setLoadTableContent: (state, action: PayloadAction<GeneralDisplayType["loadTable"]["content"]>) => {
       state.loadTable.content = action.payload;
     },
 
