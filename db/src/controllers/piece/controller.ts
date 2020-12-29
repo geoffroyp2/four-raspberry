@@ -55,7 +55,7 @@ export default class PieceController {
     try {
       switch (body.id) {
         case ReqID.updateOne: {
-          const result = await PieceModel.updatePiece(body.data);
+          const result = await PieceModel.updatePiece(body.data.id, body.data.filter);
           //   console.log(`Updated "${updatedGraph.name}"`);
           res.json({ id: ResID.success, data: [result] });
           break;

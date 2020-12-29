@@ -1,62 +1,80 @@
 import { Request, Response } from "express";
+import { ReqID, ReqType } from "./types/reqType";
+import { ResID } from "./types/resType";
 import engine from "../engine/engine";
-import { EngineGetId, EngineGetRequest } from "./types/getTypes";
-import { EnginePostId, EnginePostRequest } from "./types/postTypes";
-import { EngineResId } from "./types/resTypes";
 
 export class EngineController {
   public async get(req: Request, res: Response): Promise<void> {
-    const query: EngineGetRequest = {
-      id: +req.query.id,
-      data: req.query.data && JSON.parse(req.query.data as string),
-    };
-
-    console.log("Get ");
+    // console.log("get");
 
     try {
-      switch (query.id as EngineGetId) {
-        case EngineGetId.command:
-          engine.command(query.data);
-          res.json({ id: EngineResId.succes, data: engine.status });
+      switch (+req.query.id) {
+        case ReqID.ping:
           break;
-        case EngineGetId.ping:
-          engine.ping();
-          res.json({ id: EngineResId.succes, data: engine.status });
+
+        case ReqID.start:
+          engine.start();
+          res.json({ id: ResID.success, data: { state: engine.getState() } });
           break;
-        case EngineGetId.getStatus:
-          res.json({ id: EngineResId.succes, data: engine.status });
+        case ReqID.stop:
+          engine.stop();
+          res.json({ id: ResID.success, data: { state: engine.getState() } });
           break;
-        case EngineGetId.getTargetGraph:
-          res.json({ id: EngineResId.succes, data: engine.graph });
+
+        case ReqID.pause:
+          engine.pause();
+          res.json({ id: ResID.success, data: { state: engine.getState() } });
           break;
+        case ReqID.unpause:
+          engine.unpause();
+          res.json({ id: ResID.success, data: { state: engine.getState() } });
+          break;
+
+        case ReqID.getRef:
+          res.json({ id: ResID.success, data: { ref: engine.getRef() } });
+          break;
+
+        case ReqID.getState:
+          res.json({ id: ResID.success, data: { state: engine.getState() } });
+          break;
+
+        case ReqID.getGraphs:
+          res.json({ id: ResID.success, data: { graphs: engine.getGraphs() } });
+          break;
+
         default:
-          res.json({ id: EngineResId.error, data: "bad id" });
+          res.json({ id: ResID.error, data: "bad id" });
           break;
       }
     } catch (e) {
       console.error(e);
-      res.json({ id: EngineResId.error, data: "error" });
+      res.json({ id: ResID.error, data: "communication error" });
     }
   }
 
   public async post(req: Request, res: Response): Promise<void> {
-    const body: EnginePostRequest = JSON.parse(req.body.body);
+    console.log("post");
 
-    console.log("Post ");
+    const body: ReqType = JSON.parse(req.body.body);
 
     try {
       switch (body.id) {
-        case EnginePostId.loadGraph:
-          engine.load(body.data);
-          res.json({ id: EngineResId.succes, data: engine.status });
+        case ReqID.loadRef:
+          if (body.data.reference) {
+            engine.loadRef(body.data.reference);
+            res.json({ id: ResID.success, data: { ref: engine.getRef() } });
+          } else {
+            res.json({ id: ResID.error, data: "invalid data" });
+          }
           break;
+
         default:
-          res.json({ id: EngineResId.error, data: "bad id" });
+          res.json({ id: ResID.error, data: "no data" });
           break;
       }
     } catch (e) {
       console.error(e);
-      res.json({ id: EngineResId.error, data: "error" });
+      res.json({ id: ResID.error, data: "communication error" });
     }
   }
 }

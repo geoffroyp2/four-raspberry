@@ -11,10 +11,10 @@ export async function createChemical(this: IChemicalModel): Promise<IChemicalDoc
   });
 }
 
-export async function updateChemical(this: IChemicalModel, data: ChemicalEditFilter): Promise<IChemicalDocument> {
+export async function updateChemical(this: IChemicalModel, id: string, filter: ChemicalEditFilter): Promise<IChemicalDocument> {
   return await this.findOneAndUpdate(
-    { _id: data.id },
-    { ...data.filter, lastUpdated: new Date().toISOString() },
+    { _id: id },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

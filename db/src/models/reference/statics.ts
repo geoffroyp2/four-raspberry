@@ -13,10 +13,14 @@ export async function createReference(this: IReferenceModel): Promise<IReference
   });
 }
 
-export async function updateReference(this: IReferenceModel, data: ReferenceEditFilter): Promise<IReferenceDocument> {
+export async function updateReference(
+  this: IReferenceModel,
+  id: string,
+  filter: ReferenceEditFilter
+): Promise<IReferenceDocument> {
   return await this.findOneAndUpdate(
-    { _id: data.id },
-    { ...data.filter, lastUpdated: new Date().toISOString() },
+    { _id: id },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

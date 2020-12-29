@@ -1,4 +1,4 @@
-import { Graph } from "../../engine/types";
+import { Graph } from "../../+old/engine/types";
 
 export const EnginePostIdString = ["Post Graph"];
 export enum EnginePostId {

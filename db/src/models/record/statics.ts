@@ -15,10 +15,10 @@ export async function createRecord(this: IRecordModel): Promise<IRecordDocument>
   });
 }
 
-export async function updateRecord(this: IRecordModel, data: RecordEditFilter): Promise<IRecordDocument> {
+export async function updateRecord(this: IRecordModel, id: string, filter: RecordEditFilter): Promise<IRecordDocument> {
   return await this.findOneAndUpdate(
-    { _id: data.id },
-    { ...data.filter, lastUpdated: new Date().toISOString() },
+    { _id: id },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

@@ -5,9 +5,6 @@ import { recordMethods } from "./handlerMethods/record";
 import { referenceMethods } from "./handlerMethods/reference";
 
 const db = {
-  all: {
-    getData: async () => {},
-  },
   chemical: { ...chemicalMethods },
   formula: { ...formulaMethods },
   piece: { ...pieceMethods },

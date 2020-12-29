@@ -12,10 +12,10 @@ export async function createFormula(this: IFormulaModel): Promise<IFormulaDocume
   });
 }
 
-export async function updateFormula(this: IFormulaModel, data: FormulaEditFilter): Promise<IFormulaDocument> {
+export async function updateFormula(this: IFormulaModel, id: string, filter: FormulaEditFilter): Promise<IFormulaDocument> {
   return await this.findOneAndUpdate(
-    { _id: data.id },
-    { ...data.filter, lastUpdated: new Date().toISOString() },
+    { _id: id },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

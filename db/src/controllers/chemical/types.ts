@@ -2,13 +2,15 @@ import { Chemical } from "../../models/chemical/types";
 import { ReqID, ReqType } from "../shared/reqTypes";
 import { ResType } from "../shared/resTypes";
 
-export interface ChemicalEditFilter {
+export interface ChemicalEditQuery {
   id: string;
-  filter: {
-    name?: string;
-    chemicalName?: string;
-    mass?: number;
-  };
+  filter: ChemicalEditFilter;
+}
+
+export interface ChemicalEditFilter {
+  name?: string;
+  chemicalName?: string;
+  mass?: number;
 }
 
 export interface ChemicalDeleteFilter {
@@ -19,7 +21,7 @@ export interface ChemicalFindFilter {
   _id?: string;
 }
 
-export type ChemicalEditType = ReqType<ReqID.updateOne, ChemicalEditFilter>;
+export type ChemicalEditType = ReqType<ReqID.updateOne, ChemicalEditQuery>;
 export type ChemicalDeleteType = ReqType<ReqID.deleteOne, ChemicalDeleteFilter>;
 export type ChemicalFindType = ReqType<ReqID.getMany | ReqID.getOne, ChemicalFindFilter>;
 export type ChemicalGetAllType = ReqType<ReqID.getAll, null>;

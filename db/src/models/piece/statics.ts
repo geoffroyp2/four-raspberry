@@ -14,10 +14,10 @@ export async function createPiece(this: IPieceModel): Promise<IPieceDocument> {
   });
 }
 
-export async function updatePiece(this: IPieceModel, data: PieceEditFilter): Promise<IPieceDocument> {
+export async function updatePiece(this: IPieceModel, id: string, filter: PieceEditFilter): Promise<IPieceDocument> {
   return await this.findOneAndUpdate(
-    { _id: data.id },
-    { ...data.filter, lastUpdated: new Date().toISOString() },
+    { _id: id },
+    { ...filter, lastUpdated: new Date().toISOString() },
     { new: true, useFindAndModify: false }
   ).exec();
 }

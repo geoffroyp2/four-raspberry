@@ -56,7 +56,7 @@ export default class ChemicalController {
     try {
       switch (body.id) {
         case ReqID.updateOne: {
-          const result = await ChemicalModel.updateChemical(body.data);
+          const result = await ChemicalModel.updateChemical(body.data.id, body.data.filter);
           //   console.log(`Updated "${updatedGraph.name}"`);
           res.json({ id: ResID.success, data: [result] });
           break;

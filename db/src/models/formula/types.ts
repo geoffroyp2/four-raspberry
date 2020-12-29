@@ -1,6 +1,5 @@
 import { Document, Model } from "mongoose";
 import { FormulaEditFilter } from "../../controllers/formula/types";
-import { Color, Point } from "../shared/types";
 
 export interface IFormula {
   name: string;
@@ -18,5 +17,5 @@ export interface IFormulaDocument extends Document, IFormula {}
 
 export interface IFormulaModel extends Model<IFormulaDocument>, IFormula {
   createFormula: (this: IFormulaModel) => Promise<IFormulaDocument>;
-  updateFormula: (this: IFormulaModel, data: FormulaEditFilter) => Promise<IFormulaDocument>;
+  updateFormula: (this: IFormulaModel, id: string, filter: FormulaEditFilter) => Promise<IFormulaDocument>;
 }

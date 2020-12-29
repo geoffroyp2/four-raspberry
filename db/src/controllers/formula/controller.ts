@@ -55,7 +55,7 @@ export default class FormulaController {
     try {
       switch (body.id) {
         case ReqID.updateOne: {
-          const result = await FormulaModel.updateFormula(body.data);
+          const result = await FormulaModel.updateFormula(body.data.id, body.data.filter);
           //   console.log(`Updated "${updatedGraph.name}"`);
           res.json({ id: ResID.success, data: [result] });
           break;

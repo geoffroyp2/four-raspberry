@@ -16,5 +16,5 @@ export interface IChemicalDocument extends Document, IChemical {}
 
 export interface IChemicalModel extends Model<IChemicalDocument>, IChemical {
   createChemical: (this: IChemicalModel) => Promise<IChemicalDocument>;
-  updateChemical: (this: IChemicalModel, data: ChemicalEditFilter) => Promise<IChemicalDocument>;
+  updateChemical: (this: IChemicalModel, id: string, filter: ChemicalEditFilter) => Promise<IChemicalDocument>;
 }

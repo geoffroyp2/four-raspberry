@@ -7,7 +7,7 @@ type ReferenceSliceType = {
   memo: Reference; // To be able to roll back changes
 };
 
-const emptyReference: Reference = {
+export const emptyReference: Reference = {
   _id: "default",
   name: "",
   description: "",

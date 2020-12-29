@@ -55,7 +55,7 @@ export default class RecordController {
     try {
       switch (body.id) {
         case ReqID.updateOne: {
-          const result = await RecordModel.updateRecord(body.data);
+          const result = await RecordModel.updateRecord(body.data.id, body.data.filter);
           //   console.log(`Updated "${updatedGraph.name}"`);
           res.json({ id: ResID.success, data: [result] });
           break;

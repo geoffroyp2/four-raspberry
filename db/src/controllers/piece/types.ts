@@ -2,16 +2,18 @@ import { Piece } from "../../models/piece/types";
 import { ReqID, ReqType } from "../shared/reqTypes";
 import { ResType } from "../shared/resTypes";
 
-export interface PieceEditFilter {
+export interface PieceEditQuery {
   id: string;
-  filter: {
-    name?: string;
-    description?: string;
-    records?: string[];
-    images?: string[];
-    formula?: string;
-    date?: string;
-  };
+  filter: PieceEditFilter;
+}
+
+export interface PieceEditFilter {
+  name?: string;
+  description?: string;
+  records?: string[];
+  images?: string[];
+  formula?: string;
+  date?: string;
 }
 
 export interface PieceDeleteFilter {
@@ -22,7 +24,7 @@ export interface PieceFindFilter {
   _id?: string;
 }
 
-export type PieceEditType = ReqType<ReqID.updateOne, PieceEditFilter>;
+export type PieceEditType = ReqType<ReqID.updateOne, PieceEditQuery>;
 export type PieceDeleteType = ReqType<ReqID.deleteOne, PieceDeleteFilter>;
 export type PieceFindType = ReqType<ReqID.getMany | ReqID.getOne, PieceFindFilter>;
 export type PieceGetAllType = ReqType<ReqID.getAll, null>;

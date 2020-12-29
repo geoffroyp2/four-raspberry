@@ -1,4 +1,4 @@
-import { EngineStatus } from "../../engine/types";
+import { EngineStatus } from "../../+old/engine/types";
 
 export enum EngineResId {
   error,

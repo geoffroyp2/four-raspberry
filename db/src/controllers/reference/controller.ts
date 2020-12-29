@@ -55,7 +55,7 @@ export default class ReferenceController {
     try {
       switch (body.id) {
         case ReqID.updateOne: {
-          const result = await ReferenceModel.updateReference(body.data);
+          const result = await ReferenceModel.updateReference(body.data.id, body.data.filter);
           //   console.log(`Updated "${updatedGraph.name}"`);
           res.json({ id: ResID.success, data: [result] });
           break;

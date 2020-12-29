@@ -19,5 +19,5 @@ export interface IReferenceDocument extends Document, IReference {}
 
 export interface IReferenceModel extends Model<IReferenceDocument>, IReference {
   createReference: (this: IReferenceModel) => Promise<IReferenceDocument>;
-  updateReference: (this: IReferenceModel, data: ReferenceEditFilter) => Promise<IReferenceDocument>;
+  updateReference: (this: IReferenceModel, id: string, data: ReferenceEditFilter) => Promise<IReferenceDocument>;
 }

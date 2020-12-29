@@ -3,17 +3,19 @@ import { Color, Point } from "../../models/shared/types";
 import { ReqID, ReqType } from "../shared/reqTypes";
 import { ResType } from "../shared/resTypes";
 
-export interface RecordEditFilter {
+export interface RecordEditQuery {
   id: string;
-  filter: {
-    name: string;
-    description: string;
-    reference: string;
-    color: Color;
-    points: Point[];
-    pieces: string[];
-    date: string;
-  };
+  filter: RecordEditFilter;
+}
+
+export interface RecordEditFilter {
+  name?: string;
+  description?: string;
+  reference?: string;
+  color?: Color;
+  points?: Point[];
+  pieces?: string[];
+  date?: string;
 }
 
 export interface RecordDeleteFilter {
@@ -25,7 +27,7 @@ export interface RecordFindFilter {
   reference?: string;
 }
 
-export type RecordEditType = ReqType<ReqID.updateOne, RecordEditFilter>;
+export type RecordEditType = ReqType<ReqID.updateOne, RecordEditQuery>;
 export type RecordDeleteType = ReqType<ReqID.deleteOne, RecordDeleteFilter>;
 export type RecordFindType = ReqType<ReqID.getMany | ReqID.getOne, RecordFindFilter>;
 export type RecordGetAllType = ReqType<ReqID.getAll, null>;

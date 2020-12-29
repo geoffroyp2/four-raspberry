@@ -1,78 +1,125 @@
-import { EngineCommand, EngineCommandData } from "../controllers/types/getTypes";
-import { emptyGraph, EngineStatus, Graph } from "./types";
+import { WSINClient } from "../com/wsCom/WSINClient";
+import { WSOUTClient } from "../com/wsCom/WSOUTClient";
 
-class Engine {
-  // Internal state
-  private runStatus: EngineStatus["runStatus"] = "stop";
-  private driverMode: EngineStatus["driverMode"] = "auto";
-  private connected: boolean = true;
-  private sensorValues: EngineStatus["sensors"] = { temp: -1, oxy: -1 };
-  private targetValues: EngineStatus["target"] = { temp: -1, oxy: -1 };
-  private valveValues: EngineStatus["valves"] = { angle: 90 };
-  private targetGraph: Graph = emptyGraph;
+import { Reference } from "../sharedTypes/dbModelTypes";
+import { emptyValues, EngineState, EngineStatusType, ValuesType } from "./types";
 
-  // Access from controller
-  public load(data: Graph): void {
-    this.targetGraph = data;
+import { ReferenceHandler } from "./referenceHandler";
+import graphMemory from "./graphMemory";
+
+export class Engine {
+  private WSIN: WSINClient;
+  private WSOUT: WSOUTClient;
+  private refH: ReferenceHandler | null;
+
+  public status: EngineStatusType = "stop";
+  public values: ValuesType = emptyValues;
+
+  private loopInterval: number = 2000; // main loop interval in ms
+  private programStartTime: number = 0; // absolute start date
+  private programPauseTime: number = 0; // total pause time
+  private programRunTime: number = 0; // total run time
+  private lastPause: number = 0; // absolute date for last pause
+
+  constructor() {
+    this.WSIN = new WSINClient((values) => {
+      console.log(values);
+      this.values.sensor = values;
+    });
+    this.WSIN.connect();
+
+    this.WSOUT = new WSOUTClient();
+    this.WSOUT.connect();
+
+    graphMemory.reset();
   }
 
-  public command(data: EngineCommandData): void {
-    switch (data.command) {
-      case EngineCommand.start:
-        this.start();
-        break;
-      case EngineCommand.pause:
-        this.pause();
-        break;
-      case EngineCommand.stop:
-        this.stop();
-        break;
-      case EngineCommand.restart:
-        this.restart();
-        break;
-      case EngineCommand.valve:
-        data.param ? this.controlValve(data.param) : console.error("Valve control error: need Argument");
-        break;
-      default:
-        console.error("bad command ID");
-        break;
-    }
+  public loadRef(ref: Reference) {
+    this.refH = new ReferenceHandler(ref);
   }
 
-  public ping(): void {}
+  public getRef() {
+    return this.refH?.ref ?? "default";
+  }
 
-  get status(): EngineStatus {
+  public ping(): boolean {
+    return this.WSIN.getStatus() && this.WSOUT.getStatus();
+  }
+
+  public getState(): EngineState {
+    if (this.refH) this.values.target.temperature = this.refH.targetTemp;
     return {
-      runStatus: this.runStatus,
-      driverMode: this.driverMode,
-      connected: this.connected,
-      targetGraphID: this.targetGraph._id,
-      sensors: { ...this.sensorValues },
-      target: { ...this.targetValues },
-      valves: { ...this.valveValues },
+      values: this.values,
+      status: this.status,
+      refID: this.refH?.ref._id ?? "default",
+      times: {
+        start: this.programStartTime,
+        totalRun: this.programRunTime,
+        totalPause: this.programPauseTime,
+      },
     };
   }
 
-  get graph(): Graph {
-    return this.targetGraph;
+  public getGraphs() {
+    return graphMemory.getGraphs();
   }
 
-  // private methods
-  private start(): void {
-    this.runStatus = "run";
+  public start() {
+    if (this.refH && this.status === "stop") {
+      graphMemory.reset();
+      this.programRunTime = 0;
+      this.programPauseTime = 0;
+      this.programStartTime = new Date().getTime();
+      this.status = "run";
+
+      console.log("Program Started");
+
+      this.run();
+    }
   }
 
-  private pause(): void {
-    this.runStatus = "pause";
+  public stop() {
+    if (this.status === "run" || this.status === "pause") {
+      this.status = "stop";
+
+      console.log("Program Stopped");
+    }
   }
 
-  private stop(): void {
-    this.runStatus = "stop";
+  public pause() {
+    if (this.status === "run") {
+      this.lastPause = new Date().getTime();
+      this.status = "pause";
+
+      console.log("Program Paused");
+    }
   }
 
-  private restart(): void {}
+  public unpause() {
+    if (this.status === "pause") {
+      // add pause time
+      this.programPauseTime += new Date().getTime() - this.lastPause;
+      this.status = "run";
 
-  private controlValve(param: EngineCommandData["param"]): void {}
+      console.log("Program Unpaused");
+
+      this.run();
+    }
+  }
+
+  private run() {
+    if (this.status === "run") {
+      setTimeout(() => {
+        const now = new Date().getTime();
+        this.programRunTime = now - this.programStartTime + this.programPauseTime; // TODO : mode not to count pause time
+
+        this.refH.refreshTargetTemp(this.programRunTime);
+        this.WSOUT.sendTemperature(this.refH.targetTemp);
+        graphMemory.addValue(this.programRunTime, this.refH.targetTemp);
+        if (this.status === "run") this.run(); // another check if paused/stopped in-between
+      }, this.loopInterval);
+    }
+  }
 }
 
 export default new Engine();

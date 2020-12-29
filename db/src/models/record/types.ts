@@ -21,5 +21,5 @@ export interface IRecordDocument extends Document, IRecord {}
 
 export interface IRecordModel extends Model<IRecordDocument>, IRecord {
   createRecord: (this: IRecordModel) => Promise<IRecordDocument>;
-  updateRecord: (this: IRecordModel, data: RecordEditFilter) => Promise<IRecordDocument>;
+  updateRecord: (this: IRecordModel, id: string, data: RecordEditFilter) => Promise<IRecordDocument>;
 }

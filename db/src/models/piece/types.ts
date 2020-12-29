@@ -19,5 +19,5 @@ export interface IPieceDocument extends Document, IPiece {}
 
 export interface IPieceModel extends Model<IPieceDocument>, IPiece {
   createPiece: (this: IPieceModel) => Promise<IPieceDocument>;
-  updatePiece: (this: IPieceModel, data: PieceEditFilter) => Promise<IPieceDocument>;
+  updatePiece: (this: IPieceModel, id: string, filter: PieceEditFilter) => Promise<IPieceDocument>;
 }
