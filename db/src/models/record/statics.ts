@@ -1,4 +1,5 @@
-import { RecordEditFilter } from "../../controllers/record/types";
+import { MongooseUpdateQuery } from "mongoose";
+import { RecordSimpleEditFilter } from "../../controllers/record/types";
 import { IRecordDocument, IRecordModel } from "./types";
 
 export async function createRecord(this: IRecordModel): Promise<IRecordDocument> {
@@ -15,7 +16,11 @@ export async function createRecord(this: IRecordModel): Promise<IRecordDocument>
   });
 }
 
-export async function updateRecord(this: IRecordModel, id: string, filter: RecordEditFilter): Promise<IRecordDocument> {
+export async function updateRecord(
+  this: IRecordModel,
+  id: string,
+  filter: MongooseUpdateQuery<IRecordModel> | RecordSimpleEditFilter
+): Promise<IRecordDocument> {
   return await this.findOneAndUpdate(
     { _id: id },
     { ...filter, lastUpdated: new Date().toISOString() },

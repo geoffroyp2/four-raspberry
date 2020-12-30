@@ -1,31 +1,47 @@
-import { Formula } from "../../models/formula/types";
-import { ReqID, ReqType } from "../shared/reqTypes";
-import { ResType } from "../shared/resTypes";
+import { FormulaItem } from "../../models/formula/types";
+import { LinkEditID, ReqID, ReqType } from "../shared/reqTypes";
 
-export interface FormulaEditQuery {
+// Query to update value of simple fields
+
+export interface FormulaSimpleEditQuery {
   id: string;
-  filter: FormulaEditFilter;
+  filter: FormulaSimpleEditFilter;
 }
 
-export interface FormulaEditFilter {
+export interface FormulaSimpleEditFilter {
   name?: string;
   description?: string;
-  pieces?: string[];
-  composition?: { id: string; amount: number }[];
 }
 
-export interface FormulaDeleteFilter {
-  _id: string;
+// Query to update fields that link to other elements in database
+
+export interface FormulaLinkEditQuery {
+  id: LinkEditID;
+  filter: FormulaLinkEditFilter;
 }
+
+export interface FormulaLinkEditFilter {
+  formulaID: string;
+  formulaItem?: FormulaItem;
+  chemicalID?: string;
+}
+
+// Filter to find specific element
 
 export interface FormulaFindFilter {
   _id?: string;
+  name?: string;
+  description?: string;
 }
 
-export type FormulaEditType = ReqType<ReqID.updateOne, FormulaEditQuery>;
-export type FormulaDeleteType = ReqType<ReqID.deleteOne, FormulaDeleteFilter>;
+// Generic Types
+
+export type FormulaSimpleEditType = ReqType<ReqID.updateSimple, FormulaSimpleEditQuery>;
+export type FormulaLinkEditType = ReqType<ReqID.updateLink, FormulaLinkEditQuery>;
+
+export type FormulaDeleteType = ReqType<ReqID.deleteOne, string>; // string: formula id
+export type FormulaFixType = ReqType<ReqID.fixLinks, string>; // string: formula id
+
 export type FormulaFindType = ReqType<ReqID.getMany | ReqID.getOne, FormulaFindFilter>;
 export type FormulaGetAllType = ReqType<ReqID.getAll, null>;
 export type FormulaCreateType = ReqType<ReqID.createOne, null>;
-
-export type FormulaResType = ResType<Formula>;

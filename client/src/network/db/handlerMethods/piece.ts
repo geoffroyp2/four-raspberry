@@ -1,106 +1,154 @@
+import { get, post } from "@db/client";
+
 import { store } from "@src/redux/store";
-import { updateFormula, updateRecord } from "@redux/dataReducers/dbDataSlice";
+import { loadPiece } from "@redux/dataReducers/pieceSlice";
 
 import {
-  ReqID,
-  PieceFindType,
-  PieceFindFilter,
-  PieceGetAllType,
   PieceCreateType,
   PieceDeleteType,
-  PieceEditType,
-  RecordEditType,
-  FormulaEditType,
+  PieceFindFilter,
+  PieceFindType,
+  PieceFixType,
+  PieceGetAllType,
+  PieceLinkEditType,
+  PieceSimpleEditType,
+  LinkEditID,
+  ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Formula, Piece, Record } from "@sharedTypes/dbModelTypes";
+import { Piece } from "@sharedTypes/dbModelTypes";
 
-import { get, post } from "../client";
+import { deleteInStore, updateStore } from "./storeEdit";
 
 export const pieceMethods = {
-  getAll: async (): Promise<Piece[]> => {
-    const req: PieceGetAllType = {
+  getAll: async (): Promise<void> => {
+    const request: PieceGetAllType = {
       id: ReqID.getAll,
       data: null,
     };
-    return get<Piece>(req, "piece").then((data) => data);
+
+    const data = await get(request, "piece");
+    updateStore(data);
   },
 
-  getMany: async (filter: PieceFindFilter): Promise<Piece[]> => {
-    const req: PieceFindType = {
+  getMany: async (filter: PieceFindFilter): Promise<void> => {
+    const request: PieceFindType = {
       id: ReqID.getMany,
       data: filter,
     };
-    return get<Piece>(req, "piece").then((data) => data);
+
+    const data = await get(request, "piece");
+    updateStore(data);
   },
 
-  getOne: async (filter: PieceFindFilter): Promise<Piece> => {
-    const req: PieceFindType = {
+  getOne: async (filter: PieceFindFilter): Promise<void> => {
+    const request: PieceFindType = {
       id: ReqID.getOne,
       data: filter,
     };
-    return get<Piece>(req, "piece").then((data) => data[0]);
+
+    const data = await get(request, "piece");
+    updateStore(data);
   },
 
-  createOne: async (): Promise<Piece> => {
-    const req: PieceCreateType = {
+  createOne: async (): Promise<void> => {
+    const request: PieceCreateType = {
       id: ReqID.createOne,
       data: null,
     };
-    return get<Piece>(req, "piece").then((data) => data[0]);
+
+    const data = await get(request, "piece");
+
+    updateStore(data);
+    // select new element
+    if (data.piece) {
+      store.dispatch(loadPiece(data.piece[0]));
+    }
   },
 
   deleteOne: async (id: string): Promise<void> => {
-    const { record, piece, formula } = store.getState().dbData;
-
-    //unlink records
-    piece[id].records.forEach(async (r) => {
-      const req: RecordEditType = {
-        id: ReqID.updateOne,
-        data: {
-          id: record[r]._id,
-          filter: { ...record[r], pieces: [...record[r].pieces].filter((p) => p !== id) },
-        },
-      };
-      await get<Record>(req, "record").then((res) => {
-        store.dispatch(updateRecord(res[0]));
-      });
-    });
-
-    //unlink formula
-    if (piece[id].formula) {
-      const formulaID = piece[id].formula;
-      const req1: FormulaEditType = {
-        id: ReqID.updateOne,
-        data: {
-          id: formulaID,
-          filter: { ...formula[formulaID], pieces: [...formula[formulaID].pieces].filter((p) => p !== id) },
-        },
-      };
-      await get<Formula>(req1, "formula").then((res) => {
-        store.dispatch(updateFormula(res[0]));
-      });
-    }
-
-    //Need to delete photos ?
-
-    //delete Piece
-    const req2: PieceDeleteType = {
+    const request: PieceDeleteType = {
       id: ReqID.deleteOne,
-      data: {
-        _id: id,
-      },
+      data: id,
     };
-    return get<Piece>(req2, "piece").then();
+
+    const data = await get(request, "piece");
+    updateStore(data);
+    deleteInStore(id, "piece");
   },
 
-  updateOne: async (piece: Piece): Promise<Piece> => {
-    const req: PieceEditType = {
-      id: ReqID.updateOne,
+  updateSimple: async (piece: Piece): Promise<void> => {
+    const request: PieceSimpleEditType = {
+      id: ReqID.updateSimple,
       data: {
         id: piece._id,
-        filter: { ...piece },
+        filter: {
+          name: piece.name,
+          description: piece.description,
+          images: [...piece.images],
+          date: piece.date,
+        },
       },
     };
-    return post<Piece>(req, "piece").then((data) => data[0]);
+
+    const data = await post(request, "piece");
+    updateStore(data);
+  },
+
+  addRecord: async (pieceID: string, recordID: string) => {
+    const request: PieceLinkEditType = {
+      id: ReqID.updateLink,
+      data: {
+        id: LinkEditID.addElement,
+        filter: {
+          pieceID: pieceID,
+          recordID: recordID,
+        },
+      },
+    };
+
+    const data = await post(request, "piece");
+    updateStore(data);
+  },
+
+  removeRecord: async (pieceID: string, recordID: string) => {
+    const request: PieceLinkEditType = {
+      id: ReqID.updateLink,
+      data: {
+        id: LinkEditID.removeElement,
+        filter: {
+          pieceID: pieceID,
+          recordID: recordID,
+        },
+      },
+    };
+
+    const data = await post(request, "piece");
+    updateStore(data);
+  },
+
+  changeFormula: async (pieceID: string, formulaID: string) => {
+    const request: PieceLinkEditType = {
+      id: ReqID.updateLink,
+      data: {
+        id: LinkEditID.changeLink,
+        filter: {
+          pieceID: pieceID,
+          formulaID: formulaID,
+        },
+      },
+    };
+
+    const data = await post(request, "piece");
+    updateStore(data);
+  },
+
+  fixLinks: async (id: string): Promise<void> => {
+    const request: PieceFixType = {
+      id: ReqID.fixLinks,
+      data: id,
+    };
+
+    const data = await get(request, "piece");
+    updateStore(data);
   },
 };

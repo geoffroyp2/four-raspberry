@@ -1,4 +1,5 @@
-import { FormulaEditFilter } from "../../controllers/formula/types";
+import { MongooseUpdateQuery } from "mongoose";
+import { FormulaSimpleEditFilter } from "../../controllers/formula/types";
 import { IFormulaDocument, IFormulaModel } from "./types";
 
 export async function createFormula(this: IFormulaModel): Promise<IFormulaDocument> {
@@ -12,7 +13,11 @@ export async function createFormula(this: IFormulaModel): Promise<IFormulaDocume
   });
 }
 
-export async function updateFormula(this: IFormulaModel, id: string, filter: FormulaEditFilter): Promise<IFormulaDocument> {
+export async function updateFormula(
+  this: IFormulaModel,
+  id: string,
+  filter: MongooseUpdateQuery<IFormulaModel> | FormulaSimpleEditFilter
+): Promise<IFormulaDocument> {
   return await this.findOneAndUpdate(
     { _id: id },
     { ...filter, lastUpdated: new Date().toISOString() },

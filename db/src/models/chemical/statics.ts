@@ -1,4 +1,5 @@
-import { ChemicalEditFilter } from "../../controllers/chemical/types";
+import { MongooseUpdateQuery } from "mongoose";
+import { ChemicalSimpleEditFilter } from "../../controllers/chemical/types";
 import { IChemicalDocument, IChemicalModel } from "./types";
 
 export async function createChemical(this: IChemicalModel): Promise<IChemicalDocument> {
@@ -11,7 +12,11 @@ export async function createChemical(this: IChemicalModel): Promise<IChemicalDoc
   });
 }
 
-export async function updateChemical(this: IChemicalModel, id: string, filter: ChemicalEditFilter): Promise<IChemicalDocument> {
+export async function updateChemical(
+  this: IChemicalModel,
+  id: string,
+  filter: MongooseUpdateQuery<IChemicalModel> | ChemicalSimpleEditFilter
+): Promise<IChemicalDocument> {
   return await this.findOneAndUpdate(
     { _id: id },
     { ...filter, lastUpdated: new Date().toISOString() },

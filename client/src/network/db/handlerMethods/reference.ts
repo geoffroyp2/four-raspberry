@@ -1,86 +1,104 @@
+import { get, post } from "@db/client";
+
 import { store } from "@src/redux/store";
-import { updateRecord } from "@redux/dataReducers/dbDataSlice";
+import { loadReference } from "@redux/dataReducers/referenceSlice";
 
 import {
-  ReqID,
-  ReferenceFindType,
-  ReferenceFindFilter,
-  ReferenceGetAllType,
   ReferenceCreateType,
   ReferenceDeleteType,
-  ReferenceEditType,
-  RecordEditType,
+  ReferenceFindFilter,
+  ReferenceFindType,
+  ReferenceFixType,
+  ReferenceGetAllType,
+  ReferenceSimpleEditType,
+  ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Record, Reference } from "@sharedTypes/dbModelTypes";
+import { Reference } from "@sharedTypes/dbModelTypes";
 
-import { get, post } from "../client";
+import { deleteInStore, updateStore } from "./storeEdit";
 
 export const referenceMethods = {
-  getAll: async (): Promise<Reference[]> => {
-    const req: ReferenceGetAllType = {
+  getAll: async (): Promise<void> => {
+    const request: ReferenceGetAllType = {
       id: ReqID.getAll,
       data: null,
     };
-    return get<Reference>(req, "reference").then((data) => data);
+
+    const data = await get(request, "reference");
+    updateStore(data);
   },
 
-  getMany: async (filter: ReferenceFindFilter): Promise<Reference[]> => {
-    const req: ReferenceFindType = {
+  getMany: async (filter: ReferenceFindFilter): Promise<void> => {
+    const request: ReferenceFindType = {
       id: ReqID.getMany,
       data: filter,
     };
-    return get<Reference>(req, "reference").then((data) => data);
+
+    const data = await get(request, "reference");
+    updateStore(data);
   },
 
-  getOne: async (filter: ReferenceFindFilter): Promise<Reference> => {
-    const req: ReferenceFindType = {
+  getOne: async (filter: ReferenceFindFilter): Promise<void> => {
+    const request: ReferenceFindType = {
       id: ReqID.getOne,
       data: filter,
     };
-    return get<Reference>(req, "reference").then((data) => data[0]);
+
+    const data = await get(request, "reference");
+    updateStore(data);
   },
 
-  createOne: async (): Promise<Reference> => {
-    const req: ReferenceCreateType = {
+  createOne: async (): Promise<void> => {
+    const request: ReferenceCreateType = {
       id: ReqID.createOne,
       data: null,
     };
-    return get<Reference>(req, "reference").then((data) => data[0]);
+
+    const data = await get(request, "reference");
+
+    updateStore(data);
+    // select new element
+    if (data.reference) {
+      store.dispatch(loadReference(data.reference[0]));
+    }
   },
 
   deleteOne: async (id: string): Promise<void> => {
-    const { record, reference } = store.getState().dbData;
-
-    // unlink Records
-    reference[id].records.forEach(async (r) => {
-      const req: RecordEditType = {
-        id: ReqID.updateOne,
-        data: {
-          id: record[r]._id,
-          filter: { ...record[r], reference: "" },
-        },
-      };
-      await get<Record>(req, "record").then((res) => store.dispatch(updateRecord(res[0])));
-    });
-
-    // delete reference
-    const req: ReferenceDeleteType = {
+    const request: ReferenceDeleteType = {
       id: ReqID.deleteOne,
-      data: {
-        _id: id,
-      },
+      data: id,
     };
-    return get<Reference>(req, "reference").then();
+
+    const data = await get(request, "reference");
+    updateStore(data);
+    deleteInStore(id, "reference");
   },
 
-  updateOne: async (reference: Reference): Promise<Reference> => {
-    const req: ReferenceEditType = {
-      id: ReqID.updateOne,
+  updateSimple: async (reference: Reference): Promise<void> => {
+    const request: ReferenceSimpleEditType = {
+      id: ReqID.updateSimple,
       data: {
         id: reference._id,
-        filter: { ...reference },
+        filter: {
+          name: reference.name,
+          description: reference.description,
+          color: { ...reference.color },
+          points: [...reference.points],
+        },
       },
     };
-    return post<Reference>(req, "reference").then((data) => data[0]);
+
+    const data = await post(request, "reference");
+    updateStore(data);
+  },
+
+  fixLinks: async (id: string): Promise<void> => {
+    const request: ReferenceFixType = {
+      id: ReqID.fixLinks,
+      data: id,
+    };
+
+    const data = await get(request, "reference");
+    updateStore(data);
   },
 };

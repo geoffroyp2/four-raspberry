@@ -1,5 +1,5 @@
-import { Document, Model } from "mongoose";
-import { PieceEditFilter } from "../../controllers/piece/types";
+import { Document, Model, MongooseUpdateQuery } from "mongoose";
+import { PieceSimpleEditFilter } from "../../controllers/piece/types";
 
 export interface IPiece {
   name: string;
@@ -19,5 +19,9 @@ export interface IPieceDocument extends Document, IPiece {}
 
 export interface IPieceModel extends Model<IPieceDocument>, IPiece {
   createPiece: (this: IPieceModel) => Promise<IPieceDocument>;
-  updatePiece: (this: IPieceModel, id: string, filter: PieceEditFilter) => Promise<IPieceDocument>;
+  updatePiece: (
+    this: IPieceModel,
+    id: string,
+    filter: MongooseUpdateQuery<IPieceModel> | PieceSimpleEditFilter
+  ) => Promise<IPieceDocument>;
 }

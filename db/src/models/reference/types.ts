@@ -1,5 +1,5 @@
-import { Document, Model } from "mongoose";
-import { ReferenceEditFilter } from "../../controllers/reference/types";
+import { Document, Model, MongooseUpdateQuery } from "mongoose";
+import { ReferenceSimpleEditFilter } from "../../controllers/reference/types";
 import { Color, Point } from "../shared/types";
 
 export interface IReference {
@@ -19,5 +19,9 @@ export interface IReferenceDocument extends Document, IReference {}
 
 export interface IReferenceModel extends Model<IReferenceDocument>, IReference {
   createReference: (this: IReferenceModel) => Promise<IReferenceDocument>;
-  updateReference: (this: IReferenceModel, id: string, data: ReferenceEditFilter) => Promise<IReferenceDocument>;
+  updateReference: (
+    this: IReferenceModel,
+    id: string,
+    data: MongooseUpdateQuery<IReferenceModel> | ReferenceSimpleEditFilter
+  ) => Promise<IReferenceDocument>;
 }

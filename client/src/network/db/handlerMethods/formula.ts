@@ -1,88 +1,136 @@
+import { get, post } from "@db/client";
+
 import { store } from "@src/redux/store";
-import { updatePiece } from "@redux/dataReducers/dbDataSlice";
+import { loadFormula } from "@redux/dataReducers/formulaSlice";
 
 import {
-  ReqID,
-  FormulaFindType,
-  FormulaFindFilter,
-  FormulaGetAllType,
   FormulaCreateType,
   FormulaDeleteType,
-  FormulaEditType,
-  PieceEditType,
+  FormulaFindFilter,
+  FormulaFindType,
+  FormulaFixType,
+  FormulaGetAllType,
+  FormulaLinkEditType,
+  FormulaSimpleEditType,
+  LinkEditID,
+  ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Formula, Piece } from "@sharedTypes/dbModelTypes";
+import { Formula, FormulaItem } from "@sharedTypes/dbModelTypes";
 
-import { get, post } from "../client";
+import { deleteInStore, updateStore } from "./storeEdit";
 
 export const formulaMethods = {
-  getAll: async (): Promise<Formula[]> => {
-    const req: FormulaGetAllType = {
+  getAll: async (): Promise<void> => {
+    const request: FormulaGetAllType = {
       id: ReqID.getAll,
       data: null,
     };
-    return get<Formula>(req, "formula").then((data) => data);
+
+    const data = await get(request, "formula");
+    updateStore(data);
   },
 
-  getMany: async (filter: FormulaFindFilter): Promise<Formula[]> => {
-    const req: FormulaFindType = {
+  getMany: async (filter: FormulaFindFilter): Promise<void> => {
+    const request: FormulaFindType = {
       id: ReqID.getMany,
       data: filter,
     };
-    return get<Formula>(req, "formula").then((data) => data);
+
+    const data = await get(request, "formula");
+    updateStore(data);
   },
 
-  getOne: async (filter: FormulaFindFilter): Promise<Formula> => {
-    const req: FormulaFindType = {
+  getOne: async (filter: FormulaFindFilter): Promise<void> => {
+    const request: FormulaFindType = {
       id: ReqID.getOne,
       data: filter,
     };
-    return get<Formula>(req, "formula").then((data) => data[0]);
+
+    const data = await get(request, "formula");
+    updateStore(data);
   },
 
-  createOne: async (): Promise<Formula> => {
-    const req: FormulaCreateType = {
+  createOne: async (): Promise<void> => {
+    const request: FormulaCreateType = {
       id: ReqID.createOne,
       data: null,
     };
-    return get<Formula>(req, "formula").then((data) => data[0]);
+
+    const data = await get(request, "formula");
+
+    updateStore(data);
+    // select new element
+    if (data.formula) {
+      store.dispatch(loadFormula(data.formula[0]));
+    }
   },
 
   deleteOne: async (id: string): Promise<void> => {
-    const { piece, formula } = store.getState().dbData;
-
-    // unlink pieces
-    formula[id].pieces.forEach(async (p) => {
-      const req: PieceEditType = {
-        id: ReqID.updateOne,
-        data: {
-          id: piece[p]._id,
-          filter: { ...piece[p], formula: "" },
-        },
-      };
-      await get<Piece>(req, "piece").then((res) => {
-        store.dispatch(updatePiece(res[0]));
-      });
-    });
-
-    // delete formula
-    const req: FormulaDeleteType = {
+    const request: FormulaDeleteType = {
       id: ReqID.deleteOne,
-      data: {
-        _id: id,
-      },
+      data: id,
     };
-    return get<Formula>(req, "formula").then();
+
+    const data = await get(request, "formula");
+    updateStore(data);
+    deleteInStore(id, "formula");
   },
 
-  updateOne: async (formula: Formula): Promise<Formula> => {
-    const req: FormulaEditType = {
-      id: ReqID.updateOne,
+  updateSimple: async (formula: Formula): Promise<void> => {
+    const request: FormulaSimpleEditType = {
+      id: ReqID.updateSimple,
       data: {
         id: formula._id,
-        filter: { ...formula },
+        filter: {
+          name: formula.name,
+          description: formula.description,
+        },
       },
     };
-    return post<Formula>(req, "formula").then((data) => data[0]);
+
+    const data = await post(request, "formula");
+    updateStore(data);
+  },
+
+  addChemical: async (formulaID: string, formulaItem: FormulaItem) => {
+    const request: FormulaLinkEditType = {
+      id: ReqID.updateLink,
+      data: {
+        id: LinkEditID.addElement,
+        filter: {
+          formulaID: formulaID,
+          formulaItem: formulaItem,
+        },
+      },
+    };
+
+    const data = await post(request, "formula");
+    updateStore(data);
+  },
+
+  removeChemical: async (formulaID: string, chemicalID: string) => {
+    const request: FormulaLinkEditType = {
+      id: ReqID.updateLink,
+      data: {
+        id: LinkEditID.removeElement,
+        filter: {
+          formulaID: formulaID,
+          chemicalID: chemicalID,
+        },
+      },
+    };
+
+    const data = await post(request, "formula");
+    updateStore(data);
+  },
+
+  fixLinks: async (id: string): Promise<void> => {
+    const request: FormulaFixType = {
+      id: ReqID.fixLinks,
+      data: id,
+    };
+
+    const data = await get(request, "formula");
+    updateStore(data);
   },
 };

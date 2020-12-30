@@ -1,72 +1,104 @@
 import { Request, Response } from "express";
-import { RecordEditType, RecordFindFilter } from "./types";
-import { ReqID } from "../shared/reqTypes";
-import { ResID } from "../shared/resTypes";
+
+import { RecordFindFilter, RecordLinkEditType, RecordSimpleEditType } from "./types";
+import { LinkEditID, ReqID } from "../shared/reqTypes";
 import { RecordModel } from "../../models/record/model";
+
+import { linksHandler } from "../utils/linksHandler";
 
 export default class RecordController {
   public async get(req: Request, res: Response): Promise<void> {
-    console.log("Record get");
+    // console.log("Record get");
 
     try {
       switch (+req.query.id) {
         case ReqID.createOne: {
           const result = await (await RecordModel.createRecord()).execPopulate();
-          res.json({ id: ResID.success, data: [result] });
+          res.json({ record: [result] });
           break;
         }
+
         case ReqID.getOne: {
           const query: RecordFindFilter = JSON.parse(req.query.data as string);
           const result = await RecordModel.findOne(query).exec();
-          res.json({ id: ResID.success, data: [result] });
+          res.json({ record: [result] });
           break;
         }
+
         case ReqID.getMany: {
           const query: RecordFindFilter = JSON.parse(req.query.data as string);
           const result = await RecordModel.find(query).exec();
-          res.json({ id: ResID.success, data: result });
+          res.json({ record: result });
           break;
         }
+
         case ReqID.getAll: {
           const result = await RecordModel.find().exec();
-          res.json({ id: ResID.success, data: result });
+          res.json({ record: result });
           break;
         }
+
         case ReqID.deleteOne: {
-          const query: RecordFindFilter = JSON.parse(req.query.data as string);
-          await RecordModel.deleteOne(query).exec();
-          res.json({ id: ResID.success, data: [] });
+          const id: string = JSON.parse(req.query.data as string);
+          const result = await linksHandler.record.delete(id);
+          res.json(result);
           break;
         }
+
+        case ReqID.fixLinks: {
+          const id: string = JSON.parse(req.query.data as string);
+          await linksHandler.record.reSyncLinks(id);
+          res.json({});
+          break;
+        }
+
         default:
-          res.json({ id: ResID.error, data: "bad id" });
+          res.status(400).json("Bad Request");
           break;
       }
     } catch (e) {
       console.error(e);
-      res.json({ id: ResID.error, data: "communication error" });
+      res.status(404).json("Not Found");
     }
   }
   public async post(req: Request, res: Response): Promise<void> {
-    console.log("Record post");
+    // console.log("Record post");
 
-    const body: RecordEditType = JSON.parse(req.body.body);
+    const body: RecordSimpleEditType | RecordLinkEditType = JSON.parse(req.body.body);
 
     try {
       switch (body.id) {
-        case ReqID.updateOne: {
+        case ReqID.updateSimple: {
           const result = await RecordModel.updateRecord(body.data.id, body.data.filter);
-          //   console.log(`Updated "${updatedGraph.name}"`);
-          res.json({ id: ResID.success, data: [result] });
+          res.json({ record: result });
           break;
         }
+
+        case ReqID.updateLink: {
+          const { id, filter } = body.data;
+
+          if (id === LinkEditID.addElement && filter.pieceID) {
+            const result = await linksHandler.record.addPiece(filter.recordID, filter.pieceID);
+            res.json(result);
+          } else if (id === LinkEditID.removeElement && filter.pieceID) {
+            const result = await linksHandler.record.removePiece(filter.recordID, filter.pieceID);
+            res.json(result);
+          } else if (id === LinkEditID.changeLink && filter.referenceID) {
+            const result = await linksHandler.record.changeReference(filter.recordID, filter.referenceID);
+            res.json(result);
+          } else {
+            res.status(400).json("Bad Request");
+          }
+          break;
+        }
+
         default:
-          res.json({ id: ResID.error, data: "no data" });
+          res.status(400).json("Bad Request");
           break;
       }
     } catch (e) {
       console.error(e);
-      res.json({ id: ResID.error, data: "communication error" });
+      res.status(404).json("Not Found");
     }
   }
 }

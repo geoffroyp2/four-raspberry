@@ -1,30 +1,33 @@
-import { Chemical } from "../../models/chemical/types";
 import { ReqID, ReqType } from "../shared/reqTypes";
-import { ResType } from "../shared/resTypes";
 
-export interface ChemicalEditQuery {
+// Query to update value of simple fields
+
+export interface ChemicalSimpleEditQuery {
   id: string;
-  filter: ChemicalEditFilter;
+  filter: ChemicalSimpleEditFilter;
 }
 
-export interface ChemicalEditFilter {
+export interface ChemicalSimpleEditFilter {
   name?: string;
   chemicalName?: string;
   mass?: number;
 }
 
-export interface ChemicalDeleteFilter {
-  _id: string;
-}
+// Filter to find specific element
 
 export interface ChemicalFindFilter {
   _id?: string;
+  chemicalName?: string;
+  mass?: number;
 }
 
-export type ChemicalEditType = ReqType<ReqID.updateOne, ChemicalEditQuery>;
-export type ChemicalDeleteType = ReqType<ReqID.deleteOne, ChemicalDeleteFilter>;
+// Generic Types
+
+export type ChemicalSimpleEditType = ReqType<ReqID.updateSimple, ChemicalSimpleEditQuery>;
+
+export type ChemicalDeleteType = ReqType<ReqID.deleteOne, string>; // string: chemical ID
+export type ChemicalFixType = ReqType<ReqID.fixLinks, string>; // string: chemical ID
+
 export type ChemicalFindType = ReqType<ReqID.getMany | ReqID.getOne, ChemicalFindFilter>;
 export type ChemicalGetAllType = ReqType<ReqID.getAll, null>;
 export type ChemicalCreateType = ReqType<ReqID.createOne, null>;
-
-export type ChemicalResType = ResType<Chemical>;

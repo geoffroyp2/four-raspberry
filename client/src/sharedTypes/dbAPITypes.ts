@@ -1,4 +1,4 @@
-import { Chemical, Formula, Piece, Record, Reference, Color, Point } from "./dbModelTypes";
+import { Chemical, Formula, Piece, Record, Reference, Color, Point, FormulaItem } from "./dbModelTypes";
 
 // COMMON
 
@@ -8,161 +8,199 @@ export enum ReqID {
   getOne,
   deleteOne,
   createOne,
-  updateOne,
+  updateSimple,
+  updateLink,
+  fixLinks,
 }
 
-export enum ResID {
-  error,
-  success,
+export enum LinkEditID {
+  changeLink,
+  addElement,
+  removeElement,
 }
 
-interface ReqType<T, U> {
+export interface ReqType<T, U> {
   id: T;
   data: U;
 }
 
-interface ResType<T> {
-  id: ResID;
-  data: T[];
+export interface ResDataType {
+  chemical?: Chemical[];
+  formula?: Formula[];
+  piece?: Piece[];
+  record?: Record[];
+  reference?: Reference[];
 }
+
+export type AllGetAllType = ReqType<ReqID.getAll, null>;
+export type AllFixType = ReqType<ReqID.fixLinks, null>;
 
 // REFERENCE
 
-export interface ReferenceEditFilter {
+export interface ReferenceSimpleEditQuery {
   id: string;
-  filter: {
-    name: string;
-    description: string;
-    color: Color;
-    points: Point[];
-    records: string[];
-  };
+  filter: ReferenceSimpleEditFilter;
 }
 
-export interface ReferenceDeleteFilter {
-  _id: string;
+export interface ReferenceSimpleEditFilter {
+  name?: string;
+  description?: string;
+  color?: Color;
+  points?: Point[];
 }
 
 export interface ReferenceFindFilter {
   _id?: string;
+  name?: string;
+  description?: string;
 }
 
-export type ReferenceEditType = ReqType<ReqID.updateOne, ReferenceEditFilter>;
-export type ReferenceDeleteType = ReqType<ReqID.deleteOne, ReferenceDeleteFilter>;
+export type ReferenceSimpleEditType = ReqType<ReqID.updateSimple, ReferenceSimpleEditQuery>;
+export type ReferenceDeleteType = ReqType<ReqID.deleteOne, string>; // string: referenceID
+export type ReferenceFixType = ReqType<ReqID.fixLinks, string>; // string: referenceID
 export type ReferenceFindType = ReqType<ReqID.getMany | ReqID.getOne, ReferenceFindFilter>;
 export type ReferenceGetAllType = ReqType<ReqID.getAll, null>;
 export type ReferenceCreateType = ReqType<ReqID.createOne, null>;
-export type ReferenceResType = ResType<Reference>;
 
 // RECORD
 
-export interface RecordEditFilter {
+export interface RecordSimpleEditQuery {
   id: string;
-  filter: {
-    name: string;
-    description: string;
-    reference: string;
-    color: Color;
-    points: Point[];
-    pieces: string[];
-    date: string;
-  };
+  filter: RecordSimpleEditFilter;
 }
 
-export interface RecordDeleteFilter {
-  _id: string;
+export interface RecordSimpleEditFilter {
+  name?: string;
+  description?: string;
+  color?: Color;
+  points?: Point[];
+  date?: string;
+}
+
+export interface RecordLinkEditQuery {
+  id: LinkEditID;
+  filter: RecordLinkEditFilter;
+}
+
+export interface RecordLinkEditFilter {
+  recordID: string;
+  referenceID?: string;
+  pieceID?: string;
 }
 
 export interface RecordFindFilter {
   _id?: string;
+  name?: string;
+  description?: string;
   reference?: string;
 }
 
-export type RecordEditType = ReqType<ReqID.updateOne, RecordEditFilter>;
-export type RecordDeleteType = ReqType<ReqID.deleteOne, RecordDeleteFilter>;
+export type RecordSimpleEditType = ReqType<ReqID.updateSimple, RecordSimpleEditQuery>;
+export type RecordLinkEditType = ReqType<ReqID.updateLink, RecordLinkEditQuery>;
+export type RecordDeleteType = ReqType<ReqID.deleteOne, string>; // string: Record id
+export type RecordFixType = ReqType<ReqID.fixLinks, string>; // string: Record id
 export type RecordFindType = ReqType<ReqID.getMany | ReqID.getOne, RecordFindFilter>;
 export type RecordGetAllType = ReqType<ReqID.getAll, null>;
 export type RecordCreateType = ReqType<ReqID.createOne, null>;
-export type RecordResType = ResType<Record>;
 
 // PIECE
 
-export interface PieceEditFilter {
+export interface PieceSimpleEditQuery {
   id: string;
-  filter: {
-    name?: string;
-    description?: string;
-    records?: string[];
-    images?: string[];
-    formula?: string;
-    date?: string;
-  };
+  filter: PieceSimpleEditFilter;
 }
 
-export interface PieceDeleteFilter {
-  _id: string;
+export interface PieceSimpleEditFilter {
+  name?: string;
+  description?: string;
+  images?: string[];
+  date?: string;
+}
+
+export interface PieceLinkEditQuery {
+  id: LinkEditID;
+  filter: PieceLinkEditFilter;
+}
+
+export interface PieceLinkEditFilter {
+  pieceID: string;
+  recordID?: string;
+  formulaID?: string;
 }
 
 export interface PieceFindFilter {
   _id?: string;
+  name?: string;
+  description?: string;
 }
 
-export type PieceEditType = ReqType<ReqID.updateOne, PieceEditFilter>;
-export type PieceDeleteType = ReqType<ReqID.deleteOne, PieceDeleteFilter>;
+export type PieceSimpleEditType = ReqType<ReqID.updateSimple, PieceSimpleEditQuery>;
+export type PieceLinkEditType = ReqType<ReqID.updateLink, PieceLinkEditQuery>;
+export type PieceDeleteType = ReqType<ReqID.deleteOne, string>; // string: piece ID
+export type PieceFixType = ReqType<ReqID.fixLinks, string>; // string: piece ID
 export type PieceFindType = ReqType<ReqID.getMany | ReqID.getOne, PieceFindFilter>;
 export type PieceGetAllType = ReqType<ReqID.getAll, null>;
 export type PieceCreateType = ReqType<ReqID.createOne, null>;
-export type PieceResType = ResType<Piece>;
 
 // FORMULA
 
-export interface FormulaEditFilter {
+export interface FormulaSimpleEditQuery {
   id: string;
-  filter: {
-    name?: string;
-    description?: string;
-    pieces?: string[];
-    composition?: { id: string; amount: number }[];
-  };
+  filter: FormulaSimpleEditFilter;
 }
 
-export interface FormulaDeleteFilter {
-  _id: string;
+export interface FormulaSimpleEditFilter {
+  name?: string;
+  description?: string;
+}
+
+export interface FormulaLinkEditQuery {
+  id: LinkEditID;
+  filter: FormulaLinkEditFilter;
+}
+
+export interface FormulaLinkEditFilter {
+  formulaID: string;
+  formulaItem?: FormulaItem;
+  chemicalID?: string;
 }
 
 export interface FormulaFindFilter {
   _id?: string;
+  name?: string;
+  description?: string;
 }
 
-export type FormulaEditType = ReqType<ReqID.updateOne, FormulaEditFilter>;
-export type FormulaDeleteType = ReqType<ReqID.deleteOne, FormulaDeleteFilter>;
+export type FormulaSimpleEditType = ReqType<ReqID.updateSimple, FormulaSimpleEditQuery>;
+export type FormulaLinkEditType = ReqType<ReqID.updateLink, FormulaLinkEditQuery>;
+export type FormulaDeleteType = ReqType<ReqID.deleteOne, string>; // string: formula id
+export type FormulaFixType = ReqType<ReqID.fixLinks, string>; // string: formula id
 export type FormulaFindType = ReqType<ReqID.getMany | ReqID.getOne, FormulaFindFilter>;
 export type FormulaGetAllType = ReqType<ReqID.getAll, null>;
 export type FormulaCreateType = ReqType<ReqID.createOne, null>;
-export type FormulaResType = ResType<Formula>;
 
 // CHEMICAL
 
-export interface ChemicalEditFilter {
+export interface ChemicalSimpleEditQuery {
   id: string;
-  filter: {
-    name?: string;
-    chemicalName?: string;
-    mass?: number;
-  };
+  filter: ChemicalSimpleEditFilter;
 }
 
-export interface ChemicalDeleteFilter {
-  _id: string;
+export interface ChemicalSimpleEditFilter {
+  name?: string;
+  chemicalName?: string;
+  mass?: number;
 }
 
 export interface ChemicalFindFilter {
   _id?: string;
+  chemicalName?: string;
+  mass?: number;
 }
 
-export type ChemicalEditType = ReqType<ReqID.updateOne, ChemicalEditFilter>;
-export type ChemicalDeleteType = ReqType<ReqID.deleteOne, ChemicalDeleteFilter>;
+export type ChemicalSimpleEditType = ReqType<ReqID.updateSimple, ChemicalSimpleEditQuery>;
+export type ChemicalDeleteType = ReqType<ReqID.deleteOne, string>; // string: chemical ID
+export type ChemicalFixType = ReqType<ReqID.fixLinks, string>; // string: chemical ID
 export type ChemicalFindType = ReqType<ReqID.getMany | ReqID.getOne, ChemicalFindFilter>;
 export type ChemicalGetAllType = ReqType<ReqID.getAll, null>;
 export type ChemicalCreateType = ReqType<ReqID.createOne, null>;
-export type ChemicalResType = ResType<Chemical>;

@@ -1,5 +1,5 @@
-import { Document, Model } from "mongoose";
-import { RecordEditFilter } from "../../controllers/record/types";
+import { Document, Model, MongooseUpdateQuery } from "mongoose";
+import { RecordSimpleEditFilter } from "../../controllers/record/types";
 import { Color, Point } from "../shared/types";
 
 export interface IRecord {
@@ -21,5 +21,9 @@ export interface IRecordDocument extends Document, IRecord {}
 
 export interface IRecordModel extends Model<IRecordDocument>, IRecord {
   createRecord: (this: IRecordModel) => Promise<IRecordDocument>;
-  updateRecord: (this: IRecordModel, id: string, data: RecordEditFilter) => Promise<IRecordDocument>;
+  updateRecord: (
+    this: IRecordModel,
+    id: string,
+    data: MongooseUpdateQuery<IRecordModel> | RecordSimpleEditFilter
+  ) => Promise<IRecordDocument>;
 }

@@ -1,4 +1,5 @@
-import { ReferenceEditFilter } from "../../controllers/reference/types";
+import { MongooseFilterQuery, MongooseUpdateQuery } from "mongoose";
+import { ReferenceSimpleEditFilter } from "../../controllers/reference/types";
 import { IReferenceDocument, IReferenceModel } from "./types";
 
 export async function createReference(this: IReferenceModel): Promise<IReferenceDocument> {
@@ -16,7 +17,7 @@ export async function createReference(this: IReferenceModel): Promise<IReference
 export async function updateReference(
   this: IReferenceModel,
   id: string,
-  filter: ReferenceEditFilter
+  filter: MongooseUpdateQuery<IReferenceModel> | ReferenceSimpleEditFilter
 ): Promise<IReferenceDocument> {
   return await this.findOneAndUpdate(
     { _id: id },

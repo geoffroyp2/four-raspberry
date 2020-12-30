@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CompositionElement, Formula } from "@sharedTypes/dbModelTypes";
+import { Formula, FormulaItem } from "@sharedTypes/dbModelTypes";
 import { RootState } from "../../store";
 
 type FormulaSliceType = {
@@ -65,7 +65,7 @@ const formulaReducer = createSlice({
     },
 
     // COMPOSITION
-    setFormulaComposition: (state, action: PayloadAction<CompositionElement[]>) => {
+    setFormulaComposition: (state, action: PayloadAction<FormulaItem[]>) => {
       state.selected.composition = action.payload;
     },
 

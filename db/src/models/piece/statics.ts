@@ -1,4 +1,5 @@
-import { PieceEditFilter } from "../../controllers/piece/types";
+import { MongooseUpdateQuery } from "mongoose";
+import { PieceSimpleEditFilter } from "../../controllers/piece/types";
 import { IPieceDocument, IPieceModel } from "./types";
 
 export async function createPiece(this: IPieceModel): Promise<IPieceDocument> {
@@ -14,7 +15,11 @@ export async function createPiece(this: IPieceModel): Promise<IPieceDocument> {
   });
 }
 
-export async function updatePiece(this: IPieceModel, id: string, filter: PieceEditFilter): Promise<IPieceDocument> {
+export async function updatePiece(
+  this: IPieceModel,
+  id: string,
+  filter: MongooseUpdateQuery<IPieceModel> | PieceSimpleEditFilter
+): Promise<IPieceDocument> {
   return await this.findOneAndUpdate(
     { _id: id },
     { ...filter, lastUpdated: new Date().toISOString() },

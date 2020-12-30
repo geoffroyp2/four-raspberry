@@ -43,7 +43,7 @@ export interface Piece {
   lastUpdated: string;
 }
 
-export type CompositionElement = {
+export type FormulaItem = {
   id: string;
   amount: number;
 };
@@ -53,7 +53,7 @@ export interface Formula {
   name: string;
   description: string;
   pieces: string[];
-  composition: CompositionElement[];
+  composition: FormulaItem[];
   lastUpdated: string;
 }
 

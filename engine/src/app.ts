@@ -5,12 +5,12 @@ import * as cors from "cors";
 
 class App {
   public app: express.Application;
-  public routePrv: Routes = new Routes();
+  public routes: Routes = new Routes();
 
   constructor() {
     this.app = express();
     this.config();
-    this.routePrv.routes(this.app);
+    this.routes.routes(this.app);
   }
 
   private config(): void {

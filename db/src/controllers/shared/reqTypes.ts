@@ -4,7 +4,15 @@ export enum ReqID {
   getOne,
   deleteOne,
   createOne,
-  updateOne,
+  updateSimple,
+  updateLink,
+  fixLinks,
+}
+
+export enum LinkEditID {
+  changeLink,
+  addElement,
+  removeElement,
 }
 
 export interface ReqType<T, U> {
