@@ -27,12 +27,11 @@ const connect = () => {
   });
 };
 
-export const disconnect = () => {
+const disconnect = () => {
   if (!database) return;
 
   Mongoose.disconnect();
   console.log("database disconnected");
 };
 
-const db = { connect, disconnect };
-export default db;
+export default { connect, disconnect };

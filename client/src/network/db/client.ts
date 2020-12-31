@@ -2,8 +2,8 @@ import { ResDataType } from "@sharedTypes/dbAPITypes";
 import axios from "axios";
 
 export const post = async (req: any, route: string): Promise<ResDataType> => {
-  const body = JSON.stringify(req);
   console.log("post", req);
+  const body = JSON.stringify(req);
 
   return await axios
     .post(`http://localhost:3001/${route}`, { body })

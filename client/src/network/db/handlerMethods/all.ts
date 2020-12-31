@@ -1,6 +1,7 @@
 import { get } from "@db/client";
 import { AllGetAllType, AllFixType, ReqID } from "@sharedTypes/dbAPITypes";
-import { updateStore } from "./storeEdit";
+
+import { updateStore } from "@reduxStore/dbDataEdit";
 
 export const allMethods = {
   getAll: async () => {

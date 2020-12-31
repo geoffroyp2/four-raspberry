@@ -7,8 +7,6 @@ import { loadReference } from "@redux/dataReducers/referenceSlice";
 
 import LoadTable from "@UITabs/sharedComponents/LoadTable/LoadTable";
 
-// import db from "@db/handler";
-
 const ReferenceLoadTable = () => {
   const dispatch = useDispatch();
   const rowSelected = useSelector(LoadTableRowSelected);

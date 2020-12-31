@@ -26,8 +26,8 @@ const formulaReducer = createSlice({
   initialState,
   reducers: {
     // GENERAL
-    loadFormula: (state, action: PayloadAction<Formula>) => {
-      state.selected = action.payload;
+    loadFormula: (state, action: PayloadAction<Formula | null>) => {
+      state.selected = action.payload || emptyFormula;
     },
 
     memorizeFormula: (state, action: PayloadAction<void>) => {

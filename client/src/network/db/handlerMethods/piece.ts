@@ -17,7 +17,7 @@ import {
 } from "@sharedTypes/dbAPITypes";
 import { Piece } from "@sharedTypes/dbModelTypes";
 
-import { deleteInStore, updateStore } from "./storeEdit";
+import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
 export const pieceMethods = {
   getAll: async (): Promise<void> => {

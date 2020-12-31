@@ -36,9 +36,15 @@ const EngineButtons = () => {
     dispatch(updateEngineState(newState));
   }, [dispatch]);
 
+  const handleConnect = useCallback(async () => {
+    await engine.reconnect();
+    // dispatch(updateEngineState(newState));
+  }, [dispatch]);
+
   return (
     <>
       <LoadButton clickCallback={handleLoad} disabled={state.status === "pause" || state.status === "run"} />
+      <Button onClick={handleConnect}>Connect</Button>
       <ButtonGroup className="float-right">
         {state.status === "stop" || state.status === "pause" ? (
           <Button onClick={handleStart} className="btn-lg btn-success" disabled={reference._id === "default"}>

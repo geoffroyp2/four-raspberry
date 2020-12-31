@@ -23,7 +23,7 @@ export class Engine {
 
   constructor() {
     this.WSIN = new WSINClient((values) => {
-      console.log(values);
+      // console.log(values);
       this.values.sensor = values;
     });
     this.WSIN.connect();
@@ -105,6 +105,13 @@ export class Engine {
 
       this.run();
     }
+  }
+
+  public reconnect() {
+    console.log("trying to reconnect...");
+
+    this.WSIN.connect();
+    this.WSOUT.connect();
   }
 
   private run() {

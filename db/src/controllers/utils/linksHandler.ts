@@ -9,32 +9,35 @@ import { ReferenceModel } from "../../models/reference/model";
 import { IReferenceDocument } from "../../models/reference/types";
 
 import { ResDataType } from "../shared/resTypes";
+import { validateID } from "./idParser";
 
-/*
-
-Handler for all the linked elements in the database.
-For every collection, there is a reSyncLinks function that aims to detect and repair possible link failures
-Link creation / deletion are also handled here
-Deletion of the item + deletion of all it's links is handle here
-
-*/
+/**
+ * @const linksHandler is a collection of methods relating to the handling of items in the database that have links in-between them
+ * each database collection has it's own corresponding methods
+ * for every collection, the fixLinks function aims to detect link errors and fix them
+ * all of the links creation / deletion are handled here
+ */
 
 export const linksHandler = {
+  /**
+   * references have links to records
+   * update to these links only come from the updating of records
+   * deleting a reference needs to unlink the relevant records
+   */
+
   reference: {
-    // references have links to records
-    // update to these links come from the updating of records only
-    // deleting a reference needs to unlink the relevant records
+    /**
+     * Restores the links involving the reference
+     * @param referenceID the reference ID
+     */
 
-    reSyncLinks: async (referenceID: string): Promise<void> => {
-      // scan db for ( reference <==> record ) links based on referenceID.
-      // only update reference when de-sync found, update record if reference does not exist
-
-      let currentReference = await ReferenceModel.findById(referenceID).exec();
+    fixLinks: async (referenceID: string): Promise<void> => {
+      let currentReference = await ReferenceModel.findById(validateID(referenceID)).exec();
 
       // find all records that are pointed to by reference.records and break link if record does not point back
       if (currentReference) {
         currentReference.records.forEach(async (id) => {
-          const currentRecord = await RecordModel.findById(id).exec();
+          const currentRecord = await RecordModel.findById(validateID(id)).exec();
           if (!currentRecord || currentRecord.reference !== referenceID) {
             currentReference = await ReferenceModel.updateReference(referenceID, { $pull: { records: id } });
           }
@@ -60,6 +63,11 @@ export const linksHandler = {
       }
     },
 
+    /**
+     * Deletes the links involving the reference and the reference itself
+     * @param referenceID the reference ID
+     */
+
     delete: async (referenceID: string): Promise<ResDataType> => {
       // update all records that are linked to the referenceID
       const recordsFound = await RecordModel.find({ reference: referenceID }).exec();
@@ -76,22 +84,26 @@ export const linksHandler = {
     },
   },
 
+  /**
+   * records have links to references and pieces
+   * changing the link to a reference updates both the current record and relevant reference(s)
+   * adding / removing piece update both the record and relevant piece
+   * the record/piece link can also be updated from the piece
+   * deleting a record needs to unlink the relevant reference and pieces
+   */
+
   record: {
-    // records have links to references and pieces
-    // changing the link to a reference updates both the current record and relevant reference(s)
-    // adding / removing piece update both the record and relevant piece
-    // the record/piece link can also be updated from the piece
-    // deleting a record needs to unlink the relevant reference and pieces
+    /**
+     * Restores the links involving the record
+     * @param recordID the record ID
+     */
 
-    reSyncLinks: async (recordID: string): Promise<void> => {
-      // scan db for ( reference <==> record ) && ( piece <==> record ) links based on recordID.
-      // only update record if de-sync found, update references if collision, update references && pieces if record does not exist
-
-      let currentRecord = await RecordModel.findById(recordID).exec();
+    fixLinks: async (recordID: string): Promise<void> => {
+      let currentRecord = await RecordModel.findById(validateID(recordID)).exec();
 
       // find the reference that is pointed to by the currentRecord.reference and remove record link if mismatch
       if (currentRecord) {
-        const referenceFound1 = await ReferenceModel.findById(currentRecord.reference).exec();
+        const referenceFound1 = await ReferenceModel.findById(validateID(currentRecord.reference)).exec();
         if (!referenceFound1 || !referenceFound1.records.includes(recordID)) {
           currentRecord = await RecordModel.updateRecord(recordID, { reference: "" });
         }
@@ -127,7 +139,7 @@ export const linksHandler = {
       // find all pieces that are pointed to by currentRecord.pieces, and break link if piece does not point back
       if (currentRecord) {
         currentRecord.pieces.forEach(async (id) => {
-          const currentPiece = await PieceModel.findById(id).exec();
+          const currentPiece = await PieceModel.findById(validateID(id)).exec();
           if (!currentPiece || !currentPiece.records.includes(recordID)) {
             currentRecord = await RecordModel.updateRecord(recordID, {
               $pull: { pieces: id },
@@ -155,8 +167,14 @@ export const linksHandler = {
       }
     },
 
+    /**
+     * Links the record to new reference and deletes previous link if required
+     * @param recordID the record ID
+     * @param newReferenceID the new reference ID
+     */
+
     changeReference: async (recordID: string, newReferenceID: string): Promise<ResDataType> => {
-      const currentRecord = await RecordModel.findById(recordID).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
       let updatedRecord: IRecordDocument;
       const updatedReferences: IReferenceDocument[] = [];
 
@@ -166,7 +184,7 @@ export const linksHandler = {
       }
 
       // if a reference was previously set, remove current Record from it
-      const previousReference = await ReferenceModel.findById(currentRecord.reference).exec();
+      const previousReference = await ReferenceModel.findById(validateID(currentRecord.reference)).exec();
       if (previousReference) {
         const updatedPreviousReference = await ReferenceModel.updateReference(previousReference._id, {
           $pull: { records: recordID },
@@ -175,7 +193,7 @@ export const linksHandler = {
       }
 
       // update new reference if it exists
-      const newReference = await ReferenceModel.findById(newReferenceID).exec();
+      const newReference = await ReferenceModel.findById(validateID(newReferenceID)).exec();
       if (newReference) {
         const updatedNewReference = await ReferenceModel.updateReference(newReferenceID, {
           $push: { records: recordID },
@@ -195,9 +213,15 @@ export const linksHandler = {
       };
     },
 
+    /**
+     * Adds a piece to the record's piece array, and creates the corresponding link from piece to record
+     * @param recordID the record ID
+     * @param pieceID the piece ID
+     */
+
     addPiece: async (recordID: string, pieceID: string): Promise<ResDataType> => {
-      const currentRecord = await RecordModel.findById(recordID).exec();
-      const currentPiece = await PieceModel.findById(pieceID).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
 
       // if record or piece not found, do nothing
       if (!currentRecord || !currentPiece) {
@@ -213,9 +237,15 @@ export const linksHandler = {
       return { record: [updatedRecord], piece: [updatedPiece] };
     },
 
+    /**
+     * Removes a piece from the record's piece array, and deletes the corresponding link from piece to record
+     * @param recordID the record ID
+     * @param pieceID the piece ID
+     */
+
     removePiece: async (recordID: string, pieceID: string): Promise<ResDataType> => {
-      const currentRecord = await RecordModel.findById(recordID).exec();
-      const currentPiece = await PieceModel.findById(pieceID).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
 
       // if currentRecord not found, try to remove it from currentPiece's records
       if (!currentRecord) {
@@ -244,8 +274,13 @@ export const linksHandler = {
       return { record: [updatedRecord], piece: [updatedPiece] };
     },
 
+    /**
+     * Deletes the links involving the record and the record itself
+     * @param recordID the record ID
+     */
+
     delete: async (recordID: string): Promise<ResDataType> => {
-      const currentRecord = await RecordModel.findById(recordID).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
 
       // if currentRecord not found, do nothing
       if (!currentRecord) {
@@ -263,7 +298,7 @@ export const linksHandler = {
       );
 
       // find reference and update it
-      const currentReference = await ReferenceModel.findById(currentRecord.reference).exec();
+      const currentReference = await ReferenceModel.findById(validateID(currentRecord.reference)).exec();
       let updatedReference: IReferenceDocument | null = null;
       if (currentReference) {
         updatedReference = await ReferenceModel.updateReference(currentReference._id, {
@@ -278,22 +313,26 @@ export const linksHandler = {
     },
   },
 
+  /**
+   * pieces have links to records and formulas
+   * link to record can be changed by both record and piece
+   * link to formula can only be changed by piece
+   * deleting a piece needs to unlink the relevant records and formula
+   */
+
   piece: {
-    // pieces have links to records and formulas
-    // link to record can be changed by both record and piece
-    // link to formula can only be changed by piece
-    // deleting a piece needs to unlink the relevant records and formula
+    /**
+     * Restores the links involving the piece
+     * @param pieceID the piece ID
+     */
 
-    reSyncLinks: async (pieceID: string): Promise<void> => {
-      // scan db for ( piece <==> record ) && ( piece <==> formula ) links based on pieceID.
-      // only update piece if de-sync found, update formulas if collision, update record && formula if record does not exist
-
-      let currentPiece = await PieceModel.findById(pieceID).exec();
+    fixLinks: async (pieceID: string): Promise<void> => {
+      let currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
 
       // find the records that are pointed to by piece.records, remove links if record does not point back
       if (currentPiece) {
         currentPiece.records.forEach(async (id) => {
-          const rec = await RecordModel.findById(id).exec();
+          const rec = await RecordModel.findById(validateID(id)).exec();
           if (!rec || !rec.pieces.includes(pieceID)) {
             currentPiece = await PieceModel.updatePiece(pieceID, {
               $pull: { records: id },
@@ -325,7 +364,7 @@ export const linksHandler = {
       // find the formula that is pointed to by piece.formula, remove link if formula does not point back
       // if several are found, only keep the first one and erase the others
       if (currentPiece) {
-        const foundFormula = await FormulaModel.findById(currentPiece.formula).exec();
+        const foundFormula = await FormulaModel.findById(validateID(currentPiece.formula)).exec();
         if (!foundFormula || !foundFormula.pieces.includes(pieceID)) {
           currentPiece = await PieceModel.updatePiece(pieceID, { formula: "" });
         }
@@ -350,9 +389,15 @@ export const linksHandler = {
       }
     },
 
+    /**
+     * Adds a record to the piece's record array, and creates the corresponding link from record to piece
+     * @param pieceID the piece ID
+     * @param recordID the record ID
+     */
+
     addRecord: async (pieceID: string, recordID: string): Promise<ResDataType> => {
-      const currentPiece = await PieceModel.findById(pieceID).exec();
-      const currentRecord = await RecordModel.findById(recordID).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
 
       // if record or piece not found, do nothing
       if (!currentRecord || !currentPiece) {
@@ -368,9 +413,15 @@ export const linksHandler = {
       return { record: [updatedRecord], piece: [updatedPiece] };
     },
 
+    /**
+     * Removes a record from the piece's record array, and deletes the corresponding link from record to piece
+     * @param pieceID the piece ID
+     * @param recordID the record ID
+     */
+
     removeRecord: async (pieceID: string, recordID: string): Promise<ResDataType> => {
-      const currentRecord = await RecordModel.findById(recordID).exec();
-      const currentPiece = await PieceModel.findById(pieceID).exec();
+      const currentRecord = await RecordModel.findById(validateID(recordID)).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
 
       // if currentRecord not found, try to remove it from currentPiece's records
       if (!currentRecord) {
@@ -399,8 +450,14 @@ export const linksHandler = {
       return { record: [updatedRecord], piece: [updatedPiece] };
     },
 
+    /**
+     * Links the piece to new formula and deletes previous link if required
+     * @param pieceID the piece ID
+     * @param newFormulaID the new formula ID
+     */
+
     changeFormula: async (pieceID: string, newFormulaID: string): Promise<ResDataType> => {
-      const currentPiece = await PieceModel.findById(pieceID).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
       let updatedPiece: IPieceDocument;
       const updatedFormulas: IFormulaDocument[] = [];
 
@@ -410,7 +467,7 @@ export const linksHandler = {
       }
 
       // // if a formula was previously set, remove current Piece from it
-      const previousFormula = await FormulaModel.findById(currentPiece.formula).exec();
+      const previousFormula = await FormulaModel.findById(validateID(currentPiece.formula)).exec();
       if (previousFormula) {
         const updatedPreviousFormula = await FormulaModel.updateFormula(previousFormula._id, {
           $pull: { pieces: pieceID },
@@ -419,7 +476,7 @@ export const linksHandler = {
       }
 
       // // update new formula if it exists
-      const newFormula = await FormulaModel.findById(newFormulaID).exec();
+      const newFormula = await FormulaModel.findById(validateID(newFormulaID)).exec();
       if (newFormula) {
         const updatedNewFormula = await FormulaModel.updateFormula(newFormulaID, {
           $push: { pieces: pieceID },
@@ -439,8 +496,13 @@ export const linksHandler = {
       };
     },
 
+    /**
+     * Deletes the links involving the piece and the piece itself
+     * @param pieceID  the piece ID
+     */
+
     delete: async (pieceID: string): Promise<ResDataType> => {
-      const currentPiece = await PieceModel.findById(pieceID).exec();
+      const currentPiece = await PieceModel.findById(validateID(pieceID)).exec();
 
       // if currentPiece not found, do nothing
       if (!currentPiece) {
@@ -458,7 +520,7 @@ export const linksHandler = {
       );
 
       // find formula and update it
-      const currentFormula = await FormulaModel.findById(currentPiece.formula).exec();
+      const currentFormula = await FormulaModel.findById(validateID(currentPiece.formula)).exec();
       let updatedFormula: IFormulaDocument | null = null;
       if (currentFormula) {
         updatedFormula = await FormulaModel.updateFormula(currentFormula._id, {
@@ -473,19 +535,26 @@ export const linksHandler = {
     },
   },
 
-  formula: {
-    // formula have links to pieces and chemicals
-    // pieces link cannot be edited from formula
-    // chemical link can be changed
-    // deleting a formula needs to unlink the relevant pieces
+  /**
+   * formula have links to pieces and chemicals
+   * pieces link cannot be edited from formula
+   * chemical link can only be changed by formula
+   * deleting a formula needs to unlink the relevant pieces
+   */
 
-    reSyncLinks: async (formulaID: string): Promise<void> => {
-      let currentFormula = await FormulaModel.findById(formulaID).exec();
+  formula: {
+    /**
+     * Restores the links involving the piece
+     * @param formulaID the formula ID
+     */
+
+    fixLinks: async (formulaID: string): Promise<void> => {
+      let currentFormula = await FormulaModel.findById(validateID(formulaID)).exec();
 
       // find the pieces that are pointed to by formula.pieces, remove links if piece does not point back
       if (currentFormula) {
         currentFormula.pieces.forEach(async (id) => {
-          const piece = await PieceModel.findById(id).exec();
+          const piece = await PieceModel.findById(validateID(id)).exec();
           if (!piece || piece.formula !== formulaID) {
             currentFormula = await FormulaModel.updateFormula(formulaID, {
               $pull: { pieces: id },
@@ -511,18 +580,24 @@ export const linksHandler = {
 
       // find all chemicals that are pointed to by formula.composition, delete link if chemical does not exist
       const foundChemicals = currentFormula.composition.forEach(async (item) => {
-        const currentChemical = await ChemicalModel.findById(item.id).exec();
+        const currentChemical = await ChemicalModel.findById(validateID(item.id)).exec();
         if (!currentChemical) {
           currentFormula = await FormulaModel.updateFormula(formulaID, { $pull: { composition: { id: item.id } } });
         }
       });
     },
 
+    /**
+     * Adds a chemicalItem to the formula's composition array
+     * @param formulaID the formula ID
+     * @param item the formulaItem to add
+     */
+
     addChemical: async (formulaID: string, item: FormulaItem): Promise<ResDataType> => {
       // takes in FormulaItem to add both id and amount
 
-      const currentFormula = await FormulaModel.findById(formulaID).exec();
-      const currentChemical = await ChemicalModel.findById(item.id).exec();
+      const currentFormula = await FormulaModel.findById(validateID(formulaID)).exec();
+      const currentChemical = await ChemicalModel.findById(validateID(item.id)).exec();
 
       // if either does not exist, do nothing
       if (!currentChemical || !currentFormula) {
@@ -535,10 +610,16 @@ export const linksHandler = {
       return { formula: [updatedFormula] };
     },
 
+    /**
+     * Removes a chemicalItem from the formula's composition array
+     * @param formulaID the formula ID
+     * @param chemicalID the chemical ID
+     */
+
     removeChemical: async (formulaID: string, chemicalID: string): Promise<ResDataType> => {
       // only removes by id, no amount needed
-      const currentFormula = await FormulaModel.findById(formulaID).exec();
-      const currentChemical = await ChemicalModel.findById(chemicalID).exec();
+      const currentFormula = await FormulaModel.findById(validateID(formulaID)).exec();
+      const currentChemical = await ChemicalModel.findById(validateID(chemicalID)).exec();
 
       // if either does not exist, do nothing
       if (!currentFormula || !currentChemical) {
@@ -551,8 +632,13 @@ export const linksHandler = {
       return { formula: [updatedFormula] };
     },
 
+    /**
+     * Deletes the links involving the formula and the formula itself
+     * @param formulaID the formula ID
+     */
+
     delete: async (formulaID: string): Promise<ResDataType> => {
-      const currentFormula = await FormulaModel.findById(formulaID).exec();
+      const currentFormula = await FormulaModel.findById(validateID(formulaID)).exec();
 
       // if currentPiece not found, do nothing
       if (!currentFormula) {
@@ -574,12 +660,19 @@ export const linksHandler = {
     },
   },
 
-  chemical: {
-    // chemicals have no outward links
-    // deleting a chemical needs to update relevant formulas
+  /**
+   * chemicals have links to formula (they are only pointed to)
+   * deleting a chemical needs to update relevant formulas
+   */
 
-    reSyncLinks: async (chemicalID: string): Promise<void> => {
-      const currentChemical = await ChemicalModel.findById(chemicalID).exec();
+  chemical: {
+    /**
+     *  Restores the links involving the chemical
+     * @param chemicalID the chemical ID
+     */
+
+    fixLinks: async (chemicalID: string): Promise<void> => {
+      const currentChemical = await ChemicalModel.findById(validateID(chemicalID)).exec();
 
       // if currentChemical does not exist, delete all link to it in formulas
       if (!currentChemical) {
@@ -590,8 +683,13 @@ export const linksHandler = {
       }
     },
 
+    /**
+     * Deletes the links involving the chemical and the chemical itself
+     * @param chemicalID the chemical ID
+     */
+
     delete: async (chemicalID: string): Promise<ResDataType> => {
-      const currentChemical = await ChemicalModel.findById(chemicalID).exec();
+      const currentChemical = await ChemicalModel.findById(validateID(chemicalID)).exec();
 
       if (!currentChemical) {
         return {};

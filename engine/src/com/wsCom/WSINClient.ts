@@ -27,7 +27,7 @@ export class WSINClient {
       });
       connect.on("message", (mes) => {
         const now = new Date();
-        if (now.getTime() - this.lastUpdate.getTime() > 2000 && mes.type == "utf8") {
+        if (now.getTime() - this.lastUpdate.getTime() > 10 && mes.type == "utf8") {
           this.lastUpdate = now;
           const values = JSON.parse(mes.utf8Data).Signal[0].Value;
           this.onMessageCB(WSINFormat(values));

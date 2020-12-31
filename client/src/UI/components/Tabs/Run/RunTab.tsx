@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
+import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateEngineReference, updateEngineState } from "@redux/dataReducers/engineDataSlice";
-import EngineButtons from "./Zones/EngineButtons";
 import { LoadTableShow } from "@redux/displayStateReducers/generalDisplaySlice";
-import RunLoadTable from "./RunLoadTable";
+
 import engine from "@engine/handler";
+
+import EngineButtons from "./Zones/EngineButtons";
+import RunLoadTable from "./RunLoadTable";
 import EngineGraph from "./Zones/EngineGraph";
 import EngineInfos from "./Zones/EngineInfos";
-import { Col, Row } from "react-bootstrap";
 
 const RunTab = () => {
   const dispatch = useDispatch();
@@ -36,10 +38,10 @@ const RunTab = () => {
     <>
       <EngineGraph />
       <Row>
-        <Col className={"col-8"}>
+        <Col className="col-9">
           <EngineInfos />
         </Col>
-        <Col className={"col-4"}>
+        <Col className="col-3">
           <EngineButtons />
         </Col>
       </Row>

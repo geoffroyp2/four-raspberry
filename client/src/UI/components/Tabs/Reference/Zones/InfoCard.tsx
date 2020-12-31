@@ -1,11 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 
-import ScrollZone from "@UITabs/sharedComponents/ScrollZone";
-import NameField from "@UITabs/sharedComponents/Fields/NameField";
-import GraphColorField from "@UITabs/sharedComponents/Fields/GraphColorField";
-import DescriptionField from "@UITabs/sharedComponents/Fields/DescriptionField";
-import LastUpdatedField from "@UITabs/sharedComponents/Fields/LastUpdatedField";
 import {
   CurrentReferenceColor,
   CurrentReferenceDescription,
@@ -17,6 +12,12 @@ import {
   setReferenceName,
 } from "@redux/dataReducers/referenceSlice";
 import { ReferenceInfosEditMode } from "@redux/displayStateReducers/referenceDisplaySlice";
+
+import ScrollZone from "@UITabs/sharedComponents/ScrollZone";
+import NameField from "@UITabs/sharedComponents/Fields/NameField";
+import GraphColorField from "@UITabs/sharedComponents/Fields/GraphColorField";
+import DescriptionField from "@UITabs/sharedComponents/Fields/DescriptionField";
+import LastUpdatedField from "@UITabs/sharedComponents/Fields/LastUpdatedField";
 import RecordTableField from "@UITabs/sharedComponents/Fields/RecordTableField";
 
 const ReferenceInfoCard = () => {

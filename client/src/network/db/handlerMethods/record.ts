@@ -17,7 +17,7 @@ import {
 } from "@sharedTypes/dbAPITypes";
 import { Record } from "@sharedTypes/dbModelTypes";
 
-import { deleteInStore, updateStore } from "./storeEdit";
+import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
 export const recordMethods = {
   getAll: async (): Promise<void> => {

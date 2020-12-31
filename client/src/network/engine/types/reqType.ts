@@ -10,6 +10,7 @@ export enum ReqID {
   loadRef,
   getRef,
   getGraphs,
+  reconnect,
 }
 
 export type ReqType = {

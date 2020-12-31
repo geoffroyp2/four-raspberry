@@ -30,7 +30,9 @@ const engineDataSlice = createSlice({
   initialState,
   reducers: {
     updateEngineState: (state, action: PayloadAction<EngineState | null>) => {
-      if (action.payload) state.engineState = action.payload;
+      if (action.payload) {
+        state.engineState = action.payload;
+      }
     },
     updateEngineReference: (state, action: PayloadAction<Reference | "default">) => {
       state.reference = action.payload === "default" ? emptyReference : action.payload;

@@ -10,6 +10,7 @@
       "@UIMain/*": ["UI/components/Main/*"],
       "@UIGeneric/*": ["UI/components/Generic/*"],
       "@redux/*": ["redux/reducers/*"],
+      "@reduxStore/*": ["redux/storeAccess/*"],
       "@src/*": ["*"]
     }
   }

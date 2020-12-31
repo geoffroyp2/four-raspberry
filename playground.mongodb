@@ -66,16 +66,12 @@ export interface Record {
 
 use("four");
 db.reference.updateOne(
-  {  "name": "Email 1250°C" }, 
+  {  "name": "Email 1050°C" }, 
   { 
     $set: {
-      "records": [    
-    "5fd90495e9dee94ff48f4a12",
-    "5fd90495e9dee94ff48f4a18",
-    "5fd90495e9dee94ff48f4a11",
-    "5fd90495e9dee94ff48f4a14",
-    "5fd90495e9dee94ff48f4a10",
-      ]
+      "records": [
+        "5fd90495e9dee94ff48f4a09"
+      ],
     }
   }
 );

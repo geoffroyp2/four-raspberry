@@ -2,18 +2,17 @@ import React, { useCallback, useState } from "react";
 import { ButtonGroup, Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { dbDataReference, deleteReference, updateReference } from "@redux/dataReducers/dbDataSlice";
 import { setLoadTableContent, setLoadTableShow } from "@redux/displayStateReducers/generalDisplaySlice";
 import { ReferenceInfosEditMode, setReferenceInfosEditMode } from "@redux/displayStateReducers/referenceDisplaySlice";
 import {
   CurrentReference,
   CurrentReferenceID,
-  loadReference,
   memorizeReference,
   rollbackReferenceChanges,
 } from "@redux/dataReducers/referenceSlice";
 
 import db from "@db/handler";
+
 import SaveButton from "@UITabs/sharedComponents/Buttons/SaveButton";
 import EditButton from "@UITabs/sharedComponents/Buttons/EditButton";
 import LoadButton from "@UITabs/sharedComponents/Buttons/LoadButton";
@@ -25,7 +24,6 @@ const ReferenceInfoCardButtons = () => {
   const dispatch = useDispatch();
 
   const editMode = useSelector(ReferenceInfosEditMode);
-  const references = useSelector(dbDataReference);
   const currentReference = useSelector(CurrentReference);
   const currentReferenceID = useSelector(CurrentReferenceID);
 
@@ -35,21 +33,15 @@ const ReferenceInfoCardButtons = () => {
 
   const handleDelete = useCallback(async () => {
     setDeletePending(true);
-    await db.reference.deleteOne(currentReferenceID).then(() => {
-      setDeletePending(false);
-      dispatch(deleteReference(currentReferenceID)); // delete from the cached elements
-      dispatch(loadReference(Object.values(references)[0])); // auto-select another element after deletion
-    });
-  }, [currentReferenceID, dispatch, references]);
+    await db.reference.deleteOne(currentReferenceID);
+    setDeletePending(false);
+  }, [currentReferenceID]);
 
   const handleSave = useCallback(async () => {
     setSavePending(true);
-    await db.reference.updateOne(currentReference).then((res) => {
-      setSavePending(false);
-      dispatch(setReferenceInfosEditMode(false));
-      dispatch(updateReference(res)); // update in cached elements
-      dispatch(loadReference(res)); // reload
-    });
+    await db.reference.updateSimple(currentReference);
+    setSavePending(false);
+    dispatch(setReferenceInfosEditMode(false));
   }, [currentReference, dispatch]);
 
   const handleEdit = useCallback(() => {
@@ -69,12 +61,9 @@ const ReferenceInfoCardButtons = () => {
 
   const handleNew = useCallback(async () => {
     setNewPending(true);
-    await db.reference.createOne().then((res) => {
-      setNewPending(false);
-      dispatch(updateReference(res));
-      dispatch(loadReference(res));
-    });
-  }, [dispatch]);
+    await db.reference.createOne();
+    setNewPending(false);
+  }, []);
 
   return (
     <Container fluid className="d-flex justify-content-between align-items-center">

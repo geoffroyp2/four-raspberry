@@ -12,5 +12,6 @@ module.exports = override(
     "@UIMain": path.resolve(__dirname, "./src/UI/components/Main"),
     "@UIGeneric": path.resolve(__dirname, "./src/UI/components/Generic"),
     "@redux": path.resolve(__dirname, "./src/redux/reducers"),
+    "@reduxStore": path.resolve(__dirname, "./src/redux/storeAccess"),
   })
 );

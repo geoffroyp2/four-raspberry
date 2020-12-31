@@ -29,8 +29,8 @@ const recordSlice = createSlice({
   initialState,
   reducers: {
     // GENERAL
-    loadRecord: (state, action: PayloadAction<Record>) => {
-      state.selected = action.payload;
+    loadRecord: (state, action: PayloadAction<Record | null>) => {
+      state.selected = action.payload || emptyRecord;
     },
 
     memorizeRecord: (state, action: PayloadAction<void>) => {

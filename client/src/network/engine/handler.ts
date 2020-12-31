@@ -44,6 +44,10 @@ export default class engine {
     return data.state ?? null;
   };
 
+  public static reconnect = async (): Promise<void> => {
+    await get({ id: ReqID.reconnect });
+  };
+
   public static ping = async (): Promise<boolean> => {
     // TODO
     await get({ id: ReqID.ping });

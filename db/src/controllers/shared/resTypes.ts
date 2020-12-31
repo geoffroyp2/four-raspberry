@@ -4,6 +4,10 @@ import { Piece } from "../../models/piece/types";
 import { Record } from "../../models/record/types";
 import { Reference } from "../../models/reference/types";
 
+/**
+ * @interface ResDataType the only body structure for the db response
+ */
+
 export interface ResDataType {
   chemical?: Chemical[];
   formula?: Formula[];

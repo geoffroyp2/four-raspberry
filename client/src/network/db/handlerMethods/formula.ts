@@ -17,7 +17,7 @@ import {
 } from "@sharedTypes/dbAPITypes";
 import { Formula, FormulaItem } from "@sharedTypes/dbModelTypes";
 
-import { deleteInStore, updateStore } from "./storeEdit";
+import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
 export const formulaMethods = {
   getAll: async (): Promise<void> => {

@@ -42,6 +42,11 @@ export class EngineController {
           res.json({ id: ResID.success, data: { graphs: engine.getGraphs() } });
           break;
 
+        case ReqID.reconnect:
+          engine.reconnect();
+          res.json({ id: ResID.success, data: {} });
+          break;
+
         default:
           res.json({ id: ResID.error, data: "bad id" });
           break;

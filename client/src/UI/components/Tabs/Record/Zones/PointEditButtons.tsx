@@ -4,8 +4,7 @@ import { Container } from "react-bootstrap";
 import db from "@db/handler";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateRecord } from "@redux/dataReducers/dbDataSlice";
-import { CurrentRecord, loadRecord, rollbackRecordChanges } from "@redux/dataReducers/recordSlice";
+import { CurrentRecord, rollbackRecordChanges } from "@redux/dataReducers/recordSlice";
 import { setRecordPointEditMode } from "@redux/displayStateReducers/recordDisplaySlice";
 
 import CancelButton from "@UITabs/sharedComponents/Buttons/CancelButton";
@@ -24,13 +23,9 @@ const RecordPointEditButtons = () => {
 
   const save = useCallback(async () => {
     setPendingState(true);
-
-    await db.record.updateOne({ ...currentRecord, points: [...currentRecord.points].sort((a, b) => a.x - b.x) }).then((res) => {
-      setPendingState(false);
-      dispatch(updateRecord(res)); // update
-      dispatch(loadRecord(res)); // reload
-      dispatch(setRecordPointEditMode(false));
-    });
+    await db.record.updateSimple({ ...currentRecord, points: [...currentRecord.points].sort((a, b) => a.x - b.x) });
+    setPendingState(false);
+    dispatch(setRecordPointEditMode(false));
   }, [dispatch, currentRecord]);
 
   return (
