@@ -38,8 +38,7 @@ const EngineButtons = () => {
 
   const handleConnect = useCallback(async () => {
     await engine.reconnect();
-    // dispatch(updateEngineState(newState));
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

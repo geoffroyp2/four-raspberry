@@ -1,5 +1,4 @@
 import { Schema } from "mongoose";
-// import { setLastUpdated } from "./methods";
 import { createChemical, updateChemical } from "./statics";
 
 const ChemicalSchema = new Schema(

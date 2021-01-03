@@ -1,5 +1,4 @@
 import { Schema } from "mongoose";
-// import { setLastUpdated } from "./methods";
 import { createRecord, updateRecord } from "./statics";
 
 const RecordSchema = new Schema(

@@ -4,6 +4,8 @@
 /engine/node_modules
 /client/node_modules
 /db/node_modules
+/photos/node_modules
+/photos/public/images
 /.pnp
 .pnp.js
 
