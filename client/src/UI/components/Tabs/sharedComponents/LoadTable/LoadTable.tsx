@@ -1,18 +1,19 @@
 import React from "react";
 
+import { useSelector } from "react-redux";
 import { LoadTableContent } from "@redux/displayStateReducers/generalDisplaySlice";
 
 import MainZoneLayout from "@UIGeneric/MainZoneLayout";
 import LoadTableButtons from "./Components/LoadTableButtons";
 
 import RecordTable from "./ItemTables/RecordTable";
-import { useSelector } from "react-redux";
 import ReferenceTable from "./ItemTables/ReferenceTable";
+import PieceTable from "./ItemTables/PieceTable";
 
 const tables = {
   Record: <RecordTable />,
   Reference: <ReferenceTable />,
-  Piece: <></>, //<PieceTable />,
+  Piece: <PieceTable />, //<PieceTable />,
   Formula: <></>, //<FormulaTable />,
 };
 

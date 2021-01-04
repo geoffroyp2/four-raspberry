@@ -1,7 +1,8 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { CurrentTab, setCurrentTab, TabIDType } from "@redux/displayStateReducers/generalDisplaySlice";
+import { useSelector } from "react-redux";
+import { CurrentTab, TabIDType } from "@redux/displayStateReducers/generalDisplaySlice";
+import { changeTab } from "@reduxStore/UIState";
 
 const TabsColumn = () => {
   return (
@@ -51,13 +52,13 @@ type TabElementProps = {
 
 const TabElement = ({ text, color, id, height, additionalStyle }: TabElementProps) => {
   const currentTab = useSelector(CurrentTab);
-  const dispatch = useDispatch();
+
   return (
     <Container
       fluid
       className={`m-0 p-1 border border-dark rounded-right shadow ${additionalStyle}`}
       style={{ height: `${height}%`, background: currentTab === id ? color.selected : color.normal }}
-      onClick={() => dispatch(setCurrentTab(id))}
+      onClick={() => changeTab(id)}
     >
       {text}
     </Container>

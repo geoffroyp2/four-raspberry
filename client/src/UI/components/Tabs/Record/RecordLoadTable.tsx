@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadTableContent, LoadTableRowSelected, setLoadTableShow } from "@redux/displayStateReducers/generalDisplaySlice";
 import { dbDataRecord } from "@redux/dataReducers/dbDataSlice";
-import { CurrentRecord, loadRecord } from "@redux/dataReducers/recordSlice";
+import { loadRecord } from "@redux/dataReducers/recordSlice";
 
 import LoadTable from "@UITabs/sharedComponents/LoadTable/LoadTable";
 
@@ -12,7 +12,6 @@ import db from "@db/handler";
 const RecordLoadTable = () => {
   const dispatch = useDispatch();
 
-  const currentRecord = useSelector(CurrentRecord);
   const content = useSelector(LoadTableContent);
   const rowSelected = useSelector(LoadTableRowSelected);
   const records = useSelector(dbDataRecord);
@@ -31,15 +30,15 @@ const RecordLoadTable = () => {
   const handleSave = useCallback(async () => {
     if (content === "Reference") {
       setPending(true);
-      await db.record.changeReference(currentRecord._id, rowSelected);
+      await db.record.changeReference(rowSelected);
       setPending(false);
     } else if (content === "Piece") {
       setPending(true);
-      await db.record.addPiece(currentRecord._id, rowSelected);
+      await db.record.addPiece(rowSelected);
       setPending(false);
     }
     dispatch(setLoadTableShow(false));
-  }, [dispatch, content, currentRecord, rowSelected]);
+  }, [dispatch, content, rowSelected]);
 
   return (
     <LoadTable

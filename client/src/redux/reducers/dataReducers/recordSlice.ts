@@ -31,6 +31,7 @@ const recordSlice = createSlice({
     // GENERAL
     loadRecord: (state, action: PayloadAction<Record | null>) => {
       state.selected = action.payload || emptyRecord;
+      state.memo = action.payload || emptyRecord;
     },
 
     memorizeRecord: (state, action: PayloadAction<void>) => {

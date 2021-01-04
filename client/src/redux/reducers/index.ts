@@ -10,6 +10,8 @@ import engineData from "./dataReducers/engineDataSlice";
 import generalDisplay from "./displayStateReducers/generalDisplaySlice";
 import recordDisplay from "./displayStateReducers/recordDisplaySlice";
 import referenceDisplay from "./displayStateReducers/referenceDisplaySlice";
+import pieceDisplay from "./displayStateReducers/pieceDisplaySlice";
+import formulaDisplay from "./displayStateReducers/formulaDisplaySlice";
 
 export default combineReducers({
   record,
@@ -21,4 +23,6 @@ export default combineReducers({
   generalDisplay,
   recordDisplay,
   referenceDisplay,
+  pieceDisplay,
+  formulaDisplay,
 });

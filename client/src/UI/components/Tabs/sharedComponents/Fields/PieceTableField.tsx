@@ -5,8 +5,8 @@ import { infoLeftCol, infoMidCol, infoRow, divider } from "../styles/InfoZoneSty
 import { RootState } from "@src/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { dbDataPiece } from "@redux/dataReducers/dbDataSlice";
-import { setCurrentTab } from "@redux/displayStateReducers/generalDisplaySlice";
 import { loadPiece } from "@redux/dataReducers/pieceSlice";
+import { changeTab } from "@reduxStore/UIState";
 
 import ElementLinkButton from "../Buttons/ElementLinkButton";
 
@@ -25,7 +25,7 @@ const PieceTableField = ({ valueSelector, addButton }: Props) => {
   const handleLinkCLick = useCallback(
     (id: string) => {
       dispatch(loadPiece(pieces[id]));
-      dispatch(setCurrentTab("Piece"));
+      changeTab("Piece");
     },
     [dispatch, pieces]
   );

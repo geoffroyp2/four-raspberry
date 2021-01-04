@@ -1,5 +1,5 @@
 import { LoadTableSortType } from "@redux/displayStateReducers/generalDisplaySlice";
-import { Record, Reference } from "@sharedTypes/dbModelTypes";
+import { Piece, Record, Reference } from "@sharedTypes/dbModelTypes";
 
 export const recordLoadTableSort = (a: Record, b: Record, sort: { param: LoadTableSortType; direction: boolean }): number => {
   let result = 0;
@@ -31,6 +31,22 @@ export const referenceLoadTableSort = (
   b: Reference,
   sort: { param: LoadTableSortType; direction: boolean }
 ): number => {
+  let result = 0;
+  switch (sort.param) {
+    case "lastUpdated":
+      if (a.lastUpdated && b.lastUpdated) result = new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime();
+      break;
+    case "name":
+      result = a.name.localeCompare(b.name);
+      break;
+    default:
+      break;
+  }
+  if (!sort.direction) result *= -1;
+  return result;
+};
+
+export const pieceLoadTableSort = (a: Piece, b: Piece, sort: { param: LoadTableSortType; direction: boolean }): number => {
   let result = 0;
   switch (sort.param) {
     case "lastUpdated":

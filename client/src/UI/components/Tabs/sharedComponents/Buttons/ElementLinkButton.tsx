@@ -1,7 +1,5 @@
 import React from "react";
 
-const svg = "../SVG/arrow-right-circle-fill.svg";
-
 type Props = {
   size: number;
   onClick: () => void;

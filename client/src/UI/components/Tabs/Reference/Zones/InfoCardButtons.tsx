@@ -2,14 +2,9 @@ import React, { useCallback, useState } from "react";
 import { ButtonGroup, Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setLoadTableContent, setLoadTableShow } from "@redux/displayStateReducers/generalDisplaySlice";
 import { ReferenceInfosEditMode, setReferenceInfosEditMode } from "@redux/displayStateReducers/referenceDisplaySlice";
-import {
-  CurrentReference,
-  CurrentReferenceID,
-  memorizeReference,
-  rollbackReferenceChanges,
-} from "@redux/dataReducers/referenceSlice";
+import { CurrentReferenceID, memorizeReference } from "@redux/dataReducers/referenceSlice";
+import { cancelChanges, showLoadTable } from "@reduxStore/UIState";
 
 import db from "@db/handler";
 
@@ -24,7 +19,6 @@ const ReferenceInfoCardButtons = () => {
   const dispatch = useDispatch();
 
   const editMode = useSelector(ReferenceInfosEditMode);
-  const currentReference = useSelector(CurrentReference);
   const currentReferenceID = useSelector(CurrentReferenceID);
 
   const [DeletePending, setDeletePending] = useState<boolean>(false);
@@ -33,30 +27,15 @@ const ReferenceInfoCardButtons = () => {
 
   const handleDelete = useCallback(async () => {
     setDeletePending(true);
-    await db.reference.deleteOne(currentReferenceID);
+    await db.reference.deleteSelected();
     setDeletePending(false);
-  }, [currentReferenceID]);
+  }, []);
 
   const handleSave = useCallback(async () => {
     setSavePending(true);
-    await db.reference.updateSimple(currentReference);
+    await db.reference.updateSimple();
     setSavePending(false);
     dispatch(setReferenceInfosEditMode(false));
-  }, [currentReference, dispatch]);
-
-  const handleEdit = useCallback(() => {
-    dispatch(memorizeReference());
-    dispatch(setReferenceInfosEditMode(true));
-  }, [dispatch]);
-
-  const handleCancel = useCallback(() => {
-    dispatch(rollbackReferenceChanges());
-    dispatch(setReferenceInfosEditMode(false));
-  }, [dispatch]);
-
-  const handleLoad = useCallback(() => {
-    dispatch(setLoadTableContent("Reference"));
-    dispatch(setLoadTableShow(true));
   }, [dispatch]);
 
   const handleNew = useCallback(async () => {
@@ -65,10 +44,15 @@ const ReferenceInfoCardButtons = () => {
     setNewPending(false);
   }, []);
 
+  const handleEdit = useCallback(() => {
+    dispatch(memorizeReference());
+    dispatch(setReferenceInfosEditMode(true));
+  }, [dispatch]);
+
   return (
     <Container fluid className="d-flex justify-content-between align-items-center">
       {editMode ? (
-        <CancelButton clickCallback={handleCancel} />
+        <CancelButton clickCallback={() => cancelChanges("Reference")} />
       ) : (
         <DeleteButton clickCallback={handleDelete} pending={DeletePending} disabled={currentReferenceID === "default"} />
       )}
@@ -78,7 +62,7 @@ const ReferenceInfoCardButtons = () => {
         ) : (
           <EditButton disabled={currentReferenceID === "default"} clickCallback={handleEdit} />
         )}
-        <LoadButton disabled={editMode} clickCallback={handleLoad} />
+        <LoadButton disabled={editMode} clickCallback={() => showLoadTable("Reference")} />
         <NewButton disabled={editMode} clickCallback={handleNew} pending={NewPending} />
       </ButtonGroup>
     </Container>

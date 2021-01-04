@@ -18,7 +18,7 @@ import { loadReference } from "@redux/dataReducers/referenceSlice";
 import { ResDataType } from "@sharedTypes/dbAPITypes";
 import { store } from "@src/redux/store";
 
-import { refreshDataTabs } from "./UIControl";
+import { refreshAllTabs } from "./tabRefresh";
 
 /**
  * Processes the data coming from the database and updates the stores accordingly
@@ -62,7 +62,7 @@ export const updateStore = (data: ResDataType) => {
     });
   }
 
-  refreshDataTabs();
+  refreshAllTabs();
 };
 
 /**

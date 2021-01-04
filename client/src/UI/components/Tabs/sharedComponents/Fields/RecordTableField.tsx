@@ -1,33 +1,36 @@
-import React, { useCallback } from "react";
-import { Col, Row, Table } from "react-bootstrap";
+import React from "react";
+import { Button, Col, Row, Table } from "react-bootstrap";
 import { infoLeftCol, infoMidCol, infoRow, divider } from "../styles/InfoZoneStyles";
 
 import { RootState } from "@src/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { dbDataRecord } from "@redux/dataReducers/dbDataSlice";
+import { loadRecord } from "@redux/dataReducers/recordSlice";
+import { changeTab } from "@reduxStore/UIState";
+
+import ElementDeleteButton from "../Buttons/ElementDeleteButton";
+import ElementLinkButton from "../Buttons/ElementLinkButton";
 
 import { dateToDisplayString } from "@UIutils/dateFormat";
-import ElementLinkButton from "../Buttons/ElementLinkButton";
-import { loadRecord } from "@redux/dataReducers/recordSlice";
-import { setCurrentTab } from "@redux/displayStateReducers/generalDisplaySlice";
 
 type Props = {
+  editSelector: (state: RootState) => boolean;
   valueSelector: (state: RootState) => string[];
+  handleRemoveRecord: (id: string) => void;
+  handleAddRecord: () => void;
   addButton: boolean;
 };
 
-const RecordTableField = ({ valueSelector, addButton }: Props) => {
+const RecordTableField = ({ editSelector, valueSelector, handleRemoveRecord, handleAddRecord, addButton }: Props) => {
   const dispatch = useDispatch();
   const records = useSelector(dbDataRecord);
   const recordList = useSelector(valueSelector);
+  const editMode = useSelector(editSelector);
 
-  const handleLinkCLick = useCallback(
-    (id: string) => {
-      dispatch(loadRecord(records[id]));
-      dispatch(setCurrentTab("Record"));
-    },
-    [dispatch, records]
-  );
+  const handleLinkCLick = (id: string) => {
+    dispatch(loadRecord(records[id]));
+    changeTab("Record");
+  };
 
   return (
     <>
@@ -54,7 +57,11 @@ const RecordTableField = ({ valueSelector, addButton }: Props) => {
                         <td>{records[p].name}</td>
                         <td>{dateToDisplayString(records[p].date, false)}</td>
                         <td>
-                          <ElementLinkButton size={20} onClick={() => handleLinkCLick(p)} />
+                          {addButton && editMode ? (
+                            <ElementDeleteButton size={20} onClick={() => handleRemoveRecord(p)} />
+                          ) : (
+                            <ElementLinkButton size={20} onClick={() => handleLinkCLick(p)} />
+                          )}
                         </td>
                       </tr>
                     );
@@ -64,6 +71,15 @@ const RecordTableField = ({ valueSelector, addButton }: Props) => {
                   <td>-</td>
                   <td>-</td>
                   <td></td>
+                </tr>
+              )}
+              {addButton && (
+                <tr>
+                  <td colSpan={3}>
+                    <Button className="btn-secondary btn-sm float-left" onClick={handleAddRecord}>
+                      Ajouter une Cuisson
+                    </Button>
+                  </td>
                 </tr>
               )}
             </tbody>

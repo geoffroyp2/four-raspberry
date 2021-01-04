@@ -30,6 +30,7 @@ const pieceReducer = createSlice({
     // GENERAL
     loadPiece: (state, action: PayloadAction<Piece | null>) => {
       state.selected = action.payload || emptyPiece;
+      state.memo = action.payload || emptyPiece;
     },
 
     memorizePiece: (state, action: PayloadAction<void>) => {

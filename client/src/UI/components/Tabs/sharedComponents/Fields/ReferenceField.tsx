@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@src/redux/store";
 import { dbDataReference } from "@redux/dataReducers/dbDataSlice";
 import { loadReference } from "@redux/dataReducers/referenceSlice";
-import { setCurrentTab } from "@redux/displayStateReducers/generalDisplaySlice";
+import { changeTab } from "@reduxStore/UIState";
 
 import ElementLinkButton from "../Buttons/ElementLinkButton";
 
@@ -24,7 +24,7 @@ const ReferenceField = ({ editSelector, valueSelector, selectHandler }: Props) =
 
   const handleReferenceLink = useCallback(() => {
     dispatch(loadReference(dbReferences[reference]));
-    dispatch(setCurrentTab("Reference"));
+    changeTab("Reference");
   }, [dispatch, dbReferences, reference]);
 
   return (

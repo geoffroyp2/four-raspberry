@@ -29,6 +29,7 @@ const referenceSlice = createSlice({
     // GENERAL
     loadReference: (state, action: PayloadAction<Reference | null>) => {
       state.selected = action.payload || emptyReference;
+      state.memo = action.payload || emptyReference;
     },
 
     memorizeReference: (state, action: PayloadAction<void>) => {

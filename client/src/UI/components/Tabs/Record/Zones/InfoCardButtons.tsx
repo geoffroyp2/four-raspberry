@@ -2,9 +2,9 @@ import React, { useCallback, useState } from "react";
 import { ButtonGroup, Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { CurrentRecord, CurrentRecordID, memorizeRecord, rollbackRecordChanges } from "@redux/dataReducers/recordSlice";
+import { CurrentRecordID, memorizeRecord } from "@redux/dataReducers/recordSlice";
 import { RecordInfosEditMode, setRecordInfosEditMode } from "@redux/displayStateReducers/recordDisplaySlice";
-import { setLoadTableContent, setLoadTableShow } from "@redux/displayStateReducers/generalDisplaySlice";
+import { cancelChanges, showLoadTable } from "@reduxStore/UIState";
 
 import db from "@db/handler";
 
@@ -19,7 +19,6 @@ const RecordInfoCardButtons = () => {
   const dispatch = useDispatch();
 
   const editMode = useSelector(RecordInfosEditMode);
-  const currentRecord = useSelector(CurrentRecord);
   const currentRecordID = useSelector(CurrentRecordID);
 
   const [DeletePending, setDeletePending] = useState<boolean>(false);
@@ -28,30 +27,15 @@ const RecordInfoCardButtons = () => {
 
   const handleDelete = useCallback(async () => {
     setDeletePending(true);
-    await db.record.deleteOne(currentRecordID);
+    await db.record.deleteSelected();
     setDeletePending(false);
-  }, [currentRecordID]);
+  }, []);
 
   const handleSave = useCallback(async () => {
     setSavePending(true);
-    await db.record.updateSimple(currentRecord);
+    await db.record.updateSimple();
     setSavePending(false);
     dispatch(setRecordInfosEditMode(false));
-  }, [currentRecord, dispatch]);
-
-  const handleEdit = useCallback(() => {
-    dispatch(memorizeRecord());
-    dispatch(setRecordInfosEditMode(true));
-  }, [dispatch]);
-
-  const handleCancel = useCallback(() => {
-    dispatch(rollbackRecordChanges());
-    dispatch(setRecordInfosEditMode(false));
-  }, [dispatch]);
-
-  const handleLoad = useCallback(() => {
-    dispatch(setLoadTableContent("Record"));
-    dispatch(setLoadTableShow(true));
   }, [dispatch]);
 
   const handleNew = useCallback(async () => {
@@ -60,10 +44,15 @@ const RecordInfoCardButtons = () => {
     setNewPending(false);
   }, []);
 
+  const handleEdit = useCallback(() => {
+    dispatch(memorizeRecord());
+    dispatch(setRecordInfosEditMode(true));
+  }, [dispatch]);
+
   return (
     <Container fluid className="d-flex justify-content-between align-items-center">
       {editMode ? (
-        <CancelButton clickCallback={handleCancel} />
+        <CancelButton clickCallback={() => cancelChanges("Record")} />
       ) : (
         <DeleteButton clickCallback={handleDelete} pending={DeletePending} disabled={currentRecordID === "default"} />
       )}
@@ -73,7 +62,7 @@ const RecordInfoCardButtons = () => {
         ) : (
           <EditButton disabled={currentRecordID === "default"} clickCallback={handleEdit} />
         )}
-        <LoadButton disabled={editMode} clickCallback={handleLoad} />
+        <LoadButton disabled={editMode} clickCallback={() => showLoadTable("Record")} />
         <NewButton disabled={editMode} clickCallback={handleNew} pending={NewPending} />
       </ButtonGroup>
     </Container>

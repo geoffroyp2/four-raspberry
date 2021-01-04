@@ -31,7 +31,7 @@ const RecordInfoCard = () => {
   const currentRecordID = useSelector(CurrentRecordID);
 
   const handleReferenceSelect = useCallback(() => {
-    // show reference select table is a record is selected
+    // show reference select table if a record is selected
     if (currentRecordID !== "default") {
       dispatch(setLoadTableContent("Reference"));
       dispatch(setLoadTableShow(true));

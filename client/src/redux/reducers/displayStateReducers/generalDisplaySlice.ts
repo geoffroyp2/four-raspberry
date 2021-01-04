@@ -19,7 +19,7 @@ export type GeneralDisplayType = {
 };
 
 const initialState: GeneralDisplayType = {
-  currentTab: "Reference",
+  currentTab: "Piece",
   loadTable: {
     show: false,
     content: "Reference",

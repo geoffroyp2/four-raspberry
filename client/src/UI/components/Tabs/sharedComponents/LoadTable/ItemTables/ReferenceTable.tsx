@@ -29,17 +29,14 @@ const ReferenceTable = () => {
     if (!rowSelected && rowSelected !== currentReferenceID) dispatch(setLoadTableRowSelected(currentReferenceID));
   }, [rowSelected, currentReferenceID, dispatch]);
 
-  const handleSort = useCallback(
-    (e) => {
-      // Sort parameters when clicking on a header
-      if (e.target.id === tableSort.param) {
-        dispatch(setLoadTableSort({ param: e.target.id, direction: !tableSort.direction }));
-      } else {
-        dispatch(setLoadTableSort({ param: e.target.id, direction: true }));
-      }
-    },
-    [dispatch, tableSort]
-  );
+  const handleSort = (e: any) => {
+    // Sort parameters when clicking on a header
+    if (e.target.id === tableSort.param) {
+      dispatch(setLoadTableSort({ param: e.target.id, direction: !tableSort.direction }));
+    } else {
+      dispatch(setLoadTableSort({ param: e.target.id, direction: true }));
+    }
+  };
 
   return (
     <LoadTableComponent

@@ -28,6 +28,7 @@ const formulaReducer = createSlice({
     // GENERAL
     loadFormula: (state, action: PayloadAction<Formula | null>) => {
       state.selected = action.payload || emptyFormula;
+      state.memo = action.payload || emptyFormula;
     },
 
     memorizeFormula: (state, action: PayloadAction<void>) => {

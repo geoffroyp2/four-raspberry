@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { dbDataRecord, dbDataReference } from "@redux/dataReducers/dbDataSlice";
@@ -30,17 +30,14 @@ const RecordTable = () => {
     if (!rowSelected && rowSelected !== currentRecordID) dispatch(setLoadTableRowSelected(currentRecordID));
   }, [rowSelected, currentRecordID, dispatch]);
 
-  const handleSort = useCallback(
-    (e) => {
-      // Sort parameters when clicking on a header
-      if (e.target.id === tableSort.param) {
-        dispatch(setLoadTableSort({ param: e.target.id, direction: !tableSort.direction }));
-      } else {
-        dispatch(setLoadTableSort({ param: e.target.id, direction: true }));
-      }
-    },
-    [dispatch, tableSort]
-  );
+  const handleSort = (e: any) => {
+    // Sort parameters when clicking on a header
+    if (e.target.id === tableSort.param) {
+      dispatch(setLoadTableSort({ param: e.target.id, direction: !tableSort.direction }));
+    } else {
+      dispatch(setLoadTableSort({ param: e.target.id, direction: true }));
+    }
+  };
 
   return (
     <LoadTableComponent

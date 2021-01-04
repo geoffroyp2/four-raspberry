@@ -4,12 +4,13 @@ import { loadReference } from "@redux/dataReducers/referenceSlice";
 import { loadRecord } from "@redux/dataReducers/recordSlice";
 import { loadPiece } from "@redux/dataReducers/pieceSlice";
 import { loadFormula } from "@redux/dataReducers/formulaSlice";
+import { TabIDType } from "@redux/displayStateReducers/generalDisplaySlice";
 
 /**
  * calls refreshTab() for every tab
  */
 
-export const refreshDataTabs = () => {
+export const refreshAllTabs = () => {
   refreshTab("Reference");
   refreshTab("Record");
   refreshTab("Piece");
@@ -21,9 +22,10 @@ export const refreshDataTabs = () => {
  * @param tab the specific tab to refresh, defaults to current selected tab
  */
 
-export const refreshTab = (tab?: any) => {
-  const currentTab = tab || store.getState().generalDisplay.currentTab;
-  switch (currentTab) {
+export const refreshTab = (tab?: TabIDType) => {
+  const tabToRefresh = tab || store.getState().generalDisplay.currentTab;
+
+  switch (tabToRefresh) {
     case "Reference": {
       const references = store.getState().dbData.reference;
       const currentReference = store.getState().reference.selected;
