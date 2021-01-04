@@ -15,7 +15,7 @@ import {
   LinkEditID,
   ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Formula, FormulaItem } from "@sharedTypes/dbModelTypes";
+import { FormulaItem } from "@sharedTypes/dbModelTypes";
 
 import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
@@ -65,25 +65,29 @@ export const formulaMethods = {
     }
   },
 
-  deleteOne: async (id: string): Promise<void> => {
+  deleteSelected: async (): Promise<void> => {
+    const currentFormulaID = store.getState().formula.selected._id;
+
     const request: FormulaDeleteType = {
       id: ReqID.deleteOne,
-      data: id,
+      data: currentFormulaID,
     };
 
     const data = await get(request, "formula");
     updateStore(data);
-    deleteInStore(id, "formula");
+    deleteInStore(currentFormulaID, "formula");
   },
 
-  updateSimple: async (formula: Formula): Promise<void> => {
+  updateSimple: async (): Promise<void> => {
+    const currentFormula = store.getState().formula.selected;
+
     const request: FormulaSimpleEditType = {
       id: ReqID.updateSimple,
       data: {
-        id: formula._id,
+        id: currentFormula._id,
         filter: {
-          name: formula.name,
-          description: formula.description,
+          name: currentFormula.name,
+          description: currentFormula.description,
         },
       },
     };
@@ -92,13 +96,15 @@ export const formulaMethods = {
     updateStore(data);
   },
 
-  addChemical: async (formulaID: string, formulaItem: FormulaItem) => {
+  addChemical: async (formulaItem: FormulaItem) => {
+    const currentFormulaID = store.getState().formula.selected._id;
+
     const request: FormulaLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.addElement,
         filter: {
-          formulaID: formulaID,
+          formulaID: currentFormulaID,
           formulaItem: formulaItem,
         },
       },
@@ -108,13 +114,15 @@ export const formulaMethods = {
     updateStore(data);
   },
 
-  removeChemical: async (formulaID: string, chemicalID: string) => {
+  removeChemical: async (chemicalID: string) => {
+    const currentFormulaID = store.getState().formula.selected._id;
+
     const request: FormulaLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.removeElement,
         filter: {
-          formulaID: formulaID,
+          formulaID: currentFormulaID,
           chemicalID: chemicalID,
         },
       },

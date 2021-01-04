@@ -6,6 +6,7 @@ module.exports = override(
     "@src": path.resolve(__dirname, "./src"),
     "@db": path.resolve(__dirname, "./src/network/db"),
     "@engine": path.resolve(__dirname, "./src/network/engine"),
+    "@photos": path.resolve(__dirname, "./src/network/photos"),
     "@sharedTypes": path.resolve(__dirname, "./src/sharedTypes"),
     "@UIutils": path.resolve(__dirname, "./src/UI/utils"),
     "@UITabs": path.resolve(__dirname, "./src/UI/components/Tabs"),

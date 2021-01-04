@@ -4,6 +4,7 @@
     "paths": {
       "@db/*": ["network/db/*"],
       "@engine/*": ["network/engine/*"],
+      "@photos/*": ["network/photos/*"],
       "@sharedTypes/*": ["sharedTypes/*"],
       "@UIutils/*": ["UI/utils/*"],
       "@UITabs/*": ["UI/components/Tabs/*"],

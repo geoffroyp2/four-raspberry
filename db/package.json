@@ -20,8 +20,8 @@
   },
   "main": "src/server.ts",
   "scripts": {
-    "start": "nodemon --exec node --inspect --require ts-node/register src/server.ts",
-    "start-dev": "nodemon",
+    "start": "nodemon src/server.ts",
+    "start-dev": "nodemon --exec node --inspect --require ts-node/register src/server.ts",
     "build": "tsc",
     "script": "cd src/scripts && ts-node"
   }

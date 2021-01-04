@@ -1,5 +1,5 @@
-import { ResDataType } from "@sharedTypes/dbAPITypes";
 import axios from "axios";
+import { ResDataType } from "@sharedTypes/dbAPITypes";
 
 export const post = async (req: any, route: string): Promise<ResDataType> => {
   console.log("post", req);

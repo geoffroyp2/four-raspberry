@@ -15,7 +15,6 @@ import {
   LinkEditID,
   ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Record } from "@sharedTypes/dbModelTypes";
 
 import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
@@ -65,28 +64,32 @@ export const recordMethods = {
     }
   },
 
-  deleteOne: async (id: string): Promise<void> => {
+  deleteSelected: async (): Promise<void> => {
+    const currentRecordID = store.getState().record.selected._id;
+
     const request: RecordDeleteType = {
       id: ReqID.deleteOne,
-      data: id,
+      data: currentRecordID,
     };
 
     const data = await get(request, "record");
     updateStore(data);
-    deleteInStore(id, "record");
+    deleteInStore(currentRecordID, "record");
   },
 
-  updateSimple: async (record: Record): Promise<void> => {
+  updateSimple: async (): Promise<void> => {
+    const currentRecord = store.getState().record.selected;
+
     const request: RecordSimpleEditType = {
       id: ReqID.updateSimple,
       data: {
-        id: record._id,
+        id: currentRecord._id,
         filter: {
-          name: record.name,
-          description: record.description,
-          color: { ...record.color },
-          points: [...record.points],
-          date: record.date,
+          name: currentRecord.name,
+          description: currentRecord.description,
+          color: { ...currentRecord.color },
+          points: [...currentRecord.points].sort((a, b) => a.x - b.x),
+          date: currentRecord.date,
         },
       },
     };
@@ -95,13 +98,15 @@ export const recordMethods = {
     updateStore(data);
   },
 
-  addPiece: async (recordID: string, pieceID: string) => {
+  addPiece: async (pieceID: string) => {
+    const currentRecordID = store.getState().record.selected._id;
+
     const request: RecordLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.addElement,
         filter: {
-          recordID: recordID,
+          recordID: currentRecordID,
           pieceID: pieceID,
         },
       },
@@ -111,13 +116,15 @@ export const recordMethods = {
     updateStore(data);
   },
 
-  removePiece: async (recordID: string, pieceID: string) => {
+  removePiece: async (pieceID: string) => {
+    const currentRecordID = store.getState().record.selected._id;
+
     const request: RecordLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.removeElement,
         filter: {
-          recordID: recordID,
+          recordID: currentRecordID,
           pieceID: pieceID,
         },
       },
@@ -127,13 +134,15 @@ export const recordMethods = {
     updateStore(data);
   },
 
-  changeReference: async (recordID: string, referenceID: string) => {
+  changeReference: async (referenceID: string) => {
+    const currentRecordID = store.getState().record.selected._id;
+
     const request: RecordLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.changeLink,
         filter: {
-          recordID: recordID,
+          recordID: currentRecordID,
           referenceID: referenceID,
         },
       },

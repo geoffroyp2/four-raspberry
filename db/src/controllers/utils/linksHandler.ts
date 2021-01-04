@@ -299,17 +299,18 @@ export const linksHandler = {
 
       // find reference and update it
       const currentReference = await ReferenceModel.findById(validateID(currentRecord.reference)).exec();
-      let updatedReference: IReferenceDocument | null = null;
+      const updatedReferences: IReferenceDocument[] = [];
       if (currentReference) {
-        updatedReference = await ReferenceModel.updateReference(currentReference._id, {
+        const ref = await ReferenceModel.updateReference(currentReference._id, {
           $pull: { records: recordID },
         });
+        updatedReferences.push(ref);
       }
 
       // delete record
       await RecordModel.deleteOne({ _id: recordID }).exec();
 
-      return { piece: updatedPieces, reference: [updatedReference] };
+      return { piece: updatedPieces, reference: updatedReferences };
     },
   },
 
@@ -521,17 +522,18 @@ export const linksHandler = {
 
       // find formula and update it
       const currentFormula = await FormulaModel.findById(validateID(currentPiece.formula)).exec();
-      let updatedFormula: IFormulaDocument | null = null;
+      const updatedFormulas: IFormulaDocument[] = [];
       if (currentFormula) {
-        updatedFormula = await FormulaModel.updateFormula(currentFormula._id, {
+        const form = await FormulaModel.updateFormula(currentFormula._id, {
           $pull: { pieces: pieceID },
         });
+        updatedFormulas.push(form);
       }
 
       // delete piece
       await PieceModel.deleteOne({ _id: pieceID }).exec();
 
-      return { record: updatedRecords, formula: [updatedFormula] };
+      return { record: updatedRecords, formula: updatedFormulas };
     },
   },
 

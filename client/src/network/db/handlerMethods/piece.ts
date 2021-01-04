@@ -15,7 +15,6 @@ import {
   LinkEditID,
   ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Piece } from "@sharedTypes/dbModelTypes";
 
 import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
@@ -65,27 +64,31 @@ export const pieceMethods = {
     }
   },
 
-  deleteOne: async (id: string): Promise<void> => {
+  deleteSelected: async (): Promise<void> => {
+    const currentPieceID = store.getState().piece.selected._id;
+
     const request: PieceDeleteType = {
       id: ReqID.deleteOne,
-      data: id,
+      data: currentPieceID,
     };
 
     const data = await get(request, "piece");
     updateStore(data);
-    deleteInStore(id, "piece");
+    deleteInStore(currentPieceID, "piece");
   },
 
-  updateSimple: async (piece: Piece): Promise<void> => {
+  updateSimple: async (): Promise<void> => {
+    const currentPiece = store.getState().piece.selected;
+
     const request: PieceSimpleEditType = {
       id: ReqID.updateSimple,
       data: {
-        id: piece._id,
+        id: currentPiece._id,
         filter: {
-          name: piece.name,
-          description: piece.description,
-          images: [...piece.images],
-          date: piece.date,
+          name: currentPiece.name,
+          description: currentPiece.description,
+          images: [...currentPiece.images],
+          date: currentPiece.date,
         },
       },
     };
@@ -94,13 +97,15 @@ export const pieceMethods = {
     updateStore(data);
   },
 
-  addRecord: async (pieceID: string, recordID: string) => {
+  addRecord: async (recordID: string) => {
+    const currentPieceID = store.getState().piece.selected._id;
+
     const request: PieceLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.addElement,
         filter: {
-          pieceID: pieceID,
+          pieceID: currentPieceID,
           recordID: recordID,
         },
       },
@@ -110,13 +115,15 @@ export const pieceMethods = {
     updateStore(data);
   },
 
-  removeRecord: async (pieceID: string, recordID: string) => {
+  removeRecord: async (recordID: string) => {
+    const currentPieceID = store.getState().piece.selected._id;
+
     const request: PieceLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.removeElement,
         filter: {
-          pieceID: pieceID,
+          pieceID: currentPieceID,
           recordID: recordID,
         },
       },
@@ -126,13 +133,15 @@ export const pieceMethods = {
     updateStore(data);
   },
 
-  changeFormula: async (pieceID: string, formulaID: string) => {
+  changeFormula: async (formulaID: string) => {
+    const currentPieceID = store.getState().piece.selected._id;
+
     const request: PieceLinkEditType = {
       id: ReqID.updateLink,
       data: {
         id: LinkEditID.changeLink,
         filter: {
-          pieceID: pieceID,
+          pieceID: currentPieceID,
           formulaID: formulaID,
         },
       },

@@ -13,7 +13,6 @@ import {
   ReferenceSimpleEditType,
   ReqID,
 } from "@sharedTypes/dbAPITypes";
-import { Reference } from "@sharedTypes/dbModelTypes";
 
 import { deleteInStore, updateStore } from "@reduxStore/dbDataEdit";
 
@@ -63,27 +62,31 @@ export const referenceMethods = {
     }
   },
 
-  deleteOne: async (id: string): Promise<void> => {
+  deleteSelected: async (): Promise<void> => {
+    const currentReferenceID = store.getState().reference.selected._id;
+
     const request: ReferenceDeleteType = {
       id: ReqID.deleteOne,
-      data: id,
+      data: currentReferenceID,
     };
 
     const data = await get(request, "reference");
     updateStore(data);
-    deleteInStore(id, "reference");
+    deleteInStore(currentReferenceID, "reference");
   },
 
-  updateSimple: async (reference: Reference): Promise<void> => {
+  updateSimple: async (): Promise<void> => {
+    const currentReference = store.getState().reference.selected;
+
     const request: ReferenceSimpleEditType = {
       id: ReqID.updateSimple,
       data: {
-        id: reference._id,
+        id: currentReference._id,
         filter: {
-          name: reference.name,
-          description: reference.description,
-          color: { ...reference.color },
-          points: [...reference.points],
+          name: currentReference.name,
+          description: currentReference.description,
+          color: { ...currentReference.color },
+          points: [...currentReference.points].sort((a, b) => a.x - b.x),
         },
       },
     };

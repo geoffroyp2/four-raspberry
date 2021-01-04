@@ -69,7 +69,7 @@ const post = async (req: Request, res: Response): Promise<void> => {
     switch (body.id) {
       case ReqID.updateSimple: {
         const result = await PieceModel.updatePiece(body.data.id, body.data.filter);
-        res.json({ formula: [result] });
+        res.json({ piece: [result] });
         break;
       }
 
