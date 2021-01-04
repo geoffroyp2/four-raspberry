@@ -40,7 +40,13 @@ const ReferenceInfoCard = () => {
             valueSelector={CurrentReferenceDescription}
             changeHandler={setReferenceDescription}
           />
-          <RecordTableField valueSelector={CurrentReferenceRecords} addButton={false} />
+          <RecordTableField
+            editSelector={ReferenceInfosEditMode}
+            valueSelector={CurrentReferenceRecords}
+            handleAddRecord={() => {}}
+            handleRemoveRecord={() => {}}
+            addButton={false}
+          />
           <LastUpdatedField valueSelector={CurrentReferenceLastUpdate} />
         </Container>
       }
