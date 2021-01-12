@@ -22,12 +22,11 @@ const ReferenceTab = () => {
     <ReferenceLoadTable />
   ) : (
     <MainZoneLayout
-      left={
-        pointEditMode
-          ? [<ReferencePointEdit />, <ReferencePointEditButtons />]
-          : [<ReferenceInfoCard />, <ReferenceInfoCardButtons />]
-      }
-      right={[<ReferenceGraphPreview />, <ReferencePieceList />]}
+      leftCol={pointEditMode ? <ReferencePointEdit /> : undefined}
+      topLeft={<ReferenceInfoCard />}
+      bottomLeft={<ReferenceGraphPreview />}
+      leftColButtons={pointEditMode ? <ReferencePointEditButtons /> : <ReferenceInfoCardButtons />}
+      rightCol={<ReferencePieceList />}
     />
   );
 };

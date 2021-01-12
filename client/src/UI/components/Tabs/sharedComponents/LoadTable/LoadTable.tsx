@@ -26,7 +26,12 @@ type Props = {
 const LoadTable = ({ select, cancel, save }: Props) => {
   const content = useSelector(LoadTableContent);
 
-  return <MainZoneLayout left={[tables[content], <LoadTableButtons select={select} cancel={cancel} save={save} />]} />;
+  return (
+    <MainZoneLayout
+      fullSpace={tables[content]}
+      leftColButtons={<LoadTableButtons select={select} cancel={cancel} save={save} />}
+    />
+  );
 };
 
 export default LoadTable;

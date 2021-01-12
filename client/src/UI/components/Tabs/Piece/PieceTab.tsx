@@ -17,7 +17,12 @@ const PieceTab = () => {
   return showLoadTable ? (
     <PieceLoadTable />
   ) : (
-    <MainZoneLayout left={[<PieceInfoCard />, <PieceInfoCardButtons />]} right={[<PiecePhotos />, <PieceFormula />]} />
+    <MainZoneLayout
+      topLeft={<PieceInfoCard />}
+      bottomLeft={<PieceFormula />}
+      leftColButtons={<PieceInfoCardButtons />}
+      rightCol={<PiecePhotos />}
+    />
   );
 };
 

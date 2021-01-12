@@ -22,8 +22,11 @@ const RecordTab = () => {
     <RecordLoadTable />
   ) : (
     <MainZoneLayout
-      left={pointEditMode ? [<RecordPointEdit />, <RecordPointEditButtons />] : [<RecordInfoCard />, <RecordInfoCardButtons />]}
-      right={[<RecordGraphPreview />, <RecordPieceList />]}
+      leftCol={pointEditMode ? <RecordPointEdit /> : undefined}
+      topLeft={<RecordInfoCard />}
+      bottomLeft={<RecordGraphPreview />}
+      leftColButtons={pointEditMode ? <RecordPointEditButtons /> : <RecordInfoCardButtons />}
+      rightCol={<RecordPieceList />}
     />
   );
 };
