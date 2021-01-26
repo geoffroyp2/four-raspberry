@@ -4,6 +4,8 @@
 /engine/node_modules
 /client/node_modules
 /db/node_modules
+/dbAPI/node_modules
+/dbAPI/config
 /photos/node_modules
 /photos/public/images
 /.pnp
