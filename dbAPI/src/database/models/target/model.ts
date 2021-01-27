@@ -10,10 +10,9 @@ import {
   HasManyRemoveAssociationMixin,
   Model,
 } from "sequelize";
-import Record from "../record/model";
 
-// import Target from "../target/model";
 import { TargetAttributes, TargetCreationAttributes } from "./types";
+import Record from "../record/model";
 
 class Target extends Model<TargetAttributes, TargetCreationAttributes> implements TargetAttributes {
   public id!: number;
@@ -25,7 +24,6 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
 
   public getRecords!: HasManyGetAssociationsMixin<Record>;
   public addRecord!: HasManyAddAssociationMixin<Record, number>;
-  public addRecords!: HasManyAddAssociationsMixin<Record, number>;
   public hasRecords!: HasManyHasAssociationMixin<Record, number>;
   public countRecords!: HasManyCountAssociationsMixin;
   public createRecord!: HasManyCreateAssociationMixin<Record>;

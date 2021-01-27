@@ -1,18 +1,10 @@
 import database from "../database";
-import Target from "../models/target/model";
-import Record from "../models/record/model";
+import Target from "../database/models/target/model";
+import Record from "../database/models/record/model";
 import * as _ from "lodash";
 
 export const populateTest = async () => {
   await database.sync({ force: true });
-  // const newRecord = await Record.create({ name: "NewRec", description: "recDescription" });
-  // const newTarget = await newRecord.createTarget({
-  //   name: "TargetTest",
-  //   description: "desc",
-  // });
-  // const newRecord2 = await Record.create({ name: "Record2", description: "YO" });
-  // newRecord2.addTarget(newTarget);
-  // console.log(newRecord, newTarget);
 
   const r1 = await Record.create({ name: "R1", description: "RD1" });
   const r2 = await Record.create({ name: "R2", description: "RD2" });
@@ -24,4 +16,15 @@ export const populateTest = async () => {
 
   await r1.addTarget(t1);
   await r1.addTarget(t3);
+  await r2.addTarget(t2);
+  await r2.addTarget(t2);
+  await r2.addTarget(t2);
+  await r2.addTarget(t2);
+
+  await t1.addRecord(r2);
+  await t2.addRecord(r2);
+
+  // await t2.removeRecord(r2);
+  // await t3.removeRecord(r2);
+  // await r1.destroy();
 };

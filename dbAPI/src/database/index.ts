@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize";
-import { dbConfig } from "../config/dbConfig";
+import { dbConfig } from "./config/dbConfig";
 import { initializeSequelizeModels } from "./models/init";
 
 class Database {
-  public sequelize: Sequelize;
+  public sequelize: Sequelize; // The unique Sequelize connexion instance
 
   constructor() {
     this.sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {

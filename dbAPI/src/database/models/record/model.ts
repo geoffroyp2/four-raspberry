@@ -8,7 +8,6 @@ import {
   HasManyCreateAssociationMixin,
   HasManyRemoveAssociationMixin,
   Model,
-  HasManyAddAssociationsMixin,
 } from "sequelize";
 
 import Target from "../target/model";
@@ -24,7 +23,6 @@ class Record extends Model<RecordAttributes, RecordCreationAttributes> implement
 
   public getTargets!: HasManyGetAssociationsMixin<Target>;
   public addTarget!: HasManyAddAssociationMixin<Target, number>;
-  public addTargets!: HasManyAddAssociationsMixin<Target, number>;
   public hasTargets!: HasManyHasAssociationMixin<Target, number>;
   public countTargets!: HasManyCountAssociationsMixin;
   public createTarget!: HasManyCreateAssociationMixin<Target>;
@@ -45,10 +43,12 @@ export const recordModelAttributes = {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "Sans Nom",
   },
   description: {
     type: DataTypes.STRING,
     allowNull: false,
+    defaultValue: "",
   },
 };
 
