@@ -28,15 +28,16 @@ class Record extends Model<RecordAttributes, RecordCreationAttributes> implement
 
   // Foreign keys: Pieces through RecordPieces
   public readonly pieces?: Piece[];
-  public static associations: {
-    pieces: Association<Record, Piece>;
-  };
   public getPieces!: HasManyGetAssociationsMixin<Piece>;
   public addPiece!: HasManyAddAssociationMixin<Piece, number>;
   public hasPieces!: HasManyHasAssociationMixin<Piece, number>;
   public countPieces!: HasManyCountAssociationsMixin;
   public createPiece!: HasManyCreateAssociationMixin<Piece>;
   public removePiece!: HasManyRemoveAssociationMixin<Piece, number>;
+
+  public static associations: {
+    pieces: Association<Record, Piece>;
+  };
 }
 
 export const recordModelAttributes = {

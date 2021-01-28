@@ -39,6 +39,12 @@ export const populateTest = async () => {
   await r5.addPiece(p1);
   await r5.addPiece(p2);
   await r5.addPiece(p3);
+
+  await p1.createPhoto({ url: getUrl() });
+  await p2.createPhoto({ url: getUrl() });
+  await p3.createPhoto({ url: getUrl() });
+  await p3.createPhoto({ url: getUrl() });
+  await p3.createPhoto({ url: getUrl() });
 };
 
 const generateColor = () => {
@@ -50,4 +56,7 @@ const getNum255 = () => {
 };
 const getNumFloat = () => {
   return Math.random().toFixed(1);
+};
+const getUrl = () => {
+  return "www.placeholer.com/" + Math.floor(Math.random() * 2 ** 48).toString(16);
 };

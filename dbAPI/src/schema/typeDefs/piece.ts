@@ -13,6 +13,11 @@ export default gql`
     description: String!
 
     """
+    Les urls des photos associées à la Piece
+    """
+    photos: [String]!
+
+    """
     les courbes Record de cuisson de la Piece
     """
     records: [Record]

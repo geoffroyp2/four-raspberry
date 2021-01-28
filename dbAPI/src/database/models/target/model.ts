@@ -23,17 +23,18 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Foreign keys: Records through TargetRecords
+  // Foreign keys: Records
   public readonly records?: Record[];
-  public static associations: {
-    records: Association<Target, Record>;
-  };
   public getRecords!: HasManyGetAssociationsMixin<Record>;
   public addRecord!: HasManyAddAssociationMixin<Record, number>;
   public hasRecords!: HasManyHasAssociationMixin<Record, number>;
   public countRecords!: HasManyCountAssociationsMixin;
   public createRecord!: HasManyCreateAssociationMixin<Record>;
   public removeRecord!: HasManyRemoveAssociationMixin<Record, number>;
+
+  public static associations: {
+    records: Association<Target, Record>;
+  };
 }
 
 export const targetModelAttributes = {

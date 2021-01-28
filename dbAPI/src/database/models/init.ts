@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize/types";
+import Photo, { photoModelAttributes } from "./photo/model";
 import Piece, { pieceModelAttributes } from "./piece/model";
 import Record, { recordModelAttributes } from "./record/model";
 import Target, { targetModelAttributes } from "./target/model";
@@ -24,6 +25,11 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
     tableName: "pieces",
   });
 
+  Photo.init(photoModelAttributes, {
+    sequelize: sequelize,
+    tableName: "photos",
+  });
+
   associate();
 };
 
@@ -33,14 +39,14 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
  */
 
 const associate = () => {
-  // Target -- Record : 1 <-> n
+  // Target (1) <--> Record (n)
   Target.hasMany(Record, {
     sourceKey: "id",
     foreignKey: "targetId",
     as: "records",
   });
 
-  // Record -- Piece: n <-> m
+  // Record (n) <--> Piece (m)
   Record.belongsToMany(Piece, {
     through: {
       model: "RecordPieces",
@@ -57,5 +63,12 @@ const associate = () => {
     },
     foreignKey: "pieceId",
     constraints: true,
+  });
+
+  // Piece (1) <--> Photo (n)
+  Piece.hasMany(Photo, {
+    sourceKey: "id",
+    foreignKey: "pieceId",
+    as: "photos",
   });
 };
