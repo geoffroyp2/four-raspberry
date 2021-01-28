@@ -1,9 +1,8 @@
 import * as express from "express";
-import * as bodyParser from "body-parser";
 import { ApolloServer, Config } from "apollo-server-express";
 
+import { initializeSequelizeModels } from "./database/models/init";
 import database from "./database";
-import { Sequelize } from "sequelize/types";
 import schema from "./schema";
 
 const config: Config = {
@@ -11,20 +10,17 @@ const config: Config = {
   introspection: true, // GUI
   playground: true, // Playground
 };
-class App {
-  public app: express.Application;
-  public server: ApolloServer;
-  private db: Sequelize;
 
-  constructor() {
-    this.app = express();
-    this.server = new ApolloServer(config);
-    this.server.applyMiddleware({
-      app: this.app,
-      path: "/graphql",
-    });
-    this.db = database; // To force Sequelize initialization at app start
-  }
-}
+// Create express instance and plug Apollo in
+const app = express();
+const server = new ApolloServer(config);
+server.applyMiddleware({
+  app,
+  path: "/graphql",
+});
 
-export default new App().app;
+// initialize database models
+initializeSequelizeModels(database);
+console.log("Sequelize initialized");
+
+export default app;

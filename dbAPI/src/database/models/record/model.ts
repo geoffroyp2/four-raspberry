@@ -10,28 +10,33 @@ import {
   Model,
 } from "sequelize";
 
-import Target from "../target/model";
+import Piece from "../piece/model";
 import { RecordAttributes, RecordCreationAttributes } from "./types";
 
 class Record extends Model<RecordAttributes, RecordCreationAttributes> implements RecordAttributes {
+  // Simple fields
   public id!: number;
   public name!: string;
   public description!: string;
+  public color!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public getTargets!: HasManyGetAssociationsMixin<Target>;
-  public addTarget!: HasManyAddAssociationMixin<Target, number>;
-  public hasTargets!: HasManyHasAssociationMixin<Target, number>;
-  public countTargets!: HasManyCountAssociationsMixin;
-  public createTarget!: HasManyCreateAssociationMixin<Target>;
-  public removeTarget!: HasManyRemoveAssociationMixin<Target, number>;
+  // Foreign key: target
+  public targetId!: number | null;
 
-  public readonly targets?: Target[];
+  // Foreign keys: Pieces through RecordPieces
+  public readonly pieces?: Piece[];
   public static associations: {
-    targets: Association<Record, Target>;
+    pieces: Association<Record, Piece>;
   };
+  public getPieces!: HasManyGetAssociationsMixin<Piece>;
+  public addPiece!: HasManyAddAssociationMixin<Piece, number>;
+  public hasPieces!: HasManyHasAssociationMixin<Piece, number>;
+  public countPieces!: HasManyCountAssociationsMixin;
+  public createPiece!: HasManyCreateAssociationMixin<Piece>;
+  public removePiece!: HasManyRemoveAssociationMixin<Piece, number>;
 }
 
 export const recordModelAttributes = {
@@ -49,6 +54,15 @@ export const recordModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "",
+  },
+  color: {
+    type: new DataTypes.STRING(15),
+    allowNull: false,
+    defaultValue: "210-210-210-0.9",
+  },
+  targetId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
 };
 

@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize/types";
+import Piece, { pieceModelAttributes } from "./piece/model";
 import Record, { recordModelAttributes } from "./record/model";
 import Target, { targetModelAttributes } from "./target/model";
 
@@ -18,6 +19,11 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
     tableName: "records",
   });
 
+  Piece.init(pieceModelAttributes, {
+    sequelize: sequelize,
+    tableName: "pieces",
+  });
+
   associate();
 };
 
@@ -27,22 +33,29 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
  */
 
 const associate = () => {
-  Target.belongsToMany(Record, {
-    through: {
-      model: "RecordTargets",
-      unique: false,
-    },
+  // Target -- Record : 1 <-> n
+  Target.hasMany(Record, {
+    sourceKey: "id",
     foreignKey: "targetId",
-    // constraints: so that rows are deleted from "RecordTargets" when a row is deleted from records or targets
-    constraints: true,
+    as: "records",
   });
 
-  Record.belongsToMany(Target, {
+  // Record -- Piece: n <-> m
+  Record.belongsToMany(Piece, {
     through: {
-      model: "RecordTargets",
+      model: "RecordPieces",
       unique: false,
     },
     foreignKey: "recordId",
+    // constraints: so that rows are deleted from "RecordPieces" when a row is deleted from records or pieces
+    constraints: true,
+  });
+  Piece.belongsToMany(Record, {
+    through: {
+      model: "RecordPieces",
+      unique: false,
+    },
+    foreignKey: "pieceId",
     constraints: true,
   });
 };

@@ -1,4 +1,5 @@
-import record from "./record";
 import target from "./target";
+import record from "./record";
+import piece from "./piece";
 
-export default [record, target];
+export default [target, record, piece];

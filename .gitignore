@@ -5,7 +5,8 @@
 /client/node_modules
 /db/node_modules
 /dbAPI/node_modules
-/dbAPI/src/database/config
+/dbAPI/dist
+/dbAPI/src/database/config/*
 /photos/node_modules
 /photos/public/images
 /.pnp

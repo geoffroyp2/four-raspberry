@@ -1,3 +1,4 @@
+import Piece from "../../../database/models/piece/model";
 import Record from "../../../database/models/record/model";
 import { RecordAttributes } from "../../../database/models/record/types";
 import Target from "../../../database/models/target/model";
@@ -7,9 +8,14 @@ type RTIDType = {
   targetId: { id: number };
 };
 
+type PRIDType = {
+  pieceId: { id: number };
+  recordId: { id: number };
+};
+
 const Mutation = {
   createRecord: async (obj: any, args: RecordAttributes) => {
-    return await Record.create(args);
+    return await Record.create();
   },
 
   deleteRecord: async (obj: any, args: RecordAttributes) => {
@@ -17,31 +23,43 @@ const Mutation = {
     return result > 0;
   },
 
-  updateRecord: async (obj: any, { id, name, description }: RecordAttributes) => {
+  updateRecord: async (obj: any, { id, name, description, color }: RecordAttributes) => {
+    // TODO : sanitize input
     const record = await Record.findOne({ where: { id } });
     if (record) {
       if (name) record.set({ name });
       if (description) record.set({ description });
+      if (color) record.set({ color });
       return await record.save();
     }
     return null;
   },
 
-  addTargetToRecord: async (obj: any, { recordId, targetId }: RTIDType) => {
+  setRecordTarget: async (obj: any, { recordId, targetId }: RTIDType) => {
     const target = await Target.findOne({ where: targetId });
     const record = await Record.findOne({ where: recordId });
     if (record && target) {
-      record.addTarget(target);
+      await target.addRecord(record);
       return true;
     }
     return false;
   },
 
-  removeTargetFromRecord: async (obj: any, { recordId, targetId }: RTIDType) => {
-    const target = await Target.findOne({ where: targetId });
+  addPieceToRecord: async (obj: any, { pieceId, recordId }: PRIDType) => {
+    const piece = await Piece.findOne({ where: pieceId });
     const record = await Record.findOne({ where: recordId });
-    if (record && target) {
-      record.removeTarget(target);
+    if (record && piece) {
+      await record.addPiece(piece);
+      return true;
+    }
+    return false;
+  },
+
+  removePieceFromRecord: async (obj: any, { pieceId, recordId }: PRIDType) => {
+    const piece = await Piece.findOne({ where: pieceId });
+    const record = await Record.findOne({ where: recordId });
+    if (record && piece) {
+      await record.removePiece(piece);
       return true;
     }
     return false;

@@ -1,13 +1,9 @@
-import Record from "../../../database/models/record/model";
-import { RecordAttributes } from "../../../database/models/record/types";
+import Piece from "../../../database/models/piece/model";
+import { PieceAttributes } from "../../../database/models/piece/types";
 
 const Query = {
-  records: async (obj: any, args: RecordAttributes) => {
-    return await Record.findAll({ where: args });
-  },
-
-  record: async (obj: any, args: RecordAttributes) => {
-    return await Record.findOne({ where: args });
+  pieces: async (obj: any, args: PieceAttributes) => {
+    return await Piece.findAll({ where: args });
   },
 };
 
