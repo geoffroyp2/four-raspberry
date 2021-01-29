@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   """
-  Formula est un mélange d'éléments chimiques avec des proportions
+  Formula est une recette d'émail: mélange d'éléments chimiques avec des proportions
   """
   type Formula {
     """
@@ -15,7 +15,7 @@ export default gql`
     """
     Les Pieces qui ont utilisé la Formula
     """
-    pieces: [Piece]!
+    pieces(id: Int, name: String): [Piece]!
 
     """
     Les Ingredients de la Formula

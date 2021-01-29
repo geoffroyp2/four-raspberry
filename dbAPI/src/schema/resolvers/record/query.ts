@@ -1,11 +1,11 @@
 import Record from "../../../database/models/record/record";
 import Target from "../../../database/models/target/target";
 
-interface GQLRecordAttributesType {
+export interface GQLRecordAttributesType {
   id?: string;
   name?: string;
 }
-interface GQLRecordFindType extends GQLRecordAttributesType {
+export interface GQLRecordFindType extends GQLRecordAttributesType {
   oven?: string;
 }
 

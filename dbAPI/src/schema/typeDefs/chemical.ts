@@ -28,7 +28,7 @@ export default gql`
     """
     La liste des Formulas associées à l'ingrédient
     """
-    formulas: [Formula]!
+    formulas(id: Int, name: String): [Formula]!
 
     createdAt: String!
     updatedAt: String!

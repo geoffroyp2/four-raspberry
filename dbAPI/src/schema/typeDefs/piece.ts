@@ -20,7 +20,7 @@ export default gql`
     """
     les courbes Record de cuisson de la Piece
     """
-    records: [Record]!
+    records(id: Int, name: String, oven: String): [Record]!
 
     """
     la formule chimique de l'émail de la pièce

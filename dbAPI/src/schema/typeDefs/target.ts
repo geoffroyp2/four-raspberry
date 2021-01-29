@@ -39,7 +39,7 @@ export default gql`
 
   type Query {
     """
-    Recherche les Targets par id, name, ou type de four (oven)
+    Recherche les Targets par id, name, ou type de four (oven: "gaz" ou "electrique")
     """
     targets(id: Int, name: String, oven: String): [Target]!
   }
