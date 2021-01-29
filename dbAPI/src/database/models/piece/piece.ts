@@ -1,18 +1,32 @@
 import {
-  Association,
+  Model,
+  Optional,
   DataTypes,
+  Association,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyHasAssociationMixin,
+  BelongsToManyCountAssociationsMixin,
+  BelongsToManyCreateAssociationMixin,
+  BelongsToManyRemoveAssociationMixin,
   HasManyGetAssociationsMixin,
   HasManyAddAssociationMixin,
   HasManyHasAssociationMixin,
   HasManyCountAssociationsMixin,
   HasManyCreateAssociationMixin,
   HasManyRemoveAssociationMixin,
-  Model,
 } from "sequelize";
-import Photo from "../photo/model";
 
-import Record from "../record/model";
-import { PieceAttributes, PieceCreationAttributes } from "./types";
+import Photo from "./photo";
+import Record from "../record/record";
+
+export interface PieceAttributes {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface PieceCreationAttributes extends Optional<PieceAttributes, "id"> {}
 
 class Piece extends Model<PieceAttributes, PieceCreationAttributes> implements PieceAttributes {
   // Simple fields
@@ -24,22 +38,22 @@ class Piece extends Model<PieceAttributes, PieceCreationAttributes> implements P
   public readonly updatedAt!: Date;
 
   // Foreign key: formula
-  // public formulaId!: number;
+  public formulaId!: number;
 
   // Foreign keys: Records through RecordPieces
   public readonly records?: Record[];
-  public getRecords!: HasManyGetAssociationsMixin<Record>;
-  public addRecord!: HasManyAddAssociationMixin<Record, number>;
-  public hasRecords!: HasManyHasAssociationMixin<Record, number>;
-  public countRecords!: HasManyCountAssociationsMixin;
-  public createRecord!: HasManyCreateAssociationMixin<Record>;
-  public removeRecord!: HasManyRemoveAssociationMixin<Record, number>;
+  public getRecords!: BelongsToManyGetAssociationsMixin<Record>;
+  public addRecord!: BelongsToManyAddAssociationMixin<Record, number>;
+  public hasRecords!: BelongsToManyHasAssociationMixin<Record, number>;
+  public countRecords!: BelongsToManyCountAssociationsMixin;
+  public createRecord!: BelongsToManyCreateAssociationMixin<Record>;
+  public removeRecord!: BelongsToManyRemoveAssociationMixin<Record, number>;
 
   // Foreign keys: Photos
   public readonly photos?: Photo[];
   public getPhotos!: HasManyGetAssociationsMixin<Photo>;
   public addPhoto!: HasManyAddAssociationMixin<Photo, number>;
-  public hasPhotos!: HasManyHasAssociationMixin<Photo, number>;
+  public hasPhoto!: HasManyHasAssociationMixin<Photo, number>;
   public countPhotos!: HasManyCountAssociationsMixin;
   public createPhoto!: HasManyCreateAssociationMixin<Photo>;
   public removePhoto!: HasManyRemoveAssociationMixin<Photo, number>;

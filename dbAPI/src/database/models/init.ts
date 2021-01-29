@@ -1,8 +1,11 @@
 import { Sequelize } from "sequelize/types";
-import Photo, { photoModelAttributes } from "./photo/model";
-import Piece, { pieceModelAttributes } from "./piece/model";
-import Record, { recordModelAttributes } from "./record/model";
-import Target, { targetModelAttributes } from "./target/model";
+import Photo, { photoModelAttributes } from "./piece/photo";
+import Piece, { pieceModelAttributes } from "./piece/piece";
+import Record, { recordModelAttributes } from "./record/record";
+import Target, { targetModelAttributes } from "./target/target";
+import Formula, { formulaModelAttributes } from "./formula/formula";
+import Ingredient, { ingredientModelAttributes } from "./formula/ingredient";
+import Chemical, { chemicalModelAttributes } from "./formula/chemical";
 
 /**
  * Initialize models, representing a table in the DB, with attributes and options
@@ -30,6 +33,21 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
     tableName: "photos",
   });
 
+  Formula.init(formulaModelAttributes, {
+    sequelize: sequelize,
+    tableName: "formulas",
+  });
+
+  Ingredient.init(ingredientModelAttributes, {
+    sequelize: sequelize,
+    tableName: "ingredients",
+  });
+
+  Chemical.init(chemicalModelAttributes, {
+    sequelize: sequelize,
+    tableName: "chemicals",
+  });
+
   associate();
 };
 
@@ -46,7 +64,7 @@ const associate = () => {
     as: "records",
   });
 
-  // Record (n) <--> Piece (m)
+  // Record (n) <--> Piece (m) through RecordPieces
   Record.belongsToMany(Piece, {
     through: {
       model: "RecordPieces",
@@ -70,5 +88,30 @@ const associate = () => {
     sourceKey: "id",
     foreignKey: "pieceId",
     as: "photos",
+  });
+
+  // Formula (1) <--> Piece (n)
+  Formula.hasMany(Piece, {
+    sourceKey: "id",
+    foreignKey: "formulaId",
+    as: "pieces",
+  });
+
+  // Formula (n) <--> Chemical (m) through Ingredient (that has "amount" field)
+  Formula.belongsToMany(Chemical, {
+    through: {
+      model: Ingredient,
+      unique: false,
+    },
+    foreignKey: "formulaId",
+    constraints: true,
+  });
+  Chemical.belongsToMany(Formula, {
+    through: {
+      model: Ingredient,
+      unique: false,
+    },
+    foreignKey: "chemicalId",
+    constraints: true,
   });
 };

@@ -9,9 +9,17 @@ import {
   HasManyRemoveAssociationMixin,
   Model,
 } from "sequelize";
+import { Optional } from "sequelize/types";
 
-import { TargetAttributes, TargetCreationAttributes } from "./types";
-import Record from "../record/model";
+import Record from "../record/record";
+
+export interface TargetAttributes {
+  id: number;
+  name: string;
+  description: string;
+  color: string;
+}
+export interface TargetCreationAttributes extends Optional<TargetAttributes, "id"> {}
 
 class Target extends Model<TargetAttributes, TargetCreationAttributes> implements TargetAttributes {
   // Simple fields
@@ -27,7 +35,7 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
   public readonly records?: Record[];
   public getRecords!: HasManyGetAssociationsMixin<Record>;
   public addRecord!: HasManyAddAssociationMixin<Record, number>;
-  public hasRecords!: HasManyHasAssociationMixin<Record, number>;
+  public hasRecord!: HasManyHasAssociationMixin<Record, number>;
   public countRecords!: HasManyCountAssociationsMixin;
   public createRecord!: HasManyCreateAssociationMixin<Record>;
   public removeRecord!: HasManyRemoveAssociationMixin<Record, number>;

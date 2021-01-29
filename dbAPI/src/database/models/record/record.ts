@@ -1,17 +1,25 @@
 import {
-  Association,
-  DataTypes,
-  HasManyGetAssociationsMixin,
-  HasManyAddAssociationMixin,
-  HasManyHasAssociationMixin,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  HasManyRemoveAssociationMixin,
   Model,
+  Optional,
+  DataTypes,
+  Association,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyHasAssociationMixin,
+  BelongsToManyCountAssociationsMixin,
+  BelongsToManyCreateAssociationMixin,
+  BelongsToManyRemoveAssociationMixin,
 } from "sequelize";
 
-import Piece from "../piece/model";
-import { RecordAttributes, RecordCreationAttributes } from "./types";
+import Piece from "../piece/piece";
+
+export interface RecordAttributes {
+  id: number;
+  name: string;
+  description: string;
+  color: string;
+}
+export interface RecordCreationAttributes extends Optional<RecordAttributes, "id"> {}
 
 class Record extends Model<RecordAttributes, RecordCreationAttributes> implements RecordAttributes {
   // Simple fields
@@ -28,12 +36,12 @@ class Record extends Model<RecordAttributes, RecordCreationAttributes> implement
 
   // Foreign keys: Pieces through RecordPieces
   public readonly pieces?: Piece[];
-  public getPieces!: HasManyGetAssociationsMixin<Piece>;
-  public addPiece!: HasManyAddAssociationMixin<Piece, number>;
-  public hasPieces!: HasManyHasAssociationMixin<Piece, number>;
-  public countPieces!: HasManyCountAssociationsMixin;
-  public createPiece!: HasManyCreateAssociationMixin<Piece>;
-  public removePiece!: HasManyRemoveAssociationMixin<Piece, number>;
+  public getPieces!: BelongsToManyGetAssociationsMixin<Piece>;
+  public addPiece!: BelongsToManyAddAssociationMixin<Piece, number>;
+  public hasPiece!: BelongsToManyHasAssociationMixin<Piece, number>;
+  public countPieces!: BelongsToManyCountAssociationsMixin;
+  public createPiece!: BelongsToManyCreateAssociationMixin<Piece>;
+  public removePiece!: BelongsToManyRemoveAssociationMixin<Piece, number>;
 
   public static associations: {
     pieces: Association<Record, Piece>;

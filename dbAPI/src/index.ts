@@ -1,5 +1,5 @@
 import app from "./app";
-import { populateTest } from "./scripts/populate";
+import { populateTest } from "./scripts/generateDbMock/populate";
 import { queryTest } from "./scripts/query";
 
 const PORT = process.env.PORT || 3001;
