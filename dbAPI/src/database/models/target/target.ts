@@ -13,11 +13,13 @@ import { Optional } from "sequelize/types";
 
 import Record from "../record/record";
 
+export type OvenType = "gaz" | "electrique";
 export interface TargetAttributes {
   id: number;
   name: string;
   description: string;
   color: string;
+  oven: OvenType;
 }
 export interface TargetCreationAttributes extends Optional<TargetAttributes, "id"> {}
 
@@ -27,6 +29,7 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
   public name!: string;
   public description!: string;
   public color!: string;
+  public oven!: OvenType;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -65,6 +68,11 @@ export const targetModelAttributes = {
     type: new DataTypes.STRING(15),
     allowNull: false,
     defaultValue: "210-210-210-0.9",
+  },
+  oven: {
+    type: new DataTypes.STRING(10),
+    allowNull: false,
+    defaultValue: "gaz",
   },
 };
 

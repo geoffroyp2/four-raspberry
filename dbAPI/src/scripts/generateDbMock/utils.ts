@@ -1,4 +1,6 @@
-export const generateColor = () => {
+import { OvenType } from "../../database/models/target/target";
+
+export const getColor = () => {
   return getNum255() + "-" + getNum255() + "-" + getNum255() + "-" + getNumFloat();
 };
 
@@ -12,4 +14,9 @@ export const getNumFloat = () => {
 
 export const getUrl = () => {
   return "www.placeholer.com/" + Math.floor(Math.random() * 2 ** 48).toString(16);
+};
+
+const ovens: OvenType[] = ["gaz", "electrique"];
+export const getOven = (): OvenType => {
+  return ovens[Math.round(Math.random())];
 };

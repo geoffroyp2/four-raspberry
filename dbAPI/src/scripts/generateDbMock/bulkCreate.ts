@@ -1,4 +1,4 @@
-import { generateColor } from "./utils";
+import { getColor, getOven } from "./utils";
 import Chemical from "../../database/models/formula/chemical";
 import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
@@ -9,9 +9,9 @@ export const bulkCreate = {
   records: async (amount: number) => {
     return await Record.bulkCreate(
       [...Array(amount)].map((e, i) => ({
-        name: `Record ${i}`,
-        description: `Record Description ${i}`,
-        color: generateColor(),
+        name: `Record ${i + 1}`,
+        description: `Record Description ${i + 1}`,
+        color: getColor(),
       }))
     );
   },
@@ -19,9 +19,10 @@ export const bulkCreate = {
   targets: async (amount: number) => {
     return await Target.bulkCreate(
       [...Array(amount)].map((e, i) => ({
-        name: `Target ${i}`,
-        description: `Target Description ${i}`,
-        color: generateColor(),
+        name: `Target ${i + 1}`,
+        description: `Target Description ${i + 1}`,
+        color: getColor(),
+        oven: getOven(),
       }))
     );
   },
@@ -29,8 +30,8 @@ export const bulkCreate = {
   pieces: async (amount: number) => {
     return await Piece.bulkCreate(
       [...Array(amount)].map((e, i) => ({
-        name: `Piece ${i}`,
-        description: `Piece Description ${i}`,
+        name: `Piece ${i + 1}`,
+        description: `Piece Description ${i + 1}`,
       }))
     );
   },
@@ -38,8 +39,8 @@ export const bulkCreate = {
   formulas: async (amount: number) => {
     return await Formula.bulkCreate(
       [...Array(amount)].map((e, i) => ({
-        name: `Formula ${i}`,
-        description: `Formula Description ${i}`,
+        name: `Formula ${i + 1}`,
+        description: `Formula Description ${i + 1}`,
       }))
     );
   },
@@ -47,8 +48,8 @@ export const bulkCreate = {
   chemicals: async (amount: number) => {
     return await Chemical.bulkCreate(
       [...Array(amount)].map((e, i) => ({
-        name: `Chemical ${i}`,
-        chemicalName: `Chemical Name ${i}`,
+        name: `Chemical ${i + 1}`,
+        chemicalName: `Chemical Name ${i + 1}`,
         density: Math.floor(Math.random() * 150),
       }))
     );

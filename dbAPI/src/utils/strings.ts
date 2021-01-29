@@ -1,11 +1,10 @@
-type Color = {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-};
+import { ColorType } from "../schema/resolvers/sharedTypes";
 
-export const colorToString = (color: Color): string => {
+/**
+ * transforms a {r:255, g:255, b:255, a:1.0} color into a 255-255-255-1.0 color
+ * @param color the ColorType input
+ */
+export const colorToString = (color: ColorType): string => {
   return `${getIntString(color.r)}-${getIntString(color.g)}-${getIntString(color.b)}-${getFloatString(color.a)}`;
 };
 
@@ -25,4 +24,18 @@ export const getIntString = (num: number): string => {
  */
 export const getFloatString = (num: number): string => {
   return Math.min(Math.max(num, 0), 1).toFixed(1);
+};
+
+/**
+ * transforms a 255-255-255-1.0 color into a {r:255, g:255, b:255, a:1.0} color
+ * @param color the string color input
+ */
+export const stringToColor = (color: string): ColorType => {
+  const splitString = color.split("-");
+  return {
+    r: +splitString[0],
+    g: +splitString[1],
+    b: +splitString[2],
+    a: +splitString[3],
+  };
 };

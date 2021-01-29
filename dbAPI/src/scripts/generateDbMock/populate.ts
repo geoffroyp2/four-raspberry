@@ -1,4 +1,3 @@
-import * as _ from "lodash";
 import database from "../../database";
 import { bulkCreate } from "./bulkCreate";
 import { link } from "./linkElements";
@@ -12,9 +11,9 @@ export const populateTest = async () => {
   const formulas = await bulkCreate.formulas(30);
   const chemicals = await bulkCreate.chemicals(100);
 
-  link.targetRecord(targets, records);
-  link.recordPiece(records, pieces, { min: 7, max: 10 });
-  link.piecePhoto(pieces, { min: 1, max: 8 });
-  link.pieceFormula(pieces, formulas);
-  link.formulaChemical(formulas, chemicals, { min: 4, max: 18 });
+  await link.targetRecord(targets, records);
+  await link.recordPiece(records, pieces, { min: 7, max: 10 });
+  await link.piecePhoto(pieces, { min: 1, max: 8 });
+  await link.pieceFormula(pieces, formulas);
+  await link.formulaChemical(formulas, chemicals, { min: 4, max: 18 });
 };
