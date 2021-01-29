@@ -13,10 +13,16 @@ export default gql`
     description: String!
 
     """
-    Couleur de la courbe de température de la forme 255-255-255-1.0 pour rgba
-    Avec r, g, b ints entre 0 et 255 et a float entre 0 et 1
+    Couleur de la courbe de température de la forme {r, g, b, a}
+    Avec r, g, b des ints entre 0 et 255 et a un float entre 0 et 1
     """
-    color: String!
+    color: Color!
+
+    """
+    Le four auquel correspond la Cuisson ("gaz" ou "eletrique")
+    ou null si Record n'a pas de Target associé
+    """
+    oven: String
 
     """
     La courbe target ayant servi comme modèle
@@ -26,7 +32,7 @@ export default gql`
     """
     les pieces qui ont été cuites
     """
-    pieces: [Piece]!
+    pieces(id: Int, name: String): [Piece]!
 
     createdAt: String!
     updatedAt: String!
@@ -36,14 +42,14 @@ export default gql`
     """
     Recherche les Records par id ou par name
     """
-    records(id: Int, name: String): [Record]!
+    records(id: Int, name: String, oven: String): [Record]!
   }
 
   extend type Mutation {
     """
     Crée un Record, les champs par défaut sont générés automatiquement si non spécifiés
     """
-    createRecord(name: String, description: String, color: String): Record!
+    createRecord(name: String, description: String, color: ColorInput): Record!
 
     """
     Supprime un Record par id
@@ -53,7 +59,7 @@ export default gql`
     """
     Selectionne un Record par id et met à jour les champs qui ne sont pas des jointures
     """
-    updateRecord(id: Int!, name: String, description: String, color: String): Record
+    updateRecord(id: Int!, name: String, description: String, color: ColorInput): Record
 
     """
     Lie une Target (par id) à un Record (par id).

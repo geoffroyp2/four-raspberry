@@ -1,6 +1,8 @@
 import Piece from "../../../database/models/piece/piece";
 import Record, { RecordAttributes, RecordCreationAttributes } from "../../../database/models/record/record";
 import Target from "../../../database/models/target/target";
+import { colorToString } from "../../../utils/strings";
+import { ColorType } from "../sharedTypes";
 
 type RTIDType = {
   recordId: { id: number };
@@ -12,8 +14,23 @@ type PRIDType = {
   recordId: { id: number };
 };
 
+interface CGQRecordCreationAttributes {
+  name: string;
+  description: string;
+  color: ColorType;
+}
+
+interface CGQRecordAttributes extends CGQRecordCreationAttributes {
+  id: number;
+}
+
 const Mutation = {
-  createRecord: async (obj: any, args: RecordCreationAttributes) => {
+  createRecord: async (obj: any, { name, description, color }: CGQRecordCreationAttributes) => {
+    const args: RecordCreationAttributes = {
+      name: name,
+      description: description,
+      color: colorToString(color),
+    };
     return await Record.create(args);
   },
 
@@ -22,13 +39,13 @@ const Mutation = {
     return result > 0;
   },
 
-  updateRecord: async (obj: any, { id, name, description, color }: RecordAttributes) => {
+  updateRecord: async (obj: any, { id, name, description, color }: CGQRecordAttributes) => {
     // TODO : sanitize input
     const record = await Record.findOne({ where: { id } });
     if (record) {
       if (name) record.set({ name });
       if (description) record.set({ description });
-      if (color) record.set({ color });
+      if (color) record.set({ color: colorToString(color) });
       return await record.save();
     }
     return null;

@@ -1,8 +1,8 @@
-import Record, { RecordAttributes } from "../../../database/models/record/record";
+import Piece, { PieceAttributes } from "../../../database/models/piece/piece";
 
 const Query = {
-  records: async (obj: any, args: RecordAttributes) => {
-    return await Record.findAll({ where: args, order: [["id", "ASC"]] });
+  pieces: async (obj: any, args: PieceAttributes) => {
+    return await Piece.findAll({ where: args, order: [["id", "ASC"]] });
   },
 };
 

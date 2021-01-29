@@ -18,8 +18,8 @@ export default gql`
     oven: String!
 
     """
-    Couleur de la courbe de température de la forme 255-255-255-1.0 pour rgba
-    Avec r, g, b ints entre 0 et 255 et a float entre 0 et 1
+    Couleur de la courbe de température de la forme {r, g, b, a}
+    Avec r, g, b des ints entre 0 et 255 et a un float entre 0 et 1
     """
     color: Color!
 
