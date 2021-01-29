@@ -1,4 +1,4 @@
-import Target from "../../../database/models/target/model";
+import Target from "../../../database/models/target/target";
 
 const Attribute = {
   records: async (parent: Target) => {

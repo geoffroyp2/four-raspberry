@@ -9,8 +9,8 @@ export default gql`
     id est généré par la db, unique
     """
     id: Int!
-    name: String
-    description: String
+    name: String!
+    description: String!
 
     """
     Couleur de la courbe de température de la forme 255-255-255-1.0 pour rgba
@@ -21,12 +21,15 @@ export default gql`
     """
     les courbes Record qui ont la Target comme modèle
     """
-    records: [Record]
+    records: [Record]!
+
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Query {
     """
-    Recherche les Targets par field: renvoie un array de Targets
+    Recherche les Targets par id ou par name
     """
     targets(id: Int, name: String): [Target]!
   }
@@ -35,7 +38,7 @@ export default gql`
     """
     Crée un Target, les champs par défaut sont générés automatiquement
     """
-    createTarget: Record!
+    createTarget(name: String, description: String, color: String): Target!
 
     """
     Supprime un Target par id
@@ -43,8 +46,8 @@ export default gql`
     deleteTarget(id: Int!): Boolean!
 
     """
-    Met à jour les champs qui ne sont pas des jointures
+    Selectionne un target par id et met à jour les champs qui ne sont pas des jointures
     """
-    updateTarget(id: Int!, name: String, description: String, color: String): Record
+    updateTarget(id: Int!, name: String, description: String, color: String): Target
   }
 `;

@@ -27,11 +27,14 @@ export default gql`
     les pieces qui ont été cuites
     """
     pieces: [Piece]!
+
+    createdAt: String!
+    updatedAt: String!
   }
 
   extend type Query {
     """
-    Recherche les Records par field: renvoie un array de Records
+    Recherche les Records par id ou par name
     """
     records(id: Int, name: String): [Record]!
   }
@@ -40,7 +43,7 @@ export default gql`
     """
     Crée un Record, les champs par défaut sont générés automatiquement si non spécifiés
     """
-    createRecord: Record!
+    createRecord(name: String, description: String, color: String): Record!
 
     """
     Supprime un Record par id
@@ -48,7 +51,7 @@ export default gql`
     deleteRecord(id: Int!): Boolean!
 
     """
-    Met à jour les champs qui ne sont pas des jointures
+    Selectionne un Record par id et met à jour les champs qui ne sont pas des jointures
     """
     updateRecord(id: Int!, name: String, description: String, color: String): Record
 
@@ -56,16 +59,16 @@ export default gql`
     Lie une Target (par id) à un Record (par id).
     Si targetId n'est pas défini, retire le lien s'il existe
     """
-    setRecordTarget(recordId: Int!, targetId: Int): Boolean!
+    setRecordTarget(recordId: Int!, targetId: Int): Record
 
     """
     Ajoute un lien entre une Piece et un Record
     """
-    addPieceToRecord(pieceId: Int!, recordId: Int!): Boolean!
+    addPieceToRecord(pieceId: Int!, recordId: Int!): Record
 
     """
     Supprime le lien entre une Piece et un Record
     """
-    removePieceFromRecord(pieceId: Int!, recordId: Int!): Boolean!
+    removePieceFromRecord(pieceId: Int!, recordId: Int!): Record
   }
 `;

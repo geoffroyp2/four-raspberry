@@ -1,9 +1,8 @@
-import Target from "../../../database/models/target/model";
-import { TargetAttributes } from "../../../database/models/target/types";
+import Target, { TargetAttributes } from "../../../database/models/target/target";
 
 const Query = {
   targets: async (obj: any, args: TargetAttributes) => {
-    return await Target.findAll({ where: args });
+    return await Target.findAll({ where: args, order: [["id", "ASC"]] });
   },
 };
 

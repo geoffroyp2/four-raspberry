@@ -1,9 +1,8 @@
-import Target from "../../../database/models/target/model";
-import { TargetAttributes } from "../../../database/models/target/types";
+import Target, { TargetAttributes, TargetCreationAttributes } from "../../../database/models/target/target";
 
 const Mutation = {
-  createTarget: async (obj: any, args: TargetAttributes) => {
-    return await Target.create();
+  createTarget: async (obj: any, args: TargetCreationAttributes) => {
+    return await Target.create(args);
   },
 
   deleteTarget: async (obj: any, args: TargetAttributes) => {
