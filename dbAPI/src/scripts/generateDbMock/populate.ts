@@ -1,9 +1,11 @@
 import database from "../../database";
 import { bulkCreate } from "./bulkCreate";
+import { deterministic } from "./deterministic";
 import { link } from "./linkElements";
 
 export const populateTest = async () => {
   await database.sync({ force: true });
+  await deterministic(); // generate deterministic data for testing purposes
 
   const targets = await bulkCreate.targets(10);
   const records = await bulkCreate.records(100);
