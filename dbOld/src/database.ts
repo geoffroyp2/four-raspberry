@@ -5,7 +5,9 @@ let database: Mongoose.Connection;
 const connect = () => {
   if (database) return;
 
-  const uri = "mongodb://192.168.0.121:27017/four?readPreference=primary&ssl=false";
+  // const uri = "mongodb://192.168.0.121:27017/four?readPreference=primary&ssl=false";
+  const uri =
+    "mongodb://192.168.1.120:27017/four?readPreference=primary&ssl=false";
 
   console.log("connecting to database...");
 
