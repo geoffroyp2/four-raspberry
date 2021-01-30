@@ -4,18 +4,24 @@
 /engine/node_modules
 /client/node_modules
 /db/node_modules
-/db/src/database/config/*
-/db/dist
 /photos/node_modules
 /dbOld/node_modules
 /.pnp
 .pnp.js
+
+# misc files and folders
+.vscode/
+/db/src/database/config/*
+images-server.url
+four - Raccourci.lnk
+client/debug.log
 
 # testing
 /coverage
 
 # production
 /client/build
+/db/dist
 
 # misc
 .DS_Store
@@ -27,6 +33,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-four - Raccourci.lnk
-client/debug.log

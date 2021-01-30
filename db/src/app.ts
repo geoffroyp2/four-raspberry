@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { ApolloServer, Config } from "apollo-server-express";
 
 import { initializeSequelizeModels } from "./database/models/init";

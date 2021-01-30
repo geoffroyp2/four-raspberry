@@ -1,33 +1,29 @@
 const path = require("path");
-const { CheckerPlugin } = require("awesome-typescript-loader");
-var nodeExternals = require("webpack-node-externals");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "production",
   entry: "./src/index.ts",
+  devtool: "inline-source-map",
   target: "node",
-  externals: [nodeExternals()],
+  mode: "production",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist/__bundle"),
     filename: "bundle.js",
   },
   resolve: {
-    extensions: [".mjs", ".js", ".ts", ".(graphql|gql)"],
-    modules: ["src"],
+    extensions: [".js", ".ts"],
+    fallback: {
+      util: require.resolve("util/"),
+    },
   },
   module: {
     rules: [
       {
-        test: /\.(graphql|gql)$/,
+        test: /\.tsx?$/,
+        use: "ts-loader",
         exclude: /node_modules/,
-        loader: "graphql-tag/loader",
-      },
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        loaders: "awesome-typescript-loader",
       },
     ],
   },
-  plugins: [new CheckerPlugin()],
+  externals: [nodeExternals(), "pg", "sqlite3", "tedious", "pg-hstore"],
 };
