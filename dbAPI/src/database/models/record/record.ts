@@ -9,9 +9,16 @@ import {
   BelongsToManyCountAssociationsMixin,
   BelongsToManyCreateAssociationMixin,
   BelongsToManyRemoveAssociationMixin,
+  HasManyAddAssociationMixin,
+  HasManyCountAssociationsMixin,
+  HasManyCreateAssociationMixin,
+  HasManyGetAssociationsMixin,
+  HasManyHasAssociationMixin,
+  HasManyRemoveAssociationMixin,
 } from "sequelize";
 
 import Piece from "../piece/piece";
+import RecordPoint from "./recordPoints";
 
 export interface RecordAttributes {
   id: number;
@@ -43,8 +50,18 @@ class Record extends Model<RecordAttributes, RecordCreationAttributes> implement
   public createPiece!: BelongsToManyCreateAssociationMixin<Piece>;
   public removePiece!: BelongsToManyRemoveAssociationMixin<Piece, number>;
 
+  // Foreign keys: Points
+  public readonly points?: RecordPoint[];
+  public getPoints!: HasManyGetAssociationsMixin<RecordPoint>;
+  public addPoint!: HasManyAddAssociationMixin<RecordPoint, number>;
+  public hasPoint!: HasManyHasAssociationMixin<RecordPoint, number>;
+  public countPoints!: HasManyCountAssociationsMixin;
+  public createPoint!: HasManyCreateAssociationMixin<RecordPoint>;
+  public removePoint!: HasManyRemoveAssociationMixin<RecordPoint, number>;
+
   public static associations: {
     pieces: Association<Record, Piece>;
+    points: Association<Record, RecordPoint>;
   };
 }
 

@@ -1,4 +1,5 @@
 import database from "../../database";
+import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
 import { bulkCreate } from "./bulkCreate";
 import { deterministic } from "./deterministic";
@@ -7,8 +8,7 @@ import { link } from "./linkElements";
 export const populateTest = async () => {
   await database.sync({ force: true });
 
-  // const targets = await Target.findAll();
-  await deterministic(); // generate deterministic data for testing purposes
+  // await deterministic(); // generate deterministic data for testing purposes
 
   const targets = await bulkCreate.targets(10);
   const records = await bulkCreate.records(100);
@@ -22,4 +22,7 @@ export const populateTest = async () => {
   await link.pieceFormula(pieces, formulas);
   await link.formulaChemical(formulas, chemicals, { min: 4, max: 18 });
   await link.targetPoints(targets, { min: 12, max: 30 });
+  await link.recordPoints(records, 3);
+
+  console.log("FINI");
 };

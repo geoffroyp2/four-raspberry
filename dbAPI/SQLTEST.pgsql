@@ -4,7 +4,19 @@
 -- SELECT id, "pieceId", url FROM photos;
 -- SELECT id, name, description FROM formulas;
 -- SELECT id, name, "chemicalName", density FROM chemicals;
-SELECT "targetId", time, temperature, oxygen FROM "targetPoints" ORDER BY "targetId", time;
+-- SELECT "targetId", time, temperature, oxygen FROM "targetPoints" ORDER BY "targetId", time;
+-- SELECT "targetId", time, temperature, oxygen 
+--      FROM "targetPoints" p
+--      WHERE p."targetId" = 7
+--      ORDER BY "targetId", time;
+
+-- SELECT COUNT (*) FROM "recordPoints" ;
+
+EXPLAIN ANALYZE VERBOSE
+SELECT "recordId", time, temperature, oxygen
+     FROM "recordPoints" p 
+     WHERE p."recordId" = 99 
+     ORDER BY "recordId", time 
 
 -- SELECT "recordId", "pieceId" FROM "RecordPieces";
 -- SELECT "chemicalId", "formulaId", amount FROM ingredients;

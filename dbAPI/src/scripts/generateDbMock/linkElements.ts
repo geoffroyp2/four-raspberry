@@ -3,7 +3,7 @@ import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
 import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
-import { getUrl } from "./utils";
+import { getUrl, interpolate } from "./utils";
 
 type MinMax = {
   min: number;
@@ -36,12 +36,32 @@ export const link = {
         const oMin = Math.random() * (43200 / 2) + Math.random() * (43200 / 4);
         const oMax = oMin + Math.random() * (43200 / 4);
         for (let i = 0; i < amount; i++) {
-          const x = Math.floor((i / amount) * 43200);
-          t.createPoint({
+          const x = Math.round((i / amount) * 43200);
+          await t.createPoint({
             time: x,
             temperature: targetGraph[0] + targetGraph[1] * x + targetGraph[2] * x ** 2 + targetGraph[3] * x ** 3,
             oxygen: x > oMin && x < oMax ? 1 : 0,
           });
+        }
+      })
+    );
+  },
+
+  recordPoints: async (records: Record[], pointsPerMinute: number) => {
+    return Promise.all(
+      records.map(async (r) => {
+        const record = await Record.findOne({ where: { id: r.id } });
+        const target = await Target.findOne({ where: { id: record?.targetId } });
+        if (target) {
+          const targetPoints = await target.getPoints({ order: [["time", "ASC"]] });
+          const maxTime = targetPoints[targetPoints.length - 1].time;
+          const amount = (maxTime / 60) * pointsPerMinute;
+          const interval = maxTime / amount;
+          for (let i = 0; i < amount; i++) {
+            const time = Math.floor(interval * i);
+            const { temperature, oxygen } = interpolate(time, targetPoints);
+            await r.createPoint({ time, temperature, oxygen });
+          }
         }
       })
     );

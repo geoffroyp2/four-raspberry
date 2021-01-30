@@ -2,8 +2,18 @@ import Record, { RecordCreationAttributes } from "../../../database/models/recor
 import Piece from "../../../database/models/piece/piece";
 import Target from "../../../database/models/target/target";
 
-import { GQLRecord, GQLRecordId, GQLRecordPiece, GQLRecordTarget, GQLRecordUpdate } from "../types";
+import {
+  GQLRecord,
+  GQLRecordId,
+  GQLRecordPiece,
+  GQLRecordPointCreate,
+  GQLRecordPointDelete,
+  GQLRecordPointUpdate,
+  GQLRecordTarget,
+  GQLRecordUpdate,
+} from "../types";
 import { colorToString } from "../../../utils/strings";
+import RecordPoint from "../../../database/models/record/recordPoints";
 
 const Mutation = {
   /**
@@ -104,6 +114,60 @@ const Mutation = {
     if (record && piece) {
       await record.removePiece(piece);
       return await Record.findOne({ where: { id: recordId } });
+    }
+    return null;
+  },
+
+  /**
+   * Creates a Point on the selected Record
+   * @param recordId the id of the Record
+   * @param args the fields of the point
+   */
+  createRecordPoint: async (
+    obj: any,
+    { recordId, time, temperature, oxygen }: GQLRecordPointCreate
+  ): Promise<RecordPoint | null> => {
+    const target = await Record.findOne({ where: { id: recordId } });
+    if (target) {
+      return await target.createPoint({ time, temperature, oxygen });
+    }
+    return null;
+  },
+
+  /**
+   * Select a target and one of its Points and deletes the Point
+   * @return false si Record n'existe pas ou le point n'est pas associé à la Record
+   * @param recordId the id of the Record
+   * @param pointId the id of the Point
+   */
+  deleteRecordPoint: async (obj: any, { recordId, pointId }: GQLRecordPointDelete): Promise<boolean> => {
+    const target = await Record.findOne({ where: { id: recordId } });
+    const point = await RecordPoint.findOne({ where: { recordId: recordId, id: pointId } });
+    if (target && point) {
+      const result = await point.destroy();
+      return true;
+    }
+    return false;
+  },
+
+  /**
+   *
+   * @param recordId the id of the Record
+   * @param pointId the id of the Point
+   * @param args the fields of the point
+   * @return the Point after update or null if it does not exist
+   */
+  updateRecordPoint: async (
+    obj: any,
+    { recordId, pointId, time, temperature, oxygen }: GQLRecordPointUpdate
+  ): Promise<RecordPoint | null> => {
+    const target = await Record.findOne({ where: { id: recordId } });
+    const point = await RecordPoint.findOne({ where: { recordId: recordId, id: pointId } });
+    if (target && point) {
+      if (time) point.set({ time });
+      if (temperature) point.set({ temperature });
+      if (oxygen) point.set({ oxygen });
+      return await point.save();
     }
     return null;
   },
