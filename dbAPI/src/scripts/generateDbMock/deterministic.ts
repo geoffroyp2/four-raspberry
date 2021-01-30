@@ -1,4 +1,5 @@
 import { bulkCreate } from "./bulkCreate";
+import { link } from "./linkElements";
 
 export const deterministic = async () => {
   const targets = await bulkCreate.targets(2);
@@ -11,6 +12,9 @@ export const deterministic = async () => {
   targets[0].addRecord(records[1]);
   // target 1 has no record
   // record 2 has no target
+
+  link.targetPoints([targets[0]], { min: 15, max: 15 }); // add 15 points to target 0
+  // target 1 has no points
 
   records[0].addPiece(pieces[0]); // record 0 has pieces 0 and 1
   records[0].addPiece(pieces[1]);

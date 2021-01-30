@@ -4,3 +4,9 @@ export type ColorType = {
   b: number;
   a: number;
 };
+
+export type TimeRangeType = {
+  start?: number;
+  end?: number;
+  amount?: number;
+};

@@ -2,8 +2,9 @@
 -- SELECT id, name, description, color FROM targets;
 -- SELECT id, name, description FROM pieces;
 -- SELECT id, "pieceId", url FROM photos;
-SELECT id, name, description FROM formulas;
-SELECT id, name, "chemicalName", density FROM chemicals;
+-- SELECT id, name, description FROM formulas;
+-- SELECT id, name, "chemicalName", density FROM chemicals;
+SELECT "targetId", time, temperature, oxygen FROM "targetPoints" ORDER BY "targetId", time;
 
 -- SELECT "recordId", "pieceId" FROM "RecordPieces";
 -- SELECT "chemicalId", "formulaId", amount FROM ingredients;
@@ -24,11 +25,21 @@ SELECT id, name, "chemicalName", density FROM chemicals;
 --     pieces p
 --     JOIN photos ph ON ph."pieceId" = p.id;
 
-SELECT
-    f.id, f.name,
-    i.amount,
-    c.id, c.name, c.density
-FROM
-    formulas f
-    JOIN ingredients i ON f.id = i."formulaId"
-    JOIN chemicals c ON c.id = i."chemicalId";
+-- SELECT
+--     f.id, f.name,
+--     i.amount,
+--     c.id, c.name, c.density
+-- FROM
+--     formulas f
+--     JOIN ingredients i ON f.id = i."formulaId"
+--     JOIN chemicals c ON c.id = i."chemicalId";
+
+-- SELECT
+--     t.id, p.time, p.temperature, p.oxygen
+-- FROM
+--     targets t
+--     JOIN "targetPoints" p ON t.id = p."targetId"
+-- WHERE
+--     t.id = 6
+-- ORDER BY
+--     time;

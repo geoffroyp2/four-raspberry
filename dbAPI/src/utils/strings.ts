@@ -5,7 +5,9 @@ import { ColorType } from "../schema/resolvers/sharedTypes";
  * @param color the ColorType input
  */
 export const colorToString = (color: ColorType): string => {
-  return `${getIntString(color.r)}-${getIntString(color.g)}-${getIntString(color.b)}-${getFloatString(color.a)}`;
+  if (color)
+    return `${getIntString(color.r)}-${getIntString(color.g)}-${getIntString(color.b)}-${getFloatString(color.a)}`;
+  return "255-255-255-1.0";
 };
 
 /**

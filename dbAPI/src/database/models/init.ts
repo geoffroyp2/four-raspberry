@@ -6,6 +6,7 @@ import Target, { targetModelAttributes } from "./target/target";
 import Formula, { formulaModelAttributes } from "./formula/formula";
 import Ingredient, { ingredientModelAttributes } from "./formula/ingredient";
 import Chemical, { chemicalModelAttributes } from "./formula/chemical";
+import TargetPoint, { targetPointModelAttributes } from "./target/targetPoints";
 
 /**
  * Initialize models, representing a table in the DB, with attributes and options
@@ -48,6 +49,18 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
     tableName: "chemicals",
   });
 
+  TargetPoint.init(targetPointModelAttributes, {
+    sequelize: sequelize,
+    tableName: "targetPoints",
+    indexes: [
+      {
+        name: "targetId_time_index",
+        using: "BTREE",
+        fields: ["targetId", "time"],
+      },
+    ],
+  });
+
   associate();
 };
 
@@ -62,6 +75,13 @@ const associate = () => {
     sourceKey: "id",
     foreignKey: "targetId",
     as: "records",
+  });
+
+  // Target (1) <--> TargetPoints (n)
+  Target.hasMany(TargetPoint, {
+    sourceKey: "id",
+    foreignKey: "targetId",
+    as: "points",
   });
 
   // Record (n) <--> Piece (m) through RecordPieces

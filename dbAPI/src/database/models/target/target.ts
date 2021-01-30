@@ -12,6 +12,7 @@ import {
 import { Optional } from "sequelize/types";
 
 import Record from "../record/record";
+import TargetPoint from "./targetPoints";
 
 export type OvenType = "gaz" | "electrique";
 export interface TargetAttributes {
@@ -43,8 +44,18 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
   public createRecord!: HasManyCreateAssociationMixin<Record>;
   public removeRecord!: HasManyRemoveAssociationMixin<Record, number>;
 
+  // Foreign keys: Points
+  public readonly points?: TargetPoint[];
+  public getPoints!: HasManyGetAssociationsMixin<TargetPoint>;
+  public addPoint!: HasManyAddAssociationMixin<TargetPoint, number>;
+  public hasPoint!: HasManyHasAssociationMixin<TargetPoint, number>;
+  public countPoints!: HasManyCountAssociationsMixin;
+  public createPoint!: HasManyCreateAssociationMixin<TargetPoint>;
+  public removePoint!: HasManyRemoveAssociationMixin<TargetPoint, number>;
+
   public static associations: {
     records: Association<Target, Record>;
+    points: Association<Target, TargetPoint>;
   };
 }
 
