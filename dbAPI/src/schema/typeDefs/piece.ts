@@ -9,9 +9,16 @@ export default gql`
     id est généré par la db, unique
     """
     id: Int!
-    name: String!
-    description: String!
 
+    """
+    le nom de la Piece
+    """
+    name: String!
+
+    """
+    la description de la Piece
+    """
+    description: String!
     """
     Les urls des photos associées à la Piece
     """
@@ -50,7 +57,7 @@ export default gql`
     deletePiece(id: Int!): Boolean!
 
     """
-    Selectionne une Piece par id et met à jour les champs qui ne sont pas des jointures
+    Selectionne une Piece par id et met à jour les champs spécifiés
     """
     updatePiece(id: Int!, name: String, description: String): Piece
 

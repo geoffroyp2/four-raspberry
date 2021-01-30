@@ -9,7 +9,15 @@ export default gql`
     id est généré par la db, unique
     """
     id: Int!
+
+    """
+    le nom de la Formula
+    """
     name: String!
+
+    """
+    la description de la Formula
+    """
     description: String!
 
     """
@@ -31,7 +39,7 @@ export default gql`
   """
   type Ingredient {
     """
-    La quantité de l'élément dans la Formula
+    La quantité de l'élément dans la Formula.
     entre 0.0 et 1.0 (total 1.0 pour la Formula)
     """
     amount: Float!
@@ -58,16 +66,16 @@ export default gql`
     """
     Supprime une Formula par id
     """
-    deleteFormula(id: Int!): Boolean!
+    deleteFormula(formulaId: Int!): Boolean!
 
     """
-    Sélectionne une Formula par id et met à jour les champs qui ne sont pas des jointures
+    Sélectionne une Formula par id et met à jour les champs spécifiés
     """
-    updateFormula(id: Int!, name: String, description: String): Formula
+    updateFormula(formulaId: Int!, name: String, description: String): Formula
 
     """
-    Sélectionne une Formula et un Chemical par id et met à jour leur association
-    si newChemicalId existe: change le Chemical associé, et change amount si spécifié
+    Sélectionne une Formula et un Chemical par id et met à jour leur association.
+    si newChemicalId existe: change le Chemical associé, et change amount si spécifié.
     sinon, si amount existe, change amount
     """
     updateFormulaIngredient(formualId: Int!, chemicalId: Int!, amount: Float, newChemicalId: Int): Formula

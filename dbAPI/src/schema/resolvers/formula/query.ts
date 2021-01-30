@@ -1,7 +1,12 @@
-import Formula, { FormulaAttributes } from "../../../database/models/formula/formula";
+import Formula from "../../../database/models/formula/formula";
+import { GQLGenericResearchFields } from "../types";
 
 const Query = {
-  formulas: async (obj: any, args: FormulaAttributes) => {
+  /**
+   * @return all Formulas matching the filter
+   * @param args research filters (id, name)
+   */
+  formulas: async (obj: any, args: GQLGenericResearchFields) => {
     return await Formula.findAll({ where: args, order: [["id", "ASC"]] });
   },
 };

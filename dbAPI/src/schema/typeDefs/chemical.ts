@@ -50,11 +50,11 @@ export default gql`
     """
     Supprime un Chemical par id
     """
-    deleteChemical(id: Int!): Boolean!
+    deleteChemical(chemicalId: Int!): Boolean!
 
     """
-    Sélectionne un Chemical par id et met à jour les champs qui ne sont pas des jointures
+    Sélectionne un Chemical par id et met à jour les champs spécifiés
     """
-    updateChemical(id: Int!, name: String, chemicalName: String, density: Int): Chemical
+    updateChemical(chemicalId: Int!, name: String, chemicalName: String, density: Int): Chemical
   }
 `;

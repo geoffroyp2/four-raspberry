@@ -9,17 +9,24 @@ export default gql`
     id est généré par la db, unique
     """
     id: Int!
+    """
+    le nom du Record
+    """
     name: String!
+
+    """
+    la description du Record
+    """
     description: String!
 
     """
-    Couleur de la courbe de température de la forme {r, g, b, a}
+    Couleur de la courbe de température de la forme {r, g, b, a}.
     Avec r, g, b des ints entre 0 et 255 et a un float entre 0 et 1
     """
     color: Color!
 
     """
-    Le four auquel correspond la Cuisson ("gaz" ou "eletrique")
+    Le four auquel correspond la Cuisson ("gaz" ou "eletrique").
     ou null si Record n'a pas de Target associé
     """
     oven: String
@@ -54,12 +61,12 @@ export default gql`
     """
     Supprime un Record par id
     """
-    deleteRecord(id: Int!): Boolean!
+    deleteRecord(recordId: Int!): Boolean!
 
     """
-    Selectionne un Record par id et met à jour les champs qui ne sont pas des jointures
+    Selectionne un Record par id et met à jour les champs spécifiés
     """
-    updateRecord(id: Int!, name: String, description: String, color: ColorInput): Record
+    updateRecord(recordId: Int!, name: String, description: String, color: ColorInput): Record
 
     """
     Lie une Target (par id) à un Record (par id).

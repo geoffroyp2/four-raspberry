@@ -1,4 +1,4 @@
-import { ColorType } from "../schema/resolvers/sharedTypes";
+import { ColorType } from "../schema/resolvers/types";
 
 /**
  * transforms a {r:255, g:255, b:255, a:1.0} color into a 255-255-255-1.0 color

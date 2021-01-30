@@ -1,29 +1,15 @@
-import Target, { TargetAttributes, TargetCreationAttributes } from "../../../database/models/target/target";
+import Target, { TargetCreationAttributes } from "../../../database/models/target/target";
 import TargetPoint from "../../../database/models/target/targetPoints";
-import { colorToString } from "../../../utils/strings";
-import { ColorType } from "../sharedTypes";
 
-interface CGQTarget {
-  name: string;
-  description: string;
-  color: ColorType;
-  oven: string;
-}
-interface CGQTargetSelect {
-  targetId: number;
-}
-interface CGQTargetPoint {
-  time: number;
-  temperature: number;
-  oxygen: number;
-}
-interface CGQTTargetPointSelect {
-  pointId: number;
-}
-interface CGQTargetUpdate extends CGQTarget, CGQTargetSelect {}
-interface CGQTargetPointUpdate extends CGQTargetPoint, CGQTTargetPointSelect, CGQTargetSelect {}
-interface CGQTargetPointCreate extends CGQTargetPoint, CGQTargetSelect {}
-interface CGQTargetPointDelete extends CGQTTargetPointSelect, CGQTargetSelect {}
+import {
+  GQLTarget,
+  GQLTargetId,
+  GQLTargetPointCreate,
+  GQLTargetPointDelete,
+  GQLTargetPointUpdate,
+  GQLTargetUpdate,
+} from "../types";
+import { colorToString } from "../../../utils/strings";
 
 const Mutation = {
   /**
@@ -31,10 +17,10 @@ const Mutation = {
    * @param args optional arguments to be passed, all have default values
    * @return the new Target
    */
-  createTarget: async (obj: any, { name, description, color, oven }: CGQTarget): Promise<Target> => {
+  createTarget: async (obj: any, { name, description, color, oven }: GQLTarget): Promise<Target> => {
     const args: TargetCreationAttributes = {
-      name: name,
-      description: description,
+      name,
+      description,
       color: colorToString(color),
       oven: oven && (oven === "gaz" || oven === "electrique") ? oven : "gaz",
     };
@@ -45,7 +31,7 @@ const Mutation = {
    * Deletes Target in database
    * @param targetId the id of the Target to select
    */
-  deleteTarget: async (obj: any, { targetId }: CGQTargetSelect): Promise<boolean> => {
+  deleteTarget: async (obj: any, { targetId }: GQLTargetId): Promise<boolean> => {
     const result = await Target.destroy({ where: { id: targetId } });
     return result > 0;
   },
@@ -58,7 +44,7 @@ const Mutation = {
    */
   updateTarget: async (
     obj: any,
-    { targetId, name, description, color, oven }: CGQTargetUpdate
+    { targetId, name, description, color, oven }: GQLTargetUpdate
   ): Promise<Target | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
@@ -79,7 +65,7 @@ const Mutation = {
    */
   createTargetPoint: async (
     obj: any,
-    { targetId, time, temperature, oxygen }: CGQTargetPointCreate
+    { targetId, time, temperature, oxygen }: GQLTargetPointCreate
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
@@ -94,7 +80,7 @@ const Mutation = {
    * @param targetId the id of the Target
    * @param pointId the id of the Point
    */
-  deleteTargetPoint: async (obj: any, { targetId, pointId }: CGQTargetPointDelete): Promise<boolean> => {
+  deleteTargetPoint: async (obj: any, { targetId, pointId }: GQLTargetPointDelete): Promise<boolean> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
     if (target && point) {
@@ -113,7 +99,7 @@ const Mutation = {
    */
   updateTargetPoint: async (
     obj: any,
-    { targetId, pointId, time, temperature, oxygen }: CGQTargetPointUpdate
+    { targetId, pointId, time, temperature, oxygen }: GQLTargetPointUpdate
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
