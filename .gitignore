@@ -4,11 +4,10 @@
 /engine/node_modules
 /client/node_modules
 /db/node_modules
-/dbAPI/node_modules
-/dbAPI/dist
-/dbAPI/src/database/config/*
+/db/src/database/config/*
+/db/dist
 /photos/node_modules
-/photos/public/images
+/dbOld/node_modules
 /.pnp
 .pnp.js
 
