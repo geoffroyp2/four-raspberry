@@ -4,8 +4,6 @@
 
 ## Description
 
-#
-
 The setup involves 2 RaspberryPIs:
 
 - The first one runs a stateless, synchronous thermodynamics model that aims to regulate the temperature, oxygen level and various other parameters during the firing. It is connected to an arduino that reads various sensors values and controls valves to regulate gaz and air flows.
