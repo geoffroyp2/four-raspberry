@@ -42,6 +42,7 @@
     "start-nomon": "ts-node src/index.ts",
     "start-dev": "nodemon --exec node --inspect --require ts-node/register src/index.ts",
     "test": "jest",
+    "generateData": "ts-node src/scripts/generateData/generate.ts",
     "build": "webpack",
     "build-ts": "tsc"
   },
