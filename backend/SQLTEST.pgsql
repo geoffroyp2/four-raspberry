@@ -12,7 +12,7 @@
 
 -- SELECT COUNT (*) FROM "recordPoints" ;
 
-EXPLAIN ANALYZE VERBOSE
+-- EXPLAIN ANALYZE VERBOSE
 SELECT "recordId", time, temperature, oxygen
      FROM "recordPoints" p 
      WHERE p."recordId" = 99 
