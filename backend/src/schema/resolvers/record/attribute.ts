@@ -23,10 +23,11 @@ const Attribute = {
    * @return the Pieces linked to the parent Record
    */
   pieces: async (parent: Record, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
-    const pieces = await parent.getPieces();
-    return pieces
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
-      .sort((a, b) => a.id - b.id);
+    const args: GQLGenericResearchFields = {};
+    if (id) args.id = id;
+    if (name) args.name = name;
+    const pieces = await parent.getPieces({ where: { ...args }, order: [["id", "ASC"]] });
+    return pieces;
   },
 
   /**

@@ -9,10 +9,11 @@ const Attribute = {
    * @return the Formulas linked to the Parent Chemical
    */
   formulas: async (parent: Chemical, { id, name }: GQLGenericResearchFields): Promise<Formula[]> => {
-    const formulas = await parent.getFormulas();
-    return formulas
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
-      .sort((a, b) => a.id - b.id);
+    const args: GQLGenericResearchFields = {};
+    if (id) args.id = id;
+    if (name) args.name = name;
+    const formulas = await parent.getFormulas({ where: { ...args }, order: [["id", "ASC"]] });
+    return formulas;
   },
 
   /**

@@ -3,7 +3,7 @@ import Piece from "../../../database/models/piece/piece";
 import Record from "../../../database/models/record/record";
 import Target from "../../../database/models/target/target";
 
-import { GQLRecordFind } from "../types";
+import { GQLGenericResearchFields, GQLRecordFind } from "../types";
 
 const Attribute = {
   /**
@@ -12,9 +12,10 @@ const Attribute = {
    * @return the Records linked with the Piece or null if no link
    */
   records: async (parent: Piece, { id, name, oven }: GQLRecordFind): Promise<Record[]> => {
-    const records = (await parent.getRecords())
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
-      .sort((a, b) => a.id - b.id);
+    const args: GQLGenericResearchFields = {};
+    if (id) args.id = id;
+    if (name) args.name = name;
+    const records = await parent.getRecords({ where: { ...args }, order: [["id", "ASC"]] });
 
     if (oven) {
       // if oven is specified, look for every Record's Target and only keep the matching ones

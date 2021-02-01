@@ -15,10 +15,11 @@ const Attribute = {
    * @return the Records linked to the Parent Target
    */
   records: async (parent: Target, { id, name }: GQLGenericResearchFields): Promise<Record[]> => {
-    const records = await parent.getRecords();
-    return records
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
-      .sort((a, b) => a.id - b.id);
+    const args: GQLGenericResearchFields = {};
+    if (id) args.id = id;
+    if (name) args.name = name;
+    const records = await parent.getRecords({ where: { ...args }, order: [["id", "ASC"]] });
+    return records;
   },
 
   /**

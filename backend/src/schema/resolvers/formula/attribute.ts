@@ -10,10 +10,11 @@ const Attribute = {
    * @return the Pieces linked to the parent Formula
    */
   pieces: async (parent: Formula, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
-    const pieces = await parent.getPieces();
-    return pieces
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
-      .sort((a, b) => a.id - b.id);
+    const args: GQLGenericResearchFields = {};
+    if (id) args.id = id;
+    if (name) args.name = name;
+    const pieces = await parent.getPieces({ where: { ...args }, order: [["id", "ASC"]] });
+    return pieces;
   },
 
   /**
@@ -21,13 +22,11 @@ const Attribute = {
    * @return the ingredients linked to the parent Formula
    */
   ingredients: async (parent: Formula): Promise<GQLIngredientType[]> => {
-    const chemicals = await parent.getChemicals();
-    return chemicals
-      .map((c) => ({
-        amount: c.Ingredient!.amount,
-        chemical: c,
-      }))
-      .sort((a, b) => a.chemical.id - b.chemical.id);
+    const chemicals = await parent.getChemicals({ order: [["id", "ASC"]] });
+    return chemicals.map((c) => ({
+      amount: c.Ingredient!.amount,
+      chemical: c,
+    }));
   },
 
   /**

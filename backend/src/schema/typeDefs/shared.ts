@@ -1,6 +1,27 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
+  type TargetQueryRes {
+    count: Int!
+    rows: [Target]!
+  }
+  type RecordQueryRes {
+    count: Int!
+    rows: [Record]!
+  }
+  type PieceQueryRes {
+    count: Int!
+    rows: [Piece]!
+  }
+  type FormulaQueryRes {
+    count: Int!
+    rows: [Formula]!
+  }
+  type ChemicalQueryRes {
+    count: Int!
+    rows: [Chemical]!
+  }
+
   input ColorInput {
     r: Int!
     g: Int!
