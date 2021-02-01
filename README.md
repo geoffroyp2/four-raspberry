@@ -13,7 +13,7 @@ The setup involves 2 RaspberryPIs:
   - ./backend/ : A database API built with PostgreSQL and GraphQL. The database stores various elements:
     - All of the target firing graphs
     - All of the recorded firing infos
-    - An historics of all firing and po
+    - An historics of all firings and potteries
     - Infos about ceramics and enamel chemical formulas
 
     The GraphQL API allows the front-end to have access to all of the entries and have full CRUD control.
