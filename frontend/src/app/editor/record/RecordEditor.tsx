@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setRecordData } from "./state/recordDataSlice";
-import { RecordDataRequest } from "./state/request";
-import { database } from "@network/GQLClient";
+import { fetchRecord } from "./state/request";
 
 import RecordInfos from "./RecordInfos";
 import RecordButtons from "./RecordButtons";
@@ -14,9 +13,9 @@ const RecordEditor = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await database(RecordDataRequest(1));
+      const data = await fetchRecord(1);
       console.log(data);
-      dispatch(setRecordData(data.records[0]));
+      dispatch(setRecordData(data.records.rows[0]));
     };
     fetch();
   }, [dispatch]);
