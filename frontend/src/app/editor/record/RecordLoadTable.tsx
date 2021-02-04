@@ -1,61 +1,78 @@
-import { Record } from "@baseTypes/database/GQLResTypes";
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Table } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback } from "react";
 
-import { selectRecordShowLoad, setRecordShowLoad } from "./state/recordDisplaySlice";
+import { batch, useDispatch, useSelector } from "react-redux";
+import { store } from "../../../store/store";
+import { selectRecordLoadList, setCurrentRecordId, setRecordLoadList } from "./state/recordDataSlice";
+import {
+  selectRecordShowLoad,
+  selectRecordLoadPage,
+  selectRecordLoadAmount,
+  selectRecordLoadRowSelected,
+  setRecordTotalAmount,
+  setRecordShowLoad,
+  setRecordLoadPage,
+  setRecordLoadRowSelected,
+  selectRecordPageAmount,
+} from "./state/recordDisplaySlice";
+
 import { fetchRecordPage } from "./state/request";
-import "./styles/modal.scss";
+import LoadTableModal from "@components/LoadTableModal";
+import LoadTablePagination from "@components/LoadTablePagination";
 
-const amountPerPage = 10;
+const loadRecordList = async (page: number, amount: number) => {
+  const recordRes = await fetchRecordPage(page, amount);
+  batch(() => {
+    store.dispatch(setRecordTotalAmount(recordRes.records.count));
+    store.dispatch(setRecordLoadList(recordRes.records.rows));
+  });
+};
+
+const tableColumns = ["Nom", "Description", "Four", "Courbe de référence"];
 
 const RecordLoadTable = () => {
   const dispatch = useDispatch();
-  const showLoad = useSelector(selectRecordShowLoad);
+  const loadPage = useSelector(selectRecordLoadPage);
+  const amount = useSelector(selectRecordLoadAmount);
+  const currentList = useSelector(selectRecordLoadList);
+  const rowSelected = useSelector(selectRecordLoadRowSelected);
 
-  const [recordPage, setRecordPage] = useState<Record[]>([]);
-  const [amount, setAmount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const fetchData = useCallback(() => {
+    loadRecordList(loadPage, amount);
+  }, [loadPage, amount]);
 
-  /** TODO: à déporter et stocker les résultats dans le store */
-  useEffect(() => {
-    const fetch = async () => {
-      const recordRes = await fetchRecordPage(currentPage, amountPerPage);
-      setAmount(recordRes.records.count);
-      setRecordPage(recordRes.records.rows);
-    };
-    fetch();
-  }, []);
+  const handleSelect = useCallback(() => {
+    dispatch(setCurrentRecordId(rowSelected));
+    dispatch(setRecordShowLoad(false));
+  }, [dispatch, rowSelected]);
 
   return (
-    <Modal centered show={showLoad} onHide={() => dispatch(setRecordShowLoad(false))} dialogClassName="modal-loadTable">
-      <Modal.Body>
-        <Table striped bordered hover className="table-sm" variant="dark">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Description</th>
-              <th>Four</th>
-              <th>Courbe de Référence</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recordPage.map((e) => (
-              <tr>
-                <td>{e.name}</td>
-                <td>{e.description}</td>
-                <td>{e.oven}</td>
-                <td>{e.target?.name || "-"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button> Ouvrir</Button>
-        <Button> Annuler</Button>
-      </Modal.Footer>
-    </Modal>
+    <LoadTableModal
+      show={selectRecordShowLoad}
+      setShow={setRecordShowLoad}
+      fetchData={fetchData}
+      columns={tableColumns}
+      handleSelect={handleSelect}
+      pagination={
+        <LoadTablePagination
+          pageAmount={selectRecordPageAmount}
+          page={selectRecordLoadPage}
+          setPage={setRecordLoadPage}
+        />
+      }
+    >
+      {currentList.map((e, i) => (
+        <tr
+          key={`rl${i}`}
+          className={e.id === rowSelected ? "table-primary" : ""}
+          onClick={() => dispatch(setRecordLoadRowSelected(e.id || -1))}
+        >
+          <td>{e.name}</td>
+          <td>{e.description}</td>
+          <td>{e.oven}</td>
+          <td>{e.target?.name || "-"}</td>
+        </tr>
+      ))}
+    </LoadTableModal>
   );
 };
 
