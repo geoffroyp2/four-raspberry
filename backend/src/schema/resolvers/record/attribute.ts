@@ -15,7 +15,6 @@ const Attribute = {
    */
   target: async (parent: Record, _: any, ctx: any): Promise<Target | null> => {
     return ctx.targetLoader.load(parent.targetId);
-    // return await Target.findOne({ where: { id: parent.targetId } });
   },
 
   /**
@@ -76,12 +75,8 @@ const Attribute = {
    * @param parent the Record
    * @return the oven of the linked Target or null if no linked Target
    */
-  oven: async (parent: Record): Promise<OvenType | null> => {
-    const target = await Target.findOne({ where: { id: parent.targetId } });
-    if (target) {
-      return target.oven;
-    }
-    return null;
+  oven: async (parent: Record, _: any, ctx: any): Promise<OvenType | null> => {
+    return ctx.recordOvenLoader.load(parent.targetId);
   },
 
   /**

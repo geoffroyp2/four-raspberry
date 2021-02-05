@@ -14,12 +14,15 @@ const Attribute = {
    * @param id id filter @param name name filter
    * @return the Records linked to the Parent Target
    */
-  records: async (parent: Target, { id, name }: GQLGenericResearchFields): Promise<Record[]> => {
-    const args: GQLGenericResearchFields = {};
-    if (id) args.id = id;
-    if (name) args.name = name;
-    const records = await parent.getRecords({ where: { ...args }, order: [["id", "ASC"]] });
-    return records;
+  records: async (parent: Target, { id, name }: GQLGenericResearchFields, ctx: any): Promise<Record[]> => {
+    // TODO: filters
+
+    // const args: GQLGenericResearchFields = {};
+    // if (id) args.id = id;
+    // if (name) args.name = name;
+    // const records = await parent.getRecords({ where: { ...args }, order: [["id", "ASC"]] });
+    // return records;
+    return ctx.recordLoader.load(parent.id);
   },
 
   /**
