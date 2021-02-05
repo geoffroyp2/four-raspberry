@@ -13,8 +13,9 @@ const Attribute = {
    * @param parent the Record
    * @return the Target linked with the Record or null if no link
    */
-  target: async (parent: Record): Promise<Target | null> => {
-    return await Target.findOne({ where: { id: parent.targetId } });
+  target: async (parent: Record, _: any, ctx: any): Promise<Target | null> => {
+    return ctx.targetLoader.load(parent.targetId);
+    // return await Target.findOne({ where: { id: parent.targetId } });
   },
 
   /**
@@ -22,7 +23,7 @@ const Attribute = {
    * @param id id filter @param name name filter
    * @return the Pieces linked to the parent Record
    */
-  pieces: async (parent: Record, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
+  pieces: async (parent: Record, { id, name }: GQLGenericResearchFields, ctx: any): Promise<Piece[]> => {
     const args: GQLGenericResearchFields = {};
     if (id) args.id = id;
     if (name) args.name = name;

@@ -31,17 +31,17 @@ const Attribute = {
    * @param parent the Piece
    * @return an array of urls
    */
-  photos: async (parent: Piece): Promise<string[]> => {
-    const photos = await parent.getPhotos();
-    return photos.map((p) => p.url);
+  photos: async (parent: Piece, _: any, ctx: any): Promise<string[]> => {
+    return ctx.photoLoader.load(parent.id);
   },
 
   /**
    * @param parent the Piece
    * @return the Formula linked to the Piece or null if no link
    */
-  formula: async (parent: Piece): Promise<Formula | null> => {
-    return await Formula.findOne({ where: { id: parent.formulaId } });
+  formula: async (parent: Piece, _: any, ctx: any): Promise<Formula | null> => {
+    return ctx.formulaLoader.load(parent.formulaId);
+    // return await Formula.findOne({ where: { id: parent.formulaId } });
   },
 
   /**

@@ -4,9 +4,11 @@ import { ApolloServer, Config } from "apollo-server-express";
 import { initializeSequelizeModels } from "./database/models/init";
 import database from "./database";
 import schema from "./schema";
+import DataLoaders from "./schema/dataLoaders";
 
 const config: Config = {
   schema: schema,
+  context: DataLoaders,
   introspection: true, // GUI
   playground: true, // Playground
 };
