@@ -2,7 +2,7 @@ import { RootState } from "@store/store";
 import React, { useEffect } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import "./styles/modal.scss";
+import "./styles/loadTable.scss";
 
 type Props = {
   show: (state: RootState) => boolean;

@@ -26,13 +26,16 @@ export const recordDataSlice = createSlice({
     setRecordData: (state, action: PayloadAction<Record>) => {
       state.data = action.payload;
     },
+    setRecordEditData: (state, action: PayloadAction<Record>) => {
+      state.edit = action.payload;
+    },
     setRecordLoadList: (state, action: PayloadAction<Record[]>) => {
       state.loadList = action.payload;
     },
   },
 });
 
-export const { setCurrentRecordId, setRecordData, setRecordLoadList } = recordDataSlice.actions;
+export const { setCurrentRecordId, setRecordData, setRecordEditData, setRecordLoadList } = recordDataSlice.actions;
 
 export const selectCurrentRecordId = (state: RootState) => state.recordData.recordId;
 export const selectRecordData = (state: RootState) => state.recordData.data;

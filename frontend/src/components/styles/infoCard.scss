@@ -1,0 +1,40 @@
+.NameField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .colContent {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 8rem;
+  }
+
+  .colButtons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: max-content;
+    min-height: max-content;
+  }
+
+  svg {
+    cursor: pointer;
+    margin: 2px 4px;
+  }
+
+  span {
+    margin: 0.5em;
+  }
+
+  label {
+    color: var(--info);
+    margin-bottom: 0;
+    display: inline-block;
+  }
+
+  .form-control {
+    padding: 0.5em 0.5em;
+    height: 1.5em;
+  }
+}

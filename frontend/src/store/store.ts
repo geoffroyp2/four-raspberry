@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import recordDataReducer from "@editor/record/state/recordDataSlice";
-import recordDisplayReducer from "@editor/record/state/recordDisplaySlice";
-import mainNavReducer from "@navBar/MainNavSlice";
+import recordData from "@editor/record/state/recordDataSlice";
+import recordDisplay from "@editor/record/state/recordDisplaySlice";
+import nav from "@navBar/MainNavSlice";
+import recordState from "@editor/record/state/recordStateSlice";
 
 export const store = configureStore({
   reducer: {
-    recordData: recordDataReducer,
-    recordDisplay: recordDisplayReducer,
-    nav: mainNavReducer,
+    recordData,
+    recordDisplay,
+    recordState,
+    nav,
   },
 });
 

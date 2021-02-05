@@ -6,7 +6,7 @@ import { setRecordLoadPage } from "@editor/record/state/recordDisplaySlice";
 
 const buildPageItem = (number: number, active: boolean, setCurrentPage: (page: number) => void): JSX.Element => {
   return (
-    <Pagination.Item active={active} onClick={() => setCurrentPage(number)}>
+    <Pagination.Item key={`pik${number}`} active={active} onClick={() => setCurrentPage(number)}>
       {number + 1}
     </Pagination.Item>
   );
@@ -27,11 +27,11 @@ const buildPagination = (
     pages.push(buildPageItem(0, currentPage === 0, setCurrentPage));
     if (currentPage <= 1) pages.push(buildPageItem(1, currentPage === 1, setCurrentPage));
     if (currentPage === 1) pages.push(buildPageItem(2, false, setCurrentPage));
-    if (currentPage > 2) pages.push(<Pagination.Ellipsis />);
+    if (currentPage > 2) pages.push(<Pagination.Ellipsis key={"pe1"} />);
     if (currentPage > 1 && currentPage < pageAmount - 1) {
       for (let i = -1; i < 2; i++) pages.push(buildPageItem(currentPage + i, i === 0, setCurrentPage));
     }
-    if (currentPage < pageAmount - 2) pages.push(<Pagination.Ellipsis />);
+    if (currentPage < pageAmount - 2) pages.push(<Pagination.Ellipsis key={"pe2"} />);
     if (currentPage === pageAmount - 1) pages.push(buildPageItem(pageAmount - 2, false, setCurrentPage));
     if (currentPage >= pageAmount - 1)
       pages.push(buildPageItem(pageAmount - 1, currentPage === pageAmount - 1, setCurrentPage));

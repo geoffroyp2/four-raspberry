@@ -48,5 +48,4 @@ export const selectRecordLoadPage = (state: RootState) => state.recordDisplay.lo
 export const selectRecordLoadAmount = (state: RootState) => state.recordDisplay.loadAmount;
 export const selectRecordPageAmount = (state: RootState) => state.recordDisplay.pageAmount;
 export const selectRecordLoadRowSelected = (state: RootState) => state.recordDisplay.loadRowSelected;
-
 export default recordDisplaySlice.reducer;
