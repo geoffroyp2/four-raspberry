@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Chemical, Formula, Piece, Record, Target } from "@baseTypes/database/GQLResTypes";
+import { Formula, Piece, Record, Target } from "@baseTypes/database/GQLResTypes";
 
 import { RootState } from "@store/store";
 import { useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import EditIcon from "@src/assets/EditIcon";
 import CancelIcon from "@src/assets/CancelIcon";
 import ConfirmIcon from "@src/assets/ConfirmIcon";
 
-type PosTypes = Chemical | Formula | Piece | Record | Target;
+type PosTypes = Formula | Piece | Record | Target;
 type Props = {
   data: (state: RootState) => PosTypes;
   validate: (name: PosTypes) => void;
@@ -19,19 +19,19 @@ type Props = {
   pending: boolean;
 };
 
-const NameField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
+const DescriptionField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
   const currentData = useSelector(data);
-  const [EditField, setEditField] = useState<string>(currentData.name!);
+  const [EditField, setEditField] = useState<string>(currentData.description!);
 
   return (
-    <Row className="editField nameField" noGutters>
+    <Row className="editField descriptionField " noGutters>
       <Col className="colContent">
-        <label>Name:</label>
+        <label>Description:</label>
         <span>
           {edit ? (
-            <FormControl as="input" value={EditField} onChange={(e) => setEditField(e.target.value)} />
+            <FormControl as="textarea" value={EditField} onChange={(e) => setEditField(e.target.value)} />
           ) : (
-            currentData.name || "-"
+            currentData.description || "-"
           )}
         </span>
       </Col>
@@ -40,7 +40,7 @@ const NameField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
           <>
             <ConfirmIcon
               onClick={() => {
-                validate({ name: EditField });
+                validate({ description: EditField });
                 setEdit(false);
               }}
             />
@@ -54,4 +54,4 @@ const NameField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
   );
 };
 
-export default NameField;
+export default DescriptionField;

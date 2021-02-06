@@ -1,12 +1,11 @@
 import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { selectCurrentScreen, setCurrentScreen } from "./MainNavSlice";
+import { setCurrentScreen } from "./MainNavSlice";
 
 const MainNavBar = () => {
   const dispatch = useDispatch();
-  // const currentScreen = useSelector(selectCurrentScreen);
 
   return (
     <Navbar bg="primary" expand="sm" className="navbar-dark">

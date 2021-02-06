@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, FC } from "react";
 import { Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store";
@@ -47,7 +47,7 @@ type Props = {
   setPage: (payload: number) => void;
 };
 
-const LoadTablePagination = ({ pageAmount, page, setPage }: Props) => {
+const LoadTablePagination: FC<Props> = ({ pageAmount, page, setPage }) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(page);
   const currentPageAmount = useSelector(pageAmount);

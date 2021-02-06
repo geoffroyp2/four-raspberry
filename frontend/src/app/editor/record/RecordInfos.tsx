@@ -1,13 +1,18 @@
 import React, { FC, useEffect } from "react";
+import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentRecordId, selectRecordData } from "./state/recordDataSlice";
-
-import InfoCard from "@components/InfoCard";
-import NameField from "@components/InfoCardElements/NameField";
-import { validateRecord } from "./utils/editValidation";
-import { loadRecord } from "./utils/loadData";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./state/recordStateSlice";
+
+import { loadRecord } from "./utils/loadData";
+import { validateRecord } from "./utils/editValidation";
+
+import EditorCard from "@components/EditorCard";
+import NameField from "@components/InfoCardElements/NameField";
+import DescriptionField from "@components/InfoCardElements/DescriptionField";
+import DateField from "@components/InfoCardElements/DateField";
+import TargetField from "@components/InfoCardElements/TargetField";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
@@ -26,19 +31,34 @@ const RecordInfos: FC = () => {
   }, [dispatch, recordId, record]);
 
   return (
-    <InfoCard>
+    <EditorCard>
       {pendingStates.data ? (
         <></>
       ) : (
-        <NameField
-          data={selectRecordData}
-          validate={validateRecord}
-          edit={editStates.name}
-          setEdit={(val: boolean) => dispatch(setRecordEdit({ name: val }))}
-          pending={pendingStates.name}
-        />
+        <Row>
+          <Col md={6} sm={12}>
+            <NameField
+              data={selectRecordData}
+              validate={validateRecord}
+              edit={editStates.name}
+              setEdit={(val: boolean) => dispatch(setRecordEdit({ name: val }))}
+              pending={pendingStates.name}
+            />
+            <DescriptionField
+              data={selectRecordData}
+              validate={validateRecord}
+              edit={editStates.description}
+              setEdit={(val: boolean) => dispatch(setRecordEdit({ description: val }))}
+              pending={pendingStates.description}
+            />
+          </Col>
+          <Col md={6} sm={12}>
+            <TargetField data={selectRecordData} />
+            <DateField data={selectRecordData} />
+          </Col>
+        </Row>
       )}
-    </InfoCard>
+    </EditorCard>
   );
 };
 

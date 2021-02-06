@@ -4,10 +4,12 @@ import { RootState } from "../../../../store/store";
 interface Pending {
   data: boolean;
   name: boolean;
+  description: boolean;
 }
 
 interface Edit {
   name: boolean;
+  description: boolean;
 }
 
 interface RecordStateType {
@@ -19,9 +21,11 @@ const initialState: RecordStateType = {
   pending: {
     data: false,
     name: false,
+    description: false,
   },
   edit: {
     name: false,
+    description: false,
   },
 };
 
@@ -36,10 +40,11 @@ export const recordStateSlice = createSlice({
       });
     },
     setRecordEdit: (state, action: PayloadAction<Partial<Edit>>) => {
-      Object.entries(action.payload).forEach((e) => {
-        const [key, value] = e;
-        state.pending[key as keyof Edit] = value!;
+      // Only one edit at a time
+      Object.entries(state.edit).forEach(([key]) => {
+        state.edit[key as keyof Edit] = false;
       });
+      state.edit = { ...state.edit, ...action.payload };
     },
   },
 });
@@ -47,6 +52,6 @@ export const recordStateSlice = createSlice({
 export const { setRecordPending, setRecordEdit } = recordStateSlice.actions;
 
 export const selectRecordPending = (state: RootState) => state.recordState.pending;
-export const selectRecordEdit = (state: RootState) => state.recordState.pending;
+export const selectRecordEdit = (state: RootState) => state.recordState.edit;
 
 export default recordStateSlice.reducer;

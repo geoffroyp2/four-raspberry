@@ -1,8 +1,9 @@
-import { RootState } from "@store/store";
-import React, { useEffect } from "react";
+import React, { useEffect, FC } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import "./styles/loadTable.scss";
+
+import { RootState } from "@store/store";
+import { useDispatch, useSelector } from "react-redux";
 
 type Props = {
   show: (state: RootState) => boolean;
@@ -14,7 +15,7 @@ type Props = {
   pagination: JSX.Element;
 };
 
-const LoadTableModal = ({ show, setShow, fetchData, handleSelect, columns, children, pagination }: Props) => {
+const LoadTableModal: FC<Props> = ({ show, setShow, fetchData, handleSelect, columns, children, pagination }) => {
   const dispatch = useDispatch();
   const showTable = useSelector(show);
 

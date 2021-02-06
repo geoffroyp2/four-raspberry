@@ -22,8 +22,8 @@ export interface Target {
   points?: TargetPoint[];
   records?: Record[];
   pieces?: Piece[];
-  createdAt?: String;
-  updatedAt?: String;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export type TargetRootRes = { targets: GQLRootResType<Target> };
 
@@ -43,8 +43,8 @@ export interface Record {
   points?: RecordPoint[];
   target?: Target;
   pieces?: Piece[];
-  createdAt?: String;
-  updatedAt?: String;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export type RecordRootRes = { records: GQLRootResType<Record> };
 
@@ -62,8 +62,8 @@ export interface Piece {
   photos?: string[];
   records?: Record[];
   formula?: Formula;
-  createdAt?: String;
-  updatedAt?: String;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export type PieceRootRes = { pieces: GQLRootResType<Piece> };
 
@@ -73,8 +73,8 @@ export interface Formula {
   description?: string;
   pieces?: Piece[];
   ingredients?: Ingredient[];
-  createdAt?: String;
-  updatedAt?: String;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export type FormulaRootRes = { formulas: GQLRootResType<Formula> };
 
@@ -89,7 +89,7 @@ export interface Chemical {
   chemicalName?: string;
   density?: number;
   formulas?: Formula[];
-  createdAt?: String;
-  updatedAt?: String;
+  createdAt?: string;
+  updatedAt?: string;
 }
 export type ChemicalRootRes = { chemicals: GQLRootResType<Chemical> };
