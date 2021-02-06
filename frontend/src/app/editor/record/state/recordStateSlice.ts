@@ -4,11 +4,13 @@ import { RootState } from "../../../../store/store";
 interface Pending {
   data: boolean;
   name: boolean;
+  points: boolean;
   description: boolean;
 }
 
 interface Edit {
   name: boolean;
+  points: boolean;
   description: boolean;
 }
 
@@ -20,12 +22,14 @@ interface RecordStateType {
 const initialState: RecordStateType = {
   pending: {
     data: false,
+    points: false,
     name: false,
     description: false,
   },
   edit: {
     name: false,
     description: false,
+    points: false,
   },
 };
 
