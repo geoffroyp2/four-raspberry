@@ -54,12 +54,12 @@ export default gql`
     """
     Supprime une Piece par id
     """
-    deletePiece(id: Int!): Boolean!
+    deletePiece(pieceId: Int!): Boolean!
 
     """
     Selectionne une Piece par id et met à jour les champs spécifiés
     """
-    updatePiece(id: Int!, name: String, description: String): Piece
+    updatePiece(pieceId: Int!, name: String, description: String): Piece
 
     """
     Lie une Piece (par id) à une Formula (par id).

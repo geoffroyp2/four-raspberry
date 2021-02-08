@@ -1,3 +1,4 @@
+import { GQLMutationArgs, GQLMutationType, NoResMutationType } from "@baseTypes/database/GQLMutationTypes";
 import {
   GQLQueryFilterType,
   GQLRootQueryType,
@@ -8,20 +9,43 @@ import { gql } from "graphql-request";
 
 export type GQLRootType = "query" | "mutation";
 
+type QueryType =
+  | {
+      type: "query";
+      query: GQLRootQueryType;
+    }
+  | {
+      type: "mutation";
+      query: GQLMutationType;
+    };
+
+export const noResField = (input: any): input is NoResMutationType => {
+  return input.res === undefined;
+};
+
 /**
  * Query builder that takes a typechecked object defined in ../types/database/GQLQueryFields
  * and outputs a valid GQL query string
  * @param root the type of request : "query" or "mutation"
  * @param query the RootQueryFieldsType object
  */
-const rootQueryBuilder = (root: GQLRootType, query: GQLRootQueryType): string => {
-  return gql`
-${root} {
-  ${query.type} ${filterBuilder(query.filter)} {
+const rootQueryBuilder = (query: QueryType): string => {
+  switch (query.type) {
+    case "query":
+      return gql`
+query {
+  ${query.query.type} ${filterBuilder(", ", query.query.filter)} {
     count
-    rows {${nestedQueryBuilder(query.fields, 0)}    }
+    rows {${nestedQueryBuilder(query.query.fields, 0)}    }
   }
 }`;
+    case "mutation":
+      return gql`
+mutation {
+  ${query.query.name} ${filterBuilder(",\n", query.query.args)} ${
+        noResField(query.query) ? "" : `{${nestedQueryBuilder(query.query.res, 0)}    }`
+      }`;
+  }
 };
 
 /**
@@ -30,11 +54,11 @@ ${root} {
  * @param filter {id: 1, name: "foo"}
  * @return "( id: 1 name: "foo" )"
  */
-const filterBuilder = (filter?: GQLQueryFilterType): string => {
+const filterBuilder = (separator: string, filter?: GQLQueryFilterType | GQLMutationArgs): string => {
   return filter
     ? `( ${Object.entries(filter)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(" ")}) `
+        .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
+        .join(separator)} )`
     : "";
 };
 
@@ -55,7 +79,10 @@ const nestedQueryBuilder = (query: GQLQueryFieldType, depth: number): string => 
   return `\n${(query as (GQLComposedQueryType | string)[])
     .map((e) => {
       if (isComposedQuery(e)) {
-        return `${tabs}${e.type} ${filterBuilder(e.filter)} {${nestedQueryBuilder(e.fields, depth + 1)}${tabs}}\n`;
+        return `${tabs}${e.type} ${filterBuilder(", ", e.filter)} {${nestedQueryBuilder(
+          e.fields,
+          depth + 1
+        )}${tabs}}\n`;
       } else {
         return `${tabs}${e}\n`;
       }

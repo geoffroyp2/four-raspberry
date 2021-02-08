@@ -4,56 +4,65 @@ import { RecordRootRes } from "@baseTypes/database/GQLResTypes";
 import { PageFilter, PointFilter } from "@baseTypes/database/GQLQueryTypes";
 
 const RecordDataRequest = (id: number): string => {
-  return rootQueryBuilder("query", {
-    type: "records",
-    filter: { id: id },
-    fields: [
-      "id",
-      "name",
-      "description",
-      "oven",
-      "createdAt",
-      "updatedAt",
-      {
-        type: "target",
-        fields: ["id", "name"],
-      },
-      { type: "color", fields: ["r", "g", "b", "a"] },
-      { type: "pieces", fields: ["id", "name"] },
-    ],
+  return rootQueryBuilder({
+    type: "query",
+    query: {
+      type: "records",
+      filter: { id: id },
+      fields: [
+        "id",
+        "name",
+        "description",
+        "oven",
+        "createdAt",
+        "updatedAt",
+        {
+          type: "target",
+          fields: ["id", "name"],
+        },
+        { type: "color", fields: ["r", "g", "b", "a"] },
+        { type: "pieces", fields: ["id", "name"] },
+      ],
+    },
   });
 };
 
 const recordPageRequest = (filter: PageFilter) => {
-  return rootQueryBuilder("query", {
-    type: "records",
-    filter: filter,
-    fields: [
-      "id",
-      "name",
-      "description",
-      "oven",
-      "createdAt",
-      "updatedAt",
-      {
-        type: "target",
-        fields: ["id", "name"],
-      },
-    ],
+  return rootQueryBuilder({
+    type: "query",
+    query: {
+      type: "records",
+      filter: filter,
+      fields: [
+        "id",
+        "name",
+        "description",
+        "oven",
+        "createdAt",
+        "updatedAt",
+        {
+          type: "target",
+          fields: ["id", "name"],
+        },
+      ],
+    },
   });
 };
 
 const recordPointRequest = (id: number, filter: PointFilter) => {
-  return rootQueryBuilder("query", {
-    type: "records",
-    filter: { id: id },
-    fields: [
-      {
-        type: "points",
-        filter: filter,
-        fields: ["id", "temperature", "oxygen", "time"],
-      },
-    ],
+  return rootQueryBuilder({
+    type: "query",
+    query: {
+      type: "records",
+      filter: { id: id },
+      fields: [
+        {
+          type: "points",
+          filter: filter,
+          fields: ["id", "temperature", "oxygen", "time"],
+        },
+      ],
+    },
   });
 };
 

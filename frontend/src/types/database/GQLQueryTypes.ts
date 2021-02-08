@@ -82,7 +82,7 @@ export type PointFilter = QueryFilter<"start" | "end" | "amount", number>;
 
 type TargetSimpleFields = Extract<keyof Target, SimpleFields>;
 type TargetComposedFields = ColorQuery | RecordQuery | PieceQuery | TargetPointQuery;
-type TargetFields = (TargetSimpleFields | TargetComposedFields)[];
+export type TargetFields = (TargetSimpleFields | TargetComposedFields)[];
 type TargetFilter = PageFilter &
   QueryFilter<"id", number> &
   QueryFilter<"name", string> &
@@ -91,19 +91,19 @@ export type TargetQuery = ComposedQueryField<"target", TargetFields, TargetFilte
 
 type RecordSimpleFields = Extract<keyof Record, SimpleFields>;
 type RecordComposedFields = TargetQuery | ColorQuery | PieceQuery | RecordPointQuery;
-type RecordFields = (RecordSimpleFields | RecordComposedFields)[];
+export type RecordFields = (RecordSimpleFields | RecordComposedFields)[];
 type RecordFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name", string>;
 export type RecordQuery = ComposedQueryField<"records", RecordFields, RecordFilter>;
 
 type PieceSimpleFields = Extract<keyof Piece, SimpleFields>;
 type PieceComposedFields = RecordQuery | FormulaQuery;
-type PieceFields = (PieceSimpleFields | PieceComposedFields)[];
+export type PieceFields = (PieceSimpleFields | PieceComposedFields)[];
 type PieceFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name", string>;
 export type PieceQuery = ComposedQueryField<"pieces", PieceFields, PieceFilter>;
 
 type FormulaSimpleFields = Extract<keyof Formula, SimpleFields>;
 type FormulaComposedFields = IngredientQuery;
-type FormulaFields = (FormulaSimpleFields | FormulaComposedFields)[];
+export type FormulaFields = (FormulaSimpleFields | FormulaComposedFields)[];
 type FormulaFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name", string>;
 export type FormulaQuery = ComposedQueryField<"formula" | "formulas", FormulaFields, FormulaFilter>;
 
@@ -112,15 +112,15 @@ export type IngredientQuery = ComposedQueryField<"ingredients", IngredientFields
 
 type ChemicalSimpleFields = Extract<keyof Chemical, SimpleFields>;
 type ChemicalComposedFields = FormulaQuery;
-type ChemicalFields = (ChemicalSimpleFields | ChemicalComposedFields)[];
+export type ChemicalFields = (ChemicalSimpleFields | ChemicalComposedFields)[];
 type ChemicalFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name" | "chemicalName", string>;
 export type ChemicalQuery = ComposedQueryField<"chemicals", ChemicalFields, ChemicalFilter>;
 
-type ColorFields = Extract<keyof Color, SimpleFields>[];
+export type ColorFields = Extract<keyof Color, SimpleFields>[];
 export type ColorQuery = ComposedQueryField<"color", ColorFields>;
 
-type TargetPointFields = Extract<keyof TargetPoint, SimpleFields>[];
+export type TargetPointFields = Extract<keyof TargetPoint, SimpleFields>[];
 export type TargetPointQuery = ComposedQueryField<"points", TargetPointFields, PointFilter>;
 
-type RecordPointFields = Extract<keyof RecordPoint, SimpleFields>[];
+export type RecordPointFields = Extract<keyof RecordPoint, SimpleFields>[];
 export type RecordPointQuery = ComposedQueryField<"points", RecordPointFields, PointFilter>;
