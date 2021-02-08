@@ -24,7 +24,13 @@ const LoadTableModal: FC<Props> = ({ show, setShow, fetchData, handleSelect, col
   }, [showTable, fetchData]);
 
   return (
-    <Modal centered show={showTable} onHide={() => dispatch(setShow(false))} dialogClassName="modal-loadTable">
+    <Modal
+      centered
+      show={showTable}
+      backdrop="static"
+      onHide={() => dispatch(setShow(false))}
+      dialogClassName="modal-loadTable"
+    >
       <Modal.Body>
         <Table striped bordered hover className="table-sm" variant="dark">
           <thead>

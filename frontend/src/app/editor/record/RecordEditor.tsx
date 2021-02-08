@@ -5,6 +5,7 @@ import RecordInfos from "./RecordInfos";
 import RecordButtons from "./RecordButtons";
 import RecordLoadTable from "./RecordLoadTable";
 import RecordGraph from "./RecordGraph";
+import RecordPieces from "./RecordPieces";
 
 const RecordEditor = () => {
   return (
@@ -13,6 +14,7 @@ const RecordEditor = () => {
       <Row>
         <Col xl={6} md={12}>
           <RecordInfos />
+          <RecordPieces />
         </Col>
         <Col xl={6} md={12}>
           <RecordGraph />

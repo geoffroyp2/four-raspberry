@@ -14,6 +14,7 @@ interface RecordDisplayType {
   pageAmount: number;
   loadRowSelected: number;
   pointZoom: PointZoomType;
+  pieceDisplay: "list" | "grid";
 }
 
 const initialState: RecordDisplayType = {
@@ -27,6 +28,7 @@ const initialState: RecordDisplayType = {
     end: 2147483647,
     amount: 30,
   },
+  pieceDisplay: "list",
 };
 
 export const recordDisplaySlice = createSlice({
@@ -48,6 +50,9 @@ export const recordDisplaySlice = createSlice({
     setRecordPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {
       state.pointZoom = { ...state.pointZoom, ...action.payload };
     },
+    setRecordPieceDisplay: (state, action: PayloadAction<"list" | "grid">) => {
+      state.pieceDisplay = action.payload;
+    },
   },
 });
 
@@ -57,6 +62,7 @@ export const {
   setRecordTotalAmount,
   setRecordLoadRowSelected,
   setRecordPointZoom,
+  setRecordPieceDisplay,
 } = recordDisplaySlice.actions;
 
 export const selectRecordShowLoad = (state: RootState) => state.recordDisplay.showLoad;
@@ -65,5 +71,6 @@ export const selectRecordLoadAmount = (state: RootState) => state.recordDisplay.
 export const selectRecordPageAmount = (state: RootState) => state.recordDisplay.pageAmount;
 export const selectRecordLoadRowSelected = (state: RootState) => state.recordDisplay.loadRowSelected;
 export const selectRecordPointZoom = (state: RootState) => state.recordDisplay.pointZoom;
+export const selectRecordPieceDisplay = (state: RootState) => state.recordDisplay.pieceDisplay;
 
 export default recordDisplaySlice.reducer;

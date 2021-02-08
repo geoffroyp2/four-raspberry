@@ -44,7 +44,12 @@ const DescriptionField: FC<Props> = ({ data, validate, edit, setEdit, pending })
                 setEdit(false);
               }}
             />
-            <CancelIcon onClick={() => setEdit(false)} />
+            <CancelIcon
+              onClick={() => {
+                setEdit(false);
+                setEditField(currentData.name!);
+              }}
+            />
           </>
         ) : (
           <EditIcon onClick={() => setEdit(true)} />
