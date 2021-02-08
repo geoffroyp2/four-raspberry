@@ -2,7 +2,6 @@ import React, { useCallback, FC } from "react";
 import { Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/store";
-import { setRecordLoadPage } from "@editor/record/state/recordDisplaySlice";
 
 const buildPageItem = (number: number, active: boolean, setCurrentPage: (page: number) => void): JSX.Element => {
   return (
@@ -54,9 +53,9 @@ const LoadTablePagination: FC<Props> = ({ pageAmount, page, setPage }) => {
 
   const setCurrentPage = useCallback(
     (page: number) => {
-      dispatch(setRecordLoadPage(page));
+      dispatch(setPage(page));
     },
-    [dispatch]
+    [dispatch, setPage]
   );
 
   return (

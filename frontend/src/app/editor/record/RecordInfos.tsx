@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentRecordId, selectRecordData } from "./state/recordDataSlice";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./state/recordStateSlice";
 
-import { loadRecord } from "./utils/loadData";
-import { validateRecord } from "./utils/editValidation";
-
 import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";
 import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
 import TargetField from "@components/InfoCardElements/TargetField";
+
+import { loadRecord } from "./utils/loadData";
+import { validateRecord } from "./utils/editValidation";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();

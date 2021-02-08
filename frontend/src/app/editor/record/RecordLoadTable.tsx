@@ -15,9 +15,10 @@ import {
   selectRecordPageAmount,
 } from "./state/recordDisplaySlice";
 
-import { fetchRecordPage } from "./state/request";
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
+
+import { fetchRecordPage } from "./state/request";
 
 const loadRecordList = async (page: number, amount: number) => {
   const recordRes = await fetchRecordPage(page, amount);

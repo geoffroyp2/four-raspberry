@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Card } from "react-bootstrap";
 
 type Props = {
-  children?: JSX.Element[] | JSX.Element;
+  children?: JSX.Element[] | JSX.Element | false;
 };
 
 const EditorCard: FC<Props> = ({ children }) => {

@@ -1,9 +1,10 @@
-import { selectCurrentScreen } from "@navBar/MainNavSlice";
 import React from "react";
-import { useSelector } from "react-redux";
 import "./App.scss";
+import { useSelector } from "react-redux";
+
 import RecordEditor from "./editor/record/RecordEditor";
 import MainNavBar from "./navBar/MainNavBar";
+import { selectCurrentScreen } from "@navBar/MainNavSlice";
 
 const mainScreens = {
   live: <></>,
