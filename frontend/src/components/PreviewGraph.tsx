@@ -38,10 +38,10 @@ const PreviewGraph: FC<Props> = ({ points, color }) => {
         datasets: [...dataSets],
       }}
       options={{
-        responsiveAnimationDuration: 0, // resize animation
-        animation: { duration: 0 },
-        hover: { animationDuration: 0 },
-        legend: { display: true, position: "bottom" },
+        responsiveAnimationDuration: 100, // resize delay
+        animation: { duration: 200 },
+        hover: { animationDuration: 100 },
+        legend: { display: true, position: "bottom", labels: { fontColor: "rgba(230,230,230,1)", fontStyle: "thin" } },
 
         tooltips: {
           displayColors: false,
@@ -75,7 +75,7 @@ const PreviewGraph: FC<Props> = ({ points, color }) => {
                 min: 0,
               },
               gridLines: {
-                color: "rgba(140,140,140,0.7)",
+                color: "rgba(160,160,160,0.7)",
               },
             },
             {
@@ -92,7 +92,10 @@ const PreviewGraph: FC<Props> = ({ points, color }) => {
                 max: 1.1,
               },
               gridLines: {
-                color: "rgba(10,10,10,0.4)",
+                color: "rgba(120,110,110,0.4)",
+                zeroLineColor: "rgba(120,110,110,0.4)",
+                lineWidth: 0.5,
+                borderDash: [12, 12],
               },
             },
           ],
@@ -105,6 +108,10 @@ const PreviewGraph: FC<Props> = ({ points, color }) => {
                 callback: (val: string) => {
                   return graphFormatTime(val, false); // formatage du texte
                 },
+              },
+              gridLines: {
+                color: "rgba(90,90,90,0.4)",
+                lineWidth: 0.5,
               },
               position: "bottom",
             },

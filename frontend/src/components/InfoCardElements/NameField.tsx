@@ -13,7 +13,7 @@ import ConfirmIcon from "@src/assets/ConfirmIcon";
 type PosTypes = Chemical | Formula | Piece | Record | Target;
 type Props = {
   data: (state: RootState) => PosTypes;
-  validate: (name: PosTypes) => void;
+  validate: (id: number, newData: PosTypes) => void;
   edit: boolean;
   setEdit: (value: boolean) => void;
   pending: boolean;
@@ -40,7 +40,7 @@ const NameField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
           <>
             <ConfirmIcon
               onClick={() => {
-                validate({ name: EditField });
+                validate(currentData.id || 0, { name: EditField });
                 setEdit(false);
               }}
             />

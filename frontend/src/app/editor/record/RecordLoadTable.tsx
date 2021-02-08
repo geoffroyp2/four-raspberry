@@ -1,14 +1,13 @@
 import React, { useCallback } from "react";
 
-import { batch, useDispatch, useSelector } from "react-redux";
-import { store } from "../../../store/store";
-import { selectRecordLoadList, setCurrentRecordId, setRecordLoadList } from "./state/recordDataSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import { selectRecordLoadList, setCurrentRecordId } from "./state/recordDataSlice";
 import {
   selectRecordShowLoad,
   selectRecordLoadPage,
   selectRecordLoadAmount,
   selectRecordLoadRowSelected,
-  setRecordTotalAmount,
   setRecordShowLoad,
   setRecordLoadPage,
   setRecordLoadRowSelected,
@@ -17,16 +16,7 @@ import {
 
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
-
-import { fetchRecordPage } from "./utils/request";
-
-const loadRecordList = async (page: number, amount: number) => {
-  const recordRes = await fetchRecordPage({ page, amount });
-  batch(() => {
-    store.dispatch(setRecordTotalAmount(recordRes.records.count));
-    store.dispatch(setRecordLoadList(recordRes.records.rows));
-  });
-};
+import { loadRecordList } from "./utils/loadData";
 
 const tableColumns = ["Nom", "Description", "Four", "Courbe de référence"];
 

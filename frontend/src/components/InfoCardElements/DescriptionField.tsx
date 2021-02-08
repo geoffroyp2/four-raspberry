@@ -13,7 +13,7 @@ import ConfirmIcon from "@src/assets/ConfirmIcon";
 type PosTypes = Formula | Piece | Record | Target;
 type Props = {
   data: (state: RootState) => PosTypes;
-  validate: (name: PosTypes) => void;
+  validate: (id: number, newData: PosTypes) => void;
   edit: boolean;
   setEdit: (value: boolean) => void;
   pending: boolean;
@@ -40,7 +40,7 @@ const DescriptionField: FC<Props> = ({ data, validate, edit, setEdit, pending })
           <>
             <ConfirmIcon
               onClick={() => {
-                validate({ description: EditField });
+                validate(currentData.id || 0, { description: EditField });
                 setEdit(false);
               }}
             />

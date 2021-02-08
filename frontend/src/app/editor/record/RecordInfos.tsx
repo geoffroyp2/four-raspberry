@@ -12,7 +12,7 @@ import DateField from "@components/InfoCardElements/DateField";
 import TargetField from "@components/InfoCardElements/TargetField";
 
 import { loadRecord } from "./utils/loadData";
-import { validateRecord } from "./utils/editValidation";
+import { saveRecordChanges } from "./utils/editRequests";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
@@ -39,14 +39,14 @@ const RecordInfos: FC = () => {
           <Col md={6} sm={12}>
             <NameField
               data={selectRecordData}
-              validate={validateRecord}
+              validate={saveRecordChanges}
               edit={editStates.name}
               setEdit={(val: boolean) => dispatch(setRecordEdit({ name: val }))}
               pending={pendingStates.name}
             />
             <DescriptionField
               data={selectRecordData}
-              validate={validateRecord}
+              validate={saveRecordChanges}
               edit={editStates.description}
               setEdit={(val: boolean) => dispatch(setRecordEdit({ description: val }))}
               pending={pendingStates.description}

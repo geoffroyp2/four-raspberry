@@ -1,8 +1,9 @@
-interface GQLRootResType<T> {
+interface GQLQueryResType<T> {
   count: number;
   rows: T[];
 }
-export type GQLRootResTypes = TargetRootRes | RecordRootRes | PieceRootRes | FormulaRootRes | ChemicalRootRes;
+
+export type GQLQueryResTypes = TargetQueryRes | RecordQueryRes | PieceQueryRes | FormulaQueryRes | ChemicalQueryRes;
 
 export interface Color {
   r: number;
@@ -25,7 +26,7 @@ export interface Target {
   createdAt?: string;
   updatedAt?: string;
 }
-export type TargetRootRes = { targets: GQLRootResType<Target> };
+export type TargetQueryRes = { targets: GQLQueryResType<Target> };
 
 export interface TargetPoint {
   id?: number;
@@ -46,7 +47,7 @@ export interface Record {
   createdAt?: string;
   updatedAt?: string;
 }
-export type RecordRootRes = { records: GQLRootResType<Record> };
+export type RecordQueryRes = { records: GQLQueryResType<Record> };
 
 export interface RecordPoint {
   id?: number;
@@ -65,7 +66,7 @@ export interface Piece {
   createdAt?: string;
   updatedAt?: string;
 }
-export type PieceRootRes = { pieces: GQLRootResType<Piece> };
+export type PieceQueryRes = { pieces: GQLQueryResType<Piece> };
 
 export interface Formula {
   id?: number;
@@ -76,7 +77,7 @@ export interface Formula {
   createdAt?: string;
   updatedAt?: string;
 }
-export type FormulaRootRes = { formulas: GQLRootResType<Formula> };
+export type FormulaQueryRes = { formulas: GQLQueryResType<Formula> };
 
 export interface Ingredient {
   amount?: number;
@@ -92,4 +93,4 @@ export interface Chemical {
   createdAt?: string;
   updatedAt?: string;
 }
-export type ChemicalRootRes = { chemicals: GQLRootResType<Chemical> };
+export type ChemicalQueryRes = { chemicals: GQLQueryResType<Chemical> };
