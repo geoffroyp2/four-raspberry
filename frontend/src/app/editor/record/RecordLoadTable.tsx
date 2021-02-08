@@ -18,10 +18,10 @@ import {
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
-import { fetchRecordPage } from "./state/request";
+import { fetchRecordPage } from "./utils/request";
 
 const loadRecordList = async (page: number, amount: number) => {
-  const recordRes = await fetchRecordPage(page, amount);
+  const recordRes = await fetchRecordPage({ page, amount });
   batch(() => {
     store.dispatch(setRecordTotalAmount(recordRes.records.count));
     store.dispatch(setRecordLoadList(recordRes.records.rows));

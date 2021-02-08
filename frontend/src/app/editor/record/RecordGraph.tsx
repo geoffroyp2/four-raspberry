@@ -20,7 +20,7 @@ const RecordGraph = () => {
     const load = async () => {
       if (currentRecord.id) {
         dispatch(setRecordPending({ points: true }));
-        await loadPoints(currentRecord.id, zoom.start, zoom.end, zoom.amount);
+        await loadPoints(currentRecord.id, zoom);
         dispatch(setRecordPending({ points: false }));
       }
     };
