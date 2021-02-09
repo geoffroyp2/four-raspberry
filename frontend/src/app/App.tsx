@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import RecordEditor from "./editor/record/RecordEditor";
 import MainNavBar from "./navBar/MainNavBar";
 import { selectCurrentScreen } from "@navBar/MainNavSlice";
+import TargetEditor from "@editor/target/TargetEditor";
 
 const mainScreens = {
   live: <></>,
-  target: <></>,
+  target: <TargetEditor />,
   record: <RecordEditor />,
   piece: <></>,
   formula: <></>,

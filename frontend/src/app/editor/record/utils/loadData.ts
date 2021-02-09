@@ -12,7 +12,7 @@ export const loadRecord = async (id: number) => {
   store.dispatch(setRecordData(data.records.rows[0]));
 };
 
-export const loadPoints = async (id: number, filter: PointFilter) => {
+export const loadRecordPoints = async (id: number, filter: PointFilter) => {
   const data = await sendGQLQuery<RecordQueryRes>(getRecordPointRequest(id, filter));
   batch(() => {
     store.dispatch(setRecordPoints(data.records.rows[0]?.points));

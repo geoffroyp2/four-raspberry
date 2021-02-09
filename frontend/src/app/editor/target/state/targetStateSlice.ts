@@ -7,6 +7,7 @@ interface Pending {
   points: boolean;
   description: boolean;
   color: boolean;
+  oven: boolean;
 }
 
 interface Edit {
@@ -15,18 +16,19 @@ interface Edit {
   description: boolean;
 }
 
-interface RecordStateType {
+interface TargetStateType {
   pending: Pending;
   edit: Edit;
 }
 
-const initialState: RecordStateType = {
+const initialState: TargetStateType = {
   pending: {
     data: false,
     points: false,
     name: false,
     description: false,
     color: false,
+    oven: false,
   },
   edit: {
     name: false,
@@ -35,17 +37,17 @@ const initialState: RecordStateType = {
   },
 };
 
-export const recordStateSlice = createSlice({
-  name: "recordState",
+export const targetStateSlice = createSlice({
+  name: "targetState",
   initialState,
   reducers: {
-    setRecordPending: (state, action: PayloadAction<Partial<Pending>>) => {
+    setTargetPending: (state, action: PayloadAction<Partial<Pending>>) => {
       Object.entries(action.payload).forEach((e) => {
         const [key, value] = e;
         state.pending[key as keyof Pending] = value!;
       });
     },
-    setRecordEdit: (state, action: PayloadAction<Partial<Edit>>) => {
+    setTargetEdit: (state, action: PayloadAction<Partial<Edit>>) => {
       // Only one edit at a time
       Object.entries(state.edit).forEach(([key]) => {
         state.edit[key as keyof Edit] = false;
@@ -55,9 +57,9 @@ export const recordStateSlice = createSlice({
   },
 });
 
-export const { setRecordPending, setRecordEdit } = recordStateSlice.actions;
+export const { setTargetPending, setTargetEdit } = targetStateSlice.actions;
 
-export const selectRecordPending = (state: RootState) => state.recordState.pending;
-export const selectRecordEdit = (state: RootState) => state.recordState.edit;
+export const selectTargetPending = (state: RootState) => state.targetState.pending;
+export const selectTargetEdit = (state: RootState) => state.targetState.edit;
 
-export default recordStateSlice.reducer;
+export default targetStateSlice.reducer;

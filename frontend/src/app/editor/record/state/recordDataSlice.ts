@@ -56,7 +56,7 @@ export const {
   setRecordTempValues,
 } = recordDataSlice.actions;
 
-export const selectCurrentRecordId = (state: RootState) => state.recordData.recordId;
+export const selectRecordId = (state: RootState) => state.recordData.recordId;
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;
 export const selectRecordPoints = (state: RootState) => state.recordData.points;

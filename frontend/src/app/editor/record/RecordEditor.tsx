@@ -1,14 +1,14 @@
 import React, { useCallback } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentRecordId } from "./state/recordDataSlice";
+import { selectRecordLoadRowSelected, setRecordShowLoad } from "./state/recordDisplaySlice";
 
 import RecordInfos from "./RecordInfos";
 import RecordButtons from "./RecordButtons";
 import RecordLoadTable from "./RecordLoadTable";
 import RecordGraph from "./RecordGraph";
 import RecordPieces from "./RecordPieces";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentRecordId } from "./state/recordDataSlice";
-import { selectRecordLoadRowSelected, setRecordShowLoad } from "./state/recordDisplaySlice";
 
 const RecordEditor = () => {
   const dispatch = useDispatch();

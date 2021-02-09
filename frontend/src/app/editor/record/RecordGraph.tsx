@@ -14,7 +14,7 @@ import PreviewGraph from "@components/PreviewGraph";
 import EditorCard from "@components/EditorCard";
 import ColorField from "@components/InfoCardElements/ColorField";
 
-import { loadPoints } from "./utils/loadData";
+import { loadRecordPoints } from "./utils/loadData";
 import { saveRecordChanges } from "./utils/editRequests";
 
 const RecordGraph = () => {
@@ -28,7 +28,7 @@ const RecordGraph = () => {
     const load = async () => {
       if (currentRecord.id) {
         dispatch(setRecordPending({ points: true }));
-        await loadPoints(currentRecord.id, zoom);
+        await loadRecordPoints(currentRecord.id, zoom);
         dispatch(setRecordPending({ points: false }));
       }
     };

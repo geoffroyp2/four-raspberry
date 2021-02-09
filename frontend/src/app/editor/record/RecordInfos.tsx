@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentRecordId, selectRecordData } from "./state/recordDataSlice";
+import { selectRecordId, selectRecordData } from "./state/recordDataSlice";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./state/recordStateSlice";
 
 import EditorCard from "@components/EditorCard";
@@ -16,7 +16,7 @@ import { saveRecordChanges } from "./utils/editRequests";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
-  const recordId = useSelector(selectCurrentRecordId);
+  const recordId = useSelector(selectRecordId);
   const record = useSelector(selectRecordData);
   const editStates = useSelector(selectRecordEdit);
   const pendingStates = useSelector(selectRecordPending);

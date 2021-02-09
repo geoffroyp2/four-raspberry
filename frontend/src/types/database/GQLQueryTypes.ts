@@ -87,7 +87,7 @@ type TargetFilter = PageFilter &
   QueryFilter<"id", number> &
   QueryFilter<"name", string> &
   QueryFilter<"oven", OvenType>;
-export type TargetQuery = ComposedQueryField<"target", TargetFields, TargetFilter>;
+export type TargetQuery = ComposedQueryField<"target" | "targets", TargetFields, TargetFilter>;
 
 type RecordSimpleFields = Extract<keyof Record, SimpleFields>;
 type RecordComposedFields = TargetQuery | ColorQuery | PieceQuery | RecordPointQuery;
