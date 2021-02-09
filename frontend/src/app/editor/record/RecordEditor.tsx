@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentRecordId } from "./_state/recordDataSlice";
+import { selectRecordData, setCurrentRecordId } from "./_state/recordDataSlice";
 import { selectRecordLoadRowSelected } from "./_state/recordDisplaySlice";
+import { selectTargetLoadRowSelected } from "@editor/target/_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
 
 import RecordInfos from "./RecordInfos";
@@ -10,15 +11,24 @@ import RecordButtons from "./RecordButtons";
 import RecordLoadTable from "./RecordLoadTable";
 import RecordGraph from "./RecordGraph";
 import RecordPieces from "./RecordPieces";
+import TargetLoadTable from "@editor/target/TargetLoadTable";
+import { linkRecordTarget } from "./utils/editRequests";
 
 const RecordEditor = () => {
   const dispatch = useDispatch();
-  const rowSelected = useSelector(selectRecordLoadRowSelected);
+  const currentRecord = useSelector(selectRecordData);
+  const RecordRowSelected = useSelector(selectRecordLoadRowSelected);
+  const TargetRowSelected = useSelector(selectTargetLoadRowSelected);
 
-  const handleSelect = useCallback(() => {
-    dispatch(setCurrentRecordId(rowSelected));
+  const handleLoadRecord = useCallback(() => {
+    dispatch(setCurrentRecordId(RecordRowSelected));
     dispatch(setLoadTable({ record: false }));
-  }, [dispatch, rowSelected]);
+  }, [dispatch, RecordRowSelected]);
+
+  const handleLinkTarget = useCallback(() => {
+    linkRecordTarget(currentRecord.id || 0, TargetRowSelected);
+    dispatch(setLoadTable({ target: false }));
+  }, [dispatch, TargetRowSelected, currentRecord]);
 
   return (
     <Container fluid className="mt-2 pl-0 pr-0 pl-sm-2 pr-sm-2 pl-md-3 pr-md-3">
@@ -33,7 +43,8 @@ const RecordEditor = () => {
         </Col>
       </Row>
 
-      <RecordLoadTable select={handleSelect} />
+      <RecordLoadTable select={handleLoadRecord} />
+      <TargetLoadTable select={handleLinkTarget} />
     </Container>
   );
 };

@@ -1,9 +1,12 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordId, selectRecordData } from "./_state/recordDataSlice";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./_state/recordStateSlice";
+import { setLoadTable } from "@editor/_state/editorSlice";
+import { setCurrentTargetId } from "@editor/target/_state/targetDataSlice";
+import { setCurrentScreen } from "@navBar/MainNavSlice";
 
 import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";
@@ -30,6 +33,13 @@ const RecordInfos: FC = () => {
     if (record.id !== recordId) load();
   }, [dispatch, recordId, record]);
 
+  const handleGoto = useCallback(() => {
+    if (record.target?.id) {
+      dispatch(setCurrentTargetId(record.target.id));
+      dispatch(setCurrentScreen("target"));
+    }
+  }, [dispatch, record]);
+
   return (
     <EditorCard>
       {pendingStates.data ? (
@@ -53,7 +63,11 @@ const RecordInfos: FC = () => {
             />
           </Col>
           <Col md={6} sm={12}>
-            <TargetField data={selectRecordData} />
+            <TargetField
+              data={selectRecordData}
+              setShowTable={(val: boolean) => dispatch(setLoadTable({ target: val }))}
+              goto={handleGoto}
+            />
             <DateField data={selectRecordData} />
           </Col>
         </Row>

@@ -6,7 +6,6 @@ import { setRecordData } from "../_state/recordDataSlice";
 import { allRecordFields } from "./dataRequests";
 
 export const saveRecordChanges = async (recordId: number, newData: Record) => {
-  console.log(recordId, newData);
   const request = rootQueryBuilder({
     type: "mutation",
     query: {
@@ -20,4 +19,20 @@ export const saveRecordChanges = async (recordId: number, newData: Record) => {
   });
   const res = await sendGQLQuery<{ updateRecord: Record }>(request);
   store.dispatch(setRecordData(res.updateRecord));
+};
+
+export const linkRecordTarget = async (recordId: number, targetId: number) => {
+  const request = rootQueryBuilder({
+    type: "mutation",
+    query: {
+      name: "setRecordTarget",
+      args: {
+        recordId,
+        targetId,
+      },
+      res: allRecordFields,
+    },
+  });
+  const res = await sendGQLQuery<{ setRecordTarget: Record }>(request);
+  store.dispatch(setRecordData(res.setRecordTarget));
 };
