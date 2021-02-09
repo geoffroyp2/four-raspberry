@@ -1,4 +1,4 @@
-import Chemical, { ChemicalAttributes } from "../../../database/models/formula/chemical";
+import Chemical, { ChemicalAttributes, ChemicalCreationAttributes } from "../../../database/models/formula/chemical";
 import { GQLChemical, GQLChemicalId, GQLChemicalUpdate } from "../types";
 
 const Mutation = {
@@ -7,7 +7,12 @@ const Mutation = {
    * @param args optional arguments to be passed, all have default values
    * @return the new Target
    */
-  createChemical: async (obj: any, args: GQLChemical): Promise<Chemical> => {
+  createChemical: async (obj: any, { name, chemicalName, density }: ChemicalCreationAttributes): Promise<Chemical> => {
+    const args: ChemicalCreationAttributes = {
+      name: name || "Sans Nom",
+      chemicalName: chemicalName || "",
+      density: density || 1,
+    };
     return await Chemical.create(args);
   },
 

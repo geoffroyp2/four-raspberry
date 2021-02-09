@@ -1,7 +1,7 @@
 import Formula from "../../../database/models/formula/formula";
-import Piece from "../../../database/models/piece/piece";
+import Piece, { PieceCreationAttributes } from "../../../database/models/piece/piece";
 
-import { GQLPiece, GQLPieceId, GQLPieceUpdate, GQLPieceFormula } from "../types";
+import { GQLPieceId, GQLPieceUpdate, GQLPieceFormula } from "../types";
 
 const Mutation = {
   /**
@@ -9,7 +9,11 @@ const Mutation = {
    * @param args optional arguments to be passed, all have default values
    * @return the new Piece
    */
-  createPiece: async (obj: any, args: GQLPiece): Promise<Piece> => {
+  createPiece: async (obj: any, { name, description }: PieceCreationAttributes): Promise<Piece> => {
+    const args: PieceCreationAttributes = {
+      name: name || "Sans Nom",
+      description: description || "",
+    };
     return await Piece.create(args);
   },
 

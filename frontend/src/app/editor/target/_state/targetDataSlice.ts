@@ -13,7 +13,7 @@ interface TargetDataType {
 }
 
 const initialState: TargetDataType = {
-  targetId: 1,
+  targetId: 0,
   data: {},
   points: [],
   tempValues: {
@@ -26,14 +26,17 @@ export const targetDataSlice = createSlice({
   name: "targetData",
   initialState,
   reducers: {
-    setCurrentTargetId: (state, action: PayloadAction<number>) => {
+    setTargetId: (state, action: PayloadAction<number>) => {
       state.targetId = action.payload;
     },
     setTargetData: (state, action: PayloadAction<Target>) => {
-      state.data = action.payload;
+      if (action.payload.id) {
+        state.targetId = action.payload.id;
+        state.data = action.payload;
 
-      if (action.payload.color) {
-        state.tempValues.color = action.payload.color;
+        if (action.payload.color) {
+          state.tempValues.color = action.payload.color;
+        }
       }
     },
     setTargetLoadList: (state, action: PayloadAction<Target[]>) => {
@@ -49,7 +52,7 @@ export const targetDataSlice = createSlice({
 });
 
 export const {
-  setCurrentTargetId,
+  setTargetId,
   setTargetData,
   setTargetLoadList,
   setTargetTempValues,

@@ -4,25 +4,33 @@ import { sendGQLQuery } from "@network/GQLClient";
 import { store } from "@app/store";
 import { batch } from "react-redux";
 import { setRecordData, setRecordLoadList, setRecordPoints } from "../_state/recordDataSlice";
-import { setRecordTotalAmount } from "../_state/recordDisplaySlice";
+import { setRecordLoadPage, setRecordTotalAmount } from "../_state/recordDisplaySlice";
 import { getRecordFieldsQuery, getRecordPageRequest, getRecordPointRequest } from "./dataRequests";
 
 export const loadRecord = async (id: number) => {
-  const data = await sendGQLQuery<RecordQueryRes>(getRecordFieldsQuery(id));
-  store.dispatch(setRecordData(data.records.rows[0]));
+  const res = await sendGQLQuery<RecordQueryRes>(getRecordFieldsQuery(id));
+  if (res) store.dispatch(setRecordData(res.records.rows[0]));
 };
 
 export const loadRecordPoints = async (id: number, filter: PointFilter) => {
-  const data = await sendGQLQuery<RecordQueryRes>(getRecordPointRequest(id, filter));
-  batch(() => {
-    store.dispatch(setRecordPoints(data.records.rows[0]?.points));
-  });
+  const res = await sendGQLQuery<RecordQueryRes>(getRecordPointRequest(id, filter));
+  if (res)
+    batch(() => {
+      store.dispatch(setRecordPoints(res.records.rows[0]?.points));
+    });
 };
 
 export const loadRecordList = async (page: number, amount: number) => {
-  const recordRes = await sendGQLQuery<RecordQueryRes>(getRecordPageRequest({ page, amount }));
-  batch(() => {
-    store.dispatch(setRecordTotalAmount(recordRes.records.count));
-    store.dispatch(setRecordLoadList(recordRes.records.rows));
-  });
+  const res = await sendGQLQuery<RecordQueryRes>(getRecordPageRequest({ page, amount }));
+  if (res) {
+    if (page !== 0 && res.records.rows.length === 0) {
+      // if current page has no result
+      store.dispatch(setRecordLoadPage(0));
+    } else {
+      batch(() => {
+        store.dispatch(setRecordTotalAmount(res.records.count));
+        store.dispatch(setRecordLoadList(res.records.rows));
+      });
+    }
+  }
 };

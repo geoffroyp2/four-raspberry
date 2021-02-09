@@ -7,7 +7,7 @@ import { selectRecordPieceDisplay, setRecordPieceDisplay } from "./_state/record
 
 import "./styles/recordStyles.scss";
 import EditorCard from "@components/EditorCard";
-import PieceTable from "@components/PieceTable";
+import PieceTable from "@components/Tables/PieceTable";
 import ListIcon from "@src/assets/ListIcon";
 import TileIcon from "@src/assets/TileIcon";
 
@@ -37,7 +37,7 @@ const RecordPieces = () => {
   };
 
   return (
-    <EditorCard className="recordPieces">
+    <EditorCard className="record-pieces">
       <Container fluid>
         <label>Potteries</label>
         <ButtonGroup>

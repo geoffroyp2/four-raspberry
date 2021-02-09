@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordData, setCurrentRecordId } from "./_state/recordDataSlice";
+import { selectRecordData, setRecordId } from "./_state/recordDataSlice";
 import { selectRecordLoadRowSelected } from "./_state/recordDisplaySlice";
 import { selectTargetLoadRowSelected } from "@editor/target/_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
@@ -21,7 +21,7 @@ const RecordEditor = () => {
   const TargetRowSelected = useSelector(selectTargetLoadRowSelected);
 
   const handleLoadRecord = useCallback(() => {
-    dispatch(setCurrentRecordId(RecordRowSelected));
+    dispatch(setRecordId(RecordRowSelected));
     dispatch(setLoadTable({ record: false }));
   }, [dispatch, RecordRowSelected]);
 

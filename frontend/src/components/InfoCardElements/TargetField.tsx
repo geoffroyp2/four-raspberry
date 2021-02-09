@@ -23,15 +23,11 @@ const TargetField: FC<Props> = ({ data, setShowTable, goto }) => {
       <Col className="colContent">
         <label>Courbe de Référence:</label>
         <span> {currentData.target?.name || "-"}</span>
-        <span> {`(${currentData.oven})` || ""}</span>
+        <span> {currentData.oven ? `(${currentData.oven})` : ""}</span>
       </Col>
       <Col className="colButtons">
-        {currentData.target?.id && (
-          <>
-            <EditIcon onClick={() => setShowTable(true)} />
-            <GotoIcon onClick={goto} />
-          </>
-        )}
+        <EditIcon onClick={() => setShowTable(true)} />
+        {currentData.target?.id && <GotoIcon onClick={goto} />}
       </Col>
     </Row>
   );

@@ -6,26 +6,34 @@ import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { TargetQueryRes } from "@baseTypes/database/GQLResTypes";
 
 import { setTargetData, setTargetLoadList, setTargetPoints } from "../_state/targetDataSlice";
-import { setTargetTotalAmount } from "../_state/targetDisplaySlice";
+import { setTargetLoadPage, setTargetTotalAmount } from "../_state/targetDisplaySlice";
 
 import { getTargetFieldsQuery, getTargetPageRequest, getTargetPointRequest } from "./dataRequests";
 
 export const loadTarget = async (id: number) => {
-  const data = await sendGQLQuery<TargetQueryRes>(getTargetFieldsQuery(id));
-  store.dispatch(setTargetData(data.targets.rows[0]));
+  const res = await sendGQLQuery<TargetQueryRes>(getTargetFieldsQuery(id));
+  if (res) store.dispatch(setTargetData(res.targets.rows[0]));
 };
 
 export const loadTargetPoints = async (id: number, filter: PointFilter) => {
-  const data = await sendGQLQuery<TargetQueryRes>(getTargetPointRequest(id, filter));
-  batch(() => {
-    store.dispatch(setTargetPoints(data.targets.rows[0]?.points));
-  });
+  const res = await sendGQLQuery<TargetQueryRes>(getTargetPointRequest(id, filter));
+  if (res)
+    batch(() => {
+      store.dispatch(setTargetPoints(res.targets.rows[0]?.points));
+    });
 };
 
 export const loadTargetList = async (page: number, amount: number) => {
-  const data = await sendGQLQuery<TargetQueryRes>(getTargetPageRequest({ page, amount }));
-  batch(() => {
-    store.dispatch(setTargetTotalAmount(data.targets.count));
-    store.dispatch(setTargetLoadList(data.targets.rows));
-  });
+  const res = await sendGQLQuery<TargetQueryRes>(getTargetPageRequest({ page, amount }));
+  if (res) {
+    if (page !== 0 && res.targets.rows.length === 0) {
+      // if current page has no result
+      store.dispatch(setTargetLoadPage(0));
+    } else {
+      batch(() => {
+        store.dispatch(setTargetTotalAmount(res.targets.count));
+        store.dispatch(setTargetLoadList(res.targets.rows));
+      });
+    }
+  }
 };

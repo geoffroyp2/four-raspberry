@@ -40,7 +40,7 @@ const Attribute = {
    * @return the Formula linked to the Piece or null if no link
    */
   formula: async (parent: Piece, _: any, ctx: any): Promise<Formula | null> => {
-    return ctx.formulaLoader.load(parent.formulaId);
+    return parent.formulaId ? ctx.formulaLoader.load(parent.formulaId) : null;
     // return await Formula.findOne({ where: { id: parent.formulaId } });
   },
 

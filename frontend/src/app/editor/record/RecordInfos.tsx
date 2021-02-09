@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRecordId, selectRecordData } from "./_state/recordDataSlice";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./_state/recordStateSlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
-import { setCurrentTargetId } from "@editor/target/_state/targetDataSlice";
+import { setTargetId } from "@editor/target/_state/targetDataSlice";
 import { setCurrentScreen } from "@navBar/MainNavSlice";
 
 import EditorCard from "@components/EditorCard";
@@ -35,7 +35,7 @@ const RecordInfos: FC = () => {
 
   const handleGoto = useCallback(() => {
     if (record.target?.id) {
-      dispatch(setCurrentTargetId(record.target.id));
+      dispatch(setTargetId(record.target.id));
       dispatch(setCurrentScreen("target"));
     }
   }, [dispatch, record]);

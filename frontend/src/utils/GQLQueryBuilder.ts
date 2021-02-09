@@ -55,6 +55,12 @@ const serializeObject = (input: object): string => {
     .map(([key, value]) => `${key}: ${value}`)
     .join(", ")} }`;
 };
+const isColor = (input: any): input is Color => {
+  return input.r !== undefined;
+};
+const isEmptyObject = (input: object): boolean => {
+  return Object.entries(input).length === 0;
+};
 
 /**
  * outputs the arguments for a request
@@ -63,7 +69,7 @@ const serializeObject = (input: object): string => {
  * @return "( id: 1 name: "foo" )"
  */
 const filterBuilder = (filter?: GQLQueryFilterType | GQLMutationArgs): string => {
-  return filter
+  return filter && !isEmptyObject(filter)
     ? `( ${Object.entries(filter)
         .map(([key, value]) => `${key}: ${isColor(value) ? serializeObject(value) : JSON.stringify(value)}`)
         .join(", ")} )`
@@ -75,9 +81,6 @@ const filterBuilder = (filter?: GQLQueryFilterType | GQLMutationArgs): string =>
  */
 const isComposedQuery = (input: any): input is GQLComposedQueryType => {
   return input.type !== undefined;
-};
-const isColor = (input: any): input is Color => {
-  return input.r !== undefined;
 };
 
 /**

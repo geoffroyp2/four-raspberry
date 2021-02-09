@@ -14,7 +14,7 @@ const Attribute = {
    * @return the Target linked with the Record or null if no link
    */
   target: async (parent: Record, _: any, ctx: any): Promise<Target | null> => {
-    return ctx.targetLoader.load(parent.targetId);
+    return parent.targetId ? ctx.targetLoader.load(parent.targetId) : null;
   },
 
   /**
@@ -76,7 +76,7 @@ const Attribute = {
    * @return the oven of the linked Target or null if no linked Target
    */
   oven: async (parent: Record, _: any, ctx: any): Promise<OvenType | null> => {
-    return ctx.recordOvenLoader.load(parent.targetId);
+    return parent.targetId ? ctx.recordOvenLoader.load(parent.targetId) : null;
   },
 
   /**

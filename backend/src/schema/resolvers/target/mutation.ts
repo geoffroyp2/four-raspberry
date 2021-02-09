@@ -19,9 +19,9 @@ const Mutation = {
    */
   createTarget: async (obj: any, { name, description, color, oven }: GQLTarget): Promise<Target> => {
     const args: TargetCreationAttributes = {
-      name,
-      description,
-      color: colorToString(color),
+      name: name || "Sans Nom",
+      description: description || "",
+      color: colorToString(color) || "210-210-210-0.9",
       oven: oven && (oven === "gaz" || oven === "electrique") ? oven : "gaz",
     };
     return await Target.create(args);

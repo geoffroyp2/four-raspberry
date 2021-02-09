@@ -13,7 +13,7 @@ interface RecordDataType {
 }
 
 const initialState: RecordDataType = {
-  recordId: 1,
+  recordId: 0,
   data: {},
   points: [],
   tempValues: {
@@ -26,14 +26,17 @@ export const recordDataSlice = createSlice({
   name: "recordData",
   initialState,
   reducers: {
-    setCurrentRecordId: (state, action: PayloadAction<number>) => {
+    setRecordId: (state, action: PayloadAction<number>) => {
       state.recordId = action.payload;
     },
     setRecordData: (state, action: PayloadAction<Record>) => {
-      state.data = action.payload;
+      if (action.payload.id) {
+        state.recordId = action.payload.id;
+        state.data = action.payload;
 
-      if (action.payload.color) {
-        state.tempValues.color = action.payload.color;
+        if (action.payload.color) {
+          state.tempValues.color = action.payload.color;
+        }
       }
     },
     setRecordLoadList: (state, action: PayloadAction<Record[]>) => {
@@ -49,7 +52,7 @@ export const recordDataSlice = createSlice({
 });
 
 export const {
-  setCurrentRecordId,
+  setRecordId,
   setRecordData,
   setRecordLoadList,
   setRecordPoints,

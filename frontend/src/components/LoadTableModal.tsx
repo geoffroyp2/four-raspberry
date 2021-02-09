@@ -33,8 +33,8 @@ const LoadTableModal: FC<Props> = ({ show, setShow, fetchData, handleSelect, col
       </Modal.Body>
       <Modal.Footer>
         {pagination}
-        <Button onClick={handleSelect}> Ouvrir</Button>
-        <Button onClick={() => setShow(false)}> Annuler</Button>
+        <Button onClick={handleSelect}>Ouvrir</Button>
+        <Button onClick={() => setShow(false)}>Annuler</Button>
       </Modal.Footer>
     </Modal>
   );

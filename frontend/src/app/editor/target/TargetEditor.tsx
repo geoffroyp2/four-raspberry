@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setCurrentTargetId } from "./_state/targetDataSlice";
+import { setTargetId } from "./_state/targetDataSlice";
 import { selectTargetLoadRowSelected } from "./_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
 
@@ -10,6 +10,7 @@ import TargetButtons from "./TargetButtons";
 import TargetGraph from "./TargetGraph";
 import TargetInfos from "./TargetInfos";
 import TargetLoadTable from "./TargetLoadTable";
+import TargetRecords from "./TargetRecords";
 // import RecordPieces from "./RecordPieces";
 
 const TargetEditor = () => {
@@ -17,7 +18,7 @@ const TargetEditor = () => {
   const rowSelected = useSelector(selectTargetLoadRowSelected);
 
   const handleSelect = useCallback(() => {
-    dispatch(setCurrentTargetId(rowSelected));
+    dispatch(setTargetId(rowSelected));
     dispatch(setLoadTable({ target: false }));
   }, [dispatch, rowSelected]);
 
@@ -27,6 +28,7 @@ const TargetEditor = () => {
       <Row>
         <Col xl={6} md={12}>
           <TargetInfos />
+          <TargetRecords />
           {/* <RecordPieces /> */}
         </Col>
         <Col xl={6} md={12}>

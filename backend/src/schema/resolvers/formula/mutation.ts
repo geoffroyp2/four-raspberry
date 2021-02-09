@@ -1,5 +1,5 @@
 import Chemical from "../../../database/models/formula/chemical";
-import Formula from "../../../database/models/formula/formula";
+import Formula, { FormulaCreationAttributes } from "../../../database/models/formula/formula";
 
 import {
   GQLFormula,
@@ -16,7 +16,11 @@ const Mutation = {
    * @param args optional arguments to be passed, all have default values
    * @return the new Formula
    */
-  createFormula: async (obj: any, args: GQLFormula): Promise<Formula> => {
+  createFormula: async (obj: any, { name, description }: FormulaCreationAttributes): Promise<Formula> => {
+    const args: FormulaCreationAttributes = {
+      name: name || "Sans Nom",
+      description: description || "",
+    };
     return await Formula.create(args);
   },
 

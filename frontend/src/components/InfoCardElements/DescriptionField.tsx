@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Formula, Piece, Record, Target } from "@baseTypes/database/GQLResTypes";
 
 import { RootState } from "@app/store";
@@ -22,6 +22,10 @@ type Props = {
 const DescriptionField: FC<Props> = ({ data, validate, edit, setEdit, pending }) => {
   const currentData = useSelector(data);
   const [EditField, setEditField] = useState<string>(currentData.description!);
+
+  useEffect(() => {
+    setEditField(currentData.description || "");
+  }, [currentData.description]);
 
   return (
     <Row className="editField descriptionField " noGutters>

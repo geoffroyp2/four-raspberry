@@ -1,3 +1,26 @@
+.navbar {
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+  }
+
+  .navbar-collapse {
+    max-width: max-content;
+  }
+  .show {
+    max-width: none !important;
+  }
+
+  .nav-title-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    font-size: 1.5em;
+  }
+}
+
 .target {
   background-color: rgb(121, 63, 63);
 }

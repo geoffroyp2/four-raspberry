@@ -37,7 +37,7 @@ export const recordDisplaySlice = createSlice({
       state.loadPage = action.payload;
     },
     setRecordTotalAmount: (state, action: PayloadAction<number>) => {
-      state.pageAmount = Math.floor(action.payload / state.loadAmount);
+      state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
     setRecordLoadRowSelected: (state, action: PayloadAction<number>) => {
       state.loadRowSelected = action.payload;

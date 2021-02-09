@@ -12,11 +12,17 @@
 
 -- SELECT COUNT (*) FROM "recordPoints" ;
 
+SELECT * 
+     FROM targets
+     JOIN records ON records."targetId" = targets.id
+     WHERE targets.id = 11
+
+
 -- EXPLAIN ANALYZE VERBOSE
-SELECT "recordId", time, temperature, oxygen
-     FROM "recordPoints" p 
-     WHERE p."recordId" = 99 
-     ORDER BY "recordId", time 
+-- SELECT "recordId", time, temperature, oxygen
+--      FROM "recordPoints" p 
+--      WHERE p."recordId" = 99 
+--      ORDER BY "recordId", time 
 
 -- SELECT "recordId", "pieceId" FROM "RecordPieces";
 -- SELECT "chemicalId", "formulaId", amount FROM ingredients;

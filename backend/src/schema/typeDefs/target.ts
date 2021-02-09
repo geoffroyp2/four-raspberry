@@ -41,7 +41,7 @@ export default gql`
     """
     les courbes Record qui ont la Target comme modèle
     """
-    records(id: Int, name: String): [Record]!
+    records(id: Int, name: String): [Record]
 
     """
     les Pieces associées à la Target

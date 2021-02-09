@@ -14,7 +14,7 @@ const Attribute = {
    * @param id id filter @param name name filter
    * @return the Records linked to the Parent Target
    */
-  records: async (parent: Target, { id, name }: GQLGenericResearchFields, ctx: any): Promise<Record[]> => {
+  records: async (parent: Target, { id, name }: GQLGenericResearchFields, ctx: any): Promise<Record[] | null> => {
     // TODO: filters
 
     // const args: GQLGenericResearchFields = {};

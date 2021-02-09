@@ -23,9 +23,9 @@ const Mutation = {
    */
   createRecord: async (obj: any, { name, description, color }: GQLRecord): Promise<Record> => {
     const args: RecordCreationAttributes = {
-      name,
-      description,
-      color: colorToString(color),
+      name: name || "Sans Nom",
+      description: description || "",
+      color: colorToString(color) || "210-210-210-0.9",
     };
     return await Record.create(args);
   },
@@ -62,7 +62,7 @@ const Mutation = {
    * @param targetId the id of the Target to select, if undefined, remove existing link
    * @return the Record or null if the Record or the Target does not exist
    */
-  setRecordTarget: async (obj: any, { recordId, targetId }: GQLRecordTarget): Promise<Record | null> => {
+  setRecordTarget: async (obj: any, { recordId, targetId }: GQLRecordTarget, ctx: any): Promise<Record | null> => {
     const record = await Record.findOne({ where: { id: recordId } });
     if (record) {
       if (targetId) {

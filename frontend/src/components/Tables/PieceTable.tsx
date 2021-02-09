@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Table } from "react-bootstrap";
 
-type Props = { children: JSX.Element[] };
+type Props = { children: JSX.Element[] | JSX.Element };
 
 const PieceTable: FC<Props> = ({ children }) => {
   return (
