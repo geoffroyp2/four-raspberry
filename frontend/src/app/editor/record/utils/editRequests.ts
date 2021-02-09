@@ -1,4 +1,4 @@
-import { store } from "@store/store";
+import { store } from "@app/store";
 import { sendGQLQuery } from "@network/GQLClient";
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { Record } from "@baseTypes/database/GQLResTypes";

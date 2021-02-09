@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Formula, Piece, Record, Target } from "@baseTypes/database/GQLResTypes";
 
-import { RootState } from "@store/store";
+import { RootState } from "@app/store";
 import { useSelector } from "react-redux";
 
 import "../styles/infoCard.scss";

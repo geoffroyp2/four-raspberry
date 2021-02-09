@@ -1,7 +1,7 @@
 import React, { useCallback, FC } from "react";
 import { Pagination } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@store/store";
+import { RootState } from "@app/store";
 
 const buildPageItem = (number: number, active: boolean, setCurrentPage: (page: number) => void): JSX.Element => {
   return (

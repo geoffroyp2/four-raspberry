@@ -5,10 +5,10 @@
       "@network/*": ["network/*"],
       "@baseTypes/*": ["types/*"],
       "@utils/*": ["utils/*"],
-      "@store/*": ["store/*"],
       "@components/*": ["components/*"],
       "@editor/*": ["app/editor/*"],
       "@navBar/*": ["app/navBar/*"],
+      "@app/*": ["app/*"],
       "@src/*": ["*"]
     }
   }

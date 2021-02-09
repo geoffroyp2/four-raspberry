@@ -65,7 +65,7 @@ const serializeObject = (input: object): string => {
 const filterBuilder = (filter?: GQLQueryFilterType | GQLMutationArgs): string => {
   return filter
     ? `( ${Object.entries(filter)
-        .map(([key, value]) => `${key}: ${isColor(value) ? serializeObject(value) : value}`)
+        .map(([key, value]) => `${key}: ${isColor(value) ? serializeObject(value) : JSON.stringify(value)}`)
         .join(", ")} )`
     : "";
 };

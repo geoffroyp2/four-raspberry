@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectRecordLoadList, setCurrentRecordId } from "./state/recordDataSlice";
+import { selectRecordLoadList } from "./state/recordDataSlice";
 import {
   selectRecordShowLoad,
   selectRecordLoadPage,
@@ -20,7 +20,11 @@ import { loadRecordList } from "./utils/loadData";
 
 const tableColumns = ["Nom", "Description", "Four", "Courbe de référence"];
 
-const RecordLoadTable = () => {
+type Props = {
+  select: () => void;
+};
+
+const RecordLoadTable: FC<Props> = ({ select }) => {
   const dispatch = useDispatch();
   const loadPage = useSelector(selectRecordLoadPage);
   const amount = useSelector(selectRecordLoadAmount);
@@ -31,18 +35,13 @@ const RecordLoadTable = () => {
     loadRecordList(loadPage, amount);
   }, [loadPage, amount]);
 
-  const handleSelect = useCallback(() => {
-    dispatch(setCurrentRecordId(rowSelected));
-    dispatch(setRecordShowLoad(false));
-  }, [dispatch, rowSelected]);
-
   return (
     <LoadTableModal
       show={selectRecordShowLoad}
       setShow={setRecordShowLoad}
       fetchData={fetchData}
       columns={tableColumns}
-      handleSelect={handleSelect}
+      handleSelect={select}
       pagination={
         <LoadTablePagination
           pageAmount={selectRecordPageAmount}

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../../../store/store";
+import { RootState } from "@app/store";
 import { Color, Record, RecordPoint } from "@baseTypes/database/GQLResTypes";
 
-interface recordDataType {
+interface RecordDataType {
   recordId: number;
   data: Record;
   tempValues: {
@@ -12,7 +12,7 @@ interface recordDataType {
   loadList: Record[];
 }
 
-const initialState: recordDataType = {
+const initialState: RecordDataType = {
   recordId: 1,
   data: {},
   points: [],
@@ -39,7 +39,7 @@ export const recordDataSlice = createSlice({
     setRecordLoadList: (state, action: PayloadAction<Record[]>) => {
       state.loadList = action.payload;
     },
-    setRecordTempValues: (state, action: PayloadAction<Partial<recordDataType["tempValues"]>>) => {
+    setRecordTempValues: (state, action: PayloadAction<Partial<RecordDataType["tempValues"]>>) => {
       state.tempValues = { ...state.tempValues, ...action.payload };
     },
     setRecordPoints: (state, action: PayloadAction<RecordPoint[] | undefined>) => {

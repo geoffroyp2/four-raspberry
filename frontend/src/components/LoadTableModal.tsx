@@ -2,7 +2,7 @@ import React, { useEffect, FC } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import "./styles/loadTable.scss";
 
-import { RootState } from "@store/store";
+import { RootState } from "@app/store";
 import { useDispatch, useSelector } from "react-redux";
 
 type Props = {

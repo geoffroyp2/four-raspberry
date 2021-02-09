@@ -1,7 +1,7 @@
 import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { RecordQueryRes } from "@baseTypes/database/GQLResTypes";
 import { sendGQLQuery } from "@network/GQLClient";
-import { store } from "@store/store";
+import { store } from "@app/store";
 import { batch } from "react-redux";
 import { setRecordData, setRecordLoadList, setRecordPoints } from "../state/recordDataSlice";
 import { setRecordTotalAmount } from "../state/recordDisplaySlice";

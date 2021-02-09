@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../../../store/store";
+import { RootState } from "@app/store";
 
 type PointZoomType = {
   start: number;
@@ -26,7 +26,7 @@ const initialState: RecordDisplayType = {
   pointZoom: {
     start: 0,
     end: 2147483647,
-    amount: 30,
+    amount: 70,
   },
   pieceDisplay: "list",
 };

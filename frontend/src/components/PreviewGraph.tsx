@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Scatter } from "react-chartjs-2";
 
-import { RootState } from "@store/store";
+import { RootState } from "@app/store";
 import { Color, RecordPoint, TargetPoint } from "@baseTypes/database/GQLResTypes";
 import { useSelector } from "react-redux";
 import { buildDataPoints } from "./utils/buildDataPoints";
