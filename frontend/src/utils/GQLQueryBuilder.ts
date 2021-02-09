@@ -5,6 +5,7 @@ import {
   GQLQueryFieldType,
   GQLComposedQueryType,
 } from "@baseTypes/database/GQLQueryTypes";
+import { Color } from "@baseTypes/database/GQLResTypes";
 import { gql } from "graphql-request";
 
 export type GQLRootType = "query" | "mutation";
@@ -49,6 +50,12 @@ mutation {
   }
 };
 
+const serializeObject = (input: object): string => {
+  return `{ ${Object.entries(input)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(", ")} }`;
+};
+
 /**
  * outputs the arguments for a request
  * example:
@@ -58,7 +65,7 @@ mutation {
 const filterBuilder = (filter?: GQLQueryFilterType | GQLMutationArgs): string => {
   return filter
     ? `( ${Object.entries(filter)
-        .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
+        .map(([key, value]) => `${key}: ${isColor(value) ? serializeObject(value) : value}`)
         .join(", ")} )`
     : "";
 };
@@ -68,6 +75,9 @@ const filterBuilder = (filter?: GQLQueryFilterType | GQLMutationArgs): string =>
  */
 const isComposedQuery = (input: any): input is GQLComposedQueryType => {
   return input.type !== undefined;
+};
+const isColor = (input: any): input is Color => {
+  return input.r !== undefined;
 };
 
 /**

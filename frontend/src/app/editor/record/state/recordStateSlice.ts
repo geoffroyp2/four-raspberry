@@ -6,6 +6,7 @@ interface Pending {
   name: boolean;
   points: boolean;
   description: boolean;
+  color: boolean;
 }
 
 interface Edit {
@@ -25,6 +26,7 @@ const initialState: RecordStateType = {
     points: false,
     name: false,
     description: false,
+    color: false,
   },
   edit: {
     name: false,
