@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordId, selectRecordData } from "./state/recordDataSlice";
-import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./state/recordStateSlice";
+import { selectRecordId, selectRecordData } from "./_state/recordDataSlice";
+import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./_state/recordStateSlice";
 
 import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";

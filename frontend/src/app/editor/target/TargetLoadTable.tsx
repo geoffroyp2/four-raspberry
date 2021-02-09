@@ -5,17 +5,16 @@ import {
   selectTargetLoadPage,
   selectTargetLoadRowSelected,
   selectTargetPageAmount,
-  selectTargetShowLoad,
   setTargetLoadPage,
   setTargetLoadRowSelected,
-  setTargetShowLoad,
-} from "./state/targetDisplaySlice";
-import { selectTargetLoadList } from "./state/targetDataSlice";
+} from "./_state/targetDisplaySlice";
+import { selectTargetLoadList } from "./_state/targetDataSlice";
 
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
 import { loadTargetList } from "./utils/loadData";
+import { selectLoadTables, setLoadTable } from "@editor/_state/editorSlice";
 
 const tableColumns = ["Nom", "Description", "Four"];
 
@@ -29,15 +28,23 @@ const TargetLoadTable: FC<Props> = ({ select }) => {
   const amount = useSelector(selectTargetLoadAmount);
   const currentList = useSelector(selectTargetLoadList);
   const rowSelected = useSelector(selectTargetLoadRowSelected);
+  const showTable = useSelector(selectLoadTables);
 
   const fetchData = useCallback(() => {
     loadTargetList(loadPage, amount);
   }, [loadPage, amount]);
 
+  const handleSetShow = useCallback(
+    (val: boolean) => {
+      dispatch(setLoadTable({ target: val }));
+    },
+    [dispatch]
+  );
+
   return (
     <LoadTableModal
-      show={selectTargetShowLoad}
-      setShow={setTargetShowLoad}
+      show={showTable.target}
+      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}

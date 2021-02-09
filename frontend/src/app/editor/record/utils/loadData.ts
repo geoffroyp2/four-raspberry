@@ -3,8 +3,8 @@ import { RecordQueryRes } from "@baseTypes/database/GQLResTypes";
 import { sendGQLQuery } from "@network/GQLClient";
 import { store } from "@app/store";
 import { batch } from "react-redux";
-import { setRecordData, setRecordLoadList, setRecordPoints } from "../state/recordDataSlice";
-import { setRecordTotalAmount } from "../state/recordDisplaySlice";
+import { setRecordData, setRecordLoadList, setRecordPoints } from "../_state/recordDataSlice";
+import { setRecordTotalAmount } from "../_state/recordDisplaySlice";
 import { getRecordFieldsQuery, getRecordPageRequest, getRecordPointRequest } from "./dataRequests";
 
 export const loadRecord = async (id: number) => {

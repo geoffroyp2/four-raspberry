@@ -2,8 +2,8 @@ import React, { FC, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetData, selectTargetId } from "./state/targetDataSlice";
-import { selectTargetEdit, selectTargetPending, setTargetEdit, setTargetPending } from "./state/targetStateSlice";
+import { selectTargetData, selectTargetId } from "./_state/targetDataSlice";
+import { selectTargetEdit, selectTargetPending, setTargetEdit, setTargetPending } from "./_state/targetStateSlice";
 
 import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";

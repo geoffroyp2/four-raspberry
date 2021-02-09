@@ -2,12 +2,9 @@ import React, { useEffect, FC } from "react";
 import { Button, Modal, Table } from "react-bootstrap";
 import "./styles/loadTable.scss";
 
-import { RootState } from "@app/store";
-import { useDispatch, useSelector } from "react-redux";
-
 type Props = {
-  show: (state: RootState) => boolean;
-  setShow: (payload: boolean) => void;
+  show: boolean;
+  setShow: (value: boolean) => void;
   fetchData: () => void;
   handleSelect: () => void;
   columns: string[];
@@ -16,21 +13,12 @@ type Props = {
 };
 
 const LoadTableModal: FC<Props> = ({ show, setShow, fetchData, handleSelect, columns, children, pagination }) => {
-  const dispatch = useDispatch();
-  const showTable = useSelector(show);
-
   useEffect(() => {
-    if (showTable) fetchData();
-  }, [showTable, fetchData]);
+    if (show) fetchData();
+  }, [show, fetchData]);
 
   return (
-    <Modal
-      centered
-      show={showTable}
-      backdrop="static"
-      onHide={() => dispatch(setShow(false))}
-      dialogClassName="modal-loadTable"
-    >
+    <Modal centered show={show} backdrop="static" onHide={() => setShow(false)} dialogClassName="modal-loadTable">
       <Modal.Body>
         <Table striped bordered hover className="table-sm" variant="dark">
           <thead>
@@ -46,7 +34,7 @@ const LoadTableModal: FC<Props> = ({ show, setShow, fetchData, handleSelect, col
       <Modal.Footer>
         {pagination}
         <Button onClick={handleSelect}> Ouvrir</Button>
-        <Button onClick={() => dispatch(setShow(false))}> Annuler</Button>
+        <Button onClick={() => setShow(false)}> Annuler</Button>
       </Modal.Footer>
     </Modal>
   );

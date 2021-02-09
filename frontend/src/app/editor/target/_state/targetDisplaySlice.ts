@@ -8,7 +8,6 @@ type PointZoomType = {
 };
 
 interface TargetDisplayType {
-  showLoad: boolean;
   loadPage: number;
   loadAmount: number;
   pageAmount: number;
@@ -18,7 +17,6 @@ interface TargetDisplayType {
 }
 
 const initialState: TargetDisplayType = {
-  showLoad: false,
   loadPage: 0,
   loadAmount: 15,
   pageAmount: 0,
@@ -35,9 +33,6 @@ export const targetDisplaySlice = createSlice({
   name: "targetDisplay",
   initialState,
   reducers: {
-    setTargetShowLoad: (state, action: PayloadAction<boolean>) => {
-      state.showLoad = action.payload;
-    },
     setTargetLoadPage: (state, action: PayloadAction<number>) => {
       state.loadPage = action.payload;
     },
@@ -57,7 +52,6 @@ export const targetDisplaySlice = createSlice({
 });
 
 export const {
-  setTargetShowLoad,
   setTargetLoadPage,
   setTargetTotalAmount,
   setTargetLoadRowSelected,
@@ -65,7 +59,6 @@ export const {
   setTargetPieceDisplay,
 } = targetDisplaySlice.actions;
 
-export const selectTargetShowLoad = (state: RootState) => state.targetDisplay.showLoad;
 export const selectTargetLoadPage = (state: RootState) => state.targetDisplay.loadPage;
 export const selectTargetLoadAmount = (state: RootState) => state.targetDisplay.loadAmount;
 export const selectTargetPageAmount = (state: RootState) => state.targetDisplay.pageAmount;

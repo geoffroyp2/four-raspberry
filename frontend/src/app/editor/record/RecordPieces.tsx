@@ -2,8 +2,8 @@ import React from "react";
 import { Button, ButtonGroup, Container } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordData } from "./state/recordDataSlice";
-import { selectRecordPieceDisplay, setRecordPieceDisplay } from "./state/recordDisplaySlice";
+import { selectRecordData } from "./_state/recordDataSlice";
+import { selectRecordPieceDisplay, setRecordPieceDisplay } from "./_state/recordDisplaySlice";
 
 import "./styles/recordStyles.scss";
 import EditorCard from "@components/EditorCard";

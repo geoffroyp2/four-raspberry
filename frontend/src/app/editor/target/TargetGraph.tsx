@@ -6,9 +6,9 @@ import {
   selectTargetPoints,
   selectTargetTempValues,
   setTargetTempValues,
-} from "./state/targetDataSlice";
-import { selectTargetPointZoom } from "./state/targetDisplaySlice";
-import { selectTargetPending, setTargetPending } from "./state/targetStateSlice";
+} from "./_state/targetDataSlice";
+import { selectTargetPointZoom } from "./_state/targetDisplaySlice";
+import { selectTargetPending, setTargetPending } from "./_state/targetStateSlice";
 
 import PreviewGraph from "@components/PreviewGraph";
 import EditorCard from "@components/EditorCard";

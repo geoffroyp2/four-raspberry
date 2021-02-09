@@ -3,7 +3,7 @@ import { sendGQLQuery } from "@network/GQLClient";
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { Target } from "@baseTypes/database/GQLResTypes";
 import { allTargetFields } from "./dataRequests";
-import { setTargetData } from "../state/targetDataSlice";
+import { setTargetData } from "../_state/targetDataSlice";
 
 export const saveTargetChanges = async (targetId: number, newData: Target) => {
   const request = rootQueryBuilder({

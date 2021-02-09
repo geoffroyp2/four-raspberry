@@ -2,21 +2,20 @@ import React, { FC, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectRecordLoadList } from "./state/recordDataSlice";
+import { selectRecordLoadList } from "./_state/recordDataSlice";
 import {
-  selectRecordShowLoad,
   selectRecordLoadPage,
   selectRecordLoadAmount,
   selectRecordLoadRowSelected,
-  setRecordShowLoad,
   setRecordLoadPage,
   setRecordLoadRowSelected,
   selectRecordPageAmount,
-} from "./state/recordDisplaySlice";
+} from "./_state/recordDisplaySlice";
 
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 import { loadRecordList } from "./utils/loadData";
+import { selectLoadTables, setLoadTable } from "@editor/_state/editorSlice";
 
 const tableColumns = ["Nom", "Description", "Four", "Courbe de référence"];
 
@@ -30,15 +29,23 @@ const RecordLoadTable: FC<Props> = ({ select }) => {
   const amount = useSelector(selectRecordLoadAmount);
   const currentList = useSelector(selectRecordLoadList);
   const rowSelected = useSelector(selectRecordLoadRowSelected);
+  const showTable = useSelector(selectLoadTables);
 
   const fetchData = useCallback(() => {
     loadRecordList(loadPage, amount);
   }, [loadPage, amount]);
 
+  const handleSetShow = useCallback(
+    (val: boolean) => {
+      dispatch(setLoadTable({ record: val }));
+    },
+    [dispatch]
+  );
+
   return (
     <LoadTableModal
-      show={selectRecordShowLoad}
-      setShow={setRecordShowLoad}
+      show={showTable.record}
+      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}

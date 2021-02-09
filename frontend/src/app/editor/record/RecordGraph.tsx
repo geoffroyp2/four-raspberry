@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordPointZoom } from "./state/recordDisplaySlice";
+import { selectRecordPointZoom } from "./_state/recordDisplaySlice";
 import {
   selectRecordData,
   selectRecordPoints,
   selectRecordTempValues,
   setRecordTempValues,
-} from "./state/recordDataSlice";
-import { selectRecordPending, setRecordPending } from "./state/recordStateSlice";
+} from "./_state/recordDataSlice";
+import { selectRecordPending, setRecordPending } from "./_state/recordStateSlice";
 
 import PreviewGraph from "@components/PreviewGraph";
 import EditorCard from "@components/EditorCard";

@@ -5,8 +5,8 @@ import { sendGQLQuery } from "@network/GQLClient";
 import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { TargetQueryRes } from "@baseTypes/database/GQLResTypes";
 
-import { setTargetData, setTargetLoadList, setTargetPoints } from "../state/targetDataSlice";
-import { setTargetTotalAmount } from "../state/targetDisplaySlice";
+import { setTargetData, setTargetLoadList, setTargetPoints } from "../_state/targetDataSlice";
+import { setTargetTotalAmount } from "../_state/targetDisplaySlice";
 
 import { getTargetFieldsQuery, getTargetPageRequest, getTargetPointRequest } from "./dataRequests";
 
