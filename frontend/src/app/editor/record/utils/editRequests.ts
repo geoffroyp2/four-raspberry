@@ -4,6 +4,7 @@ import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { Record } from "@baseTypes/database/GQLResTypes";
 import { setRecordData, setRecordId } from "../_state/recordDataSlice";
 import { allRecordFields } from "./dataRequests";
+import { setNeedRefresh } from "@editor/_sharedUtils/setNeedsRefresh";
 
 export const saveRecordChanges = async (recordId: number, newData: Record) => {
   const request = rootQueryBuilder({
@@ -18,7 +19,10 @@ export const saveRecordChanges = async (recordId: number, newData: Record) => {
     },
   });
   const res = await sendGQLQuery<{ updateRecord: Record }>(request);
-  if (res) store.dispatch(setRecordData(res.updateRecord));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setRecordData(res.updateRecord));
+  }
 };
 
 export const linkRecordTarget = async (recordId: number, targetId: number) => {
@@ -34,7 +38,10 @@ export const linkRecordTarget = async (recordId: number, targetId: number) => {
     },
   });
   const res = await sendGQLQuery<{ setRecordTarget: Record }>(request);
-  if (res) store.dispatch(setRecordData(res.setRecordTarget));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setRecordData(res.setRecordTarget));
+  }
 };
 
 export const createRecord = async () => {
@@ -47,7 +54,10 @@ export const createRecord = async () => {
     },
   });
   const res = await sendGQLQuery<{ createRecord: Record }>(request);
-  if (res) store.dispatch(setRecordData(res.createRecord));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setRecordData(res.createRecord));
+  }
 };
 
 export const deleteRecord = async (recordId: number) => {
@@ -59,5 +69,8 @@ export const deleteRecord = async (recordId: number) => {
     },
   });
   const res = await sendGQLQuery<{ deleteRecord: boolean }>(request);
-  if (res) store.dispatch(setRecordId(0));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setRecordId(0));
+  }
 };

@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetData, selectTargetId } from "./_state/targetDataSlice";
+import { selectTargetData, selectTargetId, selectTargetNeedsRefresh } from "./_state/targetDataSlice";
 import { selectTargetEdit, selectTargetPending, setTargetEdit, setTargetPending } from "./_state/targetStateSlice";
 
 import EditorCard from "@components/EditorCard";
@@ -17,6 +17,7 @@ import OvenField from "@components/InfoCardElements/OvenField";
 
 const TargetInfos: FC = () => {
   const dispatch = useDispatch();
+  const needsRefresh = useSelector(selectTargetNeedsRefresh);
   const targetId = useSelector(selectTargetId);
   const target = useSelector(selectTargetData);
   const editStates = useSelector(selectTargetEdit);
@@ -28,8 +29,8 @@ const TargetInfos: FC = () => {
       await loadTarget(targetId);
       dispatch(setTargetPending({ data: false }));
     };
-    if (target.id !== targetId) load();
-  }, [dispatch, targetId, target]);
+    if (needsRefresh || target.id !== targetId) load();
+  }, [dispatch, targetId, target, needsRefresh]);
 
   return (
     <EditorCard>

@@ -1,7 +1,10 @@
 import { store } from "@app/store";
 import { sendGQLQuery } from "@network/GQLClient";
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
+import { setNeedRefresh } from "@editor/_sharedUtils/setNeedsRefresh";
+
 import { Target } from "@baseTypes/database/GQLResTypes";
+
 import { allTargetFields } from "./dataRequests";
 import { setTargetData, setTargetId } from "../_state/targetDataSlice";
 
@@ -18,7 +21,10 @@ export const saveTargetChanges = async (targetId: number, newData: Target) => {
     },
   });
   const res = await sendGQLQuery<{ updateTarget: Target }>(request);
-  if (res) store.dispatch(setTargetData(res.updateTarget));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setTargetData(res.updateTarget));
+  }
 };
 
 export const createTarget = async () => {
@@ -31,7 +37,10 @@ export const createTarget = async () => {
     },
   });
   const res = await sendGQLQuery<{ createTarget: Target }>(request);
-  if (res) store.dispatch(setTargetData(res.createTarget));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setTargetData(res.createTarget));
+  }
 };
 
 export const deleteTarget = async (targetId: number) => {
@@ -43,5 +52,8 @@ export const deleteTarget = async (targetId: number) => {
     },
   });
   const res = await sendGQLQuery<{ deleteTarget: boolean }>(request);
-  if (res) store.dispatch(setTargetId(0));
+  if (res) {
+    setNeedRefresh();
+    store.dispatch(setTargetId(0));
+  }
 };

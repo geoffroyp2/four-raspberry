@@ -1,15 +1,23 @@
+import { batch } from "react-redux";
+import { store } from "@app/store";
+import { sendGQLQuery } from "@network/GQLClient";
+
 import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { RecordQueryRes } from "@baseTypes/database/GQLResTypes";
-import { sendGQLQuery } from "@network/GQLClient";
-import { store } from "@app/store";
-import { batch } from "react-redux";
-import { setRecordData, setRecordLoadList, setRecordPoints } from "../_state/recordDataSlice";
+
+import { setRecordData, setRecordLoadList, setRecordNeedsRefresh, setRecordPoints } from "../_state/recordDataSlice";
 import { setRecordLoadPage, setRecordTotalAmount } from "../_state/recordDisplaySlice";
+
 import { getRecordFieldsQuery, getRecordPageRequest, getRecordPointRequest } from "./dataRequests";
 
 export const loadRecord = async (id: number) => {
   const res = await sendGQLQuery<RecordQueryRes>(getRecordFieldsQuery(id));
-  if (res) store.dispatch(setRecordData(res.records.rows[0]));
+  if (res) {
+    batch(() => {
+      store.dispatch(setRecordData(res.records.rows[0]));
+      store.dispatch(setRecordNeedsRefresh(false));
+    });
+  }
 };
 
 export const loadRecordPoints = async (id: number, filter: PointFilter) => {

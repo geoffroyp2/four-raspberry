@@ -3,6 +3,7 @@ import { RootState } from "@app/store";
 import { Color, Record, RecordPoint } from "@baseTypes/database/GQLResTypes";
 
 interface RecordDataType {
+  needsRefresh: boolean;
   recordId: number;
   data: Record;
   tempValues: {
@@ -13,6 +14,7 @@ interface RecordDataType {
 }
 
 const initialState: RecordDataType = {
+  needsRefresh: false,
   recordId: 0,
   data: {},
   points: [],
@@ -39,6 +41,9 @@ export const recordDataSlice = createSlice({
         }
       }
     },
+    setRecordNeedsRefresh: (state, action: PayloadAction<boolean>) => {
+      state.needsRefresh = action.payload;
+    },
     setRecordLoadList: (state, action: PayloadAction<Record[]>) => {
       state.loadList = action.payload;
     },
@@ -54,11 +59,13 @@ export const recordDataSlice = createSlice({
 export const {
   setRecordId,
   setRecordData,
+  setRecordNeedsRefresh,
   setRecordLoadList,
   setRecordPoints,
   setRecordTempValues,
 } = recordDataSlice.actions;
 
+export const selectRecordNeedsRefresh = (state: RootState) => state.recordData.needsRefresh;
 export const selectRecordId = (state: RootState) => state.recordData.recordId;
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;

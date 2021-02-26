@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordId, selectRecordData } from "./_state/recordDataSlice";
+import { selectRecordId, selectRecordData, selectRecordNeedsRefresh } from "./_state/recordDataSlice";
 import { selectRecordEdit, selectRecordPending, setRecordEdit, setRecordPending } from "./_state/recordStateSlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
 import { setTargetId } from "@editor/target/_state/targetDataSlice";
@@ -19,6 +19,8 @@ import { saveRecordChanges } from "./utils/editRequests";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
+  const needsRefresh = useSelector(selectRecordNeedsRefresh);
+
   const recordId = useSelector(selectRecordId);
   const record = useSelector(selectRecordData);
   const editStates = useSelector(selectRecordEdit);
@@ -30,8 +32,8 @@ const RecordInfos: FC = () => {
       await loadRecord(recordId);
       dispatch(setRecordPending({ data: false }));
     };
-    if (record.id !== recordId) load();
-  }, [dispatch, recordId, record]);
+    if (needsRefresh || record.id !== recordId) load();
+  }, [dispatch, recordId, record, needsRefresh]);
 
   const handleGoto = useCallback(() => {
     if (record.target?.id) {

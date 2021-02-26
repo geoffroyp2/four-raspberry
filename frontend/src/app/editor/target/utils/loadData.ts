@@ -5,14 +5,19 @@ import { sendGQLQuery } from "@network/GQLClient";
 import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { TargetQueryRes } from "@baseTypes/database/GQLResTypes";
 
-import { setTargetData, setTargetLoadList, setTargetPoints } from "../_state/targetDataSlice";
+import { setTargetData, setTargetLoadList, setTargetNeedsRefresh, setTargetPoints } from "../_state/targetDataSlice";
 import { setTargetLoadPage, setTargetTotalAmount } from "../_state/targetDisplaySlice";
 
 import { getTargetFieldsQuery, getTargetPageRequest, getTargetPointRequest } from "./dataRequests";
 
 export const loadTarget = async (id: number) => {
   const res = await sendGQLQuery<TargetQueryRes>(getTargetFieldsQuery(id));
-  if (res) store.dispatch(setTargetData(res.targets.rows[0]));
+  if (res) {
+    batch(() => {
+      store.dispatch(setTargetData(res.targets.rows[0]));
+      store.dispatch(setTargetNeedsRefresh(false));
+    });
+  }
 };
 
 export const loadTargetPoints = async (id: number, filter: PointFilter) => {
