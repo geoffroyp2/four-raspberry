@@ -1,12 +1,12 @@
 import Target from "../../../database/models/target/target";
-import { GQLGenericResearchFields, GQLTargetQuery, GQLTargetQueryRes } from "../types";
+import { GQLGenericResearchFields, GQLTargetQuery, GQLTargetQueryRes, ResolverObjectType } from "../types";
 
-const Query = {
+const Query: ResolverObjectType = {
   /**
    * @return all Targets matching the filter
    * @param args research filters (id and name)
    */
-  targets: async (obj: any, { id, name, page, amount }: GQLTargetQuery): Promise<GQLTargetQueryRes> => {
+  targets: async (_, { id, name, page, amount }: GQLTargetQuery): Promise<GQLTargetQueryRes> => {
     const args: GQLGenericResearchFields = {};
     if (id) args.id = id;
     if (name) args.name = name;

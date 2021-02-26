@@ -11,21 +11,22 @@ import {
   GQLRecordPointUpdate,
   GQLRecordTarget,
   GQLRecordUpdate,
+  ResolverObjectType,
 } from "../types";
 import { colorToString } from "../../../utils/strings";
 import RecordPoint from "../../../database/models/record/recordPoints";
 
-const Mutation = {
+const Mutation: ResolverObjectType = {
   /**
    * Creates a new Record in database
    * @param args optional arguments to be passed, all have default values
    * @return the new Record
    */
-  createRecord: async (obj: any, { name, description, color }: GQLRecord): Promise<Record> => {
+  createRecord: async (_, { name, description, color }: Partial<GQLRecord>): Promise<Record> => {
     const args: RecordCreationAttributes = {
       name: name || "Sans Nom",
       description: description || "",
-      color: colorToString(color) || "210-210-210-0.9",
+      color: colorToString(color),
     };
     return await Record.create(args);
   },
@@ -34,7 +35,11 @@ const Mutation = {
    * Deletes Target in database
    * @param recordId the id of the Record to select
    */
-  deleteRecord: async (obj: any, { recordId }: GQLRecordId): Promise<boolean> => {
+  deleteRecord: async (_, { recordId }: GQLRecordId, { recordLoader, targetRecordListLoader }): Promise<boolean> => {
+    const record = await Record.findOne({ where: { id: recordId } });
+    recordLoader.clear(recordId);
+    if (record?.targetId) targetRecordListLoader.clear(record.targetId);
+
     const result = await Record.destroy({ where: { id: recordId } });
     return result > 0;
   },
@@ -45,9 +50,16 @@ const Mutation = {
    * @param args the fields to update
    * @return the updated Record or null if not in database
    */
-  updateRecord: async (obj: any, { recordId, name, description, color }: GQLRecordUpdate): Promise<Record | null> => {
+  updateRecord: async (
+    _,
+    { recordId, name, description, color }: GQLRecordUpdate,
+    { recordLoader, targetRecordListLoader }
+  ): Promise<Record | null> => {
     const record = await Record.findOne({ where: { id: recordId } });
     if (record) {
+      if (record.targetId) targetRecordListLoader.clear(record.targetId);
+      recordLoader.clear(recordId);
+
       if (name) record.set({ name });
       if (description) record.set({ description });
       if (color) record.set({ color: colorToString(color) });
@@ -62,10 +74,19 @@ const Mutation = {
    * @param targetId the id of the Target to select, if undefined, remove existing link
    * @return the Record or null if the Record or the Target does not exist
    */
-  setRecordTarget: async (obj: any, { recordId, targetId }: GQLRecordTarget, ctx: any): Promise<Record | null> => {
+  setRecordTarget: async (
+    _,
+    { recordId, targetId }: GQLRecordTarget,
+    { recordLoader, targetLoader, targetRecordListLoader }
+  ): Promise<Record | null> => {
     const record = await Record.findOne({ where: { id: recordId } });
     if (record) {
+      if (record.targetId) targetRecordListLoader.clear(record.targetId);
+      recordLoader.clear(recordId);
+
       if (targetId) {
+        targetLoader.clear(targetId);
+
         // if targetId specified, find new target and update
         const target = await Target.findOne({ where: { id: targetId } });
         if (target) {
@@ -92,7 +113,7 @@ const Mutation = {
    * @param pieceId the id of the Piece to select
    * @return the Record or null if either the Record or the Piece does not exist
    */
-  addPieceToRecord: async (obj: any, { pieceId, recordId }: GQLRecordPiece): Promise<Record | null> => {
+  addPieceToRecord: async (_, { pieceId, recordId }: GQLRecordPiece): Promise<Record | null> => {
     const piece = await Piece.findOne({ where: { id: pieceId } });
     const record = await Record.findOne({ where: { id: recordId } });
     if (record && piece) {

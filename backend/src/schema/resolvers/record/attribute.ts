@@ -5,16 +5,16 @@ import Piece from "../../../database/models/piece/piece";
 import Target, { OvenType } from "../../../database/models/target/target";
 import RecordPoint from "../../../database/models/record/recordPoints";
 
-import { ColorType, GQLGenericResearchFields, GQLRecordPointType, TimeRange } from "../types";
+import { ColorType, GQLGenericResearchFields, GQLRecordPointType, ResolverObjectType, TimeRange } from "../types";
 import { stringToColor } from "../../../utils/strings";
 
-const Attribute = {
+const Attribute: ResolverObjectType = {
   /**
    * @param parent the Record
    * @return the Target linked with the Record or null if no link
    */
-  target: async (parent: Record, _: any, ctx: any): Promise<Target | null> => {
-    return parent.targetId ? ctx.targetLoader.load(parent.targetId) : null;
+  target: async (parent: Record, _, { targetLoader }): Promise<Target | null> => {
+    return parent.targetId ? targetLoader.load(parent.targetId) : null;
   },
 
   /**
@@ -75,8 +75,8 @@ const Attribute = {
    * @param parent the Record
    * @return the oven of the linked Target or null if no linked Target
    */
-  oven: async (parent: Record, _: any, ctx: any): Promise<OvenType | null> => {
-    return parent.targetId ? ctx.recordOvenLoader.load(parent.targetId) : null;
+  oven: async (parent: Record, _: any, { targetLoader }): Promise<OvenType | null> => {
+    return parent.targetId ? (await targetLoader.load(parent.targetId)).oven : null;
   },
 
   /**

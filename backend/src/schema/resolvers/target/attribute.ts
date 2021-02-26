@@ -5,24 +5,22 @@ import Record from "../../../database/models/record/record";
 import Piece from "../../../database/models/piece/piece";
 import TargetPoint from "../../../database/models/target/targetPoints";
 
-import { ColorType, GQLGenericResearchFields, GQLTargetPointType, TimeRange } from "../types";
+import { ColorType, GQLGenericResearchFields, GQLTargetPointType, ResolverObjectType, TimeRange } from "../types";
 import { stringToColor } from "../../../utils/strings";
 
-const Attribute = {
+const Attribute: ResolverObjectType = {
   /**
    * @param parent the Target
    * @param id id filter @param name name filter
    * @return the Records linked to the Parent Target
    */
-  records: async (parent: Target, { id, name }: GQLGenericResearchFields, ctx: any): Promise<Record[] | null> => {
-    // TODO: filters
-
-    // const args: GQLGenericResearchFields = {};
-    // if (id) args.id = id;
-    // if (name) args.name = name;
-    // const records = await parent.getRecords({ where: { ...args }, order: [["id", "ASC"]] });
-    // return records;
-    return ctx.recordLoader.load(parent.id);
+  records: async (
+    parent: Target,
+    { id, name }: GQLGenericResearchFields,
+    { targetRecordListLoader }
+  ): Promise<Record[] | null> => {
+    const records = await targetRecordListLoader.load(parent.id);
+    return records.filter((e) => (!id && !name) || (id && e.id === id) || (name && e.name === name));
   },
 
   /**
@@ -31,6 +29,7 @@ const Attribute = {
    * @return the Pieces linked to the parent Target through Records
    */
   pieces: async (parent: Target, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
+    // TODO: add loader
     const allPieces = new Set<Piece>();
     const records = await parent.getRecords();
     await Promise.all(
@@ -41,7 +40,7 @@ const Attribute = {
     );
 
     return [...allPieces.values()]
-      .filter((e) => (id && e.id === id) || (name && e.name === name) || (!id && !name))
+      .filter((e) => (!id && !name) || (id && e.id === id) || (name && e.name === name))
       .sort((a, b) => a.id - b.id);
   },
 

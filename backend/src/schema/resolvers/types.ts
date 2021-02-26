@@ -7,6 +7,9 @@ import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
 import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
+import { DataLoadersType } from "../dataLoaders";
+
+export type ResolverObjectType = { [key: string]: (obj: any, params: any, ctx: DataLoadersType) => Promise<any> | any };
 
 export type ColorType = {
   r: number;
@@ -111,7 +114,7 @@ export interface GQLChemical {
 }
 
 export interface GQLTargetQuery extends GQLGenericResearchFields, GQLPageOptions {}
-export interface GQLTargetUpdate extends GQLTarget, GQLTargetId {}
+export interface GQLTargetUpdate extends GQLTargetId, Partial<GQLTarget> {}
 export interface GQLTargetPointUpdate extends GQLTargetPoint, GQLTTargetPointId, GQLTargetId {}
 export interface GQLTargetPointCreate extends GQLTargetPoint, GQLTargetId {}
 export interface GQLTargetPointDelete extends GQLTTargetPointId, GQLTargetId {}
@@ -120,7 +123,7 @@ export interface GQLRecordFind extends GQLGenericResearchFields {
   oven?: string;
 }
 export interface GQLRecordQuery extends GQLRecordFind, GQLPageOptions {}
-export interface GQLRecordUpdate extends GQLRecordId, GQLRecord {}
+export interface GQLRecordUpdate extends GQLRecordId, Partial<GQLRecord> {}
 export interface GQLRecordTarget extends GQLRecordId, GQLTargetId {}
 export interface GQLRecordPiece extends GQLRecordId, GQLPieceId {}
 export interface GQLRecordPointUpdate extends GQLRecordPoint, GQLRecordPointId, GQLRecordId {}

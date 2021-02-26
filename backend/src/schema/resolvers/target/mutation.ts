@@ -8,20 +8,21 @@ import {
   GQLTargetPointDelete,
   GQLTargetPointUpdate,
   GQLTargetUpdate,
+  ResolverObjectType,
 } from "../types";
 import { colorToString } from "../../../utils/strings";
 
-const Mutation = {
+const Mutation: ResolverObjectType = {
   /**
    * Creates a new Target in database
    * @param args optional arguments to be passed, all have default values
    * @return the new Target
    */
-  createTarget: async (obj: any, { name, description, color, oven }: GQLTarget): Promise<Target> => {
+  createTarget: async (_, { name, description, color, oven }: Partial<GQLTarget>): Promise<Target> => {
     const args: TargetCreationAttributes = {
       name: name || "Sans Nom",
       description: description || "",
-      color: colorToString(color) || "210-210-210-0.9",
+      color: colorToString(color),
       oven: oven && (oven === "gaz" || oven === "electrique") ? oven : "gaz",
     };
     return await Target.create(args);
@@ -31,7 +32,9 @@ const Mutation = {
    * Deletes Target in database
    * @param targetId the id of the Target to select
    */
-  deleteTarget: async (obj: any, { targetId }: GQLTargetId): Promise<boolean> => {
+  deleteTarget: async (_, { targetId }: GQLTargetId, { targetLoader }): Promise<boolean> => {
+    targetLoader.clear(targetId);
+
     const result = await Target.destroy({ where: { id: targetId } });
     return result > 0;
   },
@@ -43,11 +46,14 @@ const Mutation = {
    * @return the updated Target or null if not in database
    */
   updateTarget: async (
-    obj: any,
-    { targetId, name, description, color, oven }: GQLTargetUpdate
+    _,
+    { targetId, name, description, color, oven }: GQLTargetUpdate,
+    { targetLoader }
   ): Promise<Target | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
+      targetLoader.clear(targetId);
+
       if (name) target.set({ name });
       if (description) target.set({ description });
       if (color) target.set({ color: colorToString(color) });
@@ -64,11 +70,13 @@ const Mutation = {
    * @param args the fields of the point
    */
   createTargetPoint: async (
-    obj: any,
-    { targetId, time, temperature, oxygen }: GQLTargetPointCreate
+    _,
+    { targetId, time, temperature, oxygen }: GQLTargetPointCreate,
+    { targetLoader }
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
+      targetLoader.clear(targetId);
       return await target.createPoint({ time, temperature, oxygen });
     }
     return null;
@@ -80,10 +88,11 @@ const Mutation = {
    * @param targetId the id of the Target
    * @param pointId the id of the Point
    */
-  deleteTargetPoint: async (obj: any, { targetId, pointId }: GQLTargetPointDelete): Promise<boolean> => {
+  deleteTargetPoint: async (_, { targetId, pointId }: GQLTargetPointDelete, { targetLoader }): Promise<boolean> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
     if (target && point) {
+      targetLoader.clear(targetId);
       const result = await point.destroy();
       return true;
     }
@@ -98,12 +107,14 @@ const Mutation = {
    * @return the Point after update or null if it does not exist
    */
   updateTargetPoint: async (
-    obj: any,
-    { targetId, pointId, time, temperature, oxygen }: GQLTargetPointUpdate
+    _,
+    { targetId, pointId, time, temperature, oxygen }: GQLTargetPointUpdate,
+    { targetLoader }
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
     if (target && point) {
+      targetLoader.clear(targetId);
       if (time) point.set({ time });
       if (temperature) point.set({ temperature });
       if (oxygen) point.set({ oxygen });

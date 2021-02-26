@@ -4,10 +4,10 @@ import { ColorType } from "../schema/resolvers/types";
  * transforms a {r:255, g:255, b:255, a:1.0} color into a 255-255-255-1.0 color
  * @param color the ColorType input
  */
-export const colorToString = (color: ColorType): string => {
+export const colorToString = (color?: ColorType): string => {
   if (color)
     return `${getIntString(color.r)}-${getIntString(color.g)}-${getIntString(color.b)}-${getFloatString(color.a)}`;
-  return "255-255-255-1.0";
+  return "210-210-210-0.9";
 };
 
 /**
