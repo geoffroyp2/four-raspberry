@@ -9,7 +9,6 @@ import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";
 import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
-// import TargetField from "@components/InfoCardElements/TargetField";
 
 import { loadTarget } from "./utils/loadData";
 import { saveTargetChanges } from "./utils/editRequests";
@@ -19,7 +18,6 @@ const TargetInfos: FC = () => {
   const dispatch = useDispatch();
   const needsRefresh = useSelector(selectTargetNeedsRefresh);
   const targetId = useSelector(selectTargetId);
-  const target = useSelector(selectTargetData);
   const editStates = useSelector(selectTargetEdit);
   const pendingStates = useSelector(selectTargetPending);
 
@@ -29,14 +27,12 @@ const TargetInfos: FC = () => {
       await loadTarget(targetId);
       dispatch(setTargetPending({ data: false }));
     };
-    if (needsRefresh || target.id !== targetId) load();
-  }, [dispatch, targetId, target, needsRefresh]);
+    if (needsRefresh) load();
+  }, [dispatch, targetId, needsRefresh]);
 
   return (
     <EditorCard>
-      {pendingStates.data ? (
-        <></>
-      ) : (
+      {!pendingStates.data && (
         <Row>
           <Col md={6} sm={12}>
             <NameField

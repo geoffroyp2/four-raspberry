@@ -32,8 +32,8 @@ const RecordInfos: FC = () => {
       await loadRecord(recordId);
       dispatch(setRecordPending({ data: false }));
     };
-    if (needsRefresh || record.id !== recordId) load();
-  }, [dispatch, recordId, record, needsRefresh]);
+    if (needsRefresh) load();
+  }, [dispatch, recordId, needsRefresh]);
 
   const handleGoto = useCallback(() => {
     if (record.target?.id) {

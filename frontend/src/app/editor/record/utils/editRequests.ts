@@ -20,7 +20,7 @@ export const saveRecordChanges = async (recordId: number, newData: Record) => {
   });
   const res = await sendGQLQuery<{ updateRecord: Record }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("record");
     store.dispatch(setRecordData(res.updateRecord));
   }
 };
@@ -39,7 +39,7 @@ export const linkRecordTarget = async (recordId: number, targetId: number) => {
   });
   const res = await sendGQLQuery<{ setRecordTarget: Record }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("record");
     store.dispatch(setRecordData(res.setRecordTarget));
   }
 };
@@ -55,7 +55,7 @@ export const createRecord = async () => {
   });
   const res = await sendGQLQuery<{ createRecord: Record }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("record");
     store.dispatch(setRecordData(res.createRecord));
   }
 };
@@ -70,7 +70,7 @@ export const deleteRecord = async (recordId: number) => {
   });
   const res = await sendGQLQuery<{ deleteRecord: boolean }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("record");
     store.dispatch(setRecordId(0));
   }
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,16 +24,20 @@ const TargetGraph = () => {
   const zoom = useSelector(selectTargetPointZoom);
   const pendingStates = useSelector(selectTargetPending);
 
+  // to detect when a new record is loaded
+  const [CurrentLoadedId, setCurrentLoadedId] = useState<number>(currentTarget.id || 0);
+
   useEffect(() => {
     const load = async () => {
       if (currentTarget.id) {
         dispatch(setTargetPending({ points: true }));
         await loadTargetPoints(currentTarget.id, zoom);
+        setCurrentLoadedId(currentTarget.id);
         dispatch(setTargetPending({ points: false }));
       }
     };
-    load();
-  }, [dispatch, currentTarget, zoom]);
+    if (CurrentLoadedId !== currentTarget.id) load();
+  }, [dispatch, currentTarget, zoom, CurrentLoadedId]);
 
   return (
     <EditorCard>

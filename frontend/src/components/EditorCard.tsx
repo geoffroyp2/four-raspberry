@@ -7,7 +7,7 @@ type Props = {
 };
 
 const EditorCard: FC<Props> = ({ className, children }) => {
-  return <Card className={`p-2 m-2 shadow ${className || ""}`}>{children}</Card>;
+  return <Card className={`p-2 m-2 shadow ${className || ""}`}>{children || <></>}</Card>;
 };
 
 export default EditorCard;

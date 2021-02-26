@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordData, setRecordId } from "./_state/recordDataSlice";
+import { selectRecordData, selectRecordId, setRecordId, setRecordNeedsRefresh } from "./_state/recordDataSlice";
 import { selectRecordLoadRowSelected } from "./_state/recordDisplaySlice";
 import { selectTargetLoadRowSelected } from "@editor/target/_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
@@ -17,8 +17,15 @@ import { linkRecordTarget } from "./utils/editRequests";
 const RecordEditor = () => {
   const dispatch = useDispatch();
   const currentRecord = useSelector(selectRecordData);
+  const recordId = useSelector(selectRecordId);
+
   const RecordRowSelected = useSelector(selectRecordLoadRowSelected);
   const TargetRowSelected = useSelector(selectTargetLoadRowSelected);
+
+  // Detect need for refreshing data
+  useEffect(() => {
+    if (currentRecord.id !== recordId) dispatch(setRecordNeedsRefresh(true));
+  }, [dispatch, currentRecord.id, recordId]);
 
   const handleLoadRecord = useCallback(() => {
     dispatch(setRecordId(RecordRowSelected));

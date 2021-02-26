@@ -22,7 +22,7 @@ export const saveTargetChanges = async (targetId: number, newData: Target) => {
   });
   const res = await sendGQLQuery<{ updateTarget: Target }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("target");
     store.dispatch(setTargetData(res.updateTarget));
   }
 };
@@ -38,7 +38,7 @@ export const createTarget = async () => {
   });
   const res = await sendGQLQuery<{ createTarget: Target }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("target");
     store.dispatch(setTargetData(res.createTarget));
   }
 };
@@ -53,7 +53,7 @@ export const deleteTarget = async (targetId: number) => {
   });
   const res = await sendGQLQuery<{ deleteTarget: boolean }>(request);
   if (res) {
-    setNeedRefresh();
+    setNeedRefresh("target");
     store.dispatch(setTargetId(0));
   }
 };

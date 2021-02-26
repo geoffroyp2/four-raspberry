@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setTargetId } from "./_state/targetDataSlice";
+import { selectTargetData, selectTargetId, setTargetId, setTargetNeedsRefresh } from "./_state/targetDataSlice";
 import { selectTargetLoadRowSelected } from "./_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
 
@@ -15,7 +15,14 @@ import TargetRecords from "./TargetRecords";
 
 const TargetEditor = () => {
   const dispatch = useDispatch();
+  const currentTarget = useSelector(selectTargetData);
+  const targetId = useSelector(selectTargetId);
   const rowSelected = useSelector(selectTargetLoadRowSelected);
+
+  // Detect need for refreshing data
+  useEffect(() => {
+    if (currentTarget.id !== targetId) dispatch(setTargetNeedsRefresh(true));
+  }, [dispatch, currentTarget.id, targetId]);
 
   const handleSelect = useCallback(() => {
     dispatch(setTargetId(rowSelected));
