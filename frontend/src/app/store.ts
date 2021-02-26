@@ -2,12 +2,14 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import nav from "@navBar/MainNavSlice";
 import recordReducers from "@editor/record/_state";
 import targetReducers from "@editor/target/_state";
+import pieceReducers from "@editor/piece/_state";
 import editorState from "@editor/_state/editorSlice";
 
 export const store = configureStore({
   reducer: {
     ...recordReducers,
     ...targetReducers,
+    ...pieceReducers,
     editorState,
     nav,
   },

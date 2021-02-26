@@ -22,7 +22,7 @@ const RecordInfos: FC = () => {
   const needsRefresh = useSelector(selectRecordNeedsRefresh);
 
   const recordId = useSelector(selectRecordId);
-  const record = useSelector(selectRecordData);
+  const currentRecord = useSelector(selectRecordData);
   const editStates = useSelector(selectRecordEdit);
   const pendingStates = useSelector(selectRecordPending);
 
@@ -36,17 +36,15 @@ const RecordInfos: FC = () => {
   }, [dispatch, recordId, needsRefresh]);
 
   const handleGoto = useCallback(() => {
-    if (record.target?.id) {
-      dispatch(setTargetId(record.target.id));
+    if (currentRecord.target?.id) {
+      dispatch(setTargetId(currentRecord.target.id));
       dispatch(setCurrentScreen("target"));
     }
-  }, [dispatch, record]);
+  }, [dispatch, currentRecord]);
 
   return (
     <EditorCard>
-      {pendingStates.data ? (
-        <></>
-      ) : (
+      {!pendingStates.data && (
         <Row>
           <Col md={6} sm={12}>
             <NameField

@@ -9,12 +9,12 @@ import {
   setTargetLoadRowSelected,
 } from "./_state/targetDisplaySlice";
 import { selectTargetLoadList } from "./_state/targetDataSlice";
+import { selectLoadTables, setLoadTable } from "@editor/_state/editorSlice";
 
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
 import { loadTargetList } from "./utils/loadData";
-import { selectLoadTables, setLoadTable } from "@editor/_state/editorSlice";
 
 const tableColumns = ["Nom", "Description", "Four"];
 

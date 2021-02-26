@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { mainFrameClassName } from "@editor/_shared/styleElements";
+
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, selectRecordId, setRecordId, setRecordNeedsRefresh } from "./_state/recordDataSlice";
 import { selectRecordLoadRowSelected } from "./_state/recordDisplaySlice";
@@ -8,10 +10,11 @@ import { setLoadTable } from "@editor/_state/editorSlice";
 
 import RecordInfos from "./RecordInfos";
 import RecordButtons from "./RecordButtons";
-import RecordLoadTable from "./RecordLoadTable";
 import RecordGraph from "./RecordGraph";
 import RecordPieces from "./RecordPieces";
+import RecordLoadTable from "./RecordLoadTable";
 import TargetLoadTable from "@editor/target/TargetLoadTable";
+
 import { linkRecordTarget } from "./utils/editRequests";
 
 const RecordEditor = () => {
@@ -38,7 +41,7 @@ const RecordEditor = () => {
   }, [dispatch, TargetRowSelected, currentRecord]);
 
   return (
-    <Container fluid className="mt-2 pl-0 pr-0 pl-sm-2 pr-sm-2 pl-md-3 pr-md-3">
+    <Container fluid className={mainFrameClassName}>
       <RecordButtons />
       <Row>
         <Col xl={6} md={12}>

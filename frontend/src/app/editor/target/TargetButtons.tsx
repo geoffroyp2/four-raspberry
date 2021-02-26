@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Button, Container } from "react-bootstrap";
+import "./styles/targetStyles.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setLoadTable } from "@editor/_state/editorSlice";
@@ -7,7 +8,6 @@ import { selectTargetData } from "./_state/targetDataSlice";
 import { createTarget, deleteTarget } from "./utils/editRequests";
 
 import ConfirmationModal from "@components/ConfirmationModal";
-import "./styles/targetStyles.scss";
 
 const TargetButtons = () => {
   const dispatch = useDispatch();

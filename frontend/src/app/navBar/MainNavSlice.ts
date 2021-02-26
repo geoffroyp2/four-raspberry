@@ -8,7 +8,7 @@ interface MainNavType {
 }
 
 const initialState: MainNavType = {
-  currentScreen: "target",
+  currentScreen: "piece",
 };
 
 export const mainNavSlice = createSlice({

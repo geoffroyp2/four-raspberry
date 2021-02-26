@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { Container } from "react-bootstrap";
+import "./styles/targetStyles.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectTargetData } from "./_state/targetDataSlice";
 import { setRecordId } from "@editor/record/_state/recordDataSlice";
 import { setCurrentScreen } from "@navBar/MainNavSlice";
 
-import "./styles/targetStyles.scss";
 import EditorCard from "@components/EditorCard";
 import RecordTable from "@components/Tables/RecordTable";
 import GotoIcon from "@src/assets/GotoIcon";

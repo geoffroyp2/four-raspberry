@@ -1,17 +1,20 @@
 import React from "react";
 import "./App.scss";
-import { useSelector } from "react-redux";
 
-import RecordEditor from "./editor/record/RecordEditor";
-import MainNavBar from "./navBar/MainNavBar";
+import { useSelector } from "react-redux";
 import { selectCurrentScreen } from "@navBar/MainNavSlice";
+
+import MainNavBar from "./navBar/MainNavBar";
+import LiveScreen from "./live/LiveScreen";
+import RecordEditor from "./editor/record/RecordEditor";
 import TargetEditor from "@editor/target/TargetEditor";
+import PieceEditor from "@editor/piece/PieceEditor";
 
 const mainScreens = {
-  live: <></>,
+  live: <LiveScreen />,
   target: <TargetEditor />,
   record: <RecordEditor />,
-  piece: <></>,
+  piece: <PieceEditor />,
   formula: <></>,
 };
 

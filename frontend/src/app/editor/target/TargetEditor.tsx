@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useDispatch, useSelector } from "react-redux";
 import { selectTargetData, selectTargetId, setTargetId, setTargetNeedsRefresh } from "./_state/targetDataSlice";
 import { selectTargetLoadRowSelected } from "./_state/targetDisplaySlice";
 import { setLoadTable } from "@editor/_state/editorSlice";
+import { mainFrameClassName } from "@editor/_shared/styleElements";
 
 import TargetButtons from "./TargetButtons";
 import TargetGraph from "./TargetGraph";
@@ -30,7 +31,7 @@ const TargetEditor = () => {
   }, [dispatch, rowSelected]);
 
   return (
-    <Container fluid className="mt-2 pl-0 pr-0 pl-sm-2 pr-sm-2 pl-md-3 pr-md-3">
+    <Container fluid className={mainFrameClassName}>
       <TargetButtons />
       <Row>
         <Col xl={6} md={12}>

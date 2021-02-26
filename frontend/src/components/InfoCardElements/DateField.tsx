@@ -1,11 +1,12 @@
 import React, { FC } from "react";
+import { Col, Row } from "react-bootstrap";
+import "../styles/infoCard.scss";
+
 import { Formula, Piece, Record, Target } from "@baseTypes/database/GQLResTypes";
 
 import { RootState } from "@app/store";
 import { useSelector } from "react-redux";
 
-import "../styles/infoCard.scss";
-import { Col, Row } from "react-bootstrap";
 import { dateToDisplayString } from "@utils/dateFormat";
 
 type Props = {

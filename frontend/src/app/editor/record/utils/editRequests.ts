@@ -4,7 +4,7 @@ import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { Record } from "@baseTypes/database/GQLResTypes";
 import { setRecordData, setRecordId } from "../_state/recordDataSlice";
 import { allRecordFields } from "./dataRequests";
-import { setNeedRefresh } from "@editor/_sharedUtils/setNeedsRefresh";
+import { setNeedRefresh } from "@editor/_shared/setNeedsRefresh";
 
 export const saveRecordChanges = async (recordId: number, newData: Record) => {
   const request = rootQueryBuilder({

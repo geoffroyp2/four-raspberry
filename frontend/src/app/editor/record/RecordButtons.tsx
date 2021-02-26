@@ -1,12 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { Button, Container } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-
-import { setLoadTable } from "@editor/_state/editorSlice";
-import { createRecord, deleteRecord } from "./utils/editRequests";
-import { selectRecordData } from "./_state/recordDataSlice";
-import ConfirmationModal from "@components/ConfirmationModal";
 import "./styles/recordStyles.scss";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectRecordData } from "./_state/recordDataSlice";
+import { setLoadTable } from "@editor/_state/editorSlice";
+
+import ConfirmationModal from "@components/ConfirmationModal";
+
+import { createRecord, deleteRecord } from "./utils/editRequests";
 
 const RecordButtons = () => {
   const dispatch = useDispatch();

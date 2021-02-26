@@ -9,10 +9,10 @@ import EditorCard from "@components/EditorCard";
 import NameField from "@components/InfoCardElements/NameField";
 import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
+import OvenField from "@components/InfoCardElements/OvenField";
 
 import { loadTarget } from "./utils/loadData";
 import { saveTargetChanges } from "./utils/editRequests";
-import OvenField from "@components/InfoCardElements/OvenField";
 
 const TargetInfos: FC = () => {
   const dispatch = useDispatch();

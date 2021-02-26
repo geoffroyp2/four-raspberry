@@ -1,7 +1,7 @@
 import { store } from "@app/store";
 import { sendGQLQuery } from "@network/GQLClient";
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
-import { setNeedRefresh } from "@editor/_sharedUtils/setNeedsRefresh";
+import { setNeedRefresh } from "@editor/_shared/setNeedsRefresh";
 
 import { Target } from "@baseTypes/database/GQLResTypes";
 
