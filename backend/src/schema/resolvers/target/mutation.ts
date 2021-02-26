@@ -11,6 +11,15 @@ import {
   ResolverObjectType,
 } from "../types";
 import { colorToString } from "../../../utils/strings";
+import { DataLoadersType } from "../../dataLoaders";
+
+/**
+ * clears the cache from the loaders that are linked to the id
+ */
+const clearTargetLoaders = (loaders: DataLoadersType, targetId: number) => {
+  loaders.targetLoader.clear(targetId);
+  loaders.targetRecordListLoader.clear(targetId);
+};
 
 const Mutation: ResolverObjectType = {
   /**
@@ -25,15 +34,15 @@ const Mutation: ResolverObjectType = {
       color: colorToString(color),
       oven: oven && (oven === "gaz" || oven === "electrique") ? oven : "gaz",
     };
-    return await Target.create(args);
+    return Target.create(args);
   },
 
   /**
    * Deletes Target in database
    * @param targetId the id of the Target to select
    */
-  deleteTarget: async (_, { targetId }: GQLTargetId, { targetLoader }): Promise<boolean> => {
-    targetLoader.clear(targetId);
+  deleteTarget: async (_, { targetId }: GQLTargetId, loaders): Promise<boolean> => {
+    clearTargetLoaders(loaders, targetId);
 
     const result = await Target.destroy({ where: { id: targetId } });
     return result > 0;
@@ -48,18 +57,18 @@ const Mutation: ResolverObjectType = {
   updateTarget: async (
     _,
     { targetId, name, description, color, oven }: GQLTargetUpdate,
-    { targetLoader }
+    loaders
   ): Promise<Target | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
-      targetLoader.clear(targetId);
+      clearTargetLoaders(loaders, targetId);
 
       if (name) target.set({ name });
       if (description) target.set({ description });
       if (color) target.set({ color: colorToString(color) });
       if (oven && (oven === "gaz" || oven === "electrique")) target.set({ oven });
 
-      return await target.save();
+      return target.save();
     }
     return null;
   },
@@ -71,13 +80,11 @@ const Mutation: ResolverObjectType = {
    */
   createTargetPoint: async (
     _,
-    { targetId, time, temperature, oxygen }: GQLTargetPointCreate,
-    { targetLoader }
+    { targetId, time, temperature, oxygen }: GQLTargetPointCreate
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
-      targetLoader.clear(targetId);
-      return await target.createPoint({ time, temperature, oxygen });
+      return target.createPoint({ time, temperature, oxygen });
     }
     return null;
   },
@@ -88,12 +95,11 @@ const Mutation: ResolverObjectType = {
    * @param targetId the id of the Target
    * @param pointId the id of the Point
    */
-  deleteTargetPoint: async (_, { targetId, pointId }: GQLTargetPointDelete, { targetLoader }): Promise<boolean> => {
+  deleteTargetPoint: async (_, { targetId, pointId }: GQLTargetPointDelete): Promise<boolean> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
     if (target && point) {
-      targetLoader.clear(targetId);
-      const result = await point.destroy();
+      await point.destroy();
       return true;
     }
     return false;
@@ -108,17 +114,15 @@ const Mutation: ResolverObjectType = {
    */
   updateTargetPoint: async (
     _,
-    { targetId, pointId, time, temperature, oxygen }: GQLTargetPointUpdate,
-    { targetLoader }
+    { targetId, pointId, time, temperature, oxygen }: GQLTargetPointUpdate
   ): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     const point = await TargetPoint.findOne({ where: { targetId: targetId, id: pointId } });
     if (target && point) {
-      targetLoader.clear(targetId);
       if (time) point.set({ time });
       if (temperature) point.set({ temperature });
       if (oxygen) point.set({ oxygen });
-      return await point.save();
+      return point.save();
     }
     return null;
   },

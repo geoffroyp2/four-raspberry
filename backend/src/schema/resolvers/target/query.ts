@@ -8,14 +8,19 @@ const Query: ResolverObjectType = {
    */
   targets: async (_, { id, name, page, amount }: GQLTargetQuery): Promise<GQLTargetQueryRes> => {
     const args: GQLGenericResearchFields = {};
-    if (id) args.id = id;
     if (name) args.name = name;
-    return await Target.findAndCountAll({
-      where: args,
-      order: [["id", "ASC"]],
-      limit: amount,
-      offset: (amount || 0) * (page || 0),
-    });
+
+    if (id === 0) {
+      return Target.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });
+    } else {
+      if (id) args.id = id;
+      return await Target.findAndCountAll({
+        where: args,
+        order: [["id", "ASC"]],
+        limit: amount,
+        offset: (amount || 0) * (page || 0),
+      });
+    }
   },
 };
 

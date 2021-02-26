@@ -1,20 +1,20 @@
 import Formula from "../../../database/models/formula/formula";
 import Piece from "../../../database/models/piece/piece";
 
-import { GQLGenericResearchFields, GQLIngredientType } from "../types";
+import { GQLGenericResearchFields, GQLIngredientType, ResolverObjectType } from "../types";
 
-const Attribute = {
+const Attribute: ResolverObjectType = {
   /**
    * @param parent the Formula
    * @param id id filter @param name name filter
    * @return the Pieces linked to the parent Formula
    */
   pieces: async (parent: Formula, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
+    // TODO: formulaPieceLoader ?
     const args: GQLGenericResearchFields = {};
     if (id) args.id = id;
     if (name) args.name = name;
-    const pieces = await parent.getPieces({ where: { ...args }, order: [["id", "ASC"]] });
-    return pieces;
+    return parent.getPieces({ where: { ...args }, order: [["id", "ASC"]] });
   },
 
   /**
@@ -22,6 +22,8 @@ const Attribute = {
    * @return the ingredients linked to the parent Formula
    */
   ingredients: async (parent: Formula): Promise<GQLIngredientType[]> => {
+    // TODO: chemicalLoader ?
+
     const chemicals = await parent.getChemicals({ order: [["id", "ASC"]] });
     return chemicals.map((c) => ({
       amount: c.Ingredient!.amount,

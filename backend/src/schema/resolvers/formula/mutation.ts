@@ -1,5 +1,6 @@
 import Chemical from "../../../database/models/formula/chemical";
 import Formula, { FormulaCreationAttributes } from "../../../database/models/formula/formula";
+import { DataLoadersType } from "../../dataLoaders";
 
 import {
   GQLFormula,
@@ -8,27 +9,34 @@ import {
   GQLIngredientAdd,
   GQLIngredientSelect,
   GQLIngredientUpdate,
+  ResolverObjectType,
 } from "../types";
 
-const Mutation = {
+const clearFormulaLoaders = (loaders: DataLoadersType, formulaId: number) => {
+  loaders.formulaLoader.clear(formulaId);
+};
+
+const Mutation: ResolverObjectType = {
   /**
    * Creates a new Formula in database
    * @param args optional arguments to be passed, all have default values
    * @return the new Formula
    */
-  createFormula: async (obj: any, { name, description }: FormulaCreationAttributes): Promise<Formula> => {
+  createFormula: async (_, { name, description }: FormulaCreationAttributes): Promise<Formula> => {
     const args: FormulaCreationAttributes = {
       name: name || "Sans Nom",
       description: description || "",
     };
-    return await Formula.create(args);
+    return Formula.create(args);
   },
 
   /**
    * Deletes Formula in database
    * @param formulaId the id of the Formula to select
    */
-  deleteFormula: async (obj: any, { formulaId }: GQLFormulaId): Promise<boolean> => {
+  deleteFormula: async (_, { formulaId }: GQLFormulaId, loaders): Promise<boolean> => {
+    clearFormulaLoaders(loaders, formulaId);
+
     const result = await Formula.destroy({ where: { id: formulaId } });
     return result > 0;
   },
@@ -39,12 +47,14 @@ const Mutation = {
    * @param args the fields to update
    * @return the updated Formula or null if not in database
    */
-  updateFormula: async (obj: any, { formulaId, name, description }: GQLFormulaUpdate): Promise<Formula | null> => {
+  updateFormula: async (_, { formulaId, name, description }: GQLFormulaUpdate, loaders): Promise<Formula | null> => {
     const formula = await Formula.findOne({ where: { id: formulaId } });
     if (formula) {
+      clearFormulaLoaders(loaders, formulaId);
+
       if (name) formula.set({ name });
       if (description) formula.set({ description });
-      return await formula.save();
+      return formula.save();
     }
     return null;
   },
@@ -60,13 +70,15 @@ const Mutation = {
    * @returns the updated Formula or null if not found
    */
   updateFormulaIngredient: async (
-    obj: any,
-    { formulaId, chemicalId, amount, newChemicalId }: GQLIngredientUpdate
+    _,
+    { formulaId, chemicalId, amount, newChemicalId }: GQLIngredientUpdate,
+    loaders
   ): Promise<Formula | null> => {
     const formula = await Formula.findOne({ where: { id: formulaId } });
     const chemicals = await formula?.getChemicals({ where: { id: chemicalId } });
 
     if (formula && chemicals && chemicals.length > 0) {
+      clearFormulaLoaders(loaders, formulaId);
       const chemical = chemicals[0];
       if (newChemicalId) {
         const newChemical = await Chemical.findOne({ where: { id: newChemicalId } });
@@ -74,13 +86,13 @@ const Mutation = {
           const newAmount = amount || chemical.Ingredient?.amount;
           await formula.removeChemical(chemical);
           await formula.addChemical(newChemical, { through: { amount: newAmount } });
-          return await Formula.findOne({ where: { id: formulaId } });
+          return Formula.findOne({ where: { id: formulaId } });
         }
       } else {
         if (amount && chemical.Ingredient) {
           chemical.Ingredient.set({ amount: amount });
           await chemical.Ingredient.save();
-          return await Formula.findOne({ where: { id: formulaId } });
+          return Formula.findOne({ where: { id: formulaId } });
         }
       }
     }
@@ -94,12 +106,16 @@ const Mutation = {
    * @param amount the amount
    * @returns the updated Formula or null if not found
    */
-  addFormulaIngredient: async ({ formulaId, chemicalId, amount }: GQLIngredientAdd): Promise<Formula | null> => {
+  addFormulaIngredient: async (
+    { formulaId, chemicalId, amount }: GQLIngredientAdd,
+    loaders
+  ): Promise<Formula | null> => {
     const formula = await Formula.findOne({ where: { id: formulaId } });
     const chemical = await Chemical.findOne({ where: { id: chemicalId } });
     if (formula && chemical) {
+      clearFormulaLoaders(loaders, formulaId);
       await formula.addChemical(chemical, { through: { amount } });
-      return await Formula.findOne({ where: { id: formulaId } });
+      return Formula.findOne({ where: { id: formulaId } });
     }
     return null;
   },
@@ -110,13 +126,14 @@ const Mutation = {
    * @param chemicalId the existing Chemical id
    *    * @returns the updated Formula or null if not found
    */
-  removeFormulaIngredient: async ({ formulaId, chemicalId }: GQLIngredientSelect): Promise<Formula | null> => {
+  removeFormulaIngredient: async ({ formulaId, chemicalId }: GQLIngredientSelect, loaders): Promise<Formula | null> => {
     const formula = await Formula.findOne({ where: { id: formulaId } });
     const chemicals = await formula?.getChemicals({ where: { id: chemicalId } });
     if (formula && chemicals && chemicals.length > 0) {
+      clearFormulaLoaders(loaders, formulaId);
       const chemical = chemicals[0];
       await formula.removeChemical(chemical);
-      return await Formula.findOne({ where: { id: formulaId } });
+      return Formula.findOne({ where: { id: formulaId } });
     }
     return null;
   },

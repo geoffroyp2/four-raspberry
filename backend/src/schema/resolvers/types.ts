@@ -104,7 +104,7 @@ export interface GQLFormula {
   name: string;
   description: string;
 }
-export interface GQLChemcicalFind extends GQLGenericResearchFields {
+export interface GQLChemicalFind extends GQLGenericResearchFields {
   chemicalName?: string;
 }
 export interface GQLChemical {
@@ -131,10 +131,10 @@ export interface GQLRecordPointCreate extends GQLRecordPoint, GQLRecordId {}
 export interface GQLRecordPointDelete extends GQLRecordPointId, GQLRecordId {}
 
 export interface GQLPieceQuery extends GQLGenericResearchFields, GQLPageOptions {}
-export interface GQLPieceUpdate extends GQLPieceId, GQLPiece {}
+export interface GQLPieceUpdate extends GQLPieceId, Partial<GQLPiece> {}
 export interface GQLPieceFormula extends GQLPieceId, GQLFormulaId {}
 
-export interface GQLFormulaUpdate extends GQLFormulaId, GQLFormula {}
+export interface GQLFormulaUpdate extends GQLFormulaId, Partial<GQLFormula> {}
 export interface GQLFormulaQuery extends GQLGenericResearchFields, GQLPageOptions {}
 export interface GQLIngredientSelect extends GQLFormulaId, GQLChemicalId {}
 export interface GQLIngredientAdd extends GQLIngredientSelect {
@@ -144,8 +144,8 @@ export interface GQLIngredientUpdate extends GQLIngredientAdd {
   newChemicalId: number;
 }
 
-export interface GQLChemicalQuery extends GQLChemcicalFind, GQLPageOptions {}
-export interface GQLChemicalUpdate extends GQLChemical, GQLChemicalId {}
+export interface GQLChemicalQuery extends GQLChemicalFind, GQLPageOptions {}
+export interface GQLChemicalUpdate extends GQLChemicalId, Partial<GQLChemical> {}
 
 type GQLQueryRes<T> = {
   count: number;

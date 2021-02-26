@@ -7,6 +7,7 @@ import TargetPoint from "../../../database/models/target/targetPoints";
 
 import { ColorType, GQLGenericResearchFields, GQLTargetPointType, ResolverObjectType, TimeRange } from "../types";
 import { stringToColor } from "../../../utils/strings";
+import { getEvenlySpacedEntries } from "../../../utils/arrays";
 
 const Attribute: ResolverObjectType = {
   /**
@@ -28,20 +29,26 @@ const Attribute: ResolverObjectType = {
    * @param id id filter @param name name filter
    * @return the Pieces linked to the parent Target through Records
    */
-  pieces: async (parent: Target, { id, name }: GQLGenericResearchFields): Promise<Piece[]> => {
-    // TODO: add loader
-    const allPieces = new Set<Piece>();
+  pieces: async (
+    parent: Target,
+    { id, name }: GQLGenericResearchFields,
+    { recordPieceListLoader }
+  ): Promise<Piece[]> => {
     const records = await parent.getRecords();
+
+    // To filter duplicates
+    const pieces: { [key: number]: Piece } = {};
+
     await Promise.all(
       records.map(async (r) => {
-        const pieces = await r.getPieces();
-        pieces.forEach((p) => allPieces.add(p));
+        const result = await recordPieceListLoader.load(r.id);
+        result.forEach((p) => {
+          if ((!id && !name) || (id && p.id === id) || (name && p.name === name)) pieces[p.id] = p;
+        });
       })
     );
 
-    return [...allPieces.values()]
-      .filter((e) => (!id && !name) || (id && e.id === id) || (name && e.name === name))
-      .sort((a, b) => a.id - b.id);
+    return Object.values(pieces).sort((a, b) => a.id - b.id);
   },
 
   /**
@@ -63,26 +70,15 @@ const Attribute: ResolverObjectType = {
       order: [["time", "ASC"]],
     });
 
-    // Filter for the amount of points to keep
-    const interval = amount ? Math.max((points.length - 2) / (amount - 2), 1) : 1;
-    const lastIndex = points.length - 1;
-    let pointAmount = 0;
+    // Only keep required amount
+    const filteredPoints = getEvenlySpacedEntries(points, amount);
 
-    return points
-      .filter((p, idx) => {
-        // keep 1st && last point && points spread evenly
-        if (idx === 0 || idx === lastIndex || idx === Math.round(interval * pointAmount)) {
-          pointAmount++;
-          return true;
-        }
-        return false;
-      })
-      .map((p) => ({
-        id: p.id,
-        time: p.time,
-        temperature: p.temperature,
-        oxygen: p.oxygen,
-      }));
+    return filteredPoints.map((p) => ({
+      id: p.id,
+      time: p.time,
+      temperature: p.temperature,
+      oxygen: p.oxygen,
+    }));
   },
 
   /**
