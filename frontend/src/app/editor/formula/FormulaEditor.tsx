@@ -11,6 +11,7 @@ import FormulaButtons from "./FormulaButtons";
 import FormulaInfos from "./FormulaInfos";
 import FormulaLoadTable from "./FormulaLoadTable";
 import FormulaPieces from "./FormulaPieces";
+import FormulaChemicals from "./FormulaChemicals";
 // import TargetButtons from "./TargetButtons";
 // import TargetGraph from "./TargetGraph";
 // import TargetInfos from "./TargetInfos";
@@ -40,7 +41,7 @@ const FormulaEditor = () => {
       <Row>
         <Col xl={6} md={12}>
           <FormulaInfos />
-          {/* <FormulaChemicals /> */}
+          <FormulaChemicals />
         </Col>
         <Col xl={6} md={12}>
           <FormulaPieces />
