@@ -26,6 +26,12 @@ export default gql`
     density: Int!
 
     """
+    Couleur de la courbe de température de la forme {r, g, b, a}.
+    Avec r, g, b des ints entre 0 et 255 et a un float entre 0 et 1
+    """
+    color: Color!
+
+    """
     La liste des Formulas associées à l'ingrédient
     """
     formulas(id: Int, name: String): [Formula]!
@@ -45,7 +51,7 @@ export default gql`
     """
     Crée un Chemical, les champs par défaut sont générés automatiquement si non spécifiés
     """
-    createChemical(name: String, chemicalName: String, density: Int): Chemical!
+    createChemical(name: String, chemicalName: String, density: Int, color: ColorInput): Chemical!
 
     """
     Supprime un Chemical par id
@@ -55,6 +61,6 @@ export default gql`
     """
     Sélectionne un Chemical par id et met à jour les champs spécifiés
     """
-    updateChemical(chemicalId: Int!, name: String, chemicalName: String, density: Int): Chemical
+    updateChemical(chemicalId: Int!, name: String, chemicalName: String, density: Int, color: ColorInput): Chemical
   }
 `;

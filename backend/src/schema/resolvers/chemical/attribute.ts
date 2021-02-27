@@ -1,6 +1,7 @@
 import Chemical from "../../../database/models/formula/chemical";
 import Formula from "../../../database/models/formula/formula";
-import { GQLGenericResearchFields, ResolverObjectType } from "../types";
+import { stringToColor } from "../../../utils/strings";
+import { ColorType, GQLGenericResearchFields, ResolverObjectType } from "../types";
 
 const Attribute: ResolverObjectType = {
   /**
@@ -15,6 +16,14 @@ const Attribute: ResolverObjectType = {
     if (name) args.name = name;
     const formulas = await parent.getFormulas({ where: { ...args }, order: [["id", "ASC"]] });
     return formulas;
+  },
+
+  /**
+   * @param parent The Chemical
+   * @return the Chemical's color {r, g, b, a}
+   */
+  color: (parent: Chemical): ColorType => {
+    return stringToColor(parent.color);
   },
 
   /**

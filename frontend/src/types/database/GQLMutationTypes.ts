@@ -141,7 +141,7 @@ export type IngredientMutationType = FormulaIngredientAdd | FormulaIngredientRem
 
 //Chemical
 type ChemicalSelectType = { chemicalId: number };
-type ChemicalCreationArgs = Pick<Chemical, "name" | "chemicalName" | "density">;
+type ChemicalCreationArgs = Pick<Chemical, "name" | "chemicalName" | "density" | "color">;
 type ChemicalUpdateArgs = ChemicalSelectType & ChemicalCreationArgs;
 type ChemicalArgs = ChemicalCreationArgs | ChemicalUpdateArgs | ChemicalSelectType;
 

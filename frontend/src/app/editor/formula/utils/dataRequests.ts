@@ -11,7 +11,13 @@ export const allFormulaFields: FormulaFields = [
     type: "pieces",
     fields: ["id", "name"],
   },
-  { type: "ingredients", fields: ["amount", { type: "chemical", fields: ["id", "name", "chemicalName"] }] },
+  {
+    type: "ingredients",
+    fields: [
+      "amount",
+      { type: "chemical", fields: ["id", "name", "chemicalName", { type: "color", fields: ["r", "g", "b", "a"] }] },
+    ],
+  },
 ];
 
 export const getFormulaFieldsQuery = (id: number) => {

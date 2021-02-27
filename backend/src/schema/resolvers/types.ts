@@ -110,6 +110,7 @@ export interface GQLChemicalFind extends GQLGenericResearchFields {
 export interface GQLChemical {
   name: string;
   chemicalName: string;
+  color: ColorType;
   density: number;
 }
 

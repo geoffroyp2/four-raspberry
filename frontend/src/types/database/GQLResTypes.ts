@@ -89,6 +89,7 @@ export interface Chemical {
   name?: string;
   chemicalName?: string;
   density?: number;
+  color?: Color;
   formulas?: Formula[];
   createdAt?: string;
   updatedAt?: string;

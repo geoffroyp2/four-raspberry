@@ -17,6 +17,7 @@ export type ChemicalAttributes = {
   id: number;
   name: string;
   chemicalName: string;
+  color: string;
   density: number;
 };
 export interface ChemicalCreationAttributes extends Optional<ChemicalAttributes, "id"> {}
@@ -26,6 +27,7 @@ class Chemical extends Model<ChemicalAttributes, ChemicalCreationAttributes> imp
   public name!: string;
   public chemicalName!: string;
   public density!: number;
+  public color!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
@@ -61,6 +63,11 @@ export const chemicalModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "Sans Formule",
+  },
+  color: {
+    type: new DataTypes.STRING(15),
+    allowNull: false,
+    defaultValue: "210-210-210-0.9",
   },
   density: {
     type: DataTypes.INTEGER,

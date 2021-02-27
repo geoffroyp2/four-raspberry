@@ -111,7 +111,7 @@ type IngredientFields = (Extract<keyof Ingredient, SimpleFields> | ChemicalQuery
 export type IngredientQuery = ComposedQueryField<"ingredients", IngredientFields>;
 
 type ChemicalSimpleFields = Extract<keyof Chemical, SimpleFields>;
-type ChemicalComposedFields = FormulaQuery;
+type ChemicalComposedFields = FormulaQuery | ColorQuery;
 export type ChemicalFields = (ChemicalSimpleFields | ChemicalComposedFields)[];
 type ChemicalFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name" | "chemicalName", string>;
 export type ChemicalQuery = ComposedQueryField<"chemical", ChemicalFields, ChemicalFilter>;
