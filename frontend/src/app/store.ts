@@ -3,6 +3,7 @@ import nav from "@navBar/MainNavSlice";
 import recordReducers from "@editor/record/_state";
 import targetReducers from "@editor/target/_state";
 import pieceReducers from "@editor/piece/_state";
+import formulaReducers from "@editor/formula/_state";
 import editorState from "@editor/_state/editorSlice";
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     ...recordReducers,
     ...targetReducers,
     ...pieceReducers,
+    ...formulaReducers,
     editorState,
     nav,
   },

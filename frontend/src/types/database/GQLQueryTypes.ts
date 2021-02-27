@@ -102,7 +102,7 @@ type PieceFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name", 
 export type PieceQuery = ComposedQueryField<"pieces", PieceFields, PieceFilter>;
 
 type FormulaSimpleFields = Extract<keyof Formula, SimpleFields>;
-type FormulaComposedFields = IngredientQuery;
+type FormulaComposedFields = IngredientQuery | PieceQuery;
 export type FormulaFields = (FormulaSimpleFields | FormulaComposedFields)[];
 type FormulaFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name", string>;
 export type FormulaQuery = ComposedQueryField<"formula" | "formulas", FormulaFields, FormulaFilter>;
@@ -114,7 +114,7 @@ type ChemicalSimpleFields = Extract<keyof Chemical, SimpleFields>;
 type ChemicalComposedFields = FormulaQuery;
 export type ChemicalFields = (ChemicalSimpleFields | ChemicalComposedFields)[];
 type ChemicalFilter = PageFilter & QueryFilter<"id", number> & QueryFilter<"name" | "chemicalName", string>;
-export type ChemicalQuery = ComposedQueryField<"chemicals", ChemicalFields, ChemicalFilter>;
+export type ChemicalQuery = ComposedQueryField<"chemical", ChemicalFields, ChemicalFilter>;
 
 export type ColorFields = Extract<keyof Color, SimpleFields>[];
 export type ColorQuery = ComposedQueryField<"color", ColorFields>;

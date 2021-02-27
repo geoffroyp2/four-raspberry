@@ -10,7 +10,6 @@ const RecordTable: FC<Props> = ({ children }) => {
         <tr>
           <th>Nom</th>
           <th className="goto"></th>
-          {/* <th>Émail</th> */}
         </tr>
       </thead>
       <tbody>{children}</tbody>

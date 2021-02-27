@@ -1,15 +1,16 @@
 import React, { FC } from "react";
 import { Table } from "react-bootstrap";
 
-type Props = { children: JSX.Element[] | JSX.Element };
+type Props = { formulaColumn?: boolean; children: JSX.Element[] | JSX.Element };
 
-const PieceTable: FC<Props> = ({ children }) => {
+const PieceTable: FC<Props> = ({ formulaColumn = true, children }) => {
   return (
     <Table striped bordered hover className="table-sm" variant="dark">
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Émail</th>
+          {formulaColumn && <th>Émail</th>}
+          <th className="goto"></th>
         </tr>
       </thead>
       <tbody>{children}</tbody>
