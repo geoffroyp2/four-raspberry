@@ -3,7 +3,7 @@ import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
 import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
-import { getUrl, interpolate } from "./utils";
+import { getUrl, interpolate, Timer } from "./utils";
 
 type MinMax = {
   min: number;
@@ -48,23 +48,41 @@ export const link = {
   },
 
   recordPoints: async (records: Record[], pointsPerMinute: number) => {
-    return Promise.all(
-      records.map(async (r) => {
-        const record = await Record.findOne({ where: { id: r.id } });
-        const target = await Target.findOne({ where: { id: record?.targetId } });
-        if (target) {
-          const targetPoints = await target.getPoints({ order: [["time", "ASC"]] });
-          const maxTime = targetPoints[targetPoints.length - 1].time;
-          const amount = (maxTime / 60) * pointsPerMinute;
-          const interval = maxTime / amount;
-          for (let i = 0; i < amount; i++) {
-            const time = Math.floor(interval * i);
-            const { temperature, oxygen } = interpolate(time, targetPoints);
-            await r.createPoint({ time, temperature, oxygen });
-          }
+    const timer = new Timer();
+    let recordNumber = 0;
+    for (const r of records) {
+      const record = await Record.findOne({ where: { id: r.id } });
+      const target = await Target.findOne({ where: { id: record?.targetId } });
+      if (target) {
+        const targetPoints = await target.getPoints({ order: [["time", "ASC"]] });
+        const maxTime = targetPoints[targetPoints.length - 1].time;
+        const amount = (maxTime / 60) * pointsPerMinute;
+        const interval = maxTime / amount;
+        const offset = Math.random() * 2 - 1;
+
+        const batchAmount = Math.floor(amount / 10);
+
+        for (let batchNumber = 0; batchNumber < amount; batchNumber += batchAmount) {
+          await Promise.all(
+            [...Array(batchAmount)].map(async (_, count) => {
+              if (batchNumber + count < amount) {
+                const time = Math.floor(interval * (batchNumber + count));
+                const { temperature, oxygen } = interpolate(time, targetPoints, offset);
+                await r.createPoint({ time, temperature, oxygen });
+              }
+            })
+          );
+          process.stdout.clearLine(0);
+          process.stdout.cursorTo(0);
+          process.stdout.write(
+            `    Record ${recordNumber + 1}/${records.length} points ${Math.floor((batchNumber / amount) * 100)}%`
+          );
         }
-      })
-    );
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+        console.log(`    Record ${recordNumber++ + 1}/${records.length} points 100% (${timer.new()})`);
+      }
+    }
   },
 
   recordPiece: async (records: Record[], pieces: Piece[], piecesPerRecord: MinMax) => {

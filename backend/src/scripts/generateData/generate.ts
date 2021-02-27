@@ -1,19 +1,27 @@
 import { initializeSequelizeModels } from "../../database/models/init";
-import database from "../../database";
-import Target from "../../database/models/target/target";
-import Record from "../../database/models/record/record";
-import { link } from "./linkElements";
 import { populateTest } from "./populate";
-import RecordPoint from "../../database/models/record/recordPoints";
-import TargetPoint from "../../database/models/target/targetPoints";
+
+import { Sequelize } from "sequelize";
+import { dbConfig } from "../../database/config/dbConfig";
+import { Timer } from "./utils";
+import { exit } from "process";
+
+const database = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
+  dialect: "postgres",
+  host: dbConfig.host,
+  port: dbConfig.port,
+  logging: false,
+});
 
 initializeSequelizeModels(database);
 console.log("Sequelize initialized");
 
 const g = async () => {
-  await populateTest();
+  const timer = new Timer();
+  await populateTest(database);
 
-  console.log("FINI");
+  console.log(`Finished (${timer.new()})`);
+  exit();
 };
 
 g();
