@@ -5,7 +5,13 @@ import { sendGQLQuery } from "@network/GQLClient";
 import { PointFilter } from "@baseTypes/database/GQLQueryTypes";
 import { RecordQueryRes } from "@baseTypes/database/GQLResTypes";
 
-import { setRecordData, setRecordLoadList, setRecordNeedsRefresh, setRecordPoints } from "../_state/recordDataSlice";
+import {
+  setRecordData,
+  setRecordLoadList,
+  setRecordNeedsRefresh,
+  setRecordPoints,
+  setRecordTargetPoints,
+} from "../_state/recordDataSlice";
 import { setRecordLoadPage, setRecordTotalAmount } from "../_state/recordDisplaySlice";
 
 import { getRecordFieldsQuery, getRecordPageRequest, getRecordPointRequest } from "./dataRequests";
@@ -25,6 +31,7 @@ export const loadRecordPoints = async (id: number, filter: PointFilter) => {
   if (res)
     batch(() => {
       store.dispatch(setRecordPoints(res.records.rows[0]?.points));
+      store.dispatch(setRecordTargetPoints(res.records.rows[0]?.target?.points));
     });
 };
 

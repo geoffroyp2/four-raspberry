@@ -23,6 +23,7 @@ const TargetGraph = () => {
   const currentTempValues = useSelector(selectTargetTempValues);
   const zoom = useSelector(selectTargetPointZoom);
   const pendingStates = useSelector(selectTargetPending);
+  const targetpoints = useSelector(selectTargetPoints);
 
   // to detect when a new record is loaded
   const [CurrentLoadedId, setCurrentLoadedId] = useState<number>(currentTarget.id || 0);
@@ -41,7 +42,7 @@ const TargetGraph = () => {
 
   return (
     <EditorCard>
-      <PreviewGraph points={selectTargetPoints} color={currentTempValues.color} />
+      <PreviewGraph targetPoints={targetpoints} color={currentTempValues.color} />
       <ColorField
         id={currentTarget.id || 0}
         color={currentTempValues.color}

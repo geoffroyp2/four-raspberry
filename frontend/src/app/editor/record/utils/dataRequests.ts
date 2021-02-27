@@ -61,6 +61,16 @@ export const getRecordPointRequest = (id: number, filter: PointFilter) => {
           filter: filter,
           fields: ["id", "temperature", "oxygen", "time"],
         },
+        {
+          type: "target",
+          fields: [
+            {
+              type: "points",
+              filter: filter,
+              fields: ["id", "temperature", "oxygen", "time"],
+            },
+          ],
+        },
       ],
     },
   });

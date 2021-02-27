@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
-import { Color, Record, RecordPoint } from "@baseTypes/database/GQLResTypes";
+import { Color, Record, RecordPoint, TargetPoint } from "@baseTypes/database/GQLResTypes";
 
 interface RecordDataType {
   needsRefresh: boolean;
@@ -9,7 +9,8 @@ interface RecordDataType {
   tempValues: {
     color: Color;
   };
-  points: RecordPoint[];
+  recordPoints: RecordPoint[];
+  targetPoints: TargetPoint[] | undefined;
   loadList: Record[];
 }
 
@@ -17,7 +18,8 @@ const initialState: RecordDataType = {
   needsRefresh: false,
   recordId: 0,
   data: {},
-  points: [],
+  recordPoints: [],
+  targetPoints: undefined,
   tempValues: {
     color: { r: 255, g: 255, b: 255, a: 1 },
   },
@@ -51,7 +53,10 @@ export const recordDataSlice = createSlice({
       state.tempValues = { ...state.tempValues, ...action.payload };
     },
     setRecordPoints: (state, action: PayloadAction<RecordPoint[] | undefined>) => {
-      if (action.payload) state.points = action.payload;
+      if (action.payload) state.recordPoints = action.payload;
+    },
+    setRecordTargetPoints: (state, action: PayloadAction<TargetPoint[] | undefined>) => {
+      state.targetPoints = action.payload;
     },
   },
 });
@@ -63,13 +68,15 @@ export const {
   setRecordLoadList,
   setRecordPoints,
   setRecordTempValues,
+  setRecordTargetPoints,
 } = recordDataSlice.actions;
 
 export const selectRecordNeedsRefresh = (state: RootState) => state.recordData.needsRefresh;
 export const selectRecordId = (state: RootState) => state.recordData.recordId;
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;
-export const selectRecordPoints = (state: RootState) => state.recordData.points;
+export const selectRecordPoints = (state: RootState) => state.recordData.recordPoints;
+export const selectRecordTargetPoints = (state: RootState) => state.recordData.targetPoints;
 export const selectRecordTempValues = (state: RootState) => state.recordData.tempValues;
 
 export default recordDataSlice.reducer;

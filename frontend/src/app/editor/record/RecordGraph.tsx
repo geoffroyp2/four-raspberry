@@ -5,6 +5,7 @@ import { selectRecordPointZoom } from "./_state/recordDisplaySlice";
 import {
   selectRecordData,
   selectRecordPoints,
+  selectRecordTargetPoints,
   selectRecordTempValues,
   setRecordTempValues,
 } from "./_state/recordDataSlice";
@@ -24,6 +25,8 @@ const RecordGraph = () => {
   const currentTempValues = useSelector(selectRecordTempValues);
   const zoom = useSelector(selectRecordPointZoom);
   const pendingStates = useSelector(selectRecordPending);
+  const recordPoints = useSelector(selectRecordPoints);
+  const targetpoints = useSelector(selectRecordTargetPoints);
 
   // to detect when a new record is loaded
   const [CurrentLoadedId, setCurrentLoadedId] = useState<number>(currentRecord.id || 0);
@@ -44,7 +47,7 @@ const RecordGraph = () => {
     <EditorCard>
       {!pendingStates.data && !pendingStates.points && (
         <>
-          <PreviewGraph points={selectRecordPoints} color={currentTempValues.color} />
+          <PreviewGraph recordPoints={recordPoints} targetPoints={targetpoints} color={currentTempValues.color} />
           <ColorField
             id={currentRecord.id || 0}
             color={currentTempValues.color}
