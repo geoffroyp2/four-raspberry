@@ -20,7 +20,7 @@ const PieceButtons: FC = () => {
   }, [currentPiece]);
 
   return (
-    <Container fluid className="record-buttons pr-md-4 pr-sm-2 pr-xs-0">
+    <Container fluid className="top-buttons pr-md-4 pr-sm-2 pr-xs-0">
       <Button className="" onClick={() => dispatch(setLoadTable({ piece: true }))}>
         Ouvrir
       </Button>

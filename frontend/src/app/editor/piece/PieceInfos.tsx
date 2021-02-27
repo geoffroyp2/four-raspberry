@@ -15,6 +15,7 @@ import FormulaField from "@components/InfoCardElements/FormulaField";
 
 import { savePieceChanges } from "./utils/editRequests";
 import { loadPiece } from "./utils/loadData";
+import { setFormulaId } from "@editor/formula/_state/formulaDataSlice";
 
 const PieceInfos: FC = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const PieceInfos: FC = () => {
 
   const handleGoto = useCallback(() => {
     if (piece.formula?.id) {
-      //  dispatch(setFormulaId(record.formula.id));
+      dispatch(setFormulaId(piece.formula.id));
       dispatch(setCurrentScreen("formula"));
     }
   }, [dispatch, piece]);

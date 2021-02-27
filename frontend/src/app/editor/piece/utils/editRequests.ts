@@ -57,3 +57,22 @@ export const deletePiece = async (pieceId: number) => {
     store.dispatch(setPieceId(0));
   }
 };
+
+export const linkPieceFormula = async (pieceId: number, formulaId: number) => {
+  const request = rootQueryBuilder({
+    type: "mutation",
+    query: {
+      name: "setPieceFormula",
+      args: {
+        pieceId,
+        formulaId,
+      },
+      res: allPieceFields,
+    },
+  });
+  const res = await sendGQLQuery<{ setPieceFormula: Piece }>(request);
+  if (res) {
+    setNeedRefresh("piece");
+    store.dispatch(setPieceData(res.setPieceFormula));
+  }
+};

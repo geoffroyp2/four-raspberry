@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Button, Container } from "react-bootstrap";
+import "../_shared/styles.scss";
 import "./styles/recordStyles.scss";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,7 @@ const RecordButtons = () => {
   }, [currentRecord]);
 
   return (
-    <Container fluid className="record-buttons pr-md-4 pr-sm-2 pr-xs-0">
+    <Container fluid className="top-buttons pr-md-4 pr-sm-2 pr-xs-0">
       <Button className="" onClick={() => dispatch(setLoadTable({ record: true }))}>
         Ouvrir
       </Button>

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Button, Container } from "react-bootstrap";
+import "../_shared/styles.scss";
 import "./styles/targetStyles.scss";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +21,7 @@ const TargetButtons = () => {
   }, [currentTarget]);
 
   return (
-    <Container fluid className="target-buttons d-flex justify-content-end mb-2">
+    <Container fluid className="top-buttons d-flex justify-content-end mb-2">
       <Button className="" onClick={() => dispatch(setLoadTable({ target: true }))}>
         Ouvrir
       </Button>

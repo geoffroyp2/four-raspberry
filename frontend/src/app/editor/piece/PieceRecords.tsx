@@ -1,19 +1,19 @@
 import React, { useCallback } from "react";
 import { Container } from "react-bootstrap";
-import "./styles/targetStyles.scss";
+import "./styles/pieceStyles.scss";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetData } from "./_state/targetDataSlice";
 import { setRecordId } from "@editor/record/_state/recordDataSlice";
 import { setCurrentScreen } from "@navBar/MainNavSlice";
 
 import EditorCard from "@components/EditorCard";
 import RecordTable from "@components/Tables/RecordTable";
 import GotoIcon from "@src/assets/GotoIcon";
+import { selectPieceData } from "./_state/pieceDataSlice";
 
-const TargetRecords = () => {
+const PieceRecords = () => {
   const dispatch = useDispatch();
-  const currentTarget = useSelector(selectTargetData);
+  const currentPiece = useSelector(selectPieceData);
 
   const handleGoto = useCallback(
     (id: number) => {
@@ -24,8 +24,8 @@ const TargetRecords = () => {
   );
 
   const getContent = () => {
-    if (currentTarget.records)
-      return currentTarget.records.map((e, i) => (
+    if (currentPiece.records)
+      return currentPiece.records.map((e, i) => (
         <tr key={`rpt${i}`}>
           <td>{e.name}</td>
           <td className="goto">
@@ -37,7 +37,7 @@ const TargetRecords = () => {
   };
 
   return (
-    <EditorCard className="targetRecords">
+    <EditorCard className="pieceRecords">
       <Container fluid>
         <label>Cuissons</label>
       </Container>
@@ -46,4 +46,4 @@ const TargetRecords = () => {
   );
 };
 
-export default TargetRecords;
+export default PieceRecords;
