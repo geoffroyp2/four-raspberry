@@ -8,7 +8,7 @@ interface MainNavType {
 }
 
 const initialState: MainNavType = {
-  currentScreen: "record",
+  currentScreen: "formula",
 };
 
 export const mainNavSlice = createSlice({

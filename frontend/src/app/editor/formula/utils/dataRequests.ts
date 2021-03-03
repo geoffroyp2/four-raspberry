@@ -15,7 +15,10 @@ export const allFormulaFields: FormulaFields = [
     type: "ingredients",
     fields: [
       "amount",
-      { type: "chemical", fields: ["id", "name", "chemicalName", { type: "color", fields: ["r", "g", "b", "a"] }] },
+      {
+        type: "chemical",
+        fields: ["id", "name", "chemicalName", "density", { type: "color", fields: ["r", "g", "b", "a"] }],
+      },
     ],
   },
 ];
