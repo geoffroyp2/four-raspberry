@@ -9,6 +9,7 @@ module.exports = override(
     "@utils": path.resolve(__dirname, "./src/utils"),
     "@components": path.resolve(__dirname, "./src/components"),
     "@editor": path.resolve(__dirname, "./src/app/editor/"),
+    "@live": path.resolve(__dirname, "./src/app/live/"),
     "@navBar": path.resolve(__dirname, "./src/app/navBar/"),
     "@app": path.resolve(__dirname, "./src/app"),
   })
