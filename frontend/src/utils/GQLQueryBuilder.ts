@@ -36,28 +36,35 @@ export const noResField = (input: any): input is NoResMutationType => {
  * @param query the RootQueryFieldsType object
  */
 const rootQueryBuilder = (query: QueryType): string => {
+  let queryString = "";
   switch (query.type) {
     case "query":
-      return gql`
+      queryString = gql`
 query {
   ${query.query.type} ${filterBuilder(query.query.filter)} {
     count
     rows {${nestedQueryBuilder(query.query.fields, 0)}    }
   }
 }`;
+      break;
     case "mutation":
-      return gql`
+      queryString = gql`
 mutation {
   ${query.query.name} ${filterBuilder(query.query.args)} ${
         noResField(query.query) ? "" : `{${nestedQueryBuilder(query.query.res, 0)}    }`
       }
 }`;
+      break;
     case "subscription":
-      return gql`
+      queryString = gql`
 subscription {
-  ${query.query.type} {${nestedQueryBuilder(query.query.fields, 0)}}
+  ${query.query.type} {${nestedQueryBuilder(query.query.fields, -1)}  }
 }`;
+      break;
   }
+
+  console.log(queryString);
+  return queryString;
 };
 
 const serializeObject = (input: object): string => {

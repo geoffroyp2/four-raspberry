@@ -20,7 +20,7 @@ export default gql`
   extend type Mutation {
     updateSensors(oxygen: Float, temperature: Float): Boolean!
     updateStatus(status: String!): Boolean!
-    updateTargetId(targetId: Int!): Boolean!
+    updateLiveTargetId(targetId: Int!): Boolean!
     sendCommand(command: String): Boolean!
   }
 `;

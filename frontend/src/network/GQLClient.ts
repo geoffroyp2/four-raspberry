@@ -1,7 +1,7 @@
 import { request } from "graphql-request";
 
 const fetch = async (query: string) => {
-  console.log(query);
+  // console.log(query);
   try {
     return await request("http://localhost:3001/graphql", query);
   } catch (e) {

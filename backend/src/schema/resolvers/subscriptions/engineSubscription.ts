@@ -30,7 +30,7 @@ export const engineMutation: ResolverObjectType = {
     return false;
   },
 
-  updateTargetId: async (_, { targetId }) => {
+  updateLiveTargetId: async (_, { targetId }) => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
       liveValues.currentTargetId = target.id;

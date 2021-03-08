@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
+import { LiveStatusType } from "@baseTypes/database/GQLMutationTypes";
 
 export type SensorValuesType = {
   oxygen: number;
   temperature: number;
 };
-export type StatusType = "start" | "stop" | "pause";
+
 export type LiveValuesType = {
-  status: StatusType;
+  status: LiveStatusType;
   sensors: SensorValuesType;
   currentTargetId: number;
 };

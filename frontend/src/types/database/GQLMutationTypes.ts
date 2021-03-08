@@ -17,7 +17,8 @@ export type GQLMutationType =
   | PieceMutationType
   | FormulaMutationType
   | IngredientMutationType
-  | ChemicalMutationType;
+  | ChemicalMutationType
+  | LiveMutationType;
 export type GQLMutationArgs =
   | TargetArgs
   | TargetPointArgs
@@ -26,7 +27,8 @@ export type GQLMutationArgs =
   | PieceArgs
   | FormulaArgs
   | IngredientArgs
-  | ChemicalArgs;
+  | ChemicalArgs
+  | LiveArgs;
 export type NoResMutationType =
   | TargetDelete
   | TargetPointDelete
@@ -34,7 +36,9 @@ export type NoResMutationType =
   | RecordPointDelete
   | PieceDelete
   | FormulaDelete
-  | ChemicalDelete;
+  | ChemicalDelete
+  | LiveStatusUpdate
+  | LiveTargetIdUpdate;
 
 type MutationTypeNoRes<T, U> = {
   name: T;
@@ -149,3 +153,12 @@ type ChemicalCreate = MutationType<"createChemical", ChemicalCreationArgs, Chemi
 type ChemicalUpdate = MutationType<"updateChemical", ChemicalUpdateArgs, ChemicalFields>;
 type ChemicalDelete = MutationTypeNoRes<"deleteChemical", ChemicalSelectType>;
 export type ChemicalMutationType = ChemicalCreate | ChemicalUpdate | ChemicalDelete;
+
+// Live
+export type LiveStatusType = "start" | "stop" | "pause";
+type LiveStatusArgs = { status: LiveStatusType };
+type LiveArgs = LiveStatusArgs;
+
+type LiveStatusUpdate = MutationTypeNoRes<"updateStatus", LiveStatusArgs>;
+type LiveTargetIdUpdate = MutationTypeNoRes<"updateLiveTargetId", TargetSelectType>;
+export type LiveMutationType = LiveStatusUpdate | LiveTargetIdUpdate;
