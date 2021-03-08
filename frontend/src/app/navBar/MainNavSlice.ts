@@ -8,11 +8,11 @@ interface MainNavType {
 }
 
 const initialState: MainNavType = {
-  currentScreen: "formula",
+  currentScreen: "live",
 };
 
 export const mainNavSlice = createSlice({
-  name: "mainNav",
+  name: "liveValues",
   initialState,
   reducers: {
     setCurrentScreen: (state, action: PayloadAction<ScreenType>) => {

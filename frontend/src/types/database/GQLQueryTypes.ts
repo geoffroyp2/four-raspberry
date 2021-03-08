@@ -45,7 +45,7 @@ export type GQLQueryFilterType =
   | PointFilter
   | PageFilter;
 
-type ComposedQueryField<T, U, V = undefined> = {
+export type ComposedQueryField<T, U, V = undefined> = {
   type: T;
   fields: U;
   filter?: V;

@@ -6,6 +6,7 @@ import {
   GQLComposedQueryType,
 } from "@baseTypes/database/GQLQueryTypes";
 import { Color } from "@baseTypes/database/GQLResTypes";
+import { GQLSubscriptionFieldType, GQLSubscriptionType } from "@baseTypes/database/GQLSubscriptionTypes";
 import { gql } from "graphql-request";
 
 export type GQLRootType = "query" | "mutation";
@@ -18,6 +19,10 @@ type QueryType =
   | {
       type: "mutation";
       query: GQLMutationType;
+    }
+  | {
+      type: "subscription";
+      query: GQLSubscriptionType;
     };
 
 export const noResField = (input: any): input is NoResMutationType => {
@@ -46,6 +51,11 @@ mutation {
   ${query.query.name} ${filterBuilder(query.query.args)} ${
         noResField(query.query) ? "" : `{${nestedQueryBuilder(query.query.res, 0)}    }`
       }
+}`;
+    case "subscription":
+      return gql`
+subscription {
+  ${query.query.type} {${nestedQueryBuilder(query.query.fields, 0)}}
 }`;
   }
 };
@@ -88,7 +98,7 @@ const isComposedQuery = (input: any): input is GQLComposedQueryType => {
  * @param query
  * @param depth to correctly indent the output string (esthetics only for console debug)
  */
-const nestedQueryBuilder = (query: GQLQueryFieldType, depth: number): string => {
+const nestedQueryBuilder = (query: GQLQueryFieldType | GQLSubscriptionFieldType, depth: number): string => {
   const tabs = "  ".repeat(3 + depth);
   return `\n${(query as (GQLComposedQueryType | string)[])
     .map((e) => {

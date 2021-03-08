@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
 
-export type ScreenType = "live" | "record" | "target" | "piece" | "formula";
-
 export type SensorValuesType = {
   oxygen: number;
   temperature: number;
@@ -24,10 +22,10 @@ const initialState: LiveValuesType = {
 };
 
 export const mainNavSlice = createSlice({
-  name: "mainNav",
+  name: "liveValues",
   initialState,
   reducers: {
-    setCurrentState: (state, action: PayloadAction<LiveValuesType>) => {
+    setLiveValues: (state, action: PayloadAction<LiveValuesType>) => {
       state.status = action.payload.status;
       state.sensors = action.payload.sensors;
       state.currentTargetId = action.payload.currentTargetId;
@@ -35,7 +33,7 @@ export const mainNavSlice = createSlice({
   },
 });
 
-export const { setCurrentState } = mainNavSlice.actions;
+export const { setLiveValues } = mainNavSlice.actions;
 
 export const selectLiveStatus = (state: RootState) => state.live.status;
 export const selectLiveSensorValues = (state: RootState) => state.live.sensors;
