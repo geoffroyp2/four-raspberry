@@ -40,8 +40,8 @@ const LiveScreen: FC = () => {
           <tr>
             <td>{currentTargetId}</td>
             <td>{currentStatus}</td>
-            <td>{sensorValues.oxygen}</td>
-            <td>{sensorValues.temperature}</td>
+            <td>{sensorValues.oxygen.toFixed(2)}</td>
+            <td>{sensorValues.temperature.toFixed(2)}</td>
           </tr>
         </tbody>
       </Table>

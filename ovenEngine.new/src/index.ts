@@ -1,19 +1,16 @@
-import state from "./state/currentTarget";
+import Engine from "./engine/engine";
+
+const engine = new Engine();
 
 const init = () => {
   console.log("Engine initialized");
 };
 
-const run = () => {
-  // console.log("looping");
-};
-
-const loopInterval = 200; // 200ms
+const loopInterval = 1000; // 200ms
 const mainLoop = () => {
-  run();
+  engine.run();
   setTimeout(mainLoop, loopInterval);
 };
 
-state.start();
 init();
 mainLoop();
