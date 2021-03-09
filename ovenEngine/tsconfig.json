@@ -4,7 +4,13 @@
     "moduleResolution": "node",
     "pretty": true,
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true,
+    "module": "commonjs",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", ".vscode"]

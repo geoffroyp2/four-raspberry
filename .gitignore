@@ -2,7 +2,6 @@
 
 # dependencies
 /ovenEngine/node_modules
-/ovenEngine.new/node_modules
 /ovenEngine.old/node_modules
 /frontend/node_modules
 /frontend.old/node_modules

@@ -1,30 +1,25 @@
 {
-  "name": "engine",
+  "name": "ovenengine.new",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "@types/websocket": "^1.0.1",
-    "babel-core": "^6.26.3",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "websocket": "^1.0.33"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.9",
-    "@types/node": "^14.14.10",
-    "nodemon": "^2.0.6",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.1.2"
-  },
   "scripts": {
-    "start": "nodemon ./src/server.ts",
-    "start-dev": "nodemon",
-    "build": "tsc",
-    "script": "cd src/scripts && ts-node",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/index.ts"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.3.11",
+    "cross-fetch": "^3.0.6",
+    "graphql": "^15.5.0",
+    "websocket": "^1.0.33",
+    "ws": "^7.4.4"
+  },
+  "devDependencies": {
+    "@types/websocket": "^1.0.2",
+    "@types/ws": "^7.4.0",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
+  }
 }
