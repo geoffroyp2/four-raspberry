@@ -12,7 +12,13 @@ const APIConfig: Config = {
   subscriptions: {
     path: "/graphql",
     onConnect: (connectionParams, webSocket, context) => {
-      console.log("Client connected");
+      const Headers = (webSocket as any).upgradeReq.rawHeaders as string[];
+      let i = true;
+      const formattedHeaders = Headers.reduce((acc, curr) => {
+        i = !i;
+        return acc + (i ? ": " : "\n") + curr;
+      }, "");
+      console.log(`\nClient connected: ${formattedHeaders}`);
     },
     onDisconnect: (webSocket, context) => {
       console.log("Client disconnected");
