@@ -1,10 +1,11 @@
-import emul from "../comEmulation/emul";
 import { GQLMutation, GQLQuery, GQLSubscribe } from "../network/GQLClient";
-import { getTargetQuery, getUpdateSensorsQuery, liveSubscriptionQuery } from "../utils/queries";
 import WSINClient from "../network/WSINClient";
 import WSOUTClient from "../network/WSOUTClient";
+import emul from "../comEmulation/emul";
+
 import { LiveStatusType, SensorValuesType, Target } from "../types/APITypes";
-import { isLiveSubscribeData, isTargetQueryRes } from "../utils/typeCheck";
+import { commandSubscriptionQuery, getTargetQuery, getUpdateSensorsQuery } from "../utils/queries";
+import { isCommandSubscribeRes, isTargetQueryRes } from "../utils/typeCheck";
 
 class Engine {
   // status from api
@@ -29,17 +30,23 @@ class Engine {
     temperature: 0,
   };
 
+  /**
+   * Initializes the connections with the API and the 2nd RaspberryPI
+   */
   constructor() {
-    GQLSubscribe(liveSubscriptionQuery, (data: any) => this.handleLiveUpdate(data));
+    GQLSubscribe(commandSubscriptionQuery, (data: any) => this.handleCommands(data));
     this.wsin = new WSINClient((data: any) => this.updateSensors(data));
     this.wsout = new WSOUTClient();
   }
 
-  private async handleLiveUpdate(data: any) {
-    if (isLiveSubscribeData(data)) {
-      const newState = data.data.live;
+  /**
+   * Callback to handle the data coming from the API subscription
+   */
+  private handleCommands({ data }: any) {
+    if (isCommandSubscribeRes(data)) {
+      const command = data.command;
 
-      switch (newState.status) {
+      switch (command.status) {
         case "start":
           this.start();
           break;
@@ -51,18 +58,28 @@ class Engine {
           break;
       }
 
-      if (newState.currentTargetId !== this.target.id) {
-        this.loadTarget(newState.currentTargetId);
+      if (command.targetId > 0 && command.targetId !== this.target.id) {
+        this.loadTarget(command.targetId);
       }
     }
   }
 
+  /**
+   * Callback to handle the values sent by the 2nd RaspberryPI
+   */
   public updateSensors(values: any) {
+    // TODO
+    // this.sensorValues = values;
     console.log(values);
   }
 
+  /**
+   * Handles the API call to update the loaded graph
+   * @param id the targetId
+   */
   public async loadTarget(id: number) {
     const targetQueryRes = await GQLQuery(getTargetQuery(id));
+
     if (isTargetQueryRes(targetQueryRes.data)) {
       const results = targetQueryRes.data.targets.rows;
       if (results[0]) {
@@ -74,6 +91,9 @@ class Engine {
     }
   }
 
+  /**
+   * Function called by the program main loop
+   */
   public run() {
     if (this.status === "start") {
       const now = new Date().getTime();
@@ -86,10 +106,13 @@ class Engine {
 
       // 2. send current sensor values from wsin to API
       this.sensorValues = emul.getSensorValues(this.programRunTime);
-      GQLMutation(getUpdateSensorsQuery(this.sensorValues));
+      GQLMutation(getUpdateSensorsQuery(this.sensorValues, this.programRunTime));
     }
   }
 
+  /**
+   * start, stop & pause: program state handling
+   */
   private start() {
     if (this.status === "stop") {
       this.status = "start";
@@ -98,7 +121,6 @@ class Engine {
       this.programPauseTime = 0;
       console.log("Program started");
     } else if (this.status === "pause") {
-      // TODO: unpause
       this.status = "start";
       this.programPauseTime += new Date().getTime() - this.lastPause;
       console.log("Program unpaused");
@@ -107,7 +129,6 @@ class Engine {
 
   private pause() {
     if (this.status === "start") {
-      // TODO: pause
       this.status = "pause";
       this.lastPause = new Date().getTime();
       console.log("Program paused");
@@ -116,18 +137,23 @@ class Engine {
 
   private stop() {
     if (this.status === "start" || this.status === "pause") {
-      // TODO: stop
       this.status = "stop";
       console.log("Program stopped");
     }
   }
 
+  /**
+   * maybe called as a command to try to reconnect to the 2nd RaspberryPI
+   */
   public reconnect() {
     console.log("trying to reconnect...");
     this.wsin.connect();
     this.wsout.connect();
   }
 
+  /**
+   * TargetValues are calculated by interpolation of the loaded graph
+   */
   private refreshTargetValues() {
     if (this.target.points) {
       const points = this.target.points;

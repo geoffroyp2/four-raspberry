@@ -10,7 +10,10 @@ subscription {
 
 export const commandSubscriptionQuery = `
 subscription {
-  command
+  command {
+    targetId
+    status
+  }
 }`;
 
 export const getTargetQuery = (id: number) => `
@@ -30,8 +33,8 @@ query {
   }
 }`;
 
-export const getUpdateSensorsQuery = (sensors: SensorValuesType) => `
+export const getUpdateSensorsQuery = (sensors: SensorValuesType, time: number) => `
 mutation {
-  updateSensors(oxygen: ${sensors.oxygen}, temperature: ${sensors.temperature})
+  updateSensors(oxygen: ${sensors.oxygen}, temperature: ${sensors.temperature}, time: ${Math.floor(time / 1000)})
 }
 `;

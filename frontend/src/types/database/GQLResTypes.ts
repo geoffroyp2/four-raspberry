@@ -1,3 +1,5 @@
+import { LiveStatusType } from "./GQLMutationTypes";
+
 interface GQLQueryResType<T> {
   count: number;
   rows: T[];
@@ -95,3 +97,17 @@ export interface Chemical {
   updatedAt?: string;
 }
 export type ChemicalQueryRes = { chemicals: GQLQueryResType<Chemical> };
+
+// Subscription
+
+export type SensorValuesType = {
+  oxygen: number;
+  temperature: number;
+};
+
+export type LiveValuesType = {
+  status: LiveStatusType;
+  programTime: number;
+  sensors: SensorValuesType;
+  currentTargetId: number;
+};

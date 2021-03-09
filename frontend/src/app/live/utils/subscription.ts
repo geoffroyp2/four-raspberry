@@ -2,9 +2,10 @@ import { gql } from "@apollo/client";
 import client from "@network/apolloClient";
 
 import { store } from "@app/store";
-import { setLiveValues, LiveValuesType } from "../liveScreenSlice";
+import { setLiveValues } from "../liveScreenSlice";
 
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
+import { LiveValuesType } from "@baseTypes/database/GQLResTypes";
 
 const subscriptionQuery = rootQueryBuilder({
   type: "subscription",
@@ -13,6 +14,7 @@ const subscriptionQuery = rootQueryBuilder({
     fields: [
       "status",
       "currentTargetId",
+      "programTime",
       {
         type: "sensors",
         fields: ["oxygen", "temperature"],
@@ -24,7 +26,7 @@ const subscriptionQuery = rootQueryBuilder({
 const observable = client.subscribe({ query: gql(subscriptionQuery) });
 
 const isLiveValue = (data: any): data is LiveValuesType => {
-  return data.__typename === "LiveValues";
+  return data?.__typename === "LiveValues";
 };
 
 export const subscribe = () => {

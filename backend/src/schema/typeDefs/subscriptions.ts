@@ -9,18 +9,24 @@ export default gql`
   type LiveValues {
     status: String!
     sensors: SensorValues!
+    programTime: Int!
     currentTargetId: Int!
+  }
+
+  type Command {
+    targetId: Int!
+    status: String!
   }
 
   type Subscription {
     live: LiveValues!
-    command: String!
+    command: Command!
   }
 
   extend type Mutation {
-    updateSensors(oxygen: Float, temperature: Float): Boolean!
+    updateSensors(oxygen: Float!, temperature: Float!, time: Int!): Boolean!
     updateStatus(status: String!): Boolean!
     updateLiveTargetId(targetId: Int!): Boolean!
-    sendCommand(command: String): Boolean!
+    sendCommand(command: String!): Boolean!
   }
 `;

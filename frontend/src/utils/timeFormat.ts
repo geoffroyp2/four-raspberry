@@ -8,6 +8,12 @@ const minutes = (seconds: number): string => {
   return (minutes < 10 ? "0" : "") + minutes;
 };
 
+export const formatTime = (time: string | number, showSeconds: boolean = true) => {
+  const timeN = +time;
+  const secondsStr = `${timeN % 60 < 10 ? "0" : ""}${timeN % 60}s`;
+  return `${hours(timeN, false)}h ${minutes(timeN)}m ${showSeconds ? secondsStr : ""}`;
+};
+
 export const graphFormatTime = (time: string | number, showMinutes: boolean): string => {
   const seconds = +time;
   return `${hours(seconds, false)}h${showMinutes ? minutes(seconds) : ""}`;

@@ -1,9 +1,11 @@
 // API RESULTS
 
 export type LiveSubscribeResType = {
-  data: {
-    live: LiveValuesType;
-  };
+  live: LiveValuesType;
+};
+
+export type CommandSubscribeResType = {
+  command: CommandType;
 };
 
 export type TargetQueryResType = {
@@ -38,4 +40,11 @@ export type SensorValuesType = {
 export type LiveValuesType = {
   status: LiveStatusType;
   currentTargetId: number;
+};
+
+// COMMANDS DATA
+
+export type CommandType = {
+  targetId: number;
+  status: LiveStatusType;
 };

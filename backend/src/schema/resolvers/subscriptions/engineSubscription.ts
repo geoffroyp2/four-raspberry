@@ -1,7 +1,7 @@
 import { PubSub } from "apollo-server-express";
 import Target from "../../../database/models/target/target";
 import { ResolverObjectType } from "../types";
-import { liveValues, SensorValuesType } from "./liveValues";
+import { lastCommand, CommandValuesType, liveValues, SensorValuesType, SensorUpdateType } from "./liveValues";
 
 const livePubSub = new PubSub();
 
@@ -15,8 +15,9 @@ export const engineSubscription = {
 };
 
 export const engineMutation: ResolverObjectType = {
-  updateSensors: (_, sensorValues: SensorValuesType) => {
-    liveValues.sensors = { ...sensorValues };
+  updateSensors: (_, { time, oxygen, temperature }: SensorUpdateType) => {
+    liveValues.programTime = time;
+    liveValues.sensors = { oxygen, temperature };
     livePubSub.publish("LIVE", { live: liveValues });
     return true;
   },
@@ -24,7 +25,9 @@ export const engineMutation: ResolverObjectType = {
   updateStatus: (_, { status }) => {
     if (status === "start" || status === "stop" || status === "pause") {
       liveValues.status = status;
+      lastCommand.status = status;
       livePubSub.publish("LIVE", { live: liveValues });
+      livePubSub.publish("COMMAND", { command: lastCommand });
       return true;
     }
     return false;
@@ -34,8 +37,9 @@ export const engineMutation: ResolverObjectType = {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
       liveValues.currentTargetId = target.id;
+      lastCommand.targetId = targetId;
       livePubSub.publish("LIVE", { live: liveValues });
-      livePubSub.publish("COMMAND", { command: "updateTarget" });
+      livePubSub.publish("COMMAND", { command: lastCommand });
       return true;
     }
     return false;
