@@ -30,9 +30,23 @@ export interface TargetPoint {
   oxygen: number;
 }
 
+export interface Record {
+  id?: number;
+  name?: string;
+  description?: string;
+  finished?: boolean;
+}
+
+export interface RecordPoint {
+  id?: number;
+  time?: number;
+  temperature?: number;
+  oxygen?: number;
+}
+export type RecordPointCreationAttributes = Required<Pick<RecordPoint, "time" | "temperature" | "oxygen">>;
+
 // LIVE DATA
 
-export type LiveStatusType = "start" | "stop" | "pause";
 export type SensorValuesType = {
   oxygen: number;
   temperature: number;
@@ -44,7 +58,12 @@ export type LiveValuesType = {
 
 // COMMANDS DATA
 
+export type LiveStatusType = "start" | "stop" | "pause";
+
+export type CommandNameType = LiveStatusType | "ping" | "monitoring" | "targetId";
+export type CommandOptionnalType = number | null;
+
 export type CommandType = {
-  targetId: number;
-  status: LiveStatusType;
+  name: CommandNameType;
+  option: CommandOptionnalType;
 };
