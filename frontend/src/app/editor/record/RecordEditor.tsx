@@ -15,7 +15,7 @@ import RecordPieces from "./RecordPieces";
 import RecordLoadTable from "./RecordLoadTable";
 import TargetLoadTable from "@editor/target/TargetLoadTable";
 
-import { linkRecordTarget } from "./utils/editRequests";
+import { linkRecordTarget } from "./utils/mutations";
 
 const RecordEditor = () => {
   const dispatch = useDispatch();

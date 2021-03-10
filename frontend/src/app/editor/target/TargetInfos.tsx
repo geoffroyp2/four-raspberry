@@ -11,8 +11,8 @@ import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
 import OvenField from "@components/InfoCardElements/OvenField";
 
-import { loadTarget } from "./utils/loadData";
-import { saveTargetChanges } from "./utils/editRequests";
+import { loadTarget } from "./utils/queries";
+import { saveTargetChanges } from "./utils/mutations";
 
 const TargetInfos: FC = () => {
   const dispatch = useDispatch();

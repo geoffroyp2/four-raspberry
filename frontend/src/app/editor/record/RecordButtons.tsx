@@ -9,7 +9,7 @@ import { setLoadTable } from "@editor/_state/editorSlice";
 
 import ConfirmationModal from "@components/ConfirmationModal";
 
-import { createRecord, deleteRecord } from "./utils/editRequests";
+import { createRecord, deleteRecord } from "./utils/mutations";
 
 const RecordButtons = () => {
   const dispatch = useDispatch();

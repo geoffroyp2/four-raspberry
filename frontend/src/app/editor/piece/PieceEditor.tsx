@@ -14,7 +14,7 @@ import PiecePhotos from "./PiecePhotos";
 import PieceLoadTable from "./PieceLoadTable";
 import PieceRecords from "./PieceRecords";
 import FormulaLoadTable from "@editor/formula/FormulaLoadTable";
-import { linkPieceFormula } from "./utils/editRequests";
+import { linkPieceFormula } from "./utils/mutations";
 
 const PieceEditor: FC = () => {
   const dispatch = useDispatch();

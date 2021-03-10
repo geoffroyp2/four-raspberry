@@ -14,8 +14,8 @@ import PreviewGraph from "@components/PreviewGraph";
 import EditorCard from "@components/EditorCard";
 import ColorField from "@components/InfoCardElements/ColorField";
 
-import { loadTargetPoints } from "./utils/loadData";
-import { saveTargetChanges } from "./utils/editRequests";
+import { loadTargetPoints } from "./utils/queries";
+import { saveTargetChanges } from "./utils/mutations";
 
 const TargetGraph = () => {
   const dispatch = useDispatch();

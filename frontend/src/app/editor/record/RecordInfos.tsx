@@ -14,8 +14,8 @@ import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
 import TargetField from "@components/InfoCardElements/TargetField";
 
-import { loadRecord } from "./utils/loadData";
-import { saveRecordChanges } from "./utils/editRequests";
+import { loadRecord } from "./utils/queries";
+import { saveRecordChanges } from "./utils/mutations";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();

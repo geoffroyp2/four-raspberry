@@ -15,7 +15,7 @@ import { selectPieceLoadList } from "./_state/pieceDataSlice";
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
-import { loadPieceList } from "./utils/loadData";
+import { loadPieceList } from "./utils/queries";
 
 const tableColumns = ["Nom", "Description", "Émail"];
 

@@ -15,7 +15,7 @@ import { selectLoadTables, setLoadTable } from "@editor/_state/editorSlice";
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
-import { loadRecordList } from "./utils/loadData";
+import { loadRecordList } from "./utils/queries";
 
 const tableColumns = ["Nom", "Description", "Four", "Courbe de référence"];
 

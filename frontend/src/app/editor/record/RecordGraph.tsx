@@ -15,8 +15,8 @@ import PreviewGraph from "@components/PreviewGraph";
 import EditorCard from "@components/EditorCard";
 import ColorField from "@components/InfoCardElements/ColorField";
 
-import { loadRecordPoints } from "./utils/loadData";
-import { saveRecordChanges } from "./utils/editRequests";
+import { loadRecordPoints } from "./utils/queries";
+import { saveRecordChanges } from "./utils/mutations";
 
 const RecordGraph = () => {
   const dispatch = useDispatch();

@@ -10,8 +10,8 @@ import NameField from "@components/InfoCardElements/NameField";
 import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
 
-import { loadFormula } from "./utils/loadData";
-import { saveFormulaChanges } from "./utils/editRequests";
+import { loadFormula } from "./utils/queries";
+import { saveFormulaChanges } from "./utils/mutations";
 
 const FormulaInfos: FC = () => {
   const dispatch = useDispatch();

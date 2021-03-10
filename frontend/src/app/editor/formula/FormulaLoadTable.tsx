@@ -15,7 +15,7 @@ import {
 import LoadTableModal from "@components/LoadTableModal";
 import LoadTablePagination from "@components/LoadTablePagination";
 
-import { loadFormulaList } from "./utils/loadData";
+import { loadFormulaList } from "./utils/queries";
 
 const tableColumns = ["Nom", "Description"];
 

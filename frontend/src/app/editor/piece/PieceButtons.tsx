@@ -7,7 +7,7 @@ import { setLoadTable } from "@editor/_state/editorSlice";
 
 import ConfirmationModal from "@components/ConfirmationModal";
 
-import { createPiece, deletePiece } from "./utils/editRequests";
+import { createPiece, deletePiece } from "./utils/mutations";
 
 const PieceButtons: FC = () => {
   const dispatch = useDispatch();

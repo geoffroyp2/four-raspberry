@@ -13,8 +13,8 @@ import DescriptionField from "@components/InfoCardElements/DescriptionField";
 import DateField from "@components/InfoCardElements/DateField";
 import FormulaField from "@components/InfoCardElements/FormulaField";
 
-import { savePieceChanges } from "./utils/editRequests";
-import { loadPiece } from "./utils/loadData";
+import { savePieceChanges } from "./utils/mutations";
+import { loadPiece } from "./utils/queries";
 import { setFormulaId } from "@editor/formula/_state/formulaDataSlice";
 
 const PieceInfos: FC = () => {

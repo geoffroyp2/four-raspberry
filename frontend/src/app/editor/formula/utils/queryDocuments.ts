@@ -1,5 +1,6 @@
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { PageFilter, FormulaFields } from "@baseTypes/database/GQLQueryTypes";
+import { gql } from "@apollo/client";
 
 export const allFormulaFields: FormulaFields = [
   "id",
@@ -24,23 +25,27 @@ export const allFormulaFields: FormulaFields = [
 ];
 
 export const getFormulaFieldsQuery = (id: number) => {
-  return rootQueryBuilder({
-    type: "query",
-    query: {
-      type: "formulas",
-      filter: { id: id },
-      fields: allFormulaFields,
-    },
-  });
+  return gql(
+    rootQueryBuilder({
+      type: "query",
+      query: {
+        type: "formulas",
+        filter: { id: id },
+        fields: allFormulaFields,
+      },
+    })
+  );
 };
 
 export const getFormulaPageRequest = (filter: PageFilter) => {
-  return rootQueryBuilder({
-    type: "query",
-    query: {
-      type: "formulas",
-      filter: filter,
-      fields: ["id", "name", "description", "createdAt", "updatedAt"],
-    },
-  });
+  return gql(
+    rootQueryBuilder({
+      type: "query",
+      query: {
+        type: "formulas",
+        filter: filter,
+        fields: ["id", "name", "description", "createdAt", "updatedAt"],
+      },
+    })
+  );
 };

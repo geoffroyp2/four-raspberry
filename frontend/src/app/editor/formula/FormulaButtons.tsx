@@ -9,7 +9,7 @@ import { selectFormulaData } from "./_state/formulaDataSlice";
 
 import ConfirmationModal from "@components/ConfirmationModal";
 
-import { createFormula, deleteFormula } from "./utils/editRequests";
+import { createFormula, deleteFormula } from "./utils/mutations";
 
 const FormulaButtons = () => {
   const dispatch = useDispatch();
