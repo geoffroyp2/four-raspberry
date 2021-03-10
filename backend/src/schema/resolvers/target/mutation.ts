@@ -29,8 +29,8 @@ const Mutation: ResolverObjectType = {
    */
   createTarget: async (_, { name, description, color, oven }: Partial<GQLTarget>): Promise<Target> => {
     const args: TargetCreationAttributes = {
-      name: name || "Sans Nom",
-      description: description || "",
+      name: name ?? "Sans Nom",
+      description: description ?? "",
       color: colorToString(color),
       oven: oven && (oven === "gaz" || oven === "electrique") ? oven : "gaz",
     };
@@ -63,10 +63,10 @@ const Mutation: ResolverObjectType = {
     if (target) {
       clearTargetLoaders(loaders, targetId);
 
-      if (name) target.set({ name });
-      if (description) target.set({ description });
-      if (color) target.set({ color: colorToString(color) });
-      if (oven && (oven === "gaz" || oven === "electrique")) target.set({ oven });
+      if (name !== undefined) target.set({ name });
+      if (description !== undefined) target.set({ description });
+      if (color !== undefined) target.set({ color: colorToString(color) });
+      if (oven !== undefined && (oven === "gaz" || oven === "electrique")) target.set({ oven });
 
       return target.save();
     }

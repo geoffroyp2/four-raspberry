@@ -49,9 +49,10 @@ const Mutation: ResolverObjectType = {
    */
   createRecord: async (_, { name, description, color }: Partial<GQLRecord>): Promise<Record> => {
     const args: RecordCreationAttributes = {
-      name: name || "Sans Nom",
-      description: description || "",
+      name: name ?? "Sans Nom",
+      description: description ?? "",
       color: colorToString(color),
+      finished: false,
     };
     return Record.create(args);
   },
@@ -73,14 +74,19 @@ const Mutation: ResolverObjectType = {
    * @param args the fields to update
    * @return the updated Record or null if not in database
    */
-  updateRecord: async (_, { recordId, name, description, color }: GQLRecordUpdate, loaders): Promise<Record | null> => {
+  updateRecord: async (
+    _,
+    { recordId, name, description, color, finished }: GQLRecordUpdate,
+    loaders
+  ): Promise<Record | null> => {
     const record = await Record.findOne({ where: { id: recordId } });
     if (record) {
       clearRecordLoaders(loaders, recordId);
 
-      if (name) record.set({ name });
-      if (description) record.set({ description });
-      if (color) record.set({ color: colorToString(color) });
+      if (name !== undefined) record.set({ name });
+      if (description !== undefined) record.set({ description });
+      if (color !== undefined) record.set({ color: colorToString(color) });
+      if (finished !== undefined) record.set({ finished });
       return record.save();
     }
     return null;

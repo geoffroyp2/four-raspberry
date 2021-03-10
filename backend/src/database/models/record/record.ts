@@ -25,6 +25,7 @@ export interface RecordAttributes {
   name: string;
   description: string;
   color: string;
+  finished: boolean;
 }
 export interface RecordCreationAttributes extends Optional<RecordAttributes, "id"> {}
 
@@ -34,6 +35,7 @@ class Record extends Model<RecordAttributes, RecordCreationAttributes> implement
   public name!: string;
   public description!: string;
   public color!: string;
+  public finished!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -85,6 +87,11 @@ export const recordModelAttributes = {
     type: new DataTypes.STRING(15),
     allowNull: false,
     defaultValue: "210-210-210-0.9",
+  },
+  finished: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
   },
   targetId: {
     type: DataTypes.INTEGER,

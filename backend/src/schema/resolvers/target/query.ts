@@ -8,7 +8,7 @@ const Query: ResolverObjectType = {
    */
   targets: async (_, { id, name, page, amount }: GQLTargetQuery): Promise<GQLTargetQueryRes> => {
     const args: GQLGenericResearchFields = {};
-    if (name) args.name = name;
+    if (name !== undefined) args.name = name;
 
     if (id === 0) {
       return Target.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });

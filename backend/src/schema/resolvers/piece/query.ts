@@ -8,7 +8,7 @@ const Query: ResolverObjectType = {
    */
   pieces: async (_, { id, name, amount, page }: GQLPieceQuery): Promise<GQLPieceQueryRes> => {
     const args: GQLGenericResearchFields = {};
-    if (name) args.name = name;
+    if (name !== undefined) args.name = name;
 
     if (id === 0) {
       return Piece.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });

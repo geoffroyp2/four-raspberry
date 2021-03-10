@@ -90,6 +90,7 @@ export interface GQLRecord {
   name: string;
   description: string;
   color: ColorType;
+  finished: boolean;
 }
 export interface GQLRecordPoint {
   time: number;
@@ -121,6 +122,7 @@ export interface GQLTargetPointCreate extends GQLTargetPoint, GQLTargetId {}
 export interface GQLTargetPointDelete extends GQLTTargetPointId, GQLTargetId {}
 
 export interface GQLRecordFind extends GQLGenericResearchFields {
+  finished?: boolean;
   oven?: string;
 }
 export interface GQLRecordQuery extends GQLRecordFind, GQLPageOptions {}

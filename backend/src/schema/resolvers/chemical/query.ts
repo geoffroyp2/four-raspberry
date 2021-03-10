@@ -1,4 +1,4 @@
-import Chemical, { ChemicalAttributes } from "../../../database/models/formula/chemical";
+import Chemical from "../../../database/models/formula/chemical";
 import { GQLChemicalFind, GQLChemicalQuery, GQLChemicalQueryRes, ResolverObjectType } from "../types";
 
 const Query: ResolverObjectType = {
@@ -8,8 +8,8 @@ const Query: ResolverObjectType = {
    */
   chemicals: async (_, { id, name, chemicalName, amount, page }: GQLChemicalQuery): Promise<GQLChemicalQueryRes> => {
     const args: GQLChemicalFind = {};
-    if (chemicalName) args.chemicalName = chemicalName;
-    if (name) args.name = name;
+    if (chemicalName !== undefined) args.chemicalName = chemicalName;
+    if (name !== undefined) args.name = name;
 
     if (id === 0) {
       return Chemical.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });

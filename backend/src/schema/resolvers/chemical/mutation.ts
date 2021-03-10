@@ -15,10 +15,10 @@ const Mutation: ResolverObjectType = {
    */
   createChemical: async (_, { name, chemicalName, color, density }: Partial<GQLChemical>): Promise<Chemical> => {
     const args: ChemicalCreationAttributes = {
-      name: name || "Sans Nom",
-      chemicalName: chemicalName || "",
+      name: name ?? "Sans Nom",
+      chemicalName: chemicalName ?? "",
       color: colorToString(color),
-      density: density || 1,
+      density: density ?? 1,
     };
     return Chemical.create(args);
   },
@@ -49,10 +49,10 @@ const Mutation: ResolverObjectType = {
     if (chemical) {
       clearChemicalLoaders(loaders, chemicalId);
 
-      if (name) chemical.set({ name });
-      if (chemicalName) chemical.set({ chemicalName });
-      if (density) chemical.set({ density });
-      if (color) chemical.set({ color: colorToString(color) });
+      if (name !== undefined) chemical.set({ name });
+      if (chemicalName !== undefined) chemical.set({ chemicalName });
+      if (density !== undefined) chemical.set({ density });
+      if (color !== undefined) chemical.set({ color: colorToString(color) });
       return chemical.save();
     }
     return null;

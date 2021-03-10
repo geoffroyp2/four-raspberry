@@ -35,8 +35,8 @@ const Mutation: ResolverObjectType = {
    */
   createPiece: async (_, { name, description }: PieceCreationAttributes): Promise<Piece> => {
     const args: PieceCreationAttributes = {
-      name: name || "Sans Nom",
-      description: description || "",
+      name: name ?? "Sans Nom",
+      description: description ?? "",
     };
     return Piece.create(args);
   },
@@ -62,8 +62,8 @@ const Mutation: ResolverObjectType = {
     if (piece) {
       clearPieceLoaders(loaders, pieceId);
 
-      if (name) piece.set({ name });
-      if (description) piece.set({ description });
+      if (name !== undefined) piece.set({ name });
+      if (description !== undefined) piece.set({ description });
       return piece.save();
     }
     return null;

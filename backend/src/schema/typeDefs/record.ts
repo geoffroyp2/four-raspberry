@@ -26,6 +26,11 @@ export default gql`
     color: Color!
 
     """
+    Flag qui est false quand la cuisson n'est pas terminée
+    """
+    finished: Boolean!
+
+    """
     Le four auquel correspond la Cuisson ("gaz" ou "eletrique").
     ou null si Record n'a pas de Target associé
     """
@@ -81,7 +86,7 @@ export default gql`
     """
     Recherche les Records par id ou par name
     """
-    records(id: Int, name: String, oven: String, page: Int, amount: Int): RecordQueryRes!
+    records(id: Int, name: String, oven: String, finished: Boolean, page: Int, amount: Int): RecordQueryRes!
   }
 
   extend type Mutation {
@@ -98,7 +103,7 @@ export default gql`
     """
     Selectionne un Record par id et met à jour les champs spécifiés
     """
-    updateRecord(recordId: Int!, name: String, description: String, color: ColorInput): Record
+    updateRecord(recordId: Int!, name: String, description: String, color: ColorInput, finished: Boolean): Record
 
     """
     Lie une Target (par id) à un Record (par id).

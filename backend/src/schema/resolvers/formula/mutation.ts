@@ -24,8 +24,8 @@ const Mutation: ResolverObjectType = {
    */
   createFormula: async (_, { name, description }: FormulaCreationAttributes): Promise<Formula> => {
     const args: FormulaCreationAttributes = {
-      name: name || "Sans Nom",
-      description: description || "",
+      name: name ?? "Sans Nom",
+      description: description ?? "",
     };
     return Formula.create(args);
   },
@@ -52,8 +52,8 @@ const Mutation: ResolverObjectType = {
     if (formula) {
       clearFormulaLoaders(loaders, formulaId);
 
-      if (name) formula.set({ name });
-      if (description) formula.set({ description });
+      if (name !== undefined) formula.set({ name });
+      if (description !== undefined) formula.set({ description });
       return formula.save();
     }
     return null;
