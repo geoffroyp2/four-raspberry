@@ -37,6 +37,16 @@ export default gql`
     L'id de la courbe de cuisson en direct. Null si la cuisson n'est pas en cours
     """
     currentRecordId: Int
+
+    """
+    Flag qui marque si l'engine est en mode live-monitoring
+    """
+    monitoring: Boolean!
+
+    """
+    Flag qui demande au frontend de rafraichir le graph de la cuisson en cours
+    """
+    refresh: Boolean!
   }
 
   """
@@ -44,14 +54,14 @@ export default gql`
   """
   type Command {
     """
-    Pour changer de courbe de référence
+    Le nom de la commande
     """
-    targetId: Int!
+    name: String!
 
     """
-    Pour changer de status ("start", "stop" ou "pause")
+    Argument optionnel pour certaines commandes, booleans représentés par 0 / 1
     """
-    status: String!
+    option: Int
   }
 
   type Subscription {
@@ -75,7 +85,7 @@ export default gql`
     """
     Met à jour le statut de la cuisson
     """
-    updateStatus(status: String!): Boolean!
+    updateStatus(status: String, targetId: Int, recordId: Int, monitoring: Boolean, refresh: Boolean): Boolean!
 
     """
     Change la courbe de référence
@@ -85,6 +95,6 @@ export default gql`
     """
     Envoie une commande directe à l'engine
     """
-    sendCommand(command: String!): Boolean!
+    sendCommand(name: String!, option: Int): Boolean!
   }
 `;
