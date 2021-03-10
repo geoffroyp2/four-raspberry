@@ -110,4 +110,5 @@ export type LiveValuesType = {
   programTime: number;
   sensors: SensorValuesType;
   currentTargetId: number;
+  currentRecordId: number | null;
 };

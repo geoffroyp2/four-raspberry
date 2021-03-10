@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import client from "@network/apolloClient";
 
 import { store } from "@app/store";
-import { setLiveValues } from "../liveScreenSlice";
+import { setLiveValues } from "../_state/liveScreenSlice";
 
 import rootQueryBuilder from "@utils/GQLQueryBuilder";
 import { LiveValuesType } from "@baseTypes/database/GQLResTypes";
@@ -14,6 +14,7 @@ const subscriptionQuery = rootQueryBuilder({
     fields: [
       "status",
       "currentTargetId",
+      "currentRecordId",
       "programTime",
       {
         type: "sensors",
