@@ -1,6 +1,5 @@
-import Engine from "./engine/engine";
+import engine from "./engine/engine";
 
-const engine = new Engine();
 const loopInterval = 1000; // 200ms
 
 /**

@@ -9,5 +9,5 @@ export const isTargetQueryRes = (data: any): data is TargetQueryResType => {
 };
 
 export const isCommandSubscribeRes = (data: any): data is CommandSubscribeResType => {
-  return data?.command.__typename === "Command";
+  return data?.command?.__typename === "Command";
 };
