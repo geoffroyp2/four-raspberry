@@ -44,6 +44,7 @@
     "start-dev": "nodemon --exec node --inspect --require ts-node/register src/index.ts",
     "test": "jest",
     "generateData": "ts-node src/scripts/generateData/generate.ts",
+    "syncTables": "ts-node src/scripts/generateData/syncTables.ts",
     "build": "webpack",
     "build-ts": "tsc"
   },

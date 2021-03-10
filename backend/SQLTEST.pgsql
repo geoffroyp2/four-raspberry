@@ -12,11 +12,14 @@
 
 -- SELECT COUNT (*) FROM "recordPoints" ;
 
-SELECT * 
-     FROM targets
-     JOIN records ON records."targetId" = targets.id
-     WHERE targets.id = 11
+-- SELECT * 
+--      FROM targets
+--      JOIN records ON records."targetId" = targets.id
+--      WHERE targets.id = 11
 
+SELECT id, name, description ,color, "targetId", finished
+     FROM records
+     ORDER BY id
 
 -- EXPLAIN ANALYZE VERBOSE
 -- SELECT "recordId", time, temperature, oxygen

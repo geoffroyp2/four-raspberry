@@ -13,12 +13,13 @@ const APIConfig: Config = {
     path: "/graphql",
     onConnect: (connectionParams, webSocket, context) => {
       const Headers = (webSocket as any).upgradeReq.rawHeaders as string[];
-      let i = true;
-      const formattedHeaders = Headers.reduce((acc, curr) => {
-        i = !i;
-        return acc + (i ? ": " : "\n") + curr;
-      }, "");
-      console.log(`\nClient connected: ${formattedHeaders}`);
+      const HeaderObj: { [key: string]: string } = {};
+      for (let i = 0; i < Headers.length; i += 2) {
+        HeaderObj[Headers[i]] = Headers[i + 1];
+      }
+      console.log(`\nClient connected:`);
+      console.log(HeaderObj);
+      // console.log(`User-Agent: ${HeaderObj["User-Agent"]}`);
     },
     onDisconnect: (webSocket, context) => {
       console.log("Client disconnected");

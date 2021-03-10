@@ -12,6 +12,7 @@ export const bulkCreate = {
         name: `Record ${i + 1}`,
         description: `Record Description ${i + 1}`,
         color: getColor(),
+        finished: true,
       }))
     );
   },
