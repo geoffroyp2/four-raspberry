@@ -9,7 +9,7 @@ import { ScreenType } from "@navBar/MainNavSlice";
  * Set all needRefresh flags to true. Called after and edit has been made
  */
 
-export const setNeedRefresh = (screenToExclude: ScreenType) => {
+export const setNeedRefresh = (screenToExclude?: ScreenType) => {
   if (screenToExclude !== "target") store.dispatch(setTargetNeedsRefresh(true));
   if (screenToExclude !== "record") store.dispatch(setRecordNeedsRefresh(true));
   if (screenToExclude !== "piece") store.dispatch(setPieceNeedsRefresh(true));

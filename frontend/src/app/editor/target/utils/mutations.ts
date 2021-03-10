@@ -25,8 +25,8 @@ export const saveTargetChanges = async (targetId: number, newData: Target) => {
   );
   const { data } = await client.mutate<{ updateTarget: Target }>({ mutation });
   if (data) {
-    setNeedRefresh("target");
     store.dispatch(setTargetData(data.updateTarget));
+    setNeedRefresh("target");
   }
 };
 
@@ -43,8 +43,8 @@ export const createTarget = async () => {
   );
   const { data } = await client.mutate<{ createTarget: Target }>({ mutation });
   if (data) {
-    setNeedRefresh("target");
     store.dispatch(setTargetData(data.createTarget));
+    setNeedRefresh("target");
   }
 };
 
@@ -60,7 +60,7 @@ export const deleteTarget = async (targetId: number) => {
   );
   const { data } = await client.mutate<{ deleteTarget: boolean }>({ mutation });
   if (data) {
-    setNeedRefresh("target");
     store.dispatch(setTargetId(0));
+    setNeedRefresh();
   }
 };

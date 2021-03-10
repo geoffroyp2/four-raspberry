@@ -25,8 +25,8 @@ export const savePieceChanges = async (pieceId: number, newData: Piece) => {
   );
   const { data } = await client.mutate<{ updatePiece: Piece }>({ mutation });
   if (data) {
-    setNeedRefresh("piece");
     store.dispatch(setPieceData(data.updatePiece));
+    setNeedRefresh("piece");
   }
 };
 
@@ -43,8 +43,8 @@ export const createPiece = async () => {
   );
   const { data } = await client.mutate<{ createPiece: Piece }>({ mutation });
   if (data) {
-    setNeedRefresh("piece");
     store.dispatch(setPieceData(data.createPiece));
+    setNeedRefresh("piece");
   }
 };
 
@@ -60,8 +60,8 @@ export const deletePiece = async (pieceId: number) => {
   );
   const { data } = await client.mutate<{ deletePiece: boolean }>({ mutation });
   if (data) {
-    setNeedRefresh("piece");
     store.dispatch(setPieceId(0));
+    setNeedRefresh();
   }
 };
 
@@ -81,7 +81,7 @@ export const linkPieceFormula = async (pieceId: number, formulaId: number) => {
   );
   const { data } = await client.mutate<{ setPieceFormula: Piece }>({ mutation });
   if (data) {
-    setNeedRefresh("piece");
     store.dispatch(setPieceData(data.setPieceFormula));
+    setNeedRefresh("piece");
   }
 };

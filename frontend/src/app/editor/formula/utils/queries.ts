@@ -2,7 +2,7 @@ import { store } from "@app/store";
 import { FormulaQueryRes } from "@baseTypes/database/GQLResTypes";
 
 import { batch } from "react-redux";
-import { setFormulaData, setFormulaLoadList, setFormulaNeedsRefresh } from "../_state/formulaDataSlice";
+import { setFormulaData, setFormulaId, setFormulaLoadList, setFormulaNeedsRefresh } from "../_state/formulaDataSlice";
 import { setFormulaLoadPage, setFormulaTotalAmount } from "../_state/formulaDisplaySlice";
 
 import { getFormulaFieldsQuery, getFormulaPageRequest } from "./queryDocuments";
@@ -10,6 +10,13 @@ import client from "@network/apolloClient";
 
 export const loadFormula = async (id: number) => {
   const { data } = await client.query<FormulaQueryRes>({ query: getFormulaFieldsQuery(id) });
+
+  // If id was not valid
+  if (store.getState().formulaData.formulaId !== 0 && data.formulas.count === 0) {
+    store.dispatch(setFormulaId(0));
+    return;
+  }
+
   if (data) {
     batch(() => {
       store.dispatch(setFormulaData(data.formulas.rows[0]));

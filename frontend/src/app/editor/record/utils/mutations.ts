@@ -25,8 +25,8 @@ export const saveRecordChanges = async (recordId: number, newData: Record) => {
   );
   const { data } = await client.mutate<{ updateRecord: Record }>({ mutation });
   if (data) {
-    setNeedRefresh("record");
     store.dispatch(setRecordData(data.updateRecord));
+    setNeedRefresh("record");
   }
 };
 
@@ -46,8 +46,8 @@ export const linkRecordTarget = async (recordId: number, targetId: number) => {
   );
   const { data } = await client.mutate<{ setRecordTarget: Record }>({ mutation });
   if (data) {
-    setNeedRefresh("record");
     store.dispatch(setRecordData(data.setRecordTarget));
+    setNeedRefresh("record");
   }
 };
 
@@ -64,8 +64,8 @@ export const createRecord = async () => {
   );
   const { data } = await client.mutate<{ createRecord: Record }>({ mutation });
   if (data) {
-    setNeedRefresh("record");
     store.dispatch(setRecordData(data.createRecord));
+    setNeedRefresh("record");
   }
 };
 
@@ -81,7 +81,7 @@ export const deleteRecord = async (recordId: number) => {
   );
   const { data } = await client.mutate<{ deleteRecord: boolean }>({ mutation });
   if (data) {
-    setNeedRefresh("record");
     store.dispatch(setRecordId(0));
+    setNeedRefresh();
   }
 };

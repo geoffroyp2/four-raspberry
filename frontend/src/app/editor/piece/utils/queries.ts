@@ -3,7 +3,7 @@ import { store } from "@app/store";
 
 import { PieceQueryRes } from "@baseTypes/database/GQLResTypes";
 
-import { setPieceData, setPieceLoadList, setPieceNeedsRefresh } from "../_state/pieceDataSlice";
+import { setPieceData, setPieceId, setPieceLoadList, setPieceNeedsRefresh } from "../_state/pieceDataSlice";
 import { setPieceLoadPage, setPieceTotalAmount } from "../_state/pieceDisplaySlice";
 
 import { getPieceFieldsQuery, getPiecePageRequest } from "./queryDocuments";
@@ -11,6 +11,13 @@ import client from "@network/apolloClient";
 
 export const loadPiece = async (id: number) => {
   const { data } = await client.query<PieceQueryRes>({ query: getPieceFieldsQuery(id) });
+
+  // If id was not valid
+  if (store.getState().pieceData.pieceId !== 0 && data.pieces.count === 0) {
+    store.dispatch(setPieceId(0));
+    return;
+  }
+
   if (data) {
     batch(() => {
       store.dispatch(setPieceData(data.pieces.rows[0]));

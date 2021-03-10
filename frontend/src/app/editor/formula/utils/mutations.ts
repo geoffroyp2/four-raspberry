@@ -25,8 +25,8 @@ export const saveFormulaChanges = async (formulaId: number, newData: Formula) =>
   );
   const { data } = await client.mutate<{ updateFormula: Formula }>({ mutation });
   if (data) {
-    setNeedRefresh("formula");
     store.dispatch(setFormulaData(data.updateFormula));
+    setNeedRefresh("formula");
   }
 };
 
@@ -43,8 +43,8 @@ export const createFormula = async () => {
   );
   const { data } = await client.mutate<{ createFormula: Formula }>({ mutation });
   if (data) {
-    setNeedRefresh("formula");
     store.dispatch(setFormulaData(data.createFormula));
+    setNeedRefresh("formula");
   }
 };
 
@@ -60,7 +60,7 @@ export const deleteFormula = async (formulaId: number) => {
   );
   const { data } = await client.mutate<{ deleteFormula: boolean }>({ mutation });
   if (data) {
-    setNeedRefresh("formula");
     store.dispatch(setFormulaId(0));
+    setNeedRefresh();
   }
 };

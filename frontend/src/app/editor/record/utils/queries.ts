@@ -6,6 +6,7 @@ import { RecordQueryRes } from "@baseTypes/database/GQLResTypes";
 
 import {
   setRecordData,
+  setRecordId,
   setRecordLoadList,
   setRecordNeedsRefresh,
   setRecordPoints,
@@ -18,6 +19,13 @@ import client from "@network/apolloClient";
 
 export const loadRecord = async (id: number) => {
   const { data } = await client.query<RecordQueryRes>({ query: getRecordFieldsQuery(id) });
+
+  // If id was not valid
+  if (store.getState().recordData.recordId !== 0 && data.records.count === 0) {
+    store.dispatch(setRecordId(0));
+    return;
+  }
+
   if (data) {
     batch(() => {
       store.dispatch(setRecordData(data.records.rows[0]));
