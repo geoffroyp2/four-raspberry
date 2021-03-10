@@ -2,6 +2,7 @@ import engine from "./engine";
 
 import { pPause, pStart, pStop } from "./programRunState";
 import { loadTarget } from "./targetGraph";
+import { toggleMonitoring } from "./monitoring";
 
 import { isCommandSubscribeRes } from "../utils/typeCheck";
 
@@ -14,7 +15,7 @@ export const handleCommands = ({ data }: any) => {
   if (isCommandSubscribeRes(data)) {
     const command = data.command;
 
-    switch (command.status) {
+    switch (command.name) {
       case "start":
         pStart();
         break;
@@ -24,10 +25,15 @@ export const handleCommands = ({ data }: any) => {
       case "stop":
         pStop();
         break;
-    }
-
-    if (command.targetId > 0 && command.targetId !== engine.target.id) {
-      loadTarget(command.targetId);
+      case "targetId":
+        loadTarget(command.option);
+        break;
+      case "monitoring":
+        toggleMonitoring(command.option);
+        break;
+      case "ping":
+        reconnect();
+        break;
     }
   }
 };
