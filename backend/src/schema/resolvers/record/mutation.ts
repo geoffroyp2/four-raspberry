@@ -21,24 +21,29 @@ import { DataLoadersType } from "../../dataLoaders";
  * clears the cache from the loaders that are linked to the id
  */
 const clearRecordLoaders = async (loaders: DataLoadersType, recordId: number, targetId?: number) => {
-  loaders.recordPieceListLoader.clear(recordId);
+  loaders.recordPieceListLoader.clearAll();
+  loaders.targetLoader.clearAll();
+  loaders.targetRecordListLoader.clearAll();
+  loaders.pieceRecordListLoader.clearAll();
 
-  const record = await Record.findOne({ where: { id: recordId } });
-  if (record) {
-    if (record.targetId) {
-      loaders.targetLoader.clear(record.targetId);
-      loaders.targetRecordListLoader.clear(record.targetId);
-    }
-    const pieces = await record.getPieces();
-    pieces.forEach((p) => {
-      loaders.pieceRecordListLoader.clear(p.id);
-    });
-  }
+  // loaders.recordPieceListLoader.clear(recordId);
 
-  if (targetId) {
-    loaders.targetLoader.clear(targetId);
-    loaders.targetRecordListLoader.clear(targetId);
-  }
+  // const record = await Record.findOne({ where: { id: recordId } });
+  // if (record) {
+  //   if (record.targetId) {
+  //     loaders.targetLoader.clear(record.targetId);
+  //     loaders.targetRecordListLoader.clear(record.targetId);
+  //   }
+  //   const pieces = await record.getPieces();
+  //   pieces.forEach((p) => {
+  //     loaders.pieceRecordListLoader.clear(p.id);
+  //   });
+  // }
+
+  // if (targetId) {
+  //   loaders.targetLoader.clear(targetId);
+  //   loaders.targetRecordListLoader.clear(targetId);
+  // }
 };
 
 const Mutation: ResolverObjectType = {

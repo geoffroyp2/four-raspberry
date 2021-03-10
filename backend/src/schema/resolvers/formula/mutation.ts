@@ -13,7 +13,8 @@ import {
 } from "../types";
 
 const clearFormulaLoaders = (loaders: DataLoadersType, formulaId: number) => {
-  loaders.formulaLoader.clear(formulaId);
+  loaders.formulaLoader.clearAll();
+  // loaders.formulaLoader.clear(formulaId);
 };
 
 const Mutation: ResolverObjectType = {

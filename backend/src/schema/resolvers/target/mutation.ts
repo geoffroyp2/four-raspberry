@@ -17,8 +17,10 @@ import { DataLoadersType } from "../../dataLoaders";
  * clears the cache from the loaders that are linked to the id
  */
 const clearTargetLoaders = (loaders: DataLoadersType, targetId: number) => {
-  loaders.targetLoader.clear(targetId);
-  loaders.targetRecordListLoader.clear(targetId);
+  loaders.targetLoader.clearAll();
+  loaders.targetRecordListLoader.clearAll();
+  // loaders.targetLoader.clear(targetId);
+  // loaders.targetRecordListLoader.clear(targetId);
 };
 
 const Mutation: ResolverObjectType = {

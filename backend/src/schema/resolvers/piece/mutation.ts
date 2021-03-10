@@ -8,23 +8,28 @@ import { GQLPieceId, GQLPieceUpdate, GQLPieceFormula, ResolverObjectType } from 
  * clears the cache from the loaders that are linked to the id
  */
 const clearPieceLoaders = async (loaders: DataLoadersType, pieceId: number, formulaId?: number) => {
-  loaders.photoLoader.clear(pieceId);
-  loaders.pieceRecordListLoader.clear(pieceId);
+  loaders.photoLoader.clearAll();
+  loaders.pieceRecordListLoader.clearAll();
+  loaders.recordPieceListLoader.clearAll();
+  loaders.formulaLoader.clearAll();
 
-  const piece = await Piece.findOne({ where: { id: pieceId } });
-  const records = await piece?.getRecords();
-  if (records) {
-    records.forEach((r) => {
-      loaders.recordPieceListLoader.clear(r.id);
-    });
-  }
+  // loaders.photoLoader.clear(pieceId);
+  // loaders.pieceRecordListLoader.clear(pieceId);
 
-  if (piece?.formulaId) {
-    loaders.formulaLoader.clear(piece.formulaId);
-  }
-  if (formulaId) {
-    loaders.formulaLoader.clear(formulaId);
-  }
+  // const piece = await Piece.findOne({ where: { id: pieceId } });
+  // const records = await piece?.getRecords();
+  // if (records) {
+  //   records.forEach((r) => {
+  //     loaders.recordPieceListLoader.clear(r.id);
+  //   });
+  // }
+
+  // if (piece?.formulaId) {
+  //   loaders.formulaLoader.clear(piece.formulaId);
+  // }
+  // if (formulaId) {
+  //   loaders.formulaLoader.clear(formulaId);
+  // }
 };
 
 const Mutation: ResolverObjectType = {
