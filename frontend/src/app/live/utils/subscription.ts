@@ -16,6 +16,8 @@ const subscriptionQuery = rootQueryBuilder({
       "currentTargetId",
       "currentRecordId",
       "programTime",
+      "monitoring",
+      "refresh",
       {
         type: "sensors",
         fields: ["oxygen", "temperature"],

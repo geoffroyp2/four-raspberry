@@ -18,8 +18,10 @@ const initialState: LiveDataType = {
       oxygen: 0,
       temperature: 0,
     },
-    currentTargetId: 0,
+    currentTargetId: null,
     currentRecordId: null,
+    monitoring: false,
+    refresh: false,
   },
 };
 
@@ -46,6 +48,8 @@ export const selectLiveSensorValues = (state: RootState) => state.live.values.se
 export const selectLiveTargetId = (state: RootState) => state.live.values.currentTargetId;
 export const selectLiveRecordId = (state: RootState) => state.live.values.currentRecordId;
 export const selectLiveProgramTime = (state: RootState) => state.live.values.programTime;
+export const selectLiveMonitoring = (state: RootState) => state.live.values.monitoring;
+export const selectLiveRefresh = (state: RootState) => state.live.values.refresh;
 export const selectLiveRecord = (state: RootState) => state.live.record;
 export const selectLiveTarget = (state: RootState) => state.live.target;
 

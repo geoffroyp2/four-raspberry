@@ -73,7 +73,7 @@ const serializeObject = (input: object): string => {
     .join(", ")} }`;
 };
 const isColor = (input: any): input is Color => {
-  return input.r !== undefined;
+  return input?.r !== undefined;
 };
 const isEmptyObject = (input: object): boolean => {
   return Object.entries(input).length === 0;

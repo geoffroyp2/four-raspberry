@@ -2,10 +2,11 @@ import EditorCard from "@components/EditorCard";
 import PreviewGraph from "@components/PreviewGraph";
 import React, { FC, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { loadLiveTarget } from "./utils/queries";
+import { loadLiveRecord, loadLiveTarget } from "./utils/queries";
 import {
   selectLiveRecord,
   selectLiveRecordId,
+  selectLiveRefresh,
   selectLiveStatus,
   selectLiveTarget,
   selectLiveTargetId,
@@ -17,15 +18,16 @@ const LiveGraph: FC = () => {
   const currentStatus = useSelector(selectLiveStatus);
   const currentTargetId = useSelector(selectLiveTargetId);
   const currentRecordId = useSelector(selectLiveRecordId);
+  const needsRefresh = useSelector(selectLiveRefresh);
 
   useEffect(() => {
-    if (currentTargetId !== 0 && target.id !== currentTargetId) {
+    if (currentTargetId !== null && currentTargetId !== 0 && target.id !== currentTargetId) {
       loadLiveTarget(currentTargetId);
     }
-    if (currentRecordId !== null) {
-      // Load record points
+    if (currentRecordId !== null && (needsRefresh || record.id === undefined)) {
+      loadLiveRecord(currentRecordId);
     }
-  }, [currentStatus, target.id, currentTargetId, currentRecordId]);
+  }, [currentStatus, target.id, record.id, currentTargetId, currentRecordId, needsRefresh]);
 
   return (
     <EditorCard>

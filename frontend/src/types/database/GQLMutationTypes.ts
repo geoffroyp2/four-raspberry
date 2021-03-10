@@ -37,7 +37,7 @@ export type NoResMutationType =
   | PieceDelete
   | FormulaDelete
   | ChemicalDelete
-  | LiveStatusUpdate
+  | SendCommand
   | LiveTargetIdUpdate;
 
 type MutationTypeNoRes<T, U> = {
@@ -156,9 +156,10 @@ export type ChemicalMutationType = ChemicalCreate | ChemicalUpdate | ChemicalDel
 
 // Live
 export type LiveStatusType = "start" | "stop" | "pause";
-type LiveStatusArgs = { status: LiveStatusType };
+export type CommandNameType = LiveStatusType | "ping" | "monitoring" | "targetId";
+type LiveStatusArgs = { name: CommandNameType; option: number | null };
 type LiveArgs = LiveStatusArgs;
 
-type LiveStatusUpdate = MutationTypeNoRes<"updateStatus", LiveStatusArgs>;
+type SendCommand = MutationTypeNoRes<"sendCommand", LiveStatusArgs>;
 type LiveTargetIdUpdate = MutationTypeNoRes<"updateLiveTargetId", TargetSelectType>;
-export type LiveMutationType = LiveStatusUpdate | LiveTargetIdUpdate;
+export type LiveMutationType = SendCommand | LiveTargetIdUpdate;

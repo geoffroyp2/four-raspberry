@@ -109,6 +109,8 @@ export type LiveValuesType = {
   status: LiveStatusType;
   programTime: number;
   sensors: SensorValuesType;
-  currentTargetId: number;
+  currentTargetId: number | null;
   currentRecordId: number | null;
+  monitoring: boolean;
+  refresh: boolean;
 };
