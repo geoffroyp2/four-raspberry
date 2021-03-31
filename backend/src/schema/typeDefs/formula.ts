@@ -30,6 +30,11 @@ export default gql`
     """
     ingredients: [Ingredient]!
 
+    """
+    La courbe Target la meilleure pour cette formule
+    """
+    target: Target
+
     createdAt: String!
     updatedAt: String!
   }
@@ -89,5 +94,11 @@ export default gql`
     Sélectionne une Formula et un Chemical par id et supprime leur association
     """
     removeFormulaIngredient(formulaId: Int!, chemicalid: Int!): Formula
+
+    """
+    Lie une Target (par id) à une Formula (par id).
+    Si targetId n'est pas défini, retire le lien s'il existe
+    """
+    setFormulaTarget(formulaId: Int!, targetId: Int): Formula
   }
 `;

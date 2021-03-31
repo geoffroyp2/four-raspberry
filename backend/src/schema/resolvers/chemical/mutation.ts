@@ -1,10 +1,12 @@
 import Chemical, { ChemicalCreationAttributes } from "../../../database/models/formula/chemical";
+import ChemicalVersion from "../../../database/models/formula/chemicalVersion";
 import { colorToString } from "../../../utils/strings";
 import { DataLoadersType } from "../../dataLoaders";
-import { GQLChemical, GQLChemicalId, GQLChemicalUpdate, ResolverObjectType } from "../types";
+import { GQLChemical, GQLChemicalId, GQLChemicalUpdate, ResolverObjectType, GQLChemicalVersion } from "../types";
 
 const clearChemicalLoaders = (loaders: DataLoadersType, chemicalId: number) => {
-  // TODO
+  loaders.formulaLoader.clearAll();
+  loaders.versionLoader.clearAll();
 };
 
 const Mutation: ResolverObjectType = {
@@ -13,12 +15,12 @@ const Mutation: ResolverObjectType = {
    * @param args optional arguments to be passed, all have default values
    * @return the new Target
    */
-  createChemical: async (_, { name, chemicalName, color, density }: Partial<GQLChemical>): Promise<Chemical> => {
+  createChemical: async (_, { name, chemicalName, color }: Partial<GQLChemical>): Promise<Chemical> => {
     const args: ChemicalCreationAttributes = {
       name: name ?? "Sans Nom",
       chemicalName: chemicalName ?? "",
+      currentVersion: "",
       color: colorToString(color),
-      density: density ?? 1,
     };
     return Chemical.create(args);
   },
@@ -40,20 +42,84 @@ const Mutation: ResolverObjectType = {
    * @param args the fields to update
    * @return the updated Chemical or null if not in database
    */
-  updateChemical: async (
-    _,
-    { chemicalId, name, chemicalName, density, color }: GQLChemicalUpdate,
-    loaders
-  ): Promise<Chemical | null> => {
+  updateChemical: async (_, { chemicalId, name, chemicalName, color }: GQLChemicalUpdate, loaders): Promise<Chemical | null> => {
     const chemical = await Chemical.findOne({ where: { id: chemicalId } });
     if (chemical) {
       clearChemicalLoaders(loaders, chemicalId);
 
       if (name !== undefined) chemical.set({ name });
       if (chemicalName !== undefined) chemical.set({ chemicalName });
-      if (density !== undefined) chemical.set({ density });
       if (color !== undefined) chemical.set({ color: colorToString(color) });
       return chemical.save();
+    }
+    return null;
+  },
+
+  /**
+   * Adds a new version to the list for the Chemical
+   * @param chemicalId the Chemical id
+   * @param versionName the name for the new version
+   * @returns the updated Chemical
+   */
+  addChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
+    const chemical = await Chemical.findOne({ where: { id: chemicalId } });
+    if (chemical) {
+      clearChemicalLoaders(loaders, chemicalId);
+
+      chemical.createVersion({ name: versionName });
+      chemical.set({ currentVersion: versionName });
+      return chemical.save();
+    }
+    return null;
+  },
+
+  /**
+   * Deletes a version from the list for the Chemical
+   * @param chemicalId the Chemical id
+   * @param versionName the name of the version
+   * @returns the updated Chemical
+   */
+  deleteChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
+    const chemical = await Chemical.findOne({ where: { id: chemicalId } });
+    if (chemical) {
+      clearChemicalLoaders(loaders, chemicalId);
+
+      const version = await ChemicalVersion.findOne({ where: { chemicalId, name: versionName } });
+      if (version) {
+        await version.destroy();
+      }
+
+      // If currentVersion was deleted, automatically reselect the first one in the list
+      if (chemical.currentVersion === versionName) {
+        const versions = await chemical.getVersions();
+        chemical.set({ currentVersion: versions[0]?.name ?? "" });
+        return chemical.save();
+      }
+
+      return chemical;
+    }
+    return null;
+  },
+
+  /**
+   * Sets another version from the list for the Chemical (the name has to exist in the database)
+   * Idea: merge with createChemicalVersion (setOrCreateChemicalVersion)
+   * @param chemicalId the Chemical id
+   * @param versionName the name for the new version
+   * @returns the updated Chemical
+   */
+  setChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
+    const chemical = await Chemical.findOne({ where: { id: chemicalId } });
+    if (chemical) {
+      clearChemicalLoaders(loaders, chemicalId);
+
+      const version = await ChemicalVersion.findOne({ where: { chemicalId, name: versionName } });
+      if (version) {
+        chemical.set({ currentVersion: version.name });
+        return chemical.save();
+      }
+
+      return chemical;
     }
     return null;
   },

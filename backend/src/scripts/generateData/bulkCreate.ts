@@ -51,7 +51,7 @@ export const bulkCreate = {
       [...Array(amount)].map((e, i) => ({
         name: `Chemical ${i + 1}`,
         chemicalName: `Chemical Name ${i + 1}`,
-        density: Math.floor(Math.random() * 150),
+        currentVersion: "",
         color: getColor(),
       }))
     );

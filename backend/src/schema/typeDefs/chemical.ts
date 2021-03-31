@@ -11,19 +11,24 @@ export default gql`
     id: Int!
 
     """
-    Le nom français de l'élément chimique
+    Le nom usuel de l'élément chimique
     """
     name: String!
 
     """
-    La composition moléculaire de l'élément chimique
+    Le nom chimique de l'élément
     """
     chemicalName: String!
 
     """
-    La densité moléculaire de l'élément chimique -> volumetric mass density r = m / V
+    La version de l'élément chimique (s'il y a plusieurs récoltes par exemple)
     """
-    density: Int!
+    currentVersion: String
+
+    """
+    La liste des versions qui existent pour l'élément
+    """
+    existingVersions: [String]
 
     """
     Couleur de la courbe de température de la forme {r, g, b, a}.
@@ -51,7 +56,7 @@ export default gql`
     """
     Crée un Chemical, les champs par défaut sont générés automatiquement si non spécifiés
     """
-    createChemical(name: String, chemicalName: String, density: Int, color: ColorInput): Chemical!
+    createChemical(name: String, chemicalName: String, color: ColorInput): Chemical!
 
     """
     Supprime un Chemical par id
@@ -61,6 +66,21 @@ export default gql`
     """
     Sélectionne un Chemical par id et met à jour les champs spécifiés
     """
-    updateChemical(chemicalId: Int!, name: String, chemicalName: String, density: Int, color: ColorInput): Chemical
+    updateChemical(chemicalId: Int!, name: String, chemicalName: String, color: ColorInput): Chemical
+
+    """
+    Ajoute une version pour le Chemical Spécifié (et l'ajoute en tant que currentVersion)
+    """
+    addChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
+
+    """
+    Supprime la Version spécifiée du Chemical spécifié
+    """
+    deleteChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
+
+    """
+    Change la version du chemical Spécifié
+    """
+    setChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
   }
 `;

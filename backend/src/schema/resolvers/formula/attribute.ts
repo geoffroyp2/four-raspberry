@@ -1,5 +1,6 @@
 import Formula from "../../../database/models/formula/formula";
 import Piece from "../../../database/models/piece/piece";
+import Target from "../../../database/models/target/target";
 
 import { GQLGenericResearchFields, GQLIngredientType, ResolverObjectType } from "../types";
 
@@ -29,6 +30,14 @@ const Attribute: ResolverObjectType = {
       amount: c.Ingredient!.amount,
       chemical: c,
     }));
+  },
+
+  /**
+   * @param parent the Formula
+   * @return the Target linked with the Record or null if no link
+   */
+  target: async (parent: Formula, _, { targetLoader }): Promise<Target | null> => {
+    return parent.targetId ? targetLoader.load(parent.targetId) : null;
   },
 
   /**

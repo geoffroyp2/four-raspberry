@@ -10,6 +10,7 @@ import {
   Model,
 } from "sequelize";
 import { Optional } from "sequelize/types";
+import Formula from "../formula/formula";
 
 import Record from "../record/record";
 import TargetPoint from "./targetPoints";
@@ -44,6 +45,15 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
   public createRecord!: HasManyCreateAssociationMixin<Record>;
   public removeRecord!: HasManyRemoveAssociationMixin<Record, number>;
 
+  // Foreign keys: Formulas
+  public readonly formulas?: Formula[];
+  public getFormulas!: HasManyGetAssociationsMixin<Formula>;
+  public addFormula!: HasManyAddAssociationMixin<Formula, number>;
+  public hasFormula!: HasManyHasAssociationMixin<Formula, number>;
+  public countFormulas!: HasManyCountAssociationsMixin;
+  public createFormula!: HasManyCreateAssociationMixin<Formula>;
+  public removeFormula!: HasManyRemoveAssociationMixin<Formula, number>;
+
   // Foreign keys: Points
   public readonly points?: TargetPoint[];
   public getPoints!: HasManyGetAssociationsMixin<TargetPoint>;
@@ -55,6 +65,7 @@ class Target extends Model<TargetAttributes, TargetCreationAttributes> implement
 
   public static associations: {
     records: Association<Target, Record>;
+    formulas: Association<Target, Formula>;
     points: Association<Target, TargetPoint>;
   };
 }

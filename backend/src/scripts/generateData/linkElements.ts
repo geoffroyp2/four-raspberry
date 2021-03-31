@@ -3,7 +3,7 @@ import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
 import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
-import { getUrl, interpolate, Timer } from "./utils";
+import { getUrl, getVersionName, interpolate, Timer } from "./utils";
 
 type MinMax = {
   min: number;
@@ -120,9 +120,7 @@ export const link = {
   formulaChemical: async (formulas: Formula[], chemicals: Chemical[], chemicalsPerFormula: MinMax) => {
     return Promise.all(
       formulas.map(async (f) => {
-        const amount = Math.floor(
-          Math.random() * (chemicalsPerFormula.max - chemicalsPerFormula.min) + chemicalsPerFormula.min
-        );
+        const amount = Math.floor(Math.random() * (chemicalsPerFormula.max - chemicalsPerFormula.min) + chemicalsPerFormula.min);
         const chemicalAmounts = [...Array(amount)].map((e) => Math.floor(Math.random() * 100));
         const totalAmounts = chemicalAmounts.reduce((acc, curr) => acc + curr, 0);
         const chosenIdx: number[] = [];
@@ -136,6 +134,29 @@ export const link = {
           chosenIdx.push(idx);
           await f.addChemical(chemicals[idx], { through: { amount: chemicalAmounts[i] / totalAmounts } });
         }
+      })
+    );
+  },
+
+  chemicalVersion: async (chemicals: Chemical[], versionsPerChemical: MinMax) => {
+    return Promise.all(
+      chemicals.map(async (c) => {
+        const amount = Math.floor(Math.random() * (versionsPerChemical.max - versionsPerChemical.min) + versionsPerChemical.min);
+        for (let i = 0; i < amount; i++) {
+          await c.createVersion({ name: getVersionName() });
+        }
+        const versions = await c.getVersions();
+        if (versions.length > 0) c.set({ currentVersion: versions[Math.floor(Math.random() * versions.length)].name });
+        await c.save();
+      })
+    );
+  },
+
+  formulaTarget: async (formulas: Formula[], targets: Target[]) => {
+    return Promise.all(
+      formulas.map(async (f) => {
+        const idx = Math.floor(Math.random() * targets.length);
+        await targets[idx].addFormula(f);
       })
     );
   },

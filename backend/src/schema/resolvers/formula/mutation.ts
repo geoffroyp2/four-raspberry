@@ -1,10 +1,12 @@
 import Chemical from "../../../database/models/formula/chemical";
 import Formula, { FormulaCreationAttributes } from "../../../database/models/formula/formula";
+import Target from "../../../database/models/target/target";
 import { DataLoadersType } from "../../dataLoaders";
 
 import {
   GQLFormula,
   GQLFormulaId,
+  GQLFormulaTarget,
   GQLFormulaUpdate,
   GQLIngredientAdd,
   GQLIngredientSelect,
@@ -12,8 +14,9 @@ import {
   ResolverObjectType,
 } from "../types";
 
-const clearFormulaLoaders = (loaders: DataLoadersType, formulaId: number) => {
+const clearFormulaLoaders = (loaders: DataLoadersType, formulaId: number, targetId?: number) => {
   loaders.formulaLoader.clearAll();
+  loaders.targetLoader.clearAll();
   // loaders.formulaLoader.clear(formulaId);
 };
 
@@ -56,6 +59,38 @@ const Mutation: ResolverObjectType = {
       if (name !== undefined) formula.set({ name });
       if (description !== undefined) formula.set({ description });
       return formula.save();
+    }
+    return null;
+  },
+
+  /**
+   * Links a Target to a Record
+   * @param recordId the id of the Record to select
+   * @param targetId the id of the Target to select, if undefined, remove existing link
+   * @return the Record or null if the Record or the Target does not exist
+   */
+  setFormulaTarget: async (_, { formulaId, targetId }: GQLFormulaTarget, loaders): Promise<Formula | null> => {
+    const formula = await Formula.findOne({ where: { id: formulaId } });
+    if (formula) {
+      clearFormulaLoaders(loaders, formulaId, targetId);
+
+      if (targetId) {
+        // if targetId specified, find new target and update
+        const target = await Target.findOne({ where: { id: targetId } });
+        if (target) {
+          await target.addFormula(formula);
+          return Formula.findOne({ where: { id: formulaId } });
+        }
+      } else {
+        // if no targetId, remove previous link if it exists
+        if (formula.targetId) {
+          const target = await Target.findOne({ where: { id: formula.targetId } });
+          if (target) {
+            await target.removeFormula(formula);
+            return Formula.findOne({ where: { id: formulaId } });
+          }
+        }
+      }
     }
     return null;
   },
@@ -107,10 +142,7 @@ const Mutation: ResolverObjectType = {
    * @param amount the amount
    * @returns the updated Formula or null if not found
    */
-  addFormulaIngredient: async (
-    { formulaId, chemicalId, amount }: GQLIngredientAdd,
-    loaders
-  ): Promise<Formula | null> => {
+  addFormulaIngredient: async ({ formulaId, chemicalId, amount }: GQLIngredientAdd, loaders): Promise<Formula | null> => {
     const formula = await Formula.findOne({ where: { id: formulaId } });
     const chemical = await Chemical.findOne({ where: { id: chemicalId } });
     if (formula && chemical) {

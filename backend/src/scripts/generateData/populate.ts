@@ -41,4 +41,8 @@ export const populateTest = async (database: Sequelize) => {
   console.log(`Target points created (${timer.new()})`);
   await link.recordPoints(records, 3);
   console.log(`Record points created (${timer.new()})`);
+  await link.formulaTarget(formulas, targets);
+  console.log(`Formula-Target linked (${timer.new()})`);
+  await link.chemicalVersion(chemicals, { min: 0, max: 6 });
+  console.log(`Chemical versions created (${timer.new()})`);
 };

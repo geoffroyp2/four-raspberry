@@ -40,11 +40,11 @@ export const getOven = (): OvenType => {
   return ovens[Math.round(Math.random())];
 };
 
-export const interpolate = (
-  time: number,
-  points: TargetPoint[],
-  offset: number
-): { temperature: number; oxygen: number } => {
+export const getVersionName = () => {
+  return Math.floor(Math.random() * 2 ** 48).toString(16);
+};
+
+export const interpolate = (time: number, points: TargetPoint[], offset: number): { temperature: number; oxygen: number } => {
   // find index for current time
   let idx = 1;
   for (; idx < points.length; idx++) {

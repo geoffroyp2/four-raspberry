@@ -17,9 +17,14 @@
 --      JOIN records ON records."targetId" = targets.id
 --      WHERE targets.id = 11
 
-SELECT id, name, description ,color, "targetId", finished
-     FROM records
-     ORDER BY id
+-- SELECT id, name, description ,color, "targetId", finished
+--      FROM records
+--      ORDER BY id
+
+SELECT c.id, c.name, c."currentVersion", cv.id, cv.name
+     FROM chemicals c
+     JOIN "chemicalVersions" cv ON cv."chemicalId" = c.id
+     ORDER BY c.id
 
 -- EXPLAIN ANALYZE VERBOSE
 -- SELECT "recordId", time, temperature, oxygen

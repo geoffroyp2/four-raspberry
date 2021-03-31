@@ -1,6 +1,6 @@
 import DataLoader from "dataloader";
-import { orderBy } from "lodash";
 import { Sequelize } from "sequelize";
+import ChemicalVersion from "../../database/models/formula/chemicalVersion";
 import Formula from "../../database/models/formula/formula";
 import Photo from "../../database/models/piece/photo";
 import Piece from "../../database/models/piece/piece";
@@ -70,6 +70,13 @@ const DataLoaders = {
     const map: { [key: number]: Formula } = {};
     results.forEach((e) => (map[e.id] = e));
     return formulaIds.map((key) => map[key]);
+  }),
+
+  versionLoader: new DataLoader(async (chemicalIds: readonly number[]) => {
+    const results = await ChemicalVersion.findAll({ where: { chemicalId: chemicalIds } });
+    const map: { [key: number]: string[] } = {};
+    results.forEach((e) => (map[e.chemicalId] ? map[e.chemicalId].push(e.name) : (map[e.chemicalId] = [e.name])));
+    return chemicalIds.map((key) => map[key]);
   }),
 };
 

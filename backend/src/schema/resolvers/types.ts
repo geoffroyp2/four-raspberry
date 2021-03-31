@@ -112,7 +112,6 @@ export interface GQLChemical {
   name: string;
   chemicalName: string;
   color: ColorType;
-  density: number;
 }
 
 export interface GQLTargetQuery extends GQLGenericResearchFields, GQLPageOptions {}
@@ -137,6 +136,7 @@ export interface GQLPieceQuery extends GQLGenericResearchFields, GQLPageOptions 
 export interface GQLPieceUpdate extends GQLPieceId, Partial<GQLPiece> {}
 export interface GQLPieceFormula extends GQLPieceId, GQLFormulaId {}
 
+export interface GQLFormulaTarget extends GQLFormulaId, GQLTargetId {}
 export interface GQLFormulaUpdate extends GQLFormulaId, Partial<GQLFormula> {}
 export interface GQLFormulaQuery extends GQLGenericResearchFields, GQLPageOptions {}
 export interface GQLIngredientSelect extends GQLFormulaId, GQLChemicalId {}
@@ -149,6 +149,9 @@ export interface GQLIngredientUpdate extends GQLIngredientAdd {
 
 export interface GQLChemicalQuery extends GQLChemicalFind, GQLPageOptions {}
 export interface GQLChemicalUpdate extends GQLChemicalId, Partial<GQLChemical> {}
+export interface GQLChemicalVersion extends GQLChemicalId {
+  versionName: string;
+}
 
 type GQLQueryRes<T> = {
   count: number;

@@ -8,6 +8,7 @@ import Ingredient, { ingredientModelAttributes } from "./formula/ingredient";
 import Chemical, { chemicalModelAttributes } from "./formula/chemical";
 import TargetPoint, { targetPointModelAttributes } from "./target/targetPoints";
 import RecordPoint, { recordPointModelAttributes } from "./record/recordPoints";
+import ChemicalVersion, { chemicalVersionModelAttributes } from "./formula/chemicalVersion";
 
 /**
  * Initialize models, representing a table in the DB, with attributes and options
@@ -16,42 +17,47 @@ import RecordPoint, { recordPointModelAttributes } from "./record/recordPoints";
 
 export const initializeSequelizeModels = (sequelize: Sequelize) => {
   Target.init(targetModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "targets",
   });
 
   Record.init(recordModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "records",
   });
 
   Piece.init(pieceModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "pieces",
   });
 
   Photo.init(photoModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "photos",
   });
 
   Formula.init(formulaModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "formulas",
   });
 
   Ingredient.init(ingredientModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "ingredients",
   });
 
   Chemical.init(chemicalModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "chemicals",
   });
 
+  ChemicalVersion.init(chemicalVersionModelAttributes, {
+    sequelize,
+    tableName: "chemicalVersions",
+  });
+
   TargetPoint.init(targetPointModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "targetPoints",
     indexes: [
       {
@@ -63,7 +69,7 @@ export const initializeSequelizeModels = (sequelize: Sequelize) => {
   });
 
   RecordPoint.init(recordPointModelAttributes, {
-    sequelize: sequelize,
+    sequelize,
     tableName: "recordPoints",
     indexes: [
       {
@@ -153,5 +159,19 @@ const associate = () => {
     },
     foreignKey: "chemicalId",
     constraints: true,
+  });
+
+  // Chemical (1) <--> ChemicalVersion (n)
+  Chemical.hasMany(ChemicalVersion, {
+    sourceKey: "id",
+    foreignKey: "chemicalId",
+    as: "versions",
+  });
+
+  // Target (1) <--> Formula (n)
+  Target.hasMany(Formula, {
+    sourceKey: "id",
+    foreignKey: "targetId",
+    as: "formulas",
   });
 };

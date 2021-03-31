@@ -9,16 +9,23 @@ import {
   BelongsToManyCountAssociationsMixin,
   BelongsToManyCreateAssociationMixin,
   BelongsToManyRemoveAssociationMixin,
+  HasManyGetAssociationsMixin,
+  HasManyAddAssociationMixin,
+  HasManyHasAssociationMixin,
+  HasManyCountAssociationsMixin,
+  HasManyCreateAssociationMixin,
+  HasManyRemoveAssociationMixin,
 } from "sequelize";
 import Formula from "./formula";
 import Ingredient from "./ingredient";
+import ChemicalVersion from "./chemicalVersion";
 
 export type ChemicalAttributes = {
   id: number;
   name: string;
   chemicalName: string;
+  currentVersion: string;
   color: string;
-  density: number;
 };
 export interface ChemicalCreationAttributes extends Optional<ChemicalAttributes, "id"> {}
 
@@ -26,13 +33,24 @@ class Chemical extends Model<ChemicalAttributes, ChemicalCreationAttributes> imp
   public id!: number;
   public name!: string;
   public chemicalName!: string;
-  public density!: number;
   public color!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Foreign keys: Ingredient when queried through Chemical - Formula association
+  // Foreign key: Ingredient when queried through Chemical - Formula association
   public readonly Ingredient?: Ingredient;
+
+  // Current version id
+  public readonly currentVersion!: string;
+
+  // Forign key: ChemicalVersion (for different suppliers)
+  public readonly versions?: ChemicalVersion[];
+  public getVersions!: HasManyGetAssociationsMixin<ChemicalVersion>;
+  public addVersion!: HasManyAddAssociationMixin<ChemicalVersion, number>;
+  public hasVersion!: HasManyHasAssociationMixin<ChemicalVersion, number>;
+  public countVersions!: HasManyCountAssociationsMixin;
+  public createVersion!: HasManyCreateAssociationMixin<ChemicalVersion>;
+  public removeVersion!: HasManyRemoveAssociationMixin<ChemicalVersion, number>;
 
   // Foreign keys: Formulas
   public readonly formulas?: Formula[];
@@ -45,6 +63,7 @@ class Chemical extends Model<ChemicalAttributes, ChemicalCreationAttributes> imp
 
   public static associations: {
     formulas: Association<Chemical, Formula>;
+    versions: Association<Chemical, ChemicalVersion>;
   };
 }
 
@@ -62,17 +81,16 @@ export const chemicalModelAttributes = {
   chemicalName: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "Sans Formule",
+    defaultValue: "Sans Nom Chimique",
+  },
+  currentVersion: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   color: {
     type: new DataTypes.STRING(15),
     allowNull: false,
     defaultValue: "210-210-210-0.9",
-  },
-  density: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1,
   },
 };
 

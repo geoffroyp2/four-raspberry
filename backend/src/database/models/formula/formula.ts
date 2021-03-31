@@ -37,6 +37,9 @@ class Formula extends Model<FormulaAttributes, FormulaCreationAttributes> implem
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
+  // Foreign key: Target
+  public targetId!: number | null;
+
   // Foreign keys: Piece
   public readonly pieces?: Piece[];
   public getPieces!: HasManyGetAssociationsMixin<Piece>;
@@ -79,6 +82,10 @@ export const formulaModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "",
+  },
+  targetId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
 };
 
