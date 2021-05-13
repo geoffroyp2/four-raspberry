@@ -16,6 +16,8 @@
 /backend/src/database/config/*
 /backend/dist/*
 /frontend/.eslintcache
+/imageServer/public/testImages/*
+/imageServer/public/images/*
 
 # testing
 /coverage

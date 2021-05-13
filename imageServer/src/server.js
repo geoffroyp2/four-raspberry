@@ -29,7 +29,13 @@ const Upload = multer({
 // PATH
 
 app.get("/files", (req, res) => {
-  fileList((files) => {
+  fileList("images", (files) => {
+    res.json(files);
+  });
+});
+
+app.get("/testFiles", (req, res) => {
+  fileList("testImages", (files) => {
     res.json(files);
   });
 });

@@ -28,7 +28,7 @@ const buildTable = () => {
         .on("click", `#show-${getID(elem)}`, () => $("#imgDisplay").html(`<img src="images/${elem}" />`)); // bind function
       $("#tableBody")
         .off("click", `#del-${getID(elem)}`)
-        .on("click", `#del-${getID(elem)}`, () => $.get(`/delete?del=${elem}`, buildTable));
+        .on("click", `#del-${getID(elem)}`, () => $.get(`/delete?del=images/${elem}`, buildTable));
     });
   });
 };
