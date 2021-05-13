@@ -1,8 +1,13 @@
+import axios from "axios";
+import FormData from "form-data";
+
 import Formula from "../../../database/models/formula/formula";
 import Piece, { PieceCreationAttributes } from "../../../database/models/piece/piece";
 import { DataLoadersType } from "../../dataLoaders";
+import { imageServerConfig } from "../../../imageServerConfig";
 
-import { GQLPieceId, GQLPieceUpdate, GQLPieceFormula, ResolverObjectType } from "../types";
+import { GQLPieceId, GQLPieceUpdate, GQLPieceFormula, ResolverObjectType, GQLUploadImage, GQLDeleteImage } from "../types";
+import Photo from "../../../database/models/piece/photo";
 
 /**
  * clears the cache from the loaders that are linked to the id
@@ -103,6 +108,54 @@ const Mutation: ResolverObjectType = {
       }
     }
     return null;
+  },
+
+  uploadImage: async (_, { pieceId, file }: GQLUploadImage, loaders): Promise<boolean> => {
+    const piece = await Piece.findOne({ where: { id: pieceId } });
+    if (!piece) return false;
+
+    // 1. Validate file metadata.
+    const { createReadStream, filename, mimetype, encoding } = await file;
+    if (mimetype !== "image/jpeg") return false;
+
+    try {
+      // 2. Stream file contents into the imageServer:
+      const stream = createReadStream(); // Get stream from data
+      const fd = new FormData(); // Create a new form obeject
+      fd.append("image", stream, { filename }); // append the stream as "image"
+
+      const res = await axios.post(imageServerConfig.baseUrl + imageServerConfig.uploadPath, fd, { headers: fd.getHeaders() }); // Post it
+      if (!res.data?.url) return false;
+
+      // 3. Record the file url in the DB.
+      // only the relative path is recorded because baseURL is subject to change
+      // The full URL is re-formed by the photo attribute query resolver
+      await piece.createPhoto({ url: res.data.url });
+      clearPieceLoaders(loaders, pieceId);
+
+      return true;
+    } catch (e) {
+      console.log({ error: "ERROR: Could not upload image", status: e.response.status, data: e.response.data });
+      return false;
+    }
+  },
+
+  deleteImage: async (_, { pieceId, url }: GQLDeleteImage, loaders): Promise<boolean> => {
+    const piece = await Piece.findOne({ where: { id: pieceId } });
+    if (!piece) return false;
+
+    // Remove base url from the url that is sent by the frontend
+    const realUrl = url.substr(imageServerConfig.baseUrl.length);
+
+    // Remove the entry from the database
+    const result = await Photo.destroy({ where: { url: realUrl } });
+    clearPieceLoaders(loaders, pieceId);
+
+    // Delete the image from the imageServer
+    const imgId = realUrl.substring(imageServerConfig.deletePath.length + 1); // only the name of the file without the ./images/ path
+    await axios.get(imageServerConfig.baseUrl + imageServerConfig.deletePath, { params: { del: imgId } });
+
+    return result > 0;
   },
 };
 

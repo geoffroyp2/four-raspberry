@@ -10,6 +10,10 @@
 --      WHERE p."targetId" = 7
 --      ORDER BY "targetId", time;
 
+SELECT pieces.id, name, description, url, photos.id
+     FROM pieces
+     JOIN photos ON photos."pieceId" = pieces.id;
+
 -- SELECT COUNT (*) FROM "recordPoints" ;
 
 -- SELECT * 
@@ -21,10 +25,10 @@
 --      FROM records
 --      ORDER BY id
 
-SELECT c.id, c.name, c."currentVersion", cv.id, cv.name
-     FROM chemicals c
-     JOIN "chemicalVersions" cv ON cv."chemicalId" = c.id
-     ORDER BY c.id
+-- SELECT c.id, c.name, c."currentVersion", cv.id, cv.name
+--      FROM chemicals c
+--      JOIN "chemicalVersions" cv ON cv."chemicalId" = c.id
+--      ORDER BY c.id
 
 -- EXPLAIN ANALYZE VERBOSE
 -- SELECT "recordId", time, temperature, oxygen

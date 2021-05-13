@@ -2,6 +2,11 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   """
+  Upload est le scalar par defaut pour l'upload de fichiers
+  """
+  scalar Upload
+
+  """
   Piece est une poterie
   """
   type Piece {
@@ -19,6 +24,7 @@ export default gql`
     la description de la Piece
     """
     description: String!
+
     """
     Les urls des photos associées à la Piece
     """
@@ -66,5 +72,12 @@ export default gql`
     Si formulaId n'est pas défini, retire le lien s'il existe
     """
     setPieceFormula(pieceId: Int!, formulaId: Int): Piece
+
+    """
+    Upload une image pour la Piece spécifiée
+    """
+    uploadImage(pieceId: Int!, file: Upload!): Boolean!
+
+    deleteImage(pieceId: Int!, url: String!): Boolean!
   }
 `;

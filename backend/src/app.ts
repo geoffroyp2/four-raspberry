@@ -6,6 +6,7 @@ import { initializeSequelizeModels } from "./database/models/init";
 import database from "./database";
 import schema from "./schema";
 import DataLoaders from "./schema/dataLoaders";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const APIConfig: Config = {
   schema,
@@ -28,10 +29,18 @@ const APIConfig: Config = {
   context: DataLoaders,
   introspection: true, // Verbose errors
   playground: true, // Playground
+  uploads: false, // Overriden by graphql-upload lib
 };
 
 // Create express instance and plug Apollo in
 const app = express();
+app.use(
+  graphqlUploadExpress({
+    maxFileSize: 1000000000,
+    maxFiles: 10,
+  })
+); // graphql-upload setup
+
 const APIServer = new ApolloServer(APIConfig);
 APIServer.applyMiddleware({
   app,
