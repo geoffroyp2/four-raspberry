@@ -2,6 +2,7 @@
  * Types and interfaces used for resolvers' inputs and outputs
  */
 
+import { FileUpload } from "graphql-upload";
 import Chemical, { ChemicalAttributes } from "../../database/models/formula/chemical";
 import Formula from "../../database/models/formula/formula";
 import Piece from "../../database/models/piece/piece";
@@ -163,3 +164,11 @@ export type GQLRecordQueryRes = GQLQueryRes<Record>;
 export type GQLPieceQueryRes = GQLQueryRes<Piece>;
 export type GQLFormulaQueryRes = GQLQueryRes<Formula>;
 export type GQLChemicalQueryRes = GQLQueryRes<Chemical>;
+
+export interface GQLUploadImage extends GQLPieceId {
+  file: Promise<FileUpload>;
+}
+
+export interface GQLDeleteImage extends GQLPieceId {
+  url: string;
+}

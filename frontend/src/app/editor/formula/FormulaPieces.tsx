@@ -13,6 +13,7 @@ import PieceTable from "@components/Tables/PieceTable";
 import ListIcon from "@src/assets/ListIcon";
 import TileIcon from "@src/assets/TileIcon";
 import GotoIcon from "@src/assets/GotoIcon";
+import ImageZone from "@components/images/ImageZone";
 
 const FormulaPieces = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,9 @@ const FormulaPieces = () => {
             </PieceTable>
           );
         case "grid":
-          return <></>;
+          const photos: string[] = [];
+          currentFormula.pieces.forEach((p) => photos.forEach((ph) => photos.push(ph)));
+          return <ImageZone photos={photos} showButtons={false} />;
       }
     return <></>;
   };
@@ -52,7 +55,7 @@ const FormulaPieces = () => {
   return (
     <EditorCard className="record-pieces">
       <Container fluid>
-        <label>Potteries</label>
+        <label>Poteries</label>
         <ButtonGroup>
           <Button className="btn-secondary" onClick={() => dispatch(setFormulaPieceDisplay("list"))}>
             <ListIcon />

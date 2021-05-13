@@ -6,6 +6,7 @@ import Photo from "../../database/models/piece/photo";
 import Piece from "../../database/models/piece/piece";
 import Record from "../../database/models/record/record";
 import Target from "../../database/models/target/target";
+import { imageServerConfig } from "../../imageServerConfig";
 
 /**
  * DataLoaders called by resolvers to batch n + 1 queries
@@ -48,7 +49,7 @@ const DataLoaders = {
     const map: { [key: number]: Record[] } = {};
     await Promise.all(
       pieceIds.map(async (id) => {
-        const piece = await Piece.findOne({ where: { id } });
+        const piece = await Piece.findOne({ where: { id }, order: [["id", "ASC"]] });
         const records = await piece?.getRecords();
         if (records) {
           map[id] = records;
@@ -59,9 +60,13 @@ const DataLoaders = {
   }),
 
   photoLoader: new DataLoader(async (pieceIds: readonly number[]) => {
-    const results = await Photo.findAll({ where: { pieceId: pieceIds } });
+    const results = await Photo.findAll({ where: { pieceId: pieceIds }, order: [["id", "ASC"]] });
     const map: { [key: number]: string[] } = {};
-    results.forEach((e) => (map[e.pieceId] ? map[e.pieceId].push(e.url) : (map[e.pieceId] = [e.url])));
+    results.forEach((e) =>
+      map[e.pieceId]
+        ? map[e.pieceId].push(imageServerConfig.baseUrl + e.url)
+        : (map[e.pieceId] = [imageServerConfig.baseUrl + e.url])
+    );
     return pieceIds.map((key) => map[key] || []);
   }),
 

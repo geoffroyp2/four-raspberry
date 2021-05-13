@@ -152,8 +152,7 @@ const Mutation: ResolverObjectType = {
     clearPieceLoaders(loaders, pieceId);
 
     // Delete the image from the imageServer
-    const imgId = realUrl.substring(imageServerConfig.deletePath.length + 1); // only the name of the file without the ./images/ path
-    await axios.get(imageServerConfig.baseUrl + imageServerConfig.deletePath, { params: { del: imgId } });
+    await axios.get(imageServerConfig.baseUrl + imageServerConfig.deletePath, { params: { del: realUrl } });
 
     return result > 0;
   },
