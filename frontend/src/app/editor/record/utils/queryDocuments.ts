@@ -14,7 +14,7 @@ export const allRecordFields: RecordFields = [
     fields: ["id", "name"],
   },
   { type: "color", fields: ["r", "g", "b", "a"] },
-  { type: "pieces", fields: ["id", "name", { type: "formula", fields: ["name"] }] },
+  { type: "pieces", fields: ["id", "name", { type: "formula", fields: ["name"] }, "photos"] },
 ];
 
 export const getRecordFieldsQuery = (id: number) => {

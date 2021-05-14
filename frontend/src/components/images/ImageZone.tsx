@@ -24,6 +24,8 @@ const ImageZone: FC<Props> = ({ photos, uploadImage, deleteImage, showButtons })
   }, [photos]);
 
   const getMosaic = () => {
+    if (photos.length === 0) return <></>;
+
     const images: JSX.Element[] = [];
     for (let i = currentPage * 12; i < (currentPage + 1) * 12; i++) {
       if (i >= photos.length) break;
@@ -62,7 +64,7 @@ const ImageZone: FC<Props> = ({ photos, uploadImage, deleteImage, showButtons })
         </Modal.Body>
       </Modal>
       <Container fluid>
-        <Row>
+        <Row className="w-100">
           <Col className="p-0">
             <div className="images-mosaic">{getMosaic()}</div>
           </Col>

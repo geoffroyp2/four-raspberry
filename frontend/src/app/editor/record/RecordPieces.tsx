@@ -47,7 +47,7 @@ const RecordPieces = () => {
           );
         case "grid":
           const photos: string[] = [];
-          currentRecord.pieces.forEach((p) => photos.forEach((ph) => photos.push(ph)));
+          currentRecord.pieces.forEach((p) => p.photos?.forEach((ph) => photos.push(ph)));
           return <ImageZone photos={photos} showButtons={false} />;
       }
     return <></>;

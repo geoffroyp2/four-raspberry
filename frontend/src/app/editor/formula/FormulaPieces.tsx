@@ -46,7 +46,7 @@ const FormulaPieces = () => {
           );
         case "grid":
           const photos: string[] = [];
-          currentFormula.pieces.forEach((p) => photos.forEach((ph) => photos.push(ph)));
+          currentFormula.pieces.forEach((p) => p.photos?.forEach((ph) => photos.push(ph)));
           return <ImageZone photos={photos} showButtons={false} />;
       }
     return <></>;

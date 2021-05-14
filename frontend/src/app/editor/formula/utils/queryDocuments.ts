@@ -9,8 +9,12 @@ export const allFormulaFields: FormulaFields = [
   "createdAt",
   "updatedAt",
   {
+    type: "target",
+    fields: ["id", "name", "oven"],
+  },
+  {
     type: "pieces",
-    fields: ["id", "name"],
+    fields: ["id", "name", "photos"],
   },
   {
     type: "ingredients",
@@ -18,7 +22,14 @@ export const allFormulaFields: FormulaFields = [
       "amount",
       {
         type: "chemical",
-        fields: ["id", "name", "chemicalName", "density", { type: "color", fields: ["r", "g", "b", "a"] }],
+        fields: [
+          "id",
+          "name",
+          "chemicalName",
+          "currentVersion",
+          "existingVersions",
+          { type: "color", fields: ["r", "g", "b", "a"] },
+        ],
       },
     ],
   },
