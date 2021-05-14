@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
-import { Formula } from "@baseTypes/database/GQLResTypes";
+import { Formula, Ingredient } from "@baseTypes/database/GQLResTypes";
 interface FormulaDataType {
   needsRefresh: boolean;
   formulaId: number;
   data: Formula;
   loadList: Formula[];
+  tempIngredients: Ingredient[];
 }
 
 const initialState: FormulaDataType = {
@@ -13,6 +14,7 @@ const initialState: FormulaDataType = {
   formulaId: 0,
   data: {},
   loadList: [],
+  tempIngredients: [],
 };
 
 export const formulaDataSlice = createSlice({
@@ -26,6 +28,7 @@ export const formulaDataSlice = createSlice({
       if (action.payload.id) {
         state.formulaId = action.payload.id;
         state.data = action.payload;
+        if (action.payload.ingredients) state.tempIngredients = action.payload.ingredients;
       }
     },
     setFormulaNeedsRefresh: (state, action: PayloadAction<boolean>) => {
@@ -34,14 +37,29 @@ export const formulaDataSlice = createSlice({
     setFormulaLoadList: (state, action: PayloadAction<Formula[]>) => {
       state.loadList = action.payload;
     },
+    setFormulaTempIngredients: (state, action: PayloadAction<Ingredient[]>) => {
+      state.tempIngredients = action.payload;
+    },
+    resetFormulaTempIngredients: (state, action: PayloadAction<void>) => {
+      if (state.data.ingredients) state.tempIngredients = state.data.ingredients;
+      else state.tempIngredients = [];
+    },
   },
 });
 
-export const { setFormulaId, setFormulaData, setFormulaLoadList, setFormulaNeedsRefresh } = formulaDataSlice.actions;
+export const {
+  setFormulaId,
+  setFormulaData,
+  setFormulaLoadList,
+  setFormulaNeedsRefresh,
+  setFormulaTempIngredients,
+  resetFormulaTempIngredients,
+} = formulaDataSlice.actions;
 
 export const selectFormulaNeedsRefresh = (state: RootState) => state.formulaData.needsRefresh;
 export const selectFormulaId = (state: RootState) => state.formulaData.formulaId;
 export const selectFormulaData = (state: RootState) => state.formulaData.data;
 export const selectFormulaLoadList = (state: RootState) => state.formulaData.loadList;
+export const selectFormulaTempIngredients = (state: RootState) => state.formulaData.tempIngredients;
 
 export default formulaDataSlice.reducer;

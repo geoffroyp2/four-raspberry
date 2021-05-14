@@ -36,12 +36,8 @@ export const formulaDisplaySlice = createSlice({
   },
 });
 
-export const {
-  setFormulaLoadPage,
-  setFormulaTotalAmount,
-  setFormulaLoadRowSelected,
-  setFormulaPieceDisplay,
-} = formulaDisplaySlice.actions;
+export const { setFormulaLoadPage, setFormulaTotalAmount, setFormulaLoadRowSelected, setFormulaPieceDisplay } =
+  formulaDisplaySlice.actions;
 
 export const selectFormulaLoadPage = (state: RootState) => state.formulaDisplay.loadPage;
 export const selectFormulaLoadAmount = (state: RootState) => state.formulaDisplay.loadAmount;

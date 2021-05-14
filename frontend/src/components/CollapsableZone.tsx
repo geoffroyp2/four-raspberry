@@ -13,7 +13,7 @@ type Props = {
 
 const CollapsableZone: FC<Props> = ({ header, children, className, buttonSize }) => {
   return (
-    <Accordion defaultActiveKey="0">
+    <Accordion>
       <Container fluid className={`mt-1 pt-1 pb-1 collapsable-zone collapsable-zone-line ${className}`}>
         <Row>
           {header && <Col>{header}</Col>}

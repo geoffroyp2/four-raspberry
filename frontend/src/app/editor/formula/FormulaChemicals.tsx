@@ -1,21 +1,36 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { Button } from "react-bootstrap";
 import "./styles/formulaStyles.scss";
 
-import { selectFormulaData } from "./_state/formulaDataSlice";
+import { useDispatch } from "react-redux";
+import { resetFormulaTempIngredients, selectFormulaData } from "./_state/formulaDataSlice";
 
+import ChemicalEditTable from "./ChemicalEditTable";
 import ChemicalComposition from "@components/ChemicalComposition";
 import EditorCard from "@components/EditorCard";
-import CollapsableZone from "@components/CollapsableZone";
-import ChemicalEditTable from "./ChemicalEditTable";
+import EditTableModal from "@components/EditTableModal";
 
 const FormulaChemicals: FC = () => {
+  const dispatch = useDispatch();
+  const [ShowModal, setShowModal] = useState<boolean>(false);
+
+  const handleCancel = () => {
+    setShowModal(false);
+    dispatch(resetFormulaTempIngredients());
+  };
+
   return (
-    <EditorCard>
-      <ChemicalComposition formula={selectFormulaData} />
-      <CollapsableZone className="formula-chemical">
+    <>
+      <EditTableModal show={ShowModal} data={null} handleSave={() => {}} handleCancel={handleCancel} columns={[]}>
         <ChemicalEditTable />
-      </CollapsableZone>
-    </EditorCard>
+      </EditTableModal>
+      <EditorCard>
+        <div className="composition-container">
+          <ChemicalComposition formula={selectFormulaData} />
+          <Button onClick={() => setShowModal(true)}>Composition</Button>
+        </div>
+      </EditorCard>
+    </>
   );
 };
 

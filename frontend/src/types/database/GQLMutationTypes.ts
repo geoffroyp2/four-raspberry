@@ -124,12 +124,14 @@ export type PieceMutationType = PieceCreate | PieceUpdate | PieceDelete | PieceF
 type FormulaSelectType = { formulaId: number };
 type FormulaCreationArgs = Pick<Formula, "name" | "description">;
 type FormulaUpdateArgs = FormulaSelectType & FormulaCreationArgs;
-type FormulaArgs = FormulaSelectType | FormulaCreationArgs | FormulaUpdateArgs;
+type FormulaTargetArgs = FormulaSelectType & TargetSelectType;
+type FormulaArgs = FormulaSelectType | FormulaCreationArgs | FormulaUpdateArgs | FormulaTargetArgs;
 
 type FormulaCreate = MutationType<"createFormula", FormulaCreationArgs, FormulaFields>;
 type FormulaUpdate = MutationType<"updateFormula", FormulaUpdateArgs, FormulaFields>;
 type FormulaDelete = MutationTypeNoRes<"deleteFormula", FormulaSelectType>;
-export type FormulaMutationType = FormulaCreate | FormulaUpdate | FormulaDelete;
+type FormulaTargetLink = MutationType<"setFormulaTarget", FormulaTargetArgs, FormulaFields>;
+export type FormulaMutationType = FormulaCreate | FormulaUpdate | FormulaDelete | FormulaTargetLink;
 
 //Ingredient
 type IngredientCreationArgs = { amount: number };
@@ -145,14 +147,22 @@ export type IngredientMutationType = FormulaIngredientAdd | FormulaIngredientRem
 
 //Chemical
 type ChemicalSelectType = { chemicalId: number };
-type ChemicalCreationArgs = Pick<Chemical, "name" | "chemicalName" | "density" | "color">;
+type ChemicalCreationArgs = Pick<Chemical, "name" | "chemicalName" | "color">;
 type ChemicalUpdateArgs = ChemicalSelectType & ChemicalCreationArgs;
-type ChemicalArgs = ChemicalCreationArgs | ChemicalUpdateArgs | ChemicalSelectType;
+type ChemicalVersionArgs = ChemicalSelectType & { versionName: string };
+type ChemicalArgs = ChemicalCreationArgs | ChemicalUpdateArgs | ChemicalSelectType | ChemicalVersionArgs;
 
 type ChemicalCreate = MutationType<"createChemical", ChemicalCreationArgs, ChemicalFields>;
 type ChemicalUpdate = MutationType<"updateChemical", ChemicalUpdateArgs, ChemicalFields>;
 type ChemicalDelete = MutationTypeNoRes<"deleteChemical", ChemicalSelectType>;
-export type ChemicalMutationType = ChemicalCreate | ChemicalUpdate | ChemicalDelete;
+type ChemicalVersionSetOrCreate = MutationType<"setOrCreateChemicalVersion", ChemicalVersionArgs, ChemicalFields>;
+type ChemicalVersionDelete = MutationType<"deleteChemicalVersion", ChemicalVersionArgs, ChemicalFields>;
+export type ChemicalMutationType =
+  | ChemicalCreate
+  | ChemicalUpdate
+  | ChemicalDelete
+  | ChemicalVersionSetOrCreate
+  | ChemicalVersionDelete;
 
 // Live
 export type LiveStatusType = "start" | "stop" | "pause";

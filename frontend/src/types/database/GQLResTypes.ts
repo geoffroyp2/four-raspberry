@@ -74,6 +74,7 @@ export interface Formula {
   id?: number;
   name?: string;
   description?: string;
+  target?: Target;
   pieces?: Piece[];
   ingredients?: Ingredient[];
   createdAt?: string;
@@ -90,8 +91,9 @@ export interface Chemical {
   id?: number;
   name?: string;
   chemicalName?: string;
-  density?: number;
   color?: Color;
+  currentVersion: string;
+  existingVersions: string[];
   formulas?: Formula[];
   createdAt?: string;
   updatedAt?: string;

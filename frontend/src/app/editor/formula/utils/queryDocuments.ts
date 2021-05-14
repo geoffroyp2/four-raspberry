@@ -60,3 +60,16 @@ export const getFormulaPageRequest = (filter: PageFilter) => {
     })
   );
 };
+
+export const getChemicalPageRequest = (filter: PageFilter) => {
+  return gql(
+    rootQueryBuilder({
+      type: "query",
+      query: {
+        type: "chemicals",
+        filter: filter,
+        fields: ["id", "name", "chemicalName", "currentVersion", "existingVersions", "createdAt", "updatedAt"],
+      },
+    })
+  );
+};

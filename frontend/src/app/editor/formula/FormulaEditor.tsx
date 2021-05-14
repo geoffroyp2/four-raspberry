@@ -12,12 +12,7 @@ import FormulaInfos from "./FormulaInfos";
 import FormulaLoadTable from "./FormulaLoadTable";
 import FormulaPieces from "./FormulaPieces";
 import FormulaChemicals from "./FormulaChemicals";
-// import TargetButtons from "./TargetButtons";
-// import TargetGraph from "./TargetGraph";
-// import TargetInfos from "./TargetInfos";
-// import TargetLoadTable from "./TargetLoadTable";
-// import TargetRecords from "./TargetRecords";
-// import RecordPieces from "./RecordPieces";
+import ChemicalInfos from "./ChemicalInfos";
 
 const FormulaEditor = () => {
   const dispatch = useDispatch();
@@ -45,6 +40,7 @@ const FormulaEditor = () => {
         </Col>
         <Col xl={6} md={12}>
           <FormulaPieces />
+          <ChemicalInfos />
         </Col>
       </Row>
 

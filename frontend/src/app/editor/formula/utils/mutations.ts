@@ -30,6 +30,10 @@ export const saveFormulaChanges = async (formulaId: number, newData: Formula) =>
   }
 };
 
+export const saveIngredientsChanges = async () => {
+  // TODO
+};
+
 export const createFormula = async () => {
   const mutation = gql(
     rootQueryBuilder({
