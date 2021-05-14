@@ -44,16 +44,12 @@ const TargetLoadTable: FC<Props> = ({ select }) => {
   return (
     <LoadTableModal
       show={showTable.target}
-      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}
+      handleCancel={() => handleSetShow(false)}
       pagination={
-        <LoadTablePagination
-          pageAmount={selectTargetPageAmount}
-          page={selectTargetLoadPage}
-          setPage={setTargetLoadPage}
-        />
+        <LoadTablePagination pageAmount={selectTargetPageAmount} page={selectTargetLoadPage} setPage={setTargetLoadPage} />
       }
     >
       {currentList.map((e, i) => (

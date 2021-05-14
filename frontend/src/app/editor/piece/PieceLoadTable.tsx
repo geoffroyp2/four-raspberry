@@ -45,10 +45,10 @@ const PieceLoadTable: FC<Props> = ({ select }) => {
   return (
     <LoadTableModal
       show={showTable.piece}
-      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}
+      handleCancel={() => handleSetShow(false)}
       pagination={
         <LoadTablePagination pageAmount={selectPiecePageAmount} page={selectPieceLoadPage} setPage={setPieceLoadPage} />
       }

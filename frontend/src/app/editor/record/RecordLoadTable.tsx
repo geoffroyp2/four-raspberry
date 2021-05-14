@@ -45,16 +45,12 @@ const RecordLoadTable: FC<Props> = ({ select }) => {
   return (
     <LoadTableModal
       show={showTable.record}
-      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}
+      handleCancel={() => handleSetShow(false)}
       pagination={
-        <LoadTablePagination
-          pageAmount={selectRecordPageAmount}
-          page={selectRecordLoadPage}
-          setPage={setRecordLoadPage}
-        />
+        <LoadTablePagination pageAmount={selectRecordPageAmount} page={selectRecordLoadPage} setPage={setRecordLoadPage} />
       }
     >
       {currentList.map((e, i) => (

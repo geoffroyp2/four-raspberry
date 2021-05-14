@@ -45,16 +45,12 @@ const FormulaLoadTable: FC<Props> = ({ select }) => {
   return (
     <LoadTableModal
       show={showTable.formula}
-      setShow={handleSetShow}
       fetchData={fetchData}
       columns={tableColumns}
       handleSelect={select}
+      handleCancel={() => handleSetShow(false)}
       pagination={
-        <LoadTablePagination
-          pageAmount={selectFormulaPageAmount}
-          page={selectFormulaLoadPage}
-          setPage={setFormulaLoadPage}
-        />
+        <LoadTablePagination pageAmount={selectFormulaPageAmount} page={selectFormulaLoadPage} setPage={setFormulaLoadPage} />
       }
     >
       {currentList.map((e, i) => (
