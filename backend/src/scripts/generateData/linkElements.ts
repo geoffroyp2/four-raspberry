@@ -97,12 +97,13 @@ export const link = {
     );
   },
 
-  piecePhoto: async (pieces: Piece[], photosPerPiece: MinMax) => {
+  piecePhoto: async (pieces: Piece[], photosPerPiece: MinMax, testImages: string[]) => {
     return Promise.all(
       pieces.map(async (p) => {
         const amount = Math.floor(Math.random() * (photosPerPiece.max - photosPerPiece.min) + photosPerPiece.min);
         for (let i = 0; i < amount; i++) {
-          await p.createPhoto({ url: getUrl() });
+          const idx = Math.floor(Math.random() * testImages.length);
+          await p.createPhoto({ url: testImages[idx] });
         }
       })
     );

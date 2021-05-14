@@ -4,7 +4,7 @@ import { deterministic } from "./deterministic";
 import { link } from "./linkElements";
 import { Timer } from "./utils";
 
-export const populateTest = async (database: Sequelize) => {
+export const populateTest = async (database: Sequelize, testImages: string[]) => {
   await database.sync({ force: true });
 
   // await deterministic(); // generate deterministic data for testing purposes
@@ -31,7 +31,7 @@ export const populateTest = async (database: Sequelize) => {
   console.log(`Target-Record linked (${timer.new()})`);
   await link.recordPiece(records, pieces, { min: 7, max: 10 });
   console.log(`Record-Piece linked (${timer.new()})`);
-  await link.piecePhoto(pieces, { min: 1, max: 8 });
+  await link.piecePhoto(pieces, { min: 1, max: 3 }, testImages);
   console.log(`Photos created (${timer.new()})`);
   await link.pieceFormula(pieces, formulas);
   console.log(`Piece-Formula linked (${timer.new()})`);
