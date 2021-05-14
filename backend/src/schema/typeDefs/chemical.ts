@@ -69,18 +69,13 @@ export default gql`
     updateChemical(chemicalId: Int!, name: String, chemicalName: String, color: ColorInput): Chemical
 
     """
-    Ajoute une version pour le Chemical Spécifié (et l'ajoute en tant que currentVersion)
+    Change la currentVersion du chemical spécifié, et la crée si elle n'existe pas
     """
-    addChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
+    setOrCreateChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
 
     """
     Supprime la Version spécifiée du Chemical spécifié
     """
     deleteChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
-
-    """
-    Change la version du chemical Spécifié
-    """
-    setChemicalVersion(chemicalId: Int!, versionName: String!): Chemical
   }
 `;

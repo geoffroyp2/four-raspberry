@@ -10,18 +10,14 @@ const Query: ResolverObjectType = {
     const args: GQLChemicalFind = {};
     if (chemicalName !== undefined) args.chemicalName = chemicalName;
     if (name !== undefined) args.name = name;
+    if (id !== undefined) args.id = id;
 
-    if (id === 0) {
-      return Chemical.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });
-    } else {
-      if (id) args.id = id;
-      return await Chemical.findAndCountAll({
-        where: args,
-        order: [["id", "ASC"]],
-        limit: amount,
-        offset: (amount || 0) * (page || 0),
-      });
-    }
+    return await Chemical.findAndCountAll({
+      where: args,
+      order: [["id", "ASC"]],
+      limit: amount,
+      offset: (amount || 0) * (page || 0),
+    });
   },
 };
 

@@ -56,17 +56,20 @@ const Mutation: ResolverObjectType = {
   },
 
   /**
-   * Adds a new version to the list for the Chemical
+   * Set the current version of the selected chemical, creating it if it does not exist
    * @param chemicalId the Chemical id
    * @param versionName the name for the new version
    * @returns the updated Chemical
    */
-  addChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
+  setOrCreateChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
     const chemical = await Chemical.findOne({ where: { id: chemicalId } });
     if (chemical) {
       clearChemicalLoaders(loaders, chemicalId);
 
-      chemical.createVersion({ name: versionName });
+      const version = await ChemicalVersion.findOne({ where: { chemicalId, name: versionName } });
+      if (!version) {
+        await chemical.createVersion({ name: versionName });
+      }
       chemical.set({ currentVersion: versionName });
       return chemical.save();
     }
@@ -93,29 +96,6 @@ const Mutation: ResolverObjectType = {
       if (chemical.currentVersion === versionName) {
         const versions = await chemical.getVersions();
         chemical.set({ currentVersion: versions[0]?.name ?? "" });
-        return chemical.save();
-      }
-
-      return chemical;
-    }
-    return null;
-  },
-
-  /**
-   * Sets another version from the list for the Chemical (the name has to exist in the database)
-   * Idea: merge with createChemicalVersion (setOrCreateChemicalVersion)
-   * @param chemicalId the Chemical id
-   * @param versionName the name for the new version
-   * @returns the updated Chemical
-   */
-  setChemicalVersion: async (_, { chemicalId, versionName }: GQLChemicalVersion, loaders): Promise<Chemical | null> => {
-    const chemical = await Chemical.findOne({ where: { id: chemicalId } });
-    if (chemical) {
-      clearChemicalLoaders(loaders, chemicalId);
-
-      const version = await ChemicalVersion.findOne({ where: { chemicalId, name: versionName } });
-      if (version) {
-        chemical.set({ currentVersion: version.name });
         return chemical.save();
       }
 
