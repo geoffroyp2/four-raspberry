@@ -64,7 +64,7 @@ const ImageZone: FC<Props> = ({ photos, uploadImage, deleteImage, showButtons })
         </Modal.Body>
       </Modal>
       <Container fluid>
-        <Row className="w-100">
+        <Row className="w-100 m-0">
           <Col className="p-0">
             <div className="images-mosaic">{getMosaic()}</div>
           </Col>
@@ -88,20 +88,3 @@ const ImageZone: FC<Props> = ({ photos, uploadImage, deleteImage, showButtons })
 };
 
 export default ImageZone;
-
-/* 
-<Carousel
-  interval={null}
-  className="img-carousel w-100"
-  activeIndex={selected}
-  onSelect={(idx, e) => {
-    setSelected(idx);
-  }}
-  >
-  {photos.map((url, idx) => (
-    <CarouselItem key={`img-${idx}`}>
-      <img className="d-block" src={url} alt={`${idx}`} />
-    </CarouselItem>
-  ))}
-</Carousel> 
-*/

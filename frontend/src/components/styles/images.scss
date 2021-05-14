@@ -3,7 +3,7 @@
 }
 
 input[type="file"] {
-  display: none; // Hidden real file element
+  display: none; // Hidden real file input element
 }
 
 .images-mosaic {
@@ -23,6 +23,7 @@ input[type="file"] {
 
   grid-auto-flow: dense;
   user-select: none;
+  margin: 0.5em 0em;
 
   img {
     display: block;

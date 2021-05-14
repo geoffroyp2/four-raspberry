@@ -5,7 +5,7 @@ type Props = { children: JSX.Element[] | JSX.Element };
 
 const RecordTable: FC<Props> = ({ children }) => {
   return (
-    <Table striped bordered hover className="table-sm" variant="dark">
+    <Table striped bordered hover className="table-sm mb-0" variant="dark">
       <thead>
         <tr>
           <th>Nom</th>

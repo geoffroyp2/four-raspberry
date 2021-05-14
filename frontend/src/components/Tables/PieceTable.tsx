@@ -5,7 +5,7 @@ type Props = { formulaColumn?: boolean; children: JSX.Element[] | JSX.Element };
 
 const PieceTable: FC<Props> = ({ formulaColumn = true, children }) => {
   return (
-    <Table striped bordered hover className="table-sm" variant="dark">
+    <Table striped bordered hover className="table-sm mb-0" variant="dark">
       <thead>
         <tr>
           <th>Nom</th>
