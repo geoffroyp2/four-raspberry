@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "paths": {
+      "@network/*": ["network/*"],
+      "@baseTypes/*": ["types/*"],
+      "@utils/*": ["utils/*"],
+      "@components/*": ["components/*"],
+      "@editor/*": ["app/editor/*"],
+      "@navBar/*": ["app/navBar/*"],
+      "@live/*": ["app/live/*"],
+      "@app/*": ["app/*"],
+      "@src/*": ["*"]
+    }
+  }
+}

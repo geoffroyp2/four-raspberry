@@ -1,32 +1,39 @@
-import React from "react";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { selectAppTheme } from "./_state/appStateSlice";
+
+import Header from "./header/Header";
+import LiveScreen from "./live/LiveScreen";
+import GraphEditor from "./editor/graphs/GraphEditor";
+import PieceEditor from "./editor/pieces/PieceEditor";
+import FormulaEditor from "./editor/formulas/FormulaEditor";
+
 import "./App.scss";
 
-import { useSelector } from "react-redux";
-import { selectCurrentScreen } from "@navBar/MainNavSlice";
-
-import MainNavBar from "./navBar/MainNavBar";
-import LiveScreen from "./live/LiveScreen";
-import RecordEditor from "./editor/record/RecordEditor";
-import TargetEditor from "@editor/target/TargetEditor";
-import PieceEditor from "@editor/piece/PieceEditor";
-import FormulaEditor from "@editor/formula/FormulaEditor";
-
-const mainScreens = {
-  live: <LiveScreen />,
-  target: <TargetEditor />,
-  record: <RecordEditor />,
-  piece: <PieceEditor />,
-  formula: <FormulaEditor />,
-};
-
 function App() {
-  const currentScreen = useSelector(selectCurrentScreen);
+  const theme = useSelector(selectAppTheme);
 
   return (
-    <div className="App">
-      <MainNavBar />
-      {mainScreens[currentScreen]}
-    </div>
+    <Router>
+      <div className={theme}>
+        <Header />
+      </div>
+
+      <Switch>
+        <Route path="/live">
+          <LiveScreen />
+        </Route>
+        <Route path="/graphs">
+          <GraphEditor />
+        </Route>
+        <Route path="/pieces">
+          <PieceEditor />
+        </Route>
+        <Route path="/formulas">
+          <FormulaEditor />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

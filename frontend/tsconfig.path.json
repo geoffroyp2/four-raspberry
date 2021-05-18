@@ -2,13 +2,13 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      "@network/*": ["network/*"],
-      "@baseTypes/*": ["types/*"],
-      "@utils/*": ["utils/*"],
-      "@components/*": ["components/*"],
-      "@editor/*": ["app/editor/*"],
-      "@navBar/*": ["app/navBar/*"],
-      "@live/*": ["app/live/*"],
+      "@store": ["app/store.ts"],
+
+      "@svg/*": ["components/svg/*"],
+      "@header/*": ["app/header/*"],
+      "@formulas/*": ["app/editor/formulas/*"],
+      "@graphs/*": ["app/editor/graphs/*"],
+      "@pieces/*": ["app/editor/pieces/*"],
       "@app/*": ["app/*"],
       "@src/*": ["*"]
     }

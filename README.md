@@ -24,9 +24,6 @@ The setup involves 2 RaspberryPIs:
     
   - ./imageServer/ : a very small image host created with jquery that stores pictures of the potteries and enamels.
 
-  - ./backend.old/ : previous version of the backend, using MongoDb and Mongoose (REST API).
-  - ./frontend.old/: previous version of the frontend & various experiments with React
-
 
 Every project is built separately and has its own package.json and node_modules folder. Random database data can be generated with the generateData script.
 
