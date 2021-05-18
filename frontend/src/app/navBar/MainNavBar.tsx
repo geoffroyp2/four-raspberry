@@ -8,7 +8,7 @@ import { selectCurrentScreen, setCurrentScreen } from "./MainNavSlice";
 const headers = {
   target: "Courbes de Référence",
   record: "Courbes de Cuisson",
-  piece: "Potteries",
+  piece: "Poteries",
   formula: "Émaux",
   live: "Cuisson en Direct",
 };
@@ -28,9 +28,7 @@ const MainNavBar = () => {
       <Navbar.Collapse>
         <Nav className="mr-auto">
           <NavDropdown id="navDropDown" title="Base de données">
-            <NavDropdown.Item onClick={() => dispatch(setCurrentScreen("target"))}>
-              Courbes de Référence
-            </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => dispatch(setCurrentScreen("target"))}>Courbes de Référence</NavDropdown.Item>
             <NavDropdown.Item onClick={() => dispatch(setCurrentScreen("record"))}>Courbes de Cuisson</NavDropdown.Item>
             <NavDropdown.Item onClick={() => dispatch(setCurrentScreen("piece"))}>Poteries</NavDropdown.Item>
             <NavDropdown.Item onClick={() => dispatch(setCurrentScreen("formula"))}>Émaux</NavDropdown.Item>

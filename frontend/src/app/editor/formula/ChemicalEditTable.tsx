@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Col, Row, Table } from "react-bootstrap";
+import { Button, Col, FormControl, InputGroup, Row, Table } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectFormulaTempIngredients, setFormulaTempIngredients } from "./_state/formulaDataSlice";
@@ -46,13 +46,25 @@ const ChemicalEditTable: FC = () => {
             </Row>
           </CollapsableZone>
         </td>
-        <td>{`${chem.amount?.toFixed(2)}%` || "-"}</td>
+        <td>
+          <InputGroup>
+            <FormControl type="number" defaultValue={chem.amount ?? 0} />
+            <InputGroup.Prepend>
+              <InputGroup.Text>g</InputGroup.Text>
+            </InputGroup.Prepend>
+          </InputGroup>
+          {/* <input type="number" defaultValue={chem.amount ?? 0}></input> */}
+          {/* {`${chem.amount?.toFixed(2)}g` || "-"} */}
+        </td>
+        <td>
+          <Button className="btn-danger">X</Button>
+        </td>
       </tr>
     ));
 
     rows.push(
       <tr>
-        <td colSpan={2}>
+        <td colSpan={3}>
           <Button
             className="float-right btn-success"
             onClick={() => {
@@ -75,6 +87,7 @@ const ChemicalEditTable: FC = () => {
           <tr>
             <th>Element chimique</th>
             <th>Quantité</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{getTableBody()}</tbody>
