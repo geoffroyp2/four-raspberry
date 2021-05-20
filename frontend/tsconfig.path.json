@@ -8,6 +8,7 @@
       "@apiTypes/*": ["app/types/*"],
       "@svg/*": ["components/svg/*"],
       "@assets/*": ["assets/*"],
+      "@tables/*": ["components/tables/*"],
 
       "@editor/*": ["app/editor/*"],
       "@header/*": ["app/header/*"],

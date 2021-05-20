@@ -47,8 +47,8 @@ export const graphDisplaySlice = createSlice({
       state.pageAmount = Math.floor(action.payload / state.loadAmount);
     },
     setGraphLoadId: (state, action: PayloadAction<Partial<GraphDisplayType["loadId"]>>) => {
-      if (action.payload.recordId) state.loadId.recordId = action.payload.recordId;
-      if (action.payload.targetId) state.loadId.targetId = action.payload.targetId;
+      if (action.payload.recordId !== undefined) state.loadId.recordId = action.payload.recordId;
+      if (action.payload.targetId !== undefined) state.loadId.targetId = action.payload.targetId;
     },
     setGraphPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {
       state.pointZoom = { ...state.pointZoom, ...action.payload };

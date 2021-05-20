@@ -9,7 +9,7 @@ const Header = () => {
   const graphRoute = useSelector(selectGraphRoute);
 
   return (
-    <header className={`text-gray-300 bg-${pathname.split("/")[1]} body-font shadow-md mb-2`}>
+    <header className={`sticky top-0 z-50 text-gray-300 bg-${pathname.split("/")[1]} body-font shadow-md mb-2`}>
       <div className="p-5 flex flex-col md:flex-row items-center md:ml-6">
         <div className="flex title-font font-medium text-white mb-4 md:mb-0">
           <FlameIcon />

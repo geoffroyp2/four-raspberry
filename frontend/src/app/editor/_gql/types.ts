@@ -1,4 +1,6 @@
 export type PageQueryParams = {
-  page?: number;
-  amount?: number;
+  variables: {
+    page?: number;
+    amount?: number;
+  };
 };

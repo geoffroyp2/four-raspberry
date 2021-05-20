@@ -1,5 +1,7 @@
+import RecordLoadTable from "./RecordTable";
+
 const RecordHome = () => {
-  return <div>Record Home</div>;
+  return <RecordLoadTable />;
 };
 
 export default RecordHome;
