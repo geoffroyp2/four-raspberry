@@ -9,6 +9,7 @@
       "@svg/*": ["components/svg/*"],
       "@assets/*": ["assets/*"],
       "@tables/*": ["components/tables/*"],
+      "@cards/*": ["components/cards/*"],
 
       "@editor/*": ["app/editor/*"],
       "@header/*": ["app/header/*"],
