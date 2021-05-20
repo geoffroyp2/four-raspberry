@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloLink, InMemoryCache, Operation, split } from "@apollo/client";
+
 import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -25,14 +26,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from([splitLink]),
   defaultOptions: {
-    watchQuery: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "ignore",
-    },
-    query: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "all",
-    },
+    // watchQuery: {
+    //   fetchPolicy: "no-cache",
+    //   errorPolicy: "ignore",
+    // },
+    // query: {
+    //   fetchPolicy: "no-cache",
+    //   errorPolicy: "all",
+    // },
   },
 });
 

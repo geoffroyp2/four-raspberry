@@ -1,8 +1,10 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import appState from "./_state/appStateSlice";
+import graphReducers from "./editor/graphs/_state";
 
 export const store = configureStore({
   reducer: {
+    ...graphReducers,
     appState,
   },
 });

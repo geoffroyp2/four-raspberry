@@ -3,8 +3,13 @@
     "baseUrl": "./src/",
     "paths": {
       "@store": ["app/store.ts"],
+      "@canvasjs": ["assets/canvasjs-3.2.17/canvasjs.react.js"],
 
+      "@apiTypes/*": ["app/types/*"],
       "@svg/*": ["components/svg/*"],
+      "@assets/*": ["assets/*"],
+
+      "@editor/*": ["app/editor/*"],
       "@header/*": ["app/header/*"],
       "@formulas/*": ["app/editor/formulas/*"],
       "@graphs/*": ["app/editor/graphs/*"],

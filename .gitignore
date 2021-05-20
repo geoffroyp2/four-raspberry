@@ -4,6 +4,7 @@
 /ovenEngine/node_modules
 /frontend/node_modules
 /frontend-bootstrap/node_modules
+/frontend/src/assets/canvasjs-3.2.17/examples
 /backend/node_modules
 /imageServer/node_modules
 /.pnp
