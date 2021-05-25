@@ -4,3 +4,9 @@ export type PageQueryParams = {
     amount?: number;
   };
 };
+
+export type PreviewQueryParams = {
+  variables: {
+    id: number;
+  };
+};

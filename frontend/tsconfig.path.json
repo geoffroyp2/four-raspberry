@@ -3,13 +3,16 @@
     "baseUrl": "./src/",
     "paths": {
       "@store": ["app/store.ts"],
+      "@apiTypes/*": ["app/types/*"],
+
+      "@assets/*": ["assets/*"],
       "@canvasjs": ["assets/canvasjs-3.2.17/canvasjs.react.js"],
 
-      "@apiTypes/*": ["app/types/*"],
       "@svg/*": ["components/svg/*"],
-      "@assets/*": ["assets/*"],
       "@tables/*": ["components/tables/*"],
       "@cards/*": ["components/cards/*"],
+      "@buttons/*": ["components/buttons/*"],
+      "@inputs/*": ["components/inputs/*"],
 
       "@editor/*": ["app/editor/*"],
       "@header/*": ["app/header/*"],

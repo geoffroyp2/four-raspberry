@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import { useQuery } from "@apollo/client";
 import { recordPageQuery } from "../_gql/queries";
 import { PageQueryParams } from "@editor/_gql/types";
-import { RecordQueryRes } from "@app/_types/dbTypes";
+import { Record, RecordQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordLoadList, setRecordLoadList } from "../_state/recordDataSlice";
@@ -45,7 +45,7 @@ const RecordLoadTable = () => {
     },
   };
 
-  const { error } = useQuery<RecordQueryRes>(recordPageQuery, {
+  const { loading, error } = useQuery<RecordQueryRes>(recordPageQuery, {
     ...variables,
     onCompleted: ({ records }) => {
       if (currentLoadPage !== 0 && records.rows.length === 0) {
@@ -58,27 +58,44 @@ const RecordLoadTable = () => {
     },
   });
 
+  const rows = useMemo(() => {
+    const records: Record[] = [];
+    if (loading) {
+      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
+        records.push({});
+      }
+    } else {
+      for (let i = 0; i < currentLoadList.length; ++i) {
+        records.push(currentLoadList[i]);
+      }
+      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
+        records.push({});
+      }
+    }
+
+    return records.map((record, idx) => (
+      <TableRow
+        key={`load-table-row-${idx}`}
+        rowContent={[
+          record.name ?? "-",
+          record.target?.name ?? "-",
+          record.oven ?? "-",
+          dateToDisplayString(record.createdAt, true),
+        ]}
+        selected={record.id === recordId}
+        id={record.id ?? 0}
+        disabled={record.id === undefined}
+        handleSelect={() => handleSelectRow(record.id ?? 0)}
+      />
+    ));
+  }, [currentLoadList, currentLoadAmount, handleSelectRow, recordId, loading]);
+
   if (error) return <NotFound />;
 
   return (
     <LoadTable>
       <TableHeader columnNames={["Nom", "Courbe de Référence", "Four", "Créé le"]} />
-      <tbody>
-        {currentLoadList.map((record) => (
-          <TableRow
-            key={`load-table-row-${record.id}`}
-            rowContent={[
-              record.name ?? "-",
-              record.target?.name ?? "-",
-              record.oven ?? "-",
-              dateToDisplayString(record.createdAt, true),
-            ]}
-            selected={record.id === recordId}
-            id={record.id ?? 0}
-            handleSelect={() => handleSelectRow(record.id ?? 0)}
-          />
-        ))}
-      </tbody>
+      <tbody>{rows}</tbody>
     </LoadTable>
   );
 };

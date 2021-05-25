@@ -9,6 +9,7 @@ interface RecordDataType {
   };
   points: RecordPoint[];
   loadList: Record[];
+  preview: Record;
 }
 
 const initialState: RecordDataType = {
@@ -18,6 +19,7 @@ const initialState: RecordDataType = {
     color: { r: 255, g: 255, b: 255, a: 1 },
   },
   loadList: [],
+  preview: {},
 };
 
 export const recordDataSlice = createSlice({
@@ -42,14 +44,19 @@ export const recordDataSlice = createSlice({
     setRecordPoints: (state, action: PayloadAction<RecordPoint[] | undefined>) => {
       if (action.payload) state.points = action.payload;
     },
+    setRecordPreview: (state, action: PayloadAction<Record>) => {
+      state.preview = action.payload;
+    },
   },
 });
 
-export const { setRecordData, setRecordLoadList, setRecordTempValues, setRecordPoints } = recordDataSlice.actions;
+export const { setRecordData, setRecordLoadList, setRecordTempValues, setRecordPoints, setRecordPreview } =
+  recordDataSlice.actions;
 
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;
 export const selectRecordPoints = (state: RootState) => state.recordData.points;
 export const selectRecordTempValues = (state: RootState) => state.recordData.tempValues;
+export const selectRecordPreview = (state: RootState) => state.recordData.preview;
 
 export default recordDataSlice.reducer;

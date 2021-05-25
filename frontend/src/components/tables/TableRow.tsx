@@ -5,14 +5,21 @@ type Props = {
   selected: boolean;
   id: number;
   handleSelect: () => void;
+  disabled?: boolean;
 };
 
-const TableRow: FC<Props> = ({ rowContent, selected, id, handleSelect }) => {
+const TableRow: FC<Props> = ({ rowContent, selected, id, handleSelect, disabled = false }) => {
   const bgColor = selected ? "blue-500" : "gray-700";
-  const hoverColor = selected ? "blue-400" : "gray-600";
+  const hoverColor = selected ? "" : "hover:bg-gray-600";
+  const cursor = disabled || selected ? "" : "cursor-pointer";
 
   return (
-    <tr onClick={handleSelect} className={`cursor-pointer hover:bg-${hoverColor} bg-${bgColor} `}>
+    <tr
+      onClick={() => {
+        if (!disabled && !selected) handleSelect();
+      }}
+      className={`${cursor} ${hoverColor} bg-${bgColor} `}
+    >
       {rowContent.map((text, i) => (
         <TDElement key={`load-table-${id}-${i}`} text={text} selected={selected} />
       ))}

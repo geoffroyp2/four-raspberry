@@ -1,15 +1,34 @@
 import { FC } from "react";
+import BasicMainCard from "./BasicMainCard";
 
-type Props = {};
+type Props = {
+  title: string;
+  fields: JSX.Element[];
+};
 
-const PreviewCard: FC<Props> = () => {
+const PreviewCard: FC<Props> = ({ title, fields }) => {
   return (
-    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-      <div className="inline-block min-w-full shadow rounded-lg overflow-hidden bg-gray-700 border-gray-900">
-        <div className="p-6">Preview</div>
+    <BasicMainCard>
+      <div className="p-6 body-font text-gray-100 ">
+        <h2 className="sm:text-3xl text-2xl mb-6 title-font font-medium ">{title}</h2>
+        {fields}
       </div>
-    </div>
+    </BasicMainCard>
   );
 };
 
 export default PreviewCard;
+
+type PreviewCardProps = {
+  name: string;
+  value: string;
+};
+
+export const PreviewCardField: FC<PreviewCardProps> = ({ name, value }) => {
+  return (
+    <p className="grid grid-cols-2 mb-2">
+      <span className="leading-relaxed text-blue-400">{name}</span>
+      <span className="leading-relaxed">{value}</span>
+    </p>
+  );
+};

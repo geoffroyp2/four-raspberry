@@ -52,3 +52,18 @@ const recordPageFields: RecordFields = [
 ];
 
 export const recordPageFieldsString = gqlStringBuilder(recordPageFields);
+
+const recordPreviewFields: RecordFields = [
+  "id",
+  "name",
+  "description",
+  "oven",
+  "createdAt",
+  "updatedAt",
+  {
+    type: "target",
+    fields: ["id", "name"],
+  },
+];
+
+export const recordPreviewFieldsString = gqlStringBuilder(recordPreviewFields);

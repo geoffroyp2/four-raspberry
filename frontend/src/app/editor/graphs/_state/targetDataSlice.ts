@@ -9,6 +9,7 @@ interface TargetDataType {
   };
   points: TargetPoint[];
   loadList: Target[];
+  preview: Target;
 }
 
 const initialState: TargetDataType = {
@@ -18,6 +19,7 @@ const initialState: TargetDataType = {
     color: { r: 255, g: 255, b: 255, a: 1 },
   },
   loadList: [],
+  preview: {},
 };
 
 export const targetDataSlice = createSlice({
@@ -42,14 +44,19 @@ export const targetDataSlice = createSlice({
     setTargetPoints: (state, action: PayloadAction<TargetPoint[] | undefined>) => {
       if (action.payload) state.points = action.payload;
     },
+    setTargetPreview: (state, action: PayloadAction<Target>) => {
+      state.preview = action.payload;
+    },
   },
 });
 
-export const { setTargetData, setTargetLoadList, setTargetTempValues, setTargetPoints } = targetDataSlice.actions;
+export const { setTargetData, setTargetLoadList, setTargetTempValues, setTargetPoints, setTargetPreview } =
+  targetDataSlice.actions;
 
 export const selectTargetData = (state: RootState) => state.targetData.data;
 export const selectTargetLoadList = (state: RootState) => state.targetData.loadList;
 export const selectTargetPoints = (state: RootState) => state.targetData.points;
 export const selectTargetTempValues = (state: RootState) => state.targetData.tempValues;
+export const selectTargetPreview = (state: RootState) => state.targetData.preview;
 
 export default targetDataSlice.reducer;

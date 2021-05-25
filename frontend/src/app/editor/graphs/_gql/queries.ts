@@ -1,6 +1,12 @@
 import { OvenType } from "@app/_types/dbTypes";
 import gql from "graphql-tag";
-import { recordFieldsString, recordPageFieldsString, targetFieldsString, targetPageFieldsString } from "./fields";
+import {
+  recordFieldsString,
+  recordPageFieldsString,
+  recordPreviewFieldsString,
+  targetFieldsString,
+  targetPageFieldsString,
+} from "./fields";
 
 export type TargetQueryParams = {
   variables: {
@@ -58,6 +64,17 @@ export const recordPageQuery = gql`
       count
       rows {
         ${recordPageFieldsString}
+      }
+    }
+  }
+`;
+
+export const recordPreviewQuery = gql`
+  query RecordQueryRes($id: Int) {
+    records(id: $id) {
+      count
+      rows {
+        ${recordPreviewFieldsString}
       }
     }
   }
