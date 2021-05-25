@@ -1,4 +1,4 @@
-import { RecordFields, TargetFields } from "@app/_types/queryTypes";
+import { PointFilter, RecordFields, TargetFields } from "@app/_types/queryTypes";
 import gqlStringBuilder from "@app/_utils/gqlStringBuilder";
 
 const targetFields: TargetFields = [
@@ -22,6 +22,11 @@ const targetPageFields: TargetFields = ["id", "name", "description", "oven", "cr
 
 export const targetPageFieldsString = gqlStringBuilder(targetPageFields);
 
+const targetPreviewFields: TargetFields = ["id", "name", "description", "oven", "createdAt", "updatedAt"];
+
+export const targetPreviewFieldsString = gqlStringBuilder(targetPreviewFields);
+
+// -----------------------------------------------
 const recordFields: RecordFields = [
   "id",
   "name",
@@ -37,6 +42,26 @@ const recordFields: RecordFields = [
   { type: "pieces", fields: ["id", "name", { type: "formula", fields: ["name"] }, "photos"] },
 ];
 export const recordFieldsString = gqlStringBuilder(recordFields);
+
+const recordPointsFields = (filter: PointFilter): RecordFields => [
+  {
+    type: "points",
+    filter: filter,
+    fields: ["id", "temperature", "oxygen", "time"],
+  },
+  {
+    type: "target",
+    fields: [
+      {
+        type: "points",
+        filter: filter,
+        fields: ["id", "temperature", "oxygen", "time"],
+      },
+    ],
+  },
+];
+
+export const recordPointsFieldsString = (filter: PointFilter) => gqlStringBuilder(recordPointsFields(filter));
 
 const recordPageFields: RecordFields = [
   "id",

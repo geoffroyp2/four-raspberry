@@ -1,20 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
-import { Color, Record, RecordPoint } from "@app/_types/dbTypes";
+import { Color, Record, RecordPoint, TargetPoint } from "@app/_types/dbTypes";
 
 interface RecordDataType {
   data: Record;
   tempValues: {
     color: Color;
   };
-  points: RecordPoint[];
+  recordPoints: RecordPoint[];
+  targetPoints: TargetPoint[] | undefined;
   loadList: Record[];
   preview: Record;
 }
 
 const initialState: RecordDataType = {
   data: {},
-  points: [],
+  recordPoints: [],
+  targetPoints: [],
   tempValues: {
     color: { r: 255, g: 255, b: 255, a: 1 },
   },
@@ -42,7 +44,10 @@ export const recordDataSlice = createSlice({
       state.tempValues = { ...state.tempValues, ...action.payload };
     },
     setRecordPoints: (state, action: PayloadAction<RecordPoint[] | undefined>) => {
-      if (action.payload) state.points = action.payload;
+      if (action.payload) state.recordPoints = action.payload;
+    },
+    setRecordTargetPoints: (state, action: PayloadAction<TargetPoint[] | undefined>) => {
+      if (action.payload) state.targetPoints = action.payload;
     },
     setRecordPreview: (state, action: PayloadAction<Record>) => {
       state.preview = action.payload;
@@ -50,12 +55,13 @@ export const recordDataSlice = createSlice({
   },
 });
 
-export const { setRecordData, setRecordLoadList, setRecordTempValues, setRecordPoints, setRecordPreview } =
+export const { setRecordData, setRecordLoadList, setRecordTempValues, setRecordPoints, setRecordPreview, setRecordTargetPoints } =
   recordDataSlice.actions;
 
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;
-export const selectRecordPoints = (state: RootState) => state.recordData.points;
+export const selectRecordPoints = (state: RootState) => state.recordData.recordPoints;
+export const selectRecordTargetPoints = (state: RootState) => state.recordData.targetPoints;
 export const selectRecordTempValues = (state: RootState) => state.recordData.tempValues;
 export const selectRecordPreview = (state: RootState) => state.recordData.preview;
 

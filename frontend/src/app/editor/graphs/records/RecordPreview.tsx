@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useQuery } from "@apollo/client";
 import { RecordQueryRes } from "@app/_types/dbTypes";
-import { PreviewQueryParams } from "@editor/_gql/types";
+import { IdQueryParams } from "@editor/_gql/types";
 import { recordPreviewQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import { selectRecordPreview, setRecordPreview } from "../_state/recordDataSlice
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
-import PreviewCard, { PreviewCardField } from "@cards/PreviewCard";
+import PreviewCard, { PreviewCardField } from "@components/cards/PreviewCard";
 import NotFound from "@editor/NotFound";
 
 const RecordPreview = () => {
@@ -19,7 +19,7 @@ const RecordPreview = () => {
   const { recordId } = useSelector(selectGraphLoadId);
   const previewData = useSelector(selectRecordPreview);
 
-  const variables: PreviewQueryParams = {
+  const variables: IdQueryParams = {
     variables: {
       id: recordId ?? 0,
     },

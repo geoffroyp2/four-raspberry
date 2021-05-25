@@ -1,4 +1,4 @@
-import BasicMainCard from "@cards/BasicMainCard";
+import BasicMainCard from "@components/cards/BasicMainCard";
 import { FC } from "react";
 
 type Props = {};

@@ -1,8 +1,10 @@
-import FlameIcon from "@svg/FlameIcon";
-import NavButton from "./NavButton";
 import { useLocation } from "react-router";
-import { selectGraphRoute } from "@graphs/_state/graphDisplaySlice";
+
 import { useSelector } from "react-redux";
+import { selectGraphRoute } from "@graphs/_state/graphDisplaySlice";
+
+import FlameIcon from "@components/svg/FlameIcon";
+import NavButton from "./NavButton";
 
 const Header = () => {
   const { pathname } = useLocation();

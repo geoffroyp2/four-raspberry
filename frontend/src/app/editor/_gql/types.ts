@@ -5,7 +5,7 @@ export type PageQueryParams = {
   };
 };
 
-export type PreviewQueryParams = {
+export type IdQueryParams = {
   variables: {
     id: number;
   };

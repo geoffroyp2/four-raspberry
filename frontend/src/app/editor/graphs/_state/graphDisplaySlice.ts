@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
+import { PointFilter } from "@app/_types/queryTypes";
 
-type PointZoomType = {
-  start: number;
-  end: number;
-  amount: number;
-};
+type PointZoomType = Required<PointFilter>;
 
 interface GraphDisplayType {
   route: "targets" | "records";

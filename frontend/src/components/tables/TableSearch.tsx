@@ -1,6 +1,7 @@
 import { FC, FormEvent } from "react";
-import BasicButton from "@buttons/BasicButton";
-import TextInput from "@inputs/TextInput";
+
+import BasicButton from "@components/buttons/BasicButton";
+import TextInput from "@components/inputs/TextInput";
 
 type Props = {
   handleSubmit: (fieldValue: string) => void;

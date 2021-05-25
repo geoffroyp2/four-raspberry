@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
 
 import RecordPreview from "./RecordPreview";
-import TableTitle from "@tables/TableTitle";
 import RecordLoadTable from "./RecordLoadTable";
-import Pagination from "@tables/Pagination";
 import RecordLoadButtons from "./RecordLoadButtons";
+import TableTitle from "@components/tables/TableTitle";
+import Pagination from "@components/tables/Pagination";
 
 const RecordHome = () => {
   const dispatch = useDispatch();

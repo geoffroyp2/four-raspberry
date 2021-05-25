@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { PaginationIconLeft, PaginationIconRight } from "@svg/PaginationIcons";
+import { PaginationIconLeft, PaginationIconRight } from "@components/svg/PaginationIcons";
 
 type Props = {
   currentPage: number;

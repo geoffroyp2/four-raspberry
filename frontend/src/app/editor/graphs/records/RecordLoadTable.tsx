@@ -17,9 +17,9 @@ import {
 } from "../_state/graphDisplaySlice";
 
 import NotFound from "@editor/NotFound";
-import LoadTable from "@tables/LoadTable";
-import TableHeader from "@tables/TableHeader";
-import TableRow from "@tables/TableRow";
+import LoadTable from "@components/tables/LoadTable";
+import TableHeader from "@components/tables/TableHeader";
+import TableRow from "@components/tables/TableRow";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
