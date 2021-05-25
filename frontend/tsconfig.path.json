@@ -6,13 +6,7 @@
       "@apiTypes/*": ["app/types/*"],
 
       "@assets/*": ["assets/*"],
-      "@canvasjs": ["assets/canvasjs-3.2.17/canvasjs.react.js"],
-
-      "@svg/*": ["components/svg/*"],
-      "@tables/*": ["components/tables/*"],
-      "@cards/*": ["components/cards/*"],
-      "@buttons/*": ["components/buttons/*"],
-      "@inputs/*": ["components/inputs/*"],
+      "@components/*": ["components/*"],
 
       "@editor/*": ["app/editor/*"],
       "@header/*": ["app/header/*"],
