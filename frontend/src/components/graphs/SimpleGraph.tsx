@@ -17,14 +17,16 @@ const SimpleGraph: FC<Props> = ({ recordPoints, targetPoints, color }) => {
   const dataSets = buildDataPoints(recordPoints, targetPoints, color || defaultColor);
 
   return (
-    <div className="bg-gray-900 p-1 rounded-lg">
-      <Scatter
-        type="scatter"
-        data={{
-          datasets: [...dataSets],
-        }}
-        options={simpleGraphOptions}
-      />
+    <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 ">
+      <div className="bg-gray-900 p-2 pt-3 rounded-lg shadow-lg ">
+        <Scatter
+          type="scatter"
+          data={{
+            datasets: [...dataSets],
+          }}
+          options={simpleGraphOptions}
+        />
+      </div>
     </div>
   );
 };

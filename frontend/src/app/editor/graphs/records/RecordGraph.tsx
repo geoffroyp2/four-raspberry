@@ -9,12 +9,7 @@ const RecordGraph = () => {
 
   const { color } = useSelector(selectRecordTempValues);
 
-  return (
-    <div className="flex flex-col xl:flex-row">
-      <SimpleGraph recordPoints={recordPoints} targetPoints={targetpoints} color={color} />
-      <div>INFOS</div>
-    </div>
-  );
+  return <SimpleGraph recordPoints={recordPoints} targetPoints={targetpoints} color={color} />;
 };
 
 export default RecordGraph;

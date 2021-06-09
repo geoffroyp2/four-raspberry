@@ -50,7 +50,7 @@ const RecordPreview = () => {
 
   if (error) return <NotFound />;
 
-  return <PreviewCard title={previewData.name ?? "-"} fields={fields} />;
+  return <PreviewCard title={previewData.name ?? "-"}>{fields}</PreviewCard>;
 };
 
 export default RecordPreview;

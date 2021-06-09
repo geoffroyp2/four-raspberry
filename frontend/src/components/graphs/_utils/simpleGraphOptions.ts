@@ -16,7 +16,7 @@ export const simpleGraphDataSetOptions: any = {
 };
 
 export const simpleGraphOptions: any = {
-  responsiveAnimationDuration: 100, // resize delay
+  responsiveAnimationDuration: 50, // resize delay
   animation: { duration: 200 },
   hover: { animationDuration: 100 },
 

@@ -16,7 +16,7 @@ const RecordLoadButtons = () => {
 
   return (
     <div className="flex justify-end">
-      <BasicButton color="teal" onClick={open}>
+      <BasicButton color="teal" onClick={open} disabled={recordId === null}>
         Ouvrir
         <ArrowRight size={16} className="ml-2" />
       </BasicButton>

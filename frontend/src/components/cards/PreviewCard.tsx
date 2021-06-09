@@ -3,15 +3,14 @@ import BasicMainCard from "./BasicMainCard";
 
 type Props = {
   title: string;
-  fields: JSX.Element[];
 };
 
-const PreviewCard: FC<Props> = ({ title, fields }) => {
+const PreviewCard: FC<Props> = ({ title, children }) => {
   return (
     <BasicMainCard>
       <div className="p-6 body-font text-gray-100 ">
         <h2 className="sm:text-3xl text-2xl mb-6 title-font font-medium ">{title}</h2>
-        {fields}
+        {children}
       </div>
     </BasicMainCard>
   );

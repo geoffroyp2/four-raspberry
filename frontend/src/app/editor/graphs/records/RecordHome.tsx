@@ -7,6 +7,7 @@ import RecordLoadTable from "./RecordLoadTable";
 import RecordLoadButtons from "./RecordLoadButtons";
 import TableTitle from "@components/tables/TableTitle";
 import Pagination from "@components/tables/Pagination";
+import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 
 const RecordHome = () => {
   const dispatch = useDispatch();
@@ -26,23 +27,23 @@ const RecordHome = () => {
   );
 
   return (
-    <div className="grid xl:grid-cols-home-xl xl:grid-rows-home-xl grid-cols-1 pt-8">
-      <div className="container pt-6 mx-auto px-4 sm:px-8 max-w-3xl col-start-1 row-start-1">
+    <MainGrid cols="1" xlRows="home-xl-2" xlCols="home-xl-2">
+      <MainGridItem col="1" row="2" xlCol="1" xlRow="1" className="max-w-3xl">
         <TableTitle title="Courbes de Cuisson" handleSubmit={handleSubmitSearch} />
-      </div>
-      <div className="container mx-auto px-4 sm:px-8 max-w-3xl col-start-1 row-start-2">
+      </MainGridItem>
+      <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
         <RecordLoadTable />
         {currentPageAmount > 0 && (
           <Pagination currentPage={currentLoadPage} pageAmount={currentPageAmount} handleSetPage={handleSetPage} />
         )}
-      </div>
-      <div className="container pt-6 mx-auto px-4 sm:px-8 max-w-3xl col-start-2 row-start-1">
+      </MainGridItem>
+      <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">
         <RecordLoadButtons />
-      </div>
-      <div className="container mx-auto px-4 sm:px-8 max-w-3xl col-start-1 row-start-3 xl:col-start-2 xl:row-start-2">
+      </MainGridItem>
+      <MainGridItem col="1" row="4" xlCol="2" xlRow="2" className="max-w-3xl">
         <RecordPreview />
-      </div>
-    </div>
+      </MainGridItem>
+    </MainGrid>
   );
 };
 
