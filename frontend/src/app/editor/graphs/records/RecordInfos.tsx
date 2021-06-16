@@ -1,10 +1,13 @@
-import InfosCard from "@components/cards/InfosCard";
-import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
+import { FC } from "react";
+
 import { useSelector } from "react-redux";
 import { selectRecordData } from "../_state/recordDataSlice";
-import RecordGraph from "./RecordGraph";
 
-const RecordInfos = () => {
+import RecordGraph from "./RecordGraph";
+import InfosCard from "@components/cards/InfosCard";
+import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
+
+const RecordInfos: FC = () => {
   const record = useSelector(selectRecordData);
 
   return (

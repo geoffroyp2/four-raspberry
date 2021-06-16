@@ -1,9 +1,10 @@
+import { FC } from "react";
 import { useSelector } from "react-redux";
 
 import SimpleGraph from "@components/graphs/SimpleGraph";
 import { selectRecordPoints, selectRecordTargetPoints, selectRecordTempValues } from "../_state/recordDataSlice";
 
-const RecordGraph = () => {
+const RecordGraph: FC = () => {
   const recordPoints = useSelector(selectRecordPoints);
   const targetpoints = useSelector(selectRecordTargetPoints);
 

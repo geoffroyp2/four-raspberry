@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useParams } from "react-router";
 
 import { useQuery } from "@apollo/client";
@@ -13,7 +13,7 @@ import { TargetQueryRes } from "@app/_types/dbTypes";
 import TargetInfos from "./TargetInfos";
 import NotFound from "@editor/NotFound";
 
-const TargetLoader = () => {
+const TargetLoader: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
 

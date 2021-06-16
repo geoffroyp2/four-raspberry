@@ -5,8 +5,9 @@ import { selectGraphRoute } from "@graphs/_state/graphDisplaySlice";
 
 import FlameIcon from "@components/svg/FlameIcon";
 import NavButton from "./NavButton";
+import { FC } from "react";
 
-const Header = () => {
+const Header: FC = () => {
   const { pathname } = useLocation();
   const graphRoute = useSelector(selectGraphRoute);
 

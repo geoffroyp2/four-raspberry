@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 import Header from "./header/Header";
@@ -7,7 +7,7 @@ import GraphRouter from "@graphs/GraphRouter";
 import PieceEditor from "./editor/pieces/PieceEditor";
 import FormulaEditor from "./editor/formulas/FormulaEditor";
 
-const AppRouter = () => {
+const AppRouter: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 

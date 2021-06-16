@@ -1,4 +1,6 @@
-const FormulaEditor = () => {
+import { FC } from "react";
+
+const FormulaEditor: FC = () => {
   return <div>Formulas</div>;
 };
 

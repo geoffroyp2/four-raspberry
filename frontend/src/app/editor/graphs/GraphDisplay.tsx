@@ -1,4 +1,6 @@
-const GraphDisplay = () => {
+import { FC } from "react";
+
+const GraphDisplay: FC = () => {
   return <div></div>;
 };
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 
 import { useQuery } from "@apollo/client";
 import { recordPageQuery } from "../_gql/queries";
@@ -23,7 +23,7 @@ import TableRow from "@components/tables/TableRow";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
-const RecordLoadTable = () => {
+const RecordLoadTable: FC = () => {
   const dispatch = useDispatch();
 
   const { recordId } = useSelector(selectGraphLoadId);

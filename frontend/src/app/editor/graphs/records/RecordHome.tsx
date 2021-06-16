@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
 
@@ -9,7 +9,7 @@ import TableTitle from "@components/tables/TableTitle";
 import Pagination from "@components/tables/Pagination";
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 
-const RecordHome = () => {
+const RecordHome: FC = () => {
   const dispatch = useDispatch();
 
   const currentPageAmount = useSelector(selectGraphPageAmount);

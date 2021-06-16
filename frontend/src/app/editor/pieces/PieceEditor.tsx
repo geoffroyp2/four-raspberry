@@ -1,4 +1,6 @@
-const PieceEditor = () => {
+import { FC } from "react";
+
+const PieceEditor: FC = () => {
   return <div>Pieces</div>;
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useParams } from "react-router";
 
 import { useQuery } from "@apollo/client";
@@ -14,7 +14,7 @@ import RecordInfos from "./RecordInfos";
 import NotFound from "@editor/NotFound";
 import { IdQueryParams } from "@editor/_gql/types";
 
-const RecordLoader = () => {
+const RecordLoader: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const pointFilter = useSelector(selectGraphPointZoom);

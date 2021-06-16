@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Routes, Route, useParams, useNavigate } from "react-router";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { selectGraphRoute, setGraphRoute } from "./_state/graphDisplaySlice";
 import RecordRouter from "./records/RecordRouter";
 import TargetRouter from "./targets/TargetRouter";
 
-const GraphRouter = () => {
+const GraphRouter: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const graphRoute = useSelector(selectGraphRoute);

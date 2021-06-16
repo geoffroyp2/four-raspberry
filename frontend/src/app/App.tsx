@@ -1,12 +1,13 @@
-import "./App.scss";
+import { FC } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { selectAppTheme } from "./_state/appStateSlice";
 
 import AppRouter from "./AppRouter";
+import "./App.scss";
 
-function App() {
+const App: FC = () => {
   const theme = useSelector(selectAppTheme);
 
   return (
@@ -16,6 +17,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

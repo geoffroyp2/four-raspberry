@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 
 import { useQuery } from "@apollo/client";
 import { RecordQueryRes } from "@app/_types/dbTypes";
@@ -14,7 +14,7 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 import PreviewCard, { PreviewCardField } from "@components/cards/PreviewCard";
 import NotFound from "@editor/NotFound";
 
-const RecordPreview = () => {
+const RecordPreview: FC = () => {
   const dispatch = useDispatch();
   const { recordId } = useSelector(selectGraphLoadId);
   const previewData = useSelector(selectRecordPreview);
