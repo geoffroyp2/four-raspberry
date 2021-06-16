@@ -10,9 +10,9 @@ import { setRecordData, setRecordPoints, setRecordTargetPoints } from "../_state
 
 import { RecordQueryRes } from "@app/_types/dbTypes";
 
-import RecordInfos from "./RecordInfos";
-import NotFound from "@editor/NotFound";
 import { IdQueryParams } from "@editor/_gql/types";
+import RecordInfosPage from "./RecordInfosPage";
+import NotFound from "@editor/NotFound";
 
 const RecordLoader: FC = () => {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const RecordLoader: FC = () => {
     return <NotFound />;
   }
 
-  return <RecordInfos />;
+  return <RecordInfosPage />;
 };
 
 export default RecordLoader;

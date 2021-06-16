@@ -674,6 +674,7 @@ module.exports = {
       "home-xl-1": "max-content",
       "home-xl-3/2": "60% 40%",
       "home-xl-2": "minmax(max-content, 60%) minmax(max-content, 40%)",
+      "field-button": "max-content 1fr max-content",
     },
     gridTemplateRows: {
       none: "none",

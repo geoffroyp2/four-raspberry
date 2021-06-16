@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 import { useQuery } from "@apollo/client";
 import { RecordQueryRes } from "@app/_types/dbTypes";
@@ -34,23 +34,17 @@ const RecordPreview: FC = () => {
     },
   });
 
-  const fields = useMemo(() => {
-    return [
-      <PreviewCardField key="prvw-Description" name="Description" value={previewData.description ?? "-"} />,
-      <PreviewCardField key="prvw-Four" name="Four" value={previewData.oven ?? "-"} />,
-      <PreviewCardField key="prvw-Courbe" name="Courbe de référence" value={previewData.target?.name ?? "-"} />,
-      <PreviewCardField key="prvw-Création" name="Création" value={dateToDisplayString(previewData.createdAt, true)} />,
-      <PreviewCardField
-        key="prvw-modification"
-        name="Dernière modification"
-        value={dateToDisplayString(previewData.updatedAt, true)}
-      />,
-    ];
-  }, [previewData]);
-
   if (error) return <NotFound />;
 
-  return <PreviewCard title={previewData.name ?? "-"}>{fields}</PreviewCard>;
+  return (
+    <PreviewCard title={previewData.name ?? "-"}>
+      <PreviewCardField name="Description" value={previewData.description ?? "-"} />
+      <PreviewCardField name="Four" value={previewData.oven ?? "-"} />
+      <PreviewCardField name="Courbe de référence" value={previewData.target?.name ?? "-"} />
+      <PreviewCardField name="Création" value={dateToDisplayString(previewData.createdAt, true)} />
+      <PreviewCardField name="Dernière modification" value={dateToDisplayString(previewData.updatedAt, true)} />
+    </PreviewCard>
+  );
 };
 
 export default RecordPreview;
