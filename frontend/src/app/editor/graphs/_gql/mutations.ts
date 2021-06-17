@@ -8,12 +8,18 @@ const updateRecordFields = {
   finished: "$finished: Boolean",
 };
 
-export const getUpdateRecordMutation = (field: keyof typeof updateRecordFields) => {
-  return gql`
+export const getUpdateRecordMutation = (field: keyof typeof updateRecordFields) => gql`
     mutation updateRecord($recordId: Int!, ${updateRecordFields[field]}) {
       updateRecord(recordId: $recordId, ${field}:$${field}) {
         ${recordFieldsString}
       }
     }
   `;
-};
+
+export const getSetRecordTargetMutation = (targetId: boolean) => gql`
+  mutation setRecordTarget($recordId: Int! ${targetId ? ",$targetId: Int!" : ""}) {
+    setRecordTarget(recordId: $recordId ${targetId ? ", targetId: $targetId" : ""}) {
+      ${recordFieldsString}
+    }
+  }
+`;

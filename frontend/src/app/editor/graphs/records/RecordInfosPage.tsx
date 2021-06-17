@@ -14,7 +14,7 @@ const RecordInfosPage: FC = () => {
       <MainGridItem col="1" row="2" xlCol="2" xlRow="1">
         <RecordInfos />
       </MainGridItem>
-      <MainGridItem>
+      <MainGridItem col="1" row="3" xlCol="1" xlRow="2">
         <RecordGallery />
       </MainGridItem>
     </MainGrid>

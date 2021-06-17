@@ -1,9 +1,10 @@
 import { FC, useState } from "react";
 
+import BasicMainCard from "./BasicMainCard";
 import EditIcon from "@components/svg/EditIcon";
 import ConfirmIcon from "@components/svg/ConfirmIcon";
 import CancelIcon from "@components/svg/CancelIcon";
-import BasicMainCard from "./BasicMainCard";
+import GotoIcon from "@components/svg/GotoIcon";
 
 const InfosCard: FC = ({ children }) => {
   return (
@@ -17,19 +18,40 @@ export default InfosCard;
 
 type Props = {
   label: string;
-  defaultContent: JSX.Element | string;
-  editContent?: JSX.Element;
+  defaultContent: React.ReactNode;
+  editContent?: React.ReactNode;
   confirmChange?: () => void;
   discardChange?: () => void;
+  link?: () => void;
+  unlink?: () => void;
+  goto?: () => void;
 };
 
-export const InfosCardField: FC<Props> = ({ label, defaultContent, editContent, confirmChange, discardChange }) => {
+export const InfosCardField: FC<Props> = ({
+  label,
+  defaultContent,
+  editContent,
+  confirmChange,
+  discardChange,
+  link,
+  unlink,
+  goto,
+}) => {
   const [EditMode, setEditMode] = useState<boolean>(false);
 
   return (
     <>
       <span className={`leading-relaxed text-blue-400 col-start-1`}>{label}</span>
-      <span className={`leading-relaxed col-start-2`}>{EditMode ? editContent : defaultContent}</span>
+      <span className={`leading-relaxed col-start-2 flex items-center gap-x-4`}>
+        {EditMode ? (
+          editContent
+        ) : (
+          <>
+            {defaultContent}
+            {goto && <GotoIcon onClick={goto} />}
+          </>
+        )}
+      </span>
       {editContent && confirmChange && discardChange && (
         <span className={`col-start-3 flex items-center justify-end gap-x-2`}>
           {EditMode ? (
@@ -50,6 +72,12 @@ export const InfosCardField: FC<Props> = ({ label, defaultContent, editContent, 
           ) : (
             <EditIcon onClick={() => setEditMode(true)} />
           )}
+        </span>
+      )}
+      {!editContent && (
+        <span className={`col-start-3 flex items-center justify-end gap-x-2`}>
+          {unlink && <CancelIcon onClick={unlink} />}
+          {link && <EditIcon onClick={link} />}
         </span>
       )}
     </>
