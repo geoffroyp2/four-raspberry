@@ -36,7 +36,7 @@ export const MainGridItem: FC<ItemProps> = ({ className, col, row, xlCol, xlRow,
     const colsString = col ? `col-start-${col}` : "";
     const rowsString = row ? `row-start-${row}` : "";
 
-    return `container pt-6 mx-auto px-4 sm:px-8 ${className} ${xlColsString} ${xlRowssString} ${colsString} ${rowsString}`;
+    return `container pt-6 mx-auto px-4 sm:px-8 ${className ?? ""} ${xlColsString} ${xlRowssString} ${colsString} ${rowsString}`;
   }, [className, col, row, xlCol, xlRow]);
 
   return <div className={classNameString}>{children}</div>;

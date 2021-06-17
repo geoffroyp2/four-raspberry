@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import RecordGraph from "./RecordGraph";
 import RecordInfos from "./RecordInfos";
+import RecordGallery from "./RecordGallery";
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 
 const RecordInfosPage: FC = () => {
@@ -12,6 +13,9 @@ const RecordInfosPage: FC = () => {
       </MainGridItem>
       <MainGridItem col="1" row="2" xlCol="2" xlRow="1">
         <RecordInfos />
+      </MainGridItem>
+      <MainGridItem>
+        <RecordGallery />
       </MainGridItem>
     </MainGrid>
   );

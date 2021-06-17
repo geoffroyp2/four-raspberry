@@ -60,8 +60,8 @@ export const simpleGraphOptions: any = {
         stepSize: 300,
         min: 0,
       },
-      gridLines: {
-        color: "rgba(160,160,160,0.7)",
+      grid: {
+        color: "rgba(110,110,110,0.7)",
       },
     },
     oxy: {
@@ -76,7 +76,7 @@ export const simpleGraphOptions: any = {
         min: -0.1,
         max: 1.1,
       },
-      gridLines: {
+      grid: {
         color: "rgba(120,110,110,0.4)",
         zeroLineColor: "rgba(120,110,110,0.4)",
         lineWidth: 0.5,
@@ -92,7 +92,7 @@ export const simpleGraphOptions: any = {
           return graphFormatTime(val, false); // formatage du texte
         },
       },
-      gridLines: {
+      grid: {
         color: "rgba(90,90,90,0.4)",
         lineWidth: 0.5,
       },
