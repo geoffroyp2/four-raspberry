@@ -14,7 +14,7 @@ import { IdQueryParams } from "@editor/_gql/types";
 import RecordInfosPage from "./RecordInfosPage";
 import NotFound from "@editor/NotFound";
 
-const RecordLoader: FC = () => {
+const RecordFetcher: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const pointFilter = useSelector(selectGraphPointZoom);
@@ -63,4 +63,4 @@ const RecordLoader: FC = () => {
   return <RecordInfosPage />;
 };
 
-export default RecordLoader;
+export default RecordFetcher;
