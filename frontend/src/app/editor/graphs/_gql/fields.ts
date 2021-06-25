@@ -26,6 +26,16 @@ const targetPreviewFields: TargetFields = ["id", "name", "description", "oven", 
 
 export const targetPreviewFieldsString = gqlStringBuilder(targetPreviewFields);
 
+const targetPointsFields = (filter: PointFilter): TargetFields => [
+  {
+    type: "points",
+    filter: filter,
+    fields: ["id", "temperature", "oxygen", "time"],
+  },
+];
+
+export const targetPointsFieldsString = (filter: PointFilter) => gqlStringBuilder(targetPointsFields(filter));
+
 // -----------------------------------------------
 const recordFields: RecordFields = [
   "id",

@@ -9,6 +9,7 @@ import {
   targetFieldsString,
   targetPageFieldsString,
   targetPreviewFieldsString,
+  targetPointsFieldsString,
 } from "./fields";
 
 export type TargetQueryParams = {
@@ -56,6 +57,17 @@ export const targetPreviewQuery = gql`
       count
       rows {
         ${targetPreviewFieldsString}
+      }
+    }
+  }
+`;
+
+export const targetPointsQuery = (filter: PointFilter) => gql`
+  query TargetQueryRes($id: Int) {
+    targets(id: $id) {
+      count
+      rows {
+        ${targetPointsFieldsString(filter)}
       }
     }
   }
