@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useMutation } from "@apollo/client";
 import { getSetRecordTargetMutation, getUpdateRecordMutation } from "../_gql/mutations";
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
 import { selectGraphLoadId, selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
 
-import RecordLoadTable from "./RecordLoadTable";
+import TargetLoadTable from "../targets/TargetLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import LinkTableModal from "@components/modals/LinkTableModal";
 import Pagination from "@components/tables/Pagination";
@@ -18,6 +19,8 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const record = useSelector(selectRecordData);
   const currentPageAmount = useSelector(selectGraphPageAmount);
   const currentLoadPage = useSelector(selectGraphLoadPage);
@@ -97,13 +100,25 @@ const RecordInfos: FC = () => {
         <InfosCardField
           label="Courbe de référence"
           defaultContent={record.target?.name ?? "-"}
-          unlink={() => {
-            /* unlinkRecordTarget({ variables: { recordId: record.id } }) */
-          }}
+          unlink={
+            record.target?.id
+              ? () => {
+                  unlinkRecordTarget({ variables: { recordId: record.id } });
+                }
+              : undefined
+          }
           link={() => setShowLinkModal(true)}
-          goto={() => {
-            /* TODO */
-          }}
+          goto={
+            record.target?.id
+              ? () => {
+                  if (record.target?.id && record.target.id > 0) {
+                    navigate(`../../targets/${record.target?.id}`);
+                  } else {
+                    navigate("../../");
+                  }
+                }
+              : undefined
+          }
         />
         <InfosCardField label="Four" defaultContent={record.oven ?? "-"} />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(record.createdAt, true)} />
@@ -114,13 +129,19 @@ const RecordInfos: FC = () => {
         discardChange={() => setShowLinkModal(false)}
         confirmChange={() => {
           setShowLinkModal(false);
-          /* setRecordTarget({variables: {recordId: record.id, targetId: targetId ?? 0 }}) */
+          setRecordTarget({ variables: { recordId: record.id, targetId: targetId ?? 0 } });
         }}
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} />}
         pagination={
-          <Pagination currentPage={currentLoadPage.record} pageAmount={currentPageAmount.record} handleSetPage={handleSetPage} />
+          currentPageAmount.target > 0 && (
+            <Pagination
+              currentPage={currentLoadPage.target}
+              pageAmount={currentPageAmount.target}
+              handleSetPage={handleSetPage}
+            />
+          )
         }
-        table={/* TODO: Change to TargetLoadTable */ <RecordLoadTable />}
+        table={<TargetLoadTable />}
       />
     </>
   );
