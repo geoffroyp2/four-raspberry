@@ -2,22 +2,20 @@ import { FC, useState } from "react";
 import { useParams } from "react-router";
 
 import { useQuery } from "@apollo/client";
-import { recordPointsQuery, recordQuery, RecordQueryParams } from "../_gql/queries";
+import { recordQuery, RecordQueryParams } from "../_gql/queries";
 
-import { useDispatch, useSelector } from "react-redux";
-import { selectGraphPointZoom, setGraphLoadId } from "../_state/graphDisplaySlice";
-import { setRecordData, setRecordPoints, setRecordTargetPoints } from "../_state/recordDataSlice";
+import { useDispatch } from "react-redux";
+import { setGraphLoadId } from "../_state/graphDisplaySlice";
+import { setRecordData } from "../_state/recordDataSlice";
 
 import { RecordQueryRes } from "@app/_types/dbTypes";
 
-import { IdQueryParams } from "@editor/_gql/types";
 import RecordInfosPage from "./RecordInfosPage";
 import NotFound from "@editor/NotFound";
 
 const RecordFetcher: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  const pointFilter = useSelector(selectGraphPointZoom);
 
   const [invalidId, setInvalidId] = useState<boolean>(isNaN(+params.id));
 
@@ -42,21 +40,7 @@ const RecordFetcher: FC = () => {
     },
   });
 
-  const pointsParams: IdQueryParams = {
-    variables: { id: recordId ?? 0 },
-  };
-
-  const pointData = useQuery<RecordQueryRes>(recordPointsQuery(pointFilter), {
-    ...pointsParams,
-    onCompleted: ({ records }) => {
-      if (records.rows[0]) {
-        dispatch(setRecordPoints(records.rows[0].points));
-        dispatch(setRecordTargetPoints(records.rows[0].target?.points));
-      }
-    },
-  });
-
-  if (mainData.error || pointData.error || invalidId) {
+  if (mainData.error || invalidId) {
     return <NotFound />;
   }
 
