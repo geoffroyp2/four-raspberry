@@ -19,7 +19,7 @@ const TableSearch: FC<Props> = ({ handleSubmit }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full max-w-sm space-x-3">
+    <form onSubmit={onSubmit} className="flex w-full max-w-sm space-x-3 justify-end">
       <div className="relative ">
         <TextInput id="load-table-search" color="blue" placeholder="Nom de la courbe" />
       </div>
