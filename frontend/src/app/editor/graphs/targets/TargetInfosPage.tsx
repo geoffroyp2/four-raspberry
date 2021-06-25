@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import TargetGraph from "./TargetGraph";
+import TargetGraph from "./TargetGraph";
 import TargetInfos from "./TargetInfos";
 // import TargetGallery from "./TargetGallery";
 
@@ -17,7 +17,7 @@ const TargetInfosPage: FC = () => {
         <BackButton onClick={() => navigate("../../")} />
       </MainGridItem>
       <MainGridItem col="1" row="2" xlCol="1" xlRow="2">
-        {/* <TargetGraph /> */}
+        <TargetGraph />
       </MainGridItem>
       <MainGridItem col="1" row="3" xlCol="2" xlRow="2">
         <TargetInfos />

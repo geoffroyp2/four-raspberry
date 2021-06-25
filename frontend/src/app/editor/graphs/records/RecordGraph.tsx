@@ -30,10 +30,8 @@ const RecordGraph: FC = () => {
 
   const { color } = useSelector(selectRecordTempValues);
 
-  const [loadPoint, { error, loading }] = useLazyQuery<RecordQueryRes>(recordPointsQuery(pointFilter), {
+  const [loadPoints, { error, loading }] = useLazyQuery<RecordQueryRes>(recordPointsQuery(pointFilter), {
     onCompleted: ({ records }) => {
-      console.log("Got Data");
-
       if (records.rows[0]) {
         dispatch(setRecordPoints(records.rows[0].points));
         dispatch(setRecordTargetPoints(records.rows[0].target?.points ?? []));
@@ -43,12 +41,11 @@ const RecordGraph: FC = () => {
   });
 
   useEffect(() => {
-    console.log("Loading");
     const pointsParams: IdQueryParams = {
       variables: { id: record.id ?? 0 },
     };
-    loadPoint(pointsParams);
-  }, [record.id, record.target?.id, pointFilter, loadPoint]);
+    loadPoints(pointsParams);
+  }, [record.id, record.target?.id, pointFilter, loadPoints]);
 
   if (error) return <NotFound />;
   if (loading) return <SimpleGraph recordPoints={[]} targetPoints={[]} color={{ r: 0, g: 0, b: 0, a: 0 }} />;
