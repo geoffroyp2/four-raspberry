@@ -6,6 +6,7 @@ import { selectGraphRoute, setGraphRoute } from "./_state/graphDisplaySlice";
 
 import RecordRouter from "./records/RecordRouter";
 import TargetRouter from "./targets/TargetRouter";
+import GraphHome from "./GraphHome";
 
 const GraphRouter: FC = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,6 @@ const GraphRouter: FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (params["*"] === "") {
-      // if we are at "/graphs", automatically redirect to the current graph route
-      navigate(graphRoute, { replace: true });
-    }
     if (params["*"] !== graphRoute) {
       // if the url was manually changed, redirect to the new url and change the graphRoute
       if (params["*"] === "targets" || params["*"] === "records") {
@@ -29,6 +26,7 @@ const GraphRouter: FC = () => {
 
   return (
     <Routes>
+      <Route path="*" element={<GraphHome />} />
       <Route path="targets/*" element={<TargetRouter />} />
       <Route path="records/*" element={<RecordRouter />} />
     </Routes>

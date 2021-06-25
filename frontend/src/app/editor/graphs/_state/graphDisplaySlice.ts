@@ -6,9 +6,9 @@ type PointZoomType = Required<PointFilter>;
 
 interface GraphDisplayType {
   route: "targets" | "records";
-  loadPage: number;
+  loadPage: { record: number; target: number };
   loadAmount: number;
-  pageAmount: number;
+  pageAmount: { record: number; target: number };
   loadId: { recordId: number | null; targetId: number | null };
   pointZoom: PointZoomType;
   redirect: "url" | "api" | null;
@@ -17,9 +17,9 @@ interface GraphDisplayType {
 
 const initialState: GraphDisplayType = {
   route: "records",
-  loadPage: 0,
+  loadPage: { record: 0, target: 0 },
   loadAmount: 15,
-  pageAmount: 0,
+  pageAmount: { record: 0, target: 0 },
   loadId: { targetId: null, recordId: null },
   pointZoom: {
     start: 0,
@@ -37,11 +37,13 @@ export const graphDisplaySlice = createSlice({
     setGraphRoute: (state, action: PayloadAction<GraphDisplayType["route"]>) => {
       state.route = action.payload;
     },
-    setGraphLoadPage: (state, action: PayloadAction<number>) => {
-      state.loadPage = action.payload;
+    setGraphLoadPage: (state, action: PayloadAction<Partial<GraphDisplayType["loadPage"]>>) => {
+      if (action.payload.record !== undefined) state.loadPage.record = action.payload.record;
+      if (action.payload.target !== undefined) state.loadPage.target = action.payload.target;
     },
-    setGraphTotalAmount: (state, action: PayloadAction<number>) => {
-      state.pageAmount = Math.floor(action.payload / state.loadAmount);
+    setGraphTotalAmount: (state, action: PayloadAction<Partial<GraphDisplayType["pageAmount"]>>) => {
+      if (action.payload.record !== undefined) state.pageAmount.record = Math.floor(action.payload.record / state.loadAmount);
+      if (action.payload.target !== undefined) state.pageAmount.target = Math.floor(action.payload.target / state.loadAmount);
     },
     setGraphLoadId: (state, action: PayloadAction<Partial<GraphDisplayType["loadId"]>>) => {
       if (action.payload.recordId !== undefined) state.loadId.recordId = action.payload.recordId;

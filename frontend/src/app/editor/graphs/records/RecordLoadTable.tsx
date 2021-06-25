@@ -40,7 +40,7 @@ const RecordLoadTable: FC = () => {
 
   const variables: PageQueryParams = {
     variables: {
-      page: currentLoadPage,
+      page: currentLoadPage.record,
       amount: currentLoadAmount,
     },
   };
@@ -48,12 +48,12 @@ const RecordLoadTable: FC = () => {
   const { loading, error } = useQuery<RecordQueryRes>(recordPageQuery, {
     ...variables,
     onCompleted: ({ records }) => {
-      if (currentLoadPage !== 0 && records.rows.length === 0) {
+      if (currentLoadPage.record !== 0 && records.rows.length === 0) {
         // if current page has no result
-        dispatch(setGraphLoadPage(0));
+        dispatch(setGraphLoadPage({ record: 0 }));
       } else {
         dispatch(setRecordLoadList(records.rows));
-        dispatch(setGraphTotalAmount(records.count));
+        dispatch(setGraphTotalAmount({ record: records.count }));
       }
     },
   });

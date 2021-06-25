@@ -40,7 +40,7 @@ const TargetLoadTable: FC = () => {
 
   const variables: PageQueryParams = {
     variables: {
-      page: currentLoadPage,
+      page: currentLoadPage.target,
       amount: currentLoadAmount,
     },
   };
@@ -48,12 +48,12 @@ const TargetLoadTable: FC = () => {
   const { loading, error } = useQuery<TargetQueryRes>(targetPageQuery, {
     ...variables,
     onCompleted: ({ targets }) => {
-      if (currentLoadPage !== 0 && targets.rows.length === 0) {
+      if (currentLoadPage.target !== 0 && targets.rows.length === 0) {
         // if current page has no result
-        dispatch(setGraphLoadPage(0));
+        dispatch(setGraphLoadPage({ target: 0 }));
       } else {
         dispatch(setTargetLoadList(targets.rows));
-        dispatch(setGraphTotalAmount(targets.count));
+        dispatch(setGraphTotalAmount({ target: targets.count }));
       }
     },
   });

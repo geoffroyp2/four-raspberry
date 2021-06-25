@@ -6,15 +6,15 @@ import { Record } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
+import { selectGraphLoadId, selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
 
+import RecordLoadTable from "./RecordLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import LinkTableModal from "@components/modals/LinkTableModal";
+import Pagination from "@components/tables/Pagination";
+import TableTitle from "@components/tables/TableTitle";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
-import RecordLoadTable from "./RecordLoadTable";
-import TableTitle from "@components/tables/TableTitle";
-import Pagination from "@components/tables/Pagination";
-import { selectGraphLoadId, selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
 
 const RecordInfos: FC = () => {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ const RecordInfos: FC = () => {
 
   const handleSetPage = useCallback(
     (page: number) => {
-      dispatch(setGraphLoadPage(page));
+      dispatch(setGraphLoadPage({ record: page }));
     },
     [dispatch]
   );
@@ -117,7 +117,9 @@ const RecordInfos: FC = () => {
           /* setRecordTarget({variables: {recordId: record.id, targetId: targetId ?? 0 }}) */
         }}
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} />}
-        pagination={<Pagination currentPage={currentLoadPage} pageAmount={currentPageAmount} handleSetPage={handleSetPage} />}
+        pagination={
+          <Pagination currentPage={currentLoadPage.record} pageAmount={currentPageAmount.record} handleSetPage={handleSetPage} />
+        }
         table={/* TODO: Change to TargetLoadTable */ <RecordLoadTable />}
       />
     </>
