@@ -1,0 +1,18 @@
+import { FC } from "react";
+
+type Props = {
+  value: string;
+  onChange: (value: string) => void;
+};
+
+const CustomTextArea: FC<Props> = ({ value, onChange }) => {
+  return (
+    <textarea
+      className="text-gray-900 w-full px-3 rounded-md  focus:shadow-outline"
+      value={value}
+      onChange={({ target }) => onChange(target.value)}
+    />
+  );
+};
+
+export default CustomTextArea;

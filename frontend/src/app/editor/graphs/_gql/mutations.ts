@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { recordFieldsString } from "./fields";
+import { recordFieldsString, targetFieldsString } from "./fields";
 
 const updateRecordFields = {
   name: "$name: String",
@@ -23,3 +23,18 @@ export const getSetRecordTargetMutation = (targetId: boolean) => gql`
     }
   }
 `;
+
+const updateTargetFields = {
+  name: "$name: String",
+  description: "$description: String",
+  color: "$color: ColorInput",
+  oven: "$oven: String",
+};
+
+export const getUpdateTargetMutation = (field: keyof typeof updateTargetFields) => gql`
+    mutation updateTarget($targetId: Int!, ${updateTargetFields[field]}) {
+      updateTarget(targetId: $targetId, ${field}:$${field}) {
+        ${targetFieldsString}
+      }
+    }
+  `;
