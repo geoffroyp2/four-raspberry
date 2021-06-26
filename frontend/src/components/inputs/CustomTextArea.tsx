@@ -14,14 +14,13 @@ const CustomTextArea: FC<Props> = ({ value, onChange }) => {
       ref={textRef}
       autoFocus
       onFocus={({ currentTarget }) => currentTarget.select()}
-      className="text-gray-900 w-full px-3 rounded-md focus:shadow-outline leading-tight"
+      className="text-gray-900 w-full px-3 py-1 rounded-md focus:shadow-outline leading-tight"
       value={value}
       onInput={() => setHeight((textRef.current?.scrollHeight ?? 20) + "px")}
       onChange={({ target }) => onChange(target.value)}
       style={{
-        resize: "none",
         height: Height,
-        maxHeight: "140px",
+        maxHeight: "148px",
       }}
     />
   );

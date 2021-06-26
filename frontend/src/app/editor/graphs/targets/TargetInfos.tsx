@@ -53,9 +53,7 @@ const TargetInfos: FC = () => {
           defaultContent={target.name ?? "-"}
           editContent={<CustomInput value={NameEditValue} onChange={setNameEditValue} />}
           confirmChange={() => updateTargetName({ variables: { targetId: target.id, name: NameEditValue } })}
-          discardChange={() => {
-            setNameEditValue(target.name ?? "");
-          }}
+          discardChange={() => setNameEditValue(target.name ?? "")}
         />
         <InfosCardField
           label="Description"
