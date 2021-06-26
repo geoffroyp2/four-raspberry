@@ -8,6 +8,8 @@ type Props = {
 const CustomTextArea: FC<Props> = ({ value, onChange }) => {
   return (
     <textarea
+      autoFocus
+      onFocus={({ currentTarget }) => currentTarget.select()}
       className="text-gray-900 w-full px-3 rounded-md  focus:shadow-outline"
       value={value}
       onChange={({ target }) => onChange(target.value)}

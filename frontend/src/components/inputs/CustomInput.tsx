@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 
 type Props = {
   value: string;
@@ -8,6 +8,8 @@ type Props = {
 const CustomInput: FC<Props> = ({ value, onChange }) => {
   return (
     <input
+      autoFocus
+      onFocus={({ currentTarget }) => currentTarget.select()}
       className="text-gray-900 w-full px-3 rounded-md  focus:shadow-outline"
       value={value}
       onChange={({ target }) => onChange(target.value)}
