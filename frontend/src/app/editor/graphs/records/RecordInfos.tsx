@@ -14,6 +14,8 @@ import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import LinkTableModal from "@components/modals/LinkTableModal";
 import Pagination from "@components/tables/Pagination";
 import TableTitle from "@components/tables/TableTitle";
+import CustomInput from "@components/inputs/CustomInput";
+import CustomTextArea from "@components/inputs/CustomTextArea";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -76,26 +78,16 @@ const RecordInfos: FC = () => {
         <InfosCardField
           label="Nom"
           defaultContent={record.name ?? "-"}
-          editContent={
-            <input className="text-gray-900" value={NameEditValue} onChange={({ target }) => setNameEditValue(target.value)} />
-          }
+          editContent={<CustomInput value={NameEditValue} onChange={setNameEditValue} />}
           confirmChange={() => updateRecordName({ variables: { recordId: record.id, name: NameEditValue } })}
-          discardChange={() => {
-            setNameEditValue(record.name ?? "");
-          }}
+          discardChange={() => setNameEditValue(record.name ?? "")}
         />
         <InfosCardField
           label="Description"
           defaultContent={record.description ?? "-"}
-          editContent={
-            <textarea
-              className="text-gray-900"
-              value={DescriptionEditValue}
-              onChange={({ target }) => setDescriptionEditValue(target.value)}
-            />
-          }
+          editContent={<CustomTextArea value={DescriptionEditValue} onChange={setDescriptionEditValue} />}
           confirmChange={() => updateRecordDescription({ variables: { recordId: record.id, description: DescriptionEditValue } })}
-          discardChange={() => setNameEditValue(record.description ?? "")}
+          discardChange={() => setDescriptionEditValue(record.description ?? "")}
         />
         <InfosCardField
           label="Courbe de référence"
