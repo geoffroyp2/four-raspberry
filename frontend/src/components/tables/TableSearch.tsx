@@ -1,7 +1,7 @@
 import { FC, FormEvent } from "react";
 
 import BasicButton from "@components/buttons/BasicButton";
-import TextInput from "@components/inputs/TextInput";
+import SearchInput from "@components/inputs/SearchInput";
 
 type Props = {
   handleSubmit: (fieldValue: string) => void;
@@ -21,7 +21,7 @@ const TableSearch: FC<Props> = ({ handleSubmit }) => {
   return (
     <form onSubmit={onSubmit} className="flex w-full max-w-sm space-x-3 justify-end">
       <div className="relative ">
-        <TextInput id="load-table-search" color="blue" placeholder="Nom de la courbe" />
+        <SearchInput id="load-table-search" color="blue" placeholder="Nom de la courbe" />
       </div>
       <BasicButton type="submit" color="blue">
         Filtrer
