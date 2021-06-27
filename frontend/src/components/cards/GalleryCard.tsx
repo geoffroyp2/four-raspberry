@@ -5,18 +5,19 @@ import ImageModal from "../modals/ImageModal";
 import Pagination from "../tables/Pagination";
 
 type Props = {
-  urls: string[];
+  images: { url: string; id: number }[];
+  onImgClick?: (id: number) => void;
 };
 
-const GalleryCard: FC<Props> = ({ urls }) => {
+const GalleryCard: FC<Props> = ({ images, onImgClick }) => {
   const [ShowModal, setShowModal] = useState<boolean>(false);
   const [ModalUrl, setModalUrl] = useState<string>("");
   const [Page, setPage] = useState<number>(0);
 
   const getImgPage = () => {
     const imgPage = [];
-    for (let i = Page * 12; i < urls.length && i < (Page + 1) * 12; i++) {
-      imgPage.push(urls[i]);
+    for (let i = Page * 12; i < images.length && i < (Page + 1) * 12; i++) {
+      imgPage.push(images[i]);
     }
     return imgPage;
   };
@@ -29,16 +30,17 @@ const GalleryCard: FC<Props> = ({ urls }) => {
             <img
               className="rounded-md shadow-md w-max cursor-pointer border-4 border-transparent hover:border-red-500"
               key={`img-${i}`}
-              src={e}
+              src={e.url}
               alt=""
+              onClick={() => onImgClick && onImgClick(e.id)}
               onDoubleClick={() => {
-                setModalUrl(e);
+                setModalUrl(e.url);
                 setShowModal(true);
               }}
             />
           ))}
         </div>
-        <Pagination small pageAmount={Math.floor(urls.length / 12)} currentPage={Page} handleSetPage={setPage} />
+        <Pagination small pageAmount={Math.floor(images.length / 12)} currentPage={Page} handleSetPage={setPage} />
       </BasicMainCard>
       <ImageModal show={ShowModal} hide={() => setShowModal(false)} url={ModalUrl} />
     </>

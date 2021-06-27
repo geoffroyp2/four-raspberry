@@ -1,20 +1,22 @@
 import { FC } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectTargetData } from "../_state/targetDataSlice";
 
 import GalleryCard from "@components/cards/GalleryCard";
+import { setPieceLoadId } from "@editor/pieces/_state/pieceDisplaySlice";
 
 const TargetGallery: FC = () => {
+  const dispatch = useDispatch();
   const target = useSelector(selectTargetData);
 
   const getUrls = () => {
-    const photos: string[] = [];
-    target.pieces?.forEach((p) => p.photos?.forEach((ph) => photos.push(ph)));
+    const photos: { url: string; id: number }[] = [];
+    target.pieces?.forEach((p) => p.photos?.forEach((ph) => photos.push({ url: ph, id: p.id ?? 0 })));
     return photos;
   };
 
-  return <GalleryCard urls={getUrls()} />;
+  return <GalleryCard images={getUrls()} onImgClick={(id) => dispatch(setPieceLoadId(id))} />;
 };
 
 export default TargetGallery;
