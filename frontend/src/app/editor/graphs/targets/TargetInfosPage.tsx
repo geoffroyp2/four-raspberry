@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import TargetGraph from "./TargetGraph";
 import TargetInfos from "./TargetInfos";
-// import TargetGallery from "./TargetGallery";
+import TargetGallery from "./TargetGallery";
 
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import BackButton from "@components/buttons/BackButton";
@@ -23,7 +23,7 @@ const TargetInfosPage: FC = () => {
         <TargetInfos />
       </MainGridItem>
       <MainGridItem col="1" row="4" xlCol="1" xlRow="3">
-        {/* <TargetGallery /> */}
+        <TargetGallery />
       </MainGridItem>
     </MainGrid>
   );

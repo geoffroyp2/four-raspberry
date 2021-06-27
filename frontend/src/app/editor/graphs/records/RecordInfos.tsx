@@ -111,6 +111,7 @@ const RecordInfos: FC = () => {
                 }
               : undefined
           }
+          gotoColor={"purple"}
         />
         <InfosCardField label="Four" defaultContent={record.oven ?? "-"} />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(record.createdAt, true)} />

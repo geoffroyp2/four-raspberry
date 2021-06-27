@@ -25,6 +25,7 @@ type Props = {
   link?: () => void;
   unlink?: () => void;
   goto?: () => void;
+  gotoColor?: string;
 };
 
 export const InfosCardField: FC<Props> = ({
@@ -36,6 +37,7 @@ export const InfosCardField: FC<Props> = ({
   link,
   unlink,
   goto,
+  gotoColor,
 }) => {
   const [EditMode, setEditMode] = useState<boolean>(false);
 
@@ -48,7 +50,7 @@ export const InfosCardField: FC<Props> = ({
         ) : (
           <>
             {defaultContent}
-            {goto && <GotoIcon onClick={goto} />}
+            {goto && <GotoIcon onClick={goto} color={gotoColor} />}
           </>
         )}
       </span>

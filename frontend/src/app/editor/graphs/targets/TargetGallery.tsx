@@ -1,20 +1,20 @@
 import { FC } from "react";
 
 import { useSelector } from "react-redux";
-import { selectRecordData } from "../_state/recordDataSlice";
+import { selectTargetData } from "../_state/targetDataSlice";
 
 import GalleryCard from "@components/cards/GalleryCard";
 
-const RecordGallery: FC = () => {
-  const record = useSelector(selectRecordData);
+const TargetGallery: FC = () => {
+  const target = useSelector(selectTargetData);
 
   const getUrls = () => {
     const photos: string[] = [];
-    record.pieces?.forEach((p) => p.photos?.forEach((ph) => photos.push(ph)));
+    target.pieces?.forEach((p) => p.photos?.forEach((ph) => photos.push(ph)));
     return photos;
   };
 
   return <GalleryCard urls={getUrls()} />;
 };
 
-export default RecordGallery;
+export default TargetGallery;
