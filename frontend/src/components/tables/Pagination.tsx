@@ -5,9 +5,43 @@ type Props = {
   currentPage: number;
   pageAmount: number;
   handleSetPage: (page: number) => void;
+  small?: boolean;
 };
 
-const Pagination: FC<Props> = ({ currentPage, pageAmount, handleSetPage }) => {
+const Pagination: FC<Props> = ({ currentPage, pageAmount, handleSetPage, small }) => {
+  /**
+   * if small, only show left/right icons + current page
+   */
+  if (small)
+    return (
+      <div className="px-5 py-3 flex flex-col xs:flex-row items-center xs:justify-between">
+        <div className="flex items-center">
+          <PaginationItem
+            className="p-4 rounded-l-xl"
+            disabled={currentPage <= 0}
+            onClick={() => {
+              handleSetPage(currentPage - 1);
+            }}
+          >
+            <PaginationIconLeft />
+          </PaginationItem>
+          <PaginationItem className="px-4 py-2" onClick={() => {}} disabled>
+            {currentPage + 1}
+          </PaginationItem>
+
+          <PaginationItem
+            className="p-4 rounded-r-xl"
+            disabled={currentPage >= pageAmount}
+            onClick={() => {
+              handleSetPage(currentPage + 1);
+            }}
+          >
+            <PaginationIconRight />
+          </PaginationItem>
+        </div>
+      </div>
+    );
+
   return (
     <div className="px-5 py-3 flex flex-col xs:flex-row items-center xs:justify-between">
       <div className="flex items-center">
