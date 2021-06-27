@@ -6,7 +6,7 @@ import { IdQueryParams } from "@editor/_gql/types";
 import { targetPreviewQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectGraphLoadId } from "../_state/graphDisplaySlice";
+import { selectTargetLoadId } from "../_state/targetDisplaySlice";
 import { selectTargetPreview, setTargetPreview } from "../_state/targetDataSlice";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
@@ -16,7 +16,7 @@ import NotFound from "@editor/NotFound";
 
 const TargetPreview: FC = () => {
   const dispatch = useDispatch();
-  const { targetId } = useSelector(selectGraphLoadId);
+  const targetId = useSelector(selectTargetLoadId);
   const previewData = useSelector(selectTargetPreview);
 
   const variables: IdQueryParams = {

@@ -6,7 +6,7 @@ import { IdQueryParams } from "@editor/_gql/types";
 import { recordPreviewQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectGraphLoadId } from "../_state/graphDisplaySlice";
+import { selectRecordLoadId } from "../_state/recordDisplaySlice";
 import { selectRecordPreview, setRecordPreview } from "../_state/recordDataSlice";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
@@ -16,7 +16,7 @@ import NotFound from "@editor/NotFound";
 
 const RecordPreview: FC = () => {
   const dispatch = useDispatch();
-  const { recordId } = useSelector(selectGraphLoadId);
+  const recordId = useSelector(selectRecordLoadId);
   const previewData = useSelector(selectRecordPreview);
 
   const variables: IdQueryParams = {

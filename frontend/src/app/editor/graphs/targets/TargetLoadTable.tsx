@@ -8,13 +8,13 @@ import { Target, TargetQueryRes } from "@app/_types/dbTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTargetLoadList, setTargetLoadList } from "../_state/targetDataSlice";
 import {
-  selectGraphLoadAmount,
-  selectGraphLoadId,
-  selectGraphLoadPage,
-  setGraphLoadId,
-  setGraphLoadPage,
-  setGraphTotalAmount,
-} from "../_state/graphDisplaySlice";
+  selectTargetLoadAmount,
+  selectTargetLoadId,
+  selectTargetLoadPage,
+  setTargetLoadId,
+  setTargetLoadPage,
+  setTargetTotalAmount,
+} from "../_state/targetDisplaySlice";
 
 import NotFound from "@editor/NotFound";
 import LoadTable from "@components/tables/LoadTable";
@@ -26,21 +26,21 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 const TargetLoadTable: FC = () => {
   const dispatch = useDispatch();
 
-  const { targetId } = useSelector(selectGraphLoadId);
-  const currentLoadPage = useSelector(selectGraphLoadPage);
-  const currentLoadAmount = useSelector(selectGraphLoadAmount);
+  const targetId = useSelector(selectTargetLoadId);
+  const currentLoadPage = useSelector(selectTargetLoadPage);
+  const currentLoadAmount = useSelector(selectTargetLoadAmount);
   const currentLoadList = useSelector(selectTargetLoadList);
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setGraphLoadId({ targetId: id }));
+      dispatch(setTargetLoadId(id));
     },
     [dispatch]
   );
 
   const variables: PageQueryParams = {
     variables: {
-      page: currentLoadPage.target,
+      page: currentLoadPage,
       amount: currentLoadAmount,
     },
   };
@@ -48,12 +48,12 @@ const TargetLoadTable: FC = () => {
   const { loading, error } = useQuery<TargetQueryRes>(targetPageQuery, {
     ...variables,
     onCompleted: ({ targets }) => {
-      if (currentLoadPage.target !== 0 && targets.rows.length === 0) {
+      if (currentLoadPage !== 0 && targets.rows.length === 0) {
         // if current page has no result
-        dispatch(setGraphLoadPage({ target: 0 }));
+        dispatch(setTargetLoadPage(0));
       } else {
         dispatch(setTargetLoadList(targets.rows));
-        dispatch(setGraphTotalAmount({ target: targets.count }));
+        dispatch(setTargetTotalAmount(targets.count));
       }
     },
   });

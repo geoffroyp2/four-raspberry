@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { recordQuery, RecordQueryParams } from "../_gql/queries";
 
 import { useDispatch } from "react-redux";
-import { setGraphLoadId } from "../_state/graphDisplaySlice";
+import { setRecordLoadId } from "../_state/recordDisplaySlice";
 import { setRecordData } from "../_state/recordDataSlice";
 
 import { RecordQueryRes } from "@app/_types/dbTypes";
@@ -33,7 +33,7 @@ const RecordFetcher: FC = () => {
         if (recordId !== records.rows[0].id) {
           setInvalidId(true);
         } else {
-          dispatch(setGraphLoadId({ recordId: records.rows[0].id }));
+          dispatch(setRecordLoadId(records.rows[0].id));
           dispatch(setRecordData(records.rows[0]));
         }
       }

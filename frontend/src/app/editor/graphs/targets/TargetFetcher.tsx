@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { targetQuery, TargetQueryParams } from "../_gql/queries";
 
 import { useDispatch } from "react-redux";
-import { setGraphLoadId } from "../_state/graphDisplaySlice";
+import { setTargetLoadId } from "../_state/targetDisplaySlice";
 import { setTargetData } from "../_state/targetDataSlice";
 
 import { TargetQueryRes } from "@app/_types/dbTypes";
@@ -33,7 +33,7 @@ const TargetFetcher: FC = () => {
         if (targetId !== targets.rows[0].id) {
           setInvalidId(true);
         } else {
-          dispatch(setGraphLoadId({ targetId: targets.rows[0].id }));
+          dispatch(setTargetLoadId(targets.rows[0].id));
           dispatch(setTargetData(targets.rows[0]));
         }
       }

@@ -2,14 +2,14 @@ import { FC } from "react";
 import { useNavigate } from "react-router";
 
 import { useSelector } from "react-redux";
-import { selectGraphLoadId } from "../_state/graphDisplaySlice";
+import { selectTargetLoadId } from "../_state/targetDisplaySlice";
 
 import BasicButton from "@components/buttons/BasicButton";
 import ArrowRight from "@components/svg/ArrowRight";
 
 const TargetLoadButtons: FC = () => {
   const navigate = useNavigate();
-  const { targetId } = useSelector(selectGraphLoadId);
+  const targetId = useSelector(selectTargetLoadId);
 
   const open = () => {
     navigate(`targets/${targetId}`);

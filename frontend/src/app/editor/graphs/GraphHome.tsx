@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "./_state/graphDisplaySlice";
+import { selectTargetLoadPage, selectTargetPageAmount, setTargetLoadPage } from "./_state/targetDisplaySlice";
 
 import RecordPreview from "./records/RecordPreview";
 import RecordLoadTable from "./records/RecordLoadTable";
@@ -12,6 +12,7 @@ import TargetLoadButtons from "./targets/TargetLoadButtons";
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import TableTitle, { TableTitleTab } from "@components/tables/TableTitle";
 import Pagination from "@components/tables/Pagination";
+import { setRecordLoadPage } from "./_state/recordDisplaySlice";
 
 enum GraphType {
   Record,
@@ -21,8 +22,10 @@ enum GraphType {
 const GraphHome: FC = () => {
   const dispatch = useDispatch();
 
-  const pageAmount = useSelector(selectGraphPageAmount);
-  const loadPage = useSelector(selectGraphLoadPage);
+  const targetLoadPage = useSelector(selectTargetLoadPage);
+  const recordLoadPage = useSelector(selectTargetLoadPage);
+  const targetPageAmount = useSelector(selectTargetPageAmount);
+  const recordPageAmount = useSelector(selectTargetPageAmount);
 
   const [GraphTypeDisplay, setGraphTypeDisplay] = useState<GraphType>(GraphType.Record);
 
@@ -32,13 +35,13 @@ const GraphHome: FC = () => {
 
   const handleSetRecordPage = useCallback(
     (page: number) => {
-      dispatch(setGraphLoadPage({ record: page }));
+      dispatch(setRecordLoadPage(page));
     },
     [dispatch]
   );
   const handleSetTargetPage = useCallback(
     (page: number) => {
-      dispatch(setGraphLoadPage({ target: page }));
+      dispatch(setTargetLoadPage(page));
     },
     [dispatch]
   );
@@ -68,8 +71,8 @@ const GraphHome: FC = () => {
         <>
           <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
             <TargetLoadTable />
-            {pageAmount.target > 0 && (
-              <Pagination currentPage={loadPage.target} pageAmount={pageAmount.target} handleSetPage={handleSetTargetPage} />
+            {targetPageAmount > 0 && (
+              <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetTargetPage} />
             )}
           </MainGridItem>
           <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">
@@ -83,8 +86,8 @@ const GraphHome: FC = () => {
         <>
           <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
             <RecordLoadTable />
-            {pageAmount.record > 0 && (
-              <Pagination currentPage={loadPage.record} pageAmount={pageAmount.record} handleSetPage={handleSetRecordPage} />
+            {recordPageAmount > 0 && (
+              <Pagination currentPage={recordLoadPage} pageAmount={recordPageAmount} handleSetPage={handleSetRecordPage} />
             )}
           </MainGridItem>
           <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">

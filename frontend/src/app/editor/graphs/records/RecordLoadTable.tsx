@@ -8,13 +8,13 @@ import { Record, RecordQueryRes } from "@app/_types/dbTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordLoadList, setRecordLoadList } from "../_state/recordDataSlice";
 import {
-  selectGraphLoadAmount,
-  selectGraphLoadId,
-  selectGraphLoadPage,
-  setGraphLoadId,
-  setGraphLoadPage,
-  setGraphTotalAmount,
-} from "../_state/graphDisplaySlice";
+  selectRecordLoadAmount,
+  selectRecordLoadId,
+  selectRecordLoadPage,
+  setRecordLoadId,
+  setRecordLoadPage,
+  setRecordTotalAmount,
+} from "../_state/recordDisplaySlice";
 
 import NotFound from "@editor/NotFound";
 import LoadTable from "@components/tables/LoadTable";
@@ -26,21 +26,21 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 const RecordLoadTable: FC = () => {
   const dispatch = useDispatch();
 
-  const { recordId } = useSelector(selectGraphLoadId);
-  const currentLoadPage = useSelector(selectGraphLoadPage);
-  const currentLoadAmount = useSelector(selectGraphLoadAmount);
+  const recordId = useSelector(selectRecordLoadId);
+  const currentLoadPage = useSelector(selectRecordLoadPage);
+  const currentLoadAmount = useSelector(selectRecordLoadAmount);
   const currentLoadList = useSelector(selectRecordLoadList);
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setGraphLoadId({ recordId: id }));
+      dispatch(setRecordLoadId(id));
     },
     [dispatch]
   );
 
   const variables: PageQueryParams = {
     variables: {
-      page: currentLoadPage.record,
+      page: currentLoadPage,
       amount: currentLoadAmount,
     },
   };
@@ -48,12 +48,12 @@ const RecordLoadTable: FC = () => {
   const { loading, error } = useQuery<RecordQueryRes>(recordPageQuery, {
     ...variables,
     onCompleted: ({ records }) => {
-      if (currentLoadPage.record !== 0 && records.rows.length === 0) {
+      if (currentLoadPage !== 0 && records.rows.length === 0) {
         // if current page has no result
-        dispatch(setGraphLoadPage({ record: 0 }));
+        dispatch(setRecordLoadPage(0));
       } else {
         dispatch(setRecordLoadList(records.rows));
-        dispatch(setGraphTotalAmount({ record: records.count }));
+        dispatch(setRecordTotalAmount(records.count));
       }
     },
   });

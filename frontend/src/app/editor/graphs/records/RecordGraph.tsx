@@ -4,7 +4,7 @@ import { useLazyQuery } from "@apollo/client";
 import { recordPointsQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectGraphPointZoom } from "../_state/graphDisplaySlice";
+import { selectRecordPointZoom } from "../_state/recordDisplaySlice";
 import {
   selectRecordData,
   selectRecordPoints,
@@ -26,7 +26,7 @@ const RecordGraph: FC = () => {
   const record = useSelector(selectRecordData);
   const recordPoints = useSelector(selectRecordPoints);
   const targetpoints = useSelector(selectRecordTargetPoints);
-  const pointFilter = useSelector(selectGraphPointZoom);
+  const pointFilter = useSelector(selectRecordPointZoom);
 
   const { color } = useSelector(selectRecordTempValues);
 

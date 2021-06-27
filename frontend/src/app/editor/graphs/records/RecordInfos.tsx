@@ -7,7 +7,12 @@ import { Record } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
-import { selectGraphLoadId, selectGraphLoadPage, selectGraphPageAmount, setGraphLoadPage } from "../_state/graphDisplaySlice";
+import {
+  selectTargetLoadId,
+  selectTargetLoadPage,
+  selectTargetPageAmount,
+  setTargetLoadPage,
+} from "../_state/targetDisplaySlice";
 
 import TargetLoadTable from "../targets/TargetLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
@@ -24,9 +29,9 @@ const RecordInfos: FC = () => {
   const navigate = useNavigate();
 
   const record = useSelector(selectRecordData);
-  const currentPageAmount = useSelector(selectGraphPageAmount);
-  const currentLoadPage = useSelector(selectGraphLoadPage);
-  const { targetId } = useSelector(selectGraphLoadId);
+  const targetPageAmount = useSelector(selectTargetPageAmount);
+  const targetLoadPage = useSelector(selectTargetLoadPage);
+  const targetId = useSelector(selectTargetLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(record.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(record.description ?? "");
@@ -67,7 +72,7 @@ const RecordInfos: FC = () => {
 
   const handleSetPage = useCallback(
     (page: number) => {
-      dispatch(setGraphLoadPage({ record: page }));
+      dispatch(setTargetLoadPage(page));
     },
     [dispatch]
   );
@@ -126,12 +131,8 @@ const RecordInfos: FC = () => {
         }}
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} />}
         pagination={
-          currentPageAmount.target > 0 && (
-            <Pagination
-              currentPage={currentLoadPage.target}
-              pageAmount={currentPageAmount.target}
-              handleSetPage={handleSetPage}
-            />
+          targetPageAmount > 0 && (
+            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} />
           )
         }
         table={<TargetLoadTable />}

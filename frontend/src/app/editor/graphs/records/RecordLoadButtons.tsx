@@ -2,14 +2,14 @@ import { FC } from "react";
 import { useNavigate } from "react-router";
 
 import { useSelector } from "react-redux";
-import { selectGraphLoadId } from "../_state/graphDisplaySlice";
+import { selectRecordLoadId } from "../_state/recordDisplaySlice";
 
 import BasicButton from "@components/buttons/BasicButton";
 import ArrowRight from "@components/svg/ArrowRight";
 
 const RecordLoadButtons: FC = () => {
   const navigate = useNavigate();
-  const { recordId } = useSelector(selectGraphLoadId);
+  const recordId = useSelector(selectRecordLoadId);
 
   const open = () => {
     navigate(`records/${recordId}`);

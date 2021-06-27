@@ -4,7 +4,7 @@ import { useLazyQuery } from "@apollo/client";
 import { targetPointsQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectGraphPointZoom } from "../_state/graphDisplaySlice";
+import { selectTargetPointZoom } from "../_state/targetDisplaySlice";
 import { selectTargetData, selectTargetPoints, selectTargetTempValues, setTargetPoints } from "../_state/targetDataSlice";
 
 import { IdQueryParams } from "@editor/_gql/types";
@@ -18,7 +18,7 @@ const TargetGraph: FC = () => {
 
   const target = useSelector(selectTargetData);
   const targetPoints = useSelector(selectTargetPoints);
-  const pointFilter = useSelector(selectGraphPointZoom);
+  const pointFilter = useSelector(selectTargetPointZoom);
 
   const { color } = useSelector(selectTargetTempValues);
 
