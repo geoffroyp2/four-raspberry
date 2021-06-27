@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TargetGraph from "./TargetGraph";
 import TargetInfos from "./TargetInfos";
 import TargetGallery from "./TargetGallery";
+import PiecePreview from "@editor/pieces/PiecePreview";
 
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import BackButton from "@components/buttons/BackButton";
@@ -24,6 +25,9 @@ const TargetInfosPage: FC = () => {
       </MainGridItem>
       <MainGridItem col="1" row="4" xlCol="1" xlRow="3">
         <TargetGallery />
+      </MainGridItem>
+      <MainGridItem col="1" row="5" xlCol="2" xlRow="3">
+        <PiecePreview />
       </MainGridItem>
     </MainGrid>
   );
