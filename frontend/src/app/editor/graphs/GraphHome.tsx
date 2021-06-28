@@ -12,7 +12,7 @@ import TargetLoadButtons from "./targets/TargetLoadButtons";
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import TableTitle, { TableTitleTab } from "@components/tables/TableTitle";
 import Pagination from "@components/tables/Pagination";
-import { setRecordLoadPage } from "./_state/recordDisplaySlice";
+import { selectRecordLoadPage, selectRecordPageAmount, setRecordLoadPage } from "./_state/recordDisplaySlice";
 
 enum GraphType {
   Record,
@@ -23,9 +23,9 @@ const GraphHome: FC = () => {
   const dispatch = useDispatch();
 
   const targetLoadPage = useSelector(selectTargetLoadPage);
-  const recordLoadPage = useSelector(selectTargetLoadPage);
+  const recordLoadPage = useSelector(selectRecordLoadPage);
   const targetPageAmount = useSelector(selectTargetPageAmount);
-  const recordPageAmount = useSelector(selectTargetPageAmount);
+  const recordPageAmount = useSelector(selectRecordPageAmount);
 
   const [GraphTypeDisplay, setGraphTypeDisplay] = useState<GraphType>(GraphType.Record);
 

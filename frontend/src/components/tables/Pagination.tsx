@@ -26,7 +26,7 @@ const Pagination: FC<Props> = ({ currentPage, pageAmount, handleSetPage, small }
             <PaginationIconLeft />
           </PaginationItem>
           <PaginationItem className="px-4 py-2" onClick={() => {}} disabled>
-            {currentPage + 1}
+            {`${currentPage + 1}/${pageAmount + 1}`}
           </PaginationItem>
 
           <PaginationItem

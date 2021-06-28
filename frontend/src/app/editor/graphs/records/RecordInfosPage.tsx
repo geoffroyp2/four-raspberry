@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import RecordGraph from "./RecordGraph";
 import RecordInfos from "./RecordInfos";
 import RecordGallery from "./RecordGallery";
+import PiecePreview from "@editor/pieces/PiecePreview";
 
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import BackButton from "@components/buttons/BackButton";
@@ -25,6 +26,10 @@ const RecordInfosPage: FC = () => {
         </MainGridItem>
         <MainGridItem col="1" row="4" xlCol="1" xlRow="3">
           <RecordGallery />
+        </MainGridItem>
+
+        <MainGridItem col="1" row="5" xlCol="2" xlRow="3">
+          <PiecePreview />
         </MainGridItem>
       </MainGrid>
     </>
