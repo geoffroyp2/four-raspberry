@@ -29,6 +29,12 @@ export default gql`
     a: Float!
   }
 
+  input TargetPointInput {
+    time: Float!
+    temperature: Float!
+    oxygen: Float!
+  }
+
   """
   Color contains 4 Integer fields: r, g, b with range 0-255
   And one Float field a range 0-1

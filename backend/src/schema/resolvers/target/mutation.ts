@@ -6,6 +6,7 @@ import {
   GQLTargetId,
   GQLTargetPointCreate,
   GQLTargetPointDelete,
+  GQLTargetPointSetAll,
   GQLTargetPointUpdate,
   GQLTargetUpdate,
   ResolverObjectType,
@@ -56,11 +57,7 @@ const Mutation: ResolverObjectType = {
    * @param args the fields to update
    * @return the updated Target or null if not in database
    */
-  updateTarget: async (
-    _,
-    { targetId, name, description, color, oven }: GQLTargetUpdate,
-    loaders
-  ): Promise<Target | null> => {
+  updateTarget: async (_, { targetId, name, description, color, oven }: GQLTargetUpdate, loaders): Promise<Target | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
       clearTargetLoaders(loaders, targetId);
@@ -80,10 +77,7 @@ const Mutation: ResolverObjectType = {
    * @param targetId the id of the Target
    * @param args the fields of the point
    */
-  createTargetPoint: async (
-    _,
-    { targetId, time, temperature, oxygen }: GQLTargetPointCreate
-  ): Promise<TargetPoint | null> => {
+  createTargetPoint: async (_, { targetId, time, temperature, oxygen }: GQLTargetPointCreate): Promise<TargetPoint | null> => {
     const target = await Target.findOne({ where: { id: targetId } });
     if (target) {
       return target.createPoint({ time, temperature, oxygen });
@@ -127,6 +121,25 @@ const Mutation: ResolverObjectType = {
       return point.save();
     }
     return null;
+  },
+
+  /**
+   * Selects a Target by id and set all of its points to the new ones
+   * @param targetId the id of the Target
+   * @param points the new TargetPoint array
+   * @returns the Target
+   */
+  setTargetAllPoints: async (_, { targetId, points }: GQLTargetPointSetAll): Promise<Target | null> => {
+    const target = await Target.findOne({ where: { id: targetId } });
+    if (!target) return null;
+
+    // Delete all existing points
+    const existingPoints = await target.getPoints();
+    await Promise.all(existingPoints.map((p) => p.destroy()));
+
+    // Add all new points
+    await Promise.all(points.map((p) => target.createPoint({ ...p })));
+    return target;
   },
 };
 
