@@ -5,7 +5,7 @@ import { targetPointsQuery } from "../_gql/queries";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectTargetPointZoom } from "../_state/targetDisplaySlice";
-import { selectTargetData, selectTargetPoints, selectTargetTempValues, setTargetPoints } from "../_state/targetDataSlice";
+import { selectTargetData, selectTargetTempPoints, selectTargetTempColor, setTargetPoints } from "../_state/targetDataSlice";
 
 import { IdQueryParams } from "@editor/_gql/types";
 import { TargetQueryRes } from "@app/_types/dbTypes";
@@ -17,10 +17,10 @@ const TargetGraph: FC = () => {
   const dispatch = useDispatch();
 
   const target = useSelector(selectTargetData);
-  const targetPoints = useSelector(selectTargetPoints);
+  const targetPoints = useSelector(selectTargetTempPoints);
   const pointFilter = useSelector(selectTargetPointZoom);
 
-  const { color } = useSelector(selectTargetTempValues);
+  const color = useSelector(selectTargetTempColor);
 
   const [loadPoints, { error, loading }] = useLazyQuery<TargetQueryRes>(targetPointsQuery(pointFilter), {
     onCompleted: ({ targets }) => {
