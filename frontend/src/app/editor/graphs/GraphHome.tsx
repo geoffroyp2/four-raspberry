@@ -1,6 +1,8 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTargetLoadPage, selectTargetPageAmount, setTargetLoadPage } from "./_state/targetDisplaySlice";
+import { selectRecordLoadPage, selectRecordPageAmount, setRecordLoadPage } from "./_state/recordDisplaySlice";
+import { selectGraphRoute, setGraphRoute } from "./_state/graphDisplaySlice";
 
 import RecordPreview from "./records/RecordPreview";
 import RecordLoadTable from "./records/RecordLoadTable";
@@ -12,12 +14,6 @@ import TargetLoadButtons from "./targets/TargetLoadButtons";
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import TableTitle, { TableTitleTab } from "@components/tables/TableTitle";
 import Pagination from "@components/tables/Pagination";
-import { selectRecordLoadPage, selectRecordPageAmount, setRecordLoadPage } from "./_state/recordDisplaySlice";
-
-enum GraphType {
-  Record,
-  Target,
-}
 
 const GraphHome: FC = () => {
   const dispatch = useDispatch();
@@ -27,7 +23,7 @@ const GraphHome: FC = () => {
   const targetPageAmount = useSelector(selectTargetPageAmount);
   const recordPageAmount = useSelector(selectRecordPageAmount);
 
-  const [GraphTypeDisplay, setGraphTypeDisplay] = useState<GraphType>(GraphType.Record);
+  const graphRoute = useSelector(selectGraphRoute);
 
   const handleSubmitSearch = useCallback((fieldValue: string) => {
     console.log(fieldValue);
@@ -54,20 +50,20 @@ const GraphHome: FC = () => {
             <TableTitleTab
               key="title-tab-target"
               title="Courbes de Référence"
-              onClick={() => setGraphTypeDisplay(GraphType.Target)}
-              selected={GraphTypeDisplay === GraphType.Target}
+              onClick={() => dispatch(setGraphRoute("targets"))}
+              selected={graphRoute === "targets"}
             />,
             <TableTitleTab
               key="title-tab-record"
               title="Courbes de Cuisson"
-              onClick={() => setGraphTypeDisplay(GraphType.Record)}
-              selected={GraphTypeDisplay === GraphType.Record}
+              onClick={() => dispatch(setGraphRoute("records"))}
+              selected={graphRoute === "records"}
             />,
           ]}
           handleSubmit={handleSubmitSearch}
         />
       </MainGridItem>
-      {GraphTypeDisplay === GraphType.Target ? (
+      {graphRoute === "targets" ? (
         <>
           <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
             <TargetLoadTable />

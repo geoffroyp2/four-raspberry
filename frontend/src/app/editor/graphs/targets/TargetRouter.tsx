@@ -15,7 +15,7 @@ const TargetRouter: FC = () => {
     if (params["*"] === "") {
       // If we are at /graphs/records => either load current record or go back if none selected
       if (target.id && target.id > 0) {
-        navigate(`/${target.id}`);
+        navigate(`/graphs/targets/${target.id}`);
       } else {
         navigate("../");
       }
