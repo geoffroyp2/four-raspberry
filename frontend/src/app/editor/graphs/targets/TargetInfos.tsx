@@ -10,6 +10,7 @@ import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import CustomSelect from "@components/inputs/CustomSelect";
 import CustomInput from "@components/inputs/CustomInput";
 import CustomTextArea from "@components/inputs/CustomTextArea";
+import ColorPicker from "@components/inputs/ColorPicker";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 import { getUpdateTargetMutation } from "../_gql/mutations";
@@ -45,6 +46,12 @@ const TargetInfos: FC = () => {
     },
   });
 
+  const [updateTargetColor] = useMutation<{ updateTarget: Target }>(getUpdateTargetMutation("color"), {
+    onCompleted: ({ updateTarget }) => {
+      dispatch(setTargetData(updateTarget));
+    },
+  });
+
   return (
     <>
       <InfosCard>
@@ -72,6 +79,15 @@ const TargetInfos: FC = () => {
               <option value="electrique">Electrique</option>
               <option value="gaz">Gaz</option>
             </CustomSelect>
+          }
+        />
+        <InfosCardField
+          label="Couleur"
+          defaultContent={
+            <ColorPicker
+              value={target.color ?? { r: 0, g: 0, b: 0, a: 1 }}
+              onChange={(value) => updateTargetColor({ variables: { targetId: target.id, color: value } })}
+            />
           }
         />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(target.createdAt, true)} />

@@ -21,6 +21,7 @@ import Pagination from "@components/tables/Pagination";
 import TableTitle from "@components/tables/TableTitle";
 import CustomInput from "@components/inputs/CustomInput";
 import CustomTextArea from "@components/inputs/CustomTextArea";
+import ColorPicker from "@components/inputs/ColorPicker";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -63,6 +64,12 @@ const RecordInfos: FC = () => {
   const [unlinkRecordTarget] = useMutation<{ setRecordTarget: Record }>(getSetRecordTargetMutation(false), {
     onCompleted: ({ setRecordTarget }) => {
       dispatch(setRecordData(setRecordTarget));
+    },
+  });
+
+  const [updateRecordColor] = useMutation<{ updateRecord: Record }>(getUpdateRecordMutation("color"), {
+    onCompleted: ({ updateRecord }) => {
+      dispatch(setRecordData(updateRecord));
     },
   });
 
@@ -119,6 +126,15 @@ const RecordInfos: FC = () => {
           gotoColor={"purple"}
         />
         <InfosCardField label="Four" defaultContent={record.oven ?? "-"} />
+        <InfosCardField
+          label="Couleur"
+          defaultContent={
+            <ColorPicker
+              value={record.color ?? { r: 0, g: 0, b: 0, a: 1 }}
+              onChange={(value) => updateRecordColor({ variables: { recordId: record.id, color: value } })}
+            />
+          }
+        />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(record.createdAt, true)} />
         <InfosCardField label="Dernière modification" defaultContent={dateToDisplayString(record.updatedAt, true)} />
       </InfosCard>
