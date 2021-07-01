@@ -1,5 +1,5 @@
-import BasicMainCard from "@components/cards/BasicMainCard";
 import { FC } from "react";
+import BasicMainCard from "@components/cards/BasicMainCard";
 
 type Props = {};
 

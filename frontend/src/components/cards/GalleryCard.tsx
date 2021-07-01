@@ -48,7 +48,7 @@ const GalleryCard: FC<Props> = ({ images, onImgClick }) => {
         </div>
         <Pagination
           small
-          pageAmount={Math.floor(images.length / 12)}
+          pageAmount={Math.floor((images.length - 1) / 12)}
           currentPage={Page}
           handleSetPage={(page) => {
             setPage(page);
