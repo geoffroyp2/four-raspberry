@@ -1,5 +1,6 @@
+import { PointFilter } from "@app/_types/queryTypes";
 import gql from "graphql-tag";
-import { recordFieldsString, targetFieldsString } from "./fields";
+import { recordFieldsString, targetFieldsString, targetPointsFieldsString } from "./fields";
 
 const updateRecordFields = {
   name: "$name: String",
@@ -38,3 +39,11 @@ export const getUpdateTargetMutation = (field: keyof typeof updateTargetFields) 
       }
     }
   `;
+
+export const getSetTargetPointsMutation = (filter: PointFilter) => gql`
+  mutation setTargetAllPoints($targetId: Int!, $points: [TargetPointInput]!) {
+    setTargetAllPoints(targetId: $targetId, points: $points) {
+      ${targetPointsFieldsString(filter)}
+    }
+  }
+`;
