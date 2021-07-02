@@ -7,12 +7,20 @@ import { getSetPieceFormulaMutation, getUpdatePieceMutation } from "./_gql/mutat
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectPieceData, setPieceData } from "./_state/pieceDataSlice";
-import { setRecordData } from "@editor/graphs/_state/recordDataSlice";
+import {
+  selectFormulaLoadId,
+  selectFormulaLoadPage,
+  selectFormulaPageAmount,
+  setFormulaLoadPage,
+} from "@editor/formulas/_state/formulaDisplaySlice";
 
+import FormulaLoadTable from "@editor/formulas/FormulaLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import CustomInput from "@components/inputs/CustomInput";
 import CustomTextArea from "@components/inputs/CustomTextArea";
 import LinkTableModal from "@components/modals/LinkTableModal";
+import Pagination from "@components/tables/Pagination";
+import TableTitle from "@components/tables/TableTitle";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -21,9 +29,9 @@ const PieceInfos: FC = () => {
   const navigate = useNavigate();
 
   const piece = useSelector(selectPieceData);
-  // const formulaPageAmount = useSelector(selectFormulaPageAmount);
-  // const formulaLoadPage = useSelector(selectFormulaLoadPage);
-  // const formulaId = useSelector(selectFormulaLoadId);
+  const formulaPageAmount = useSelector(selectFormulaPageAmount);
+  const formulaLoadPage = useSelector(selectFormulaLoadPage);
+  const formulaId = useSelector(selectFormulaLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(piece.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(piece.description ?? "");
@@ -48,26 +56,26 @@ const PieceInfos: FC = () => {
 
   const [setPieceFormula] = useMutation<{ setPieceFormula: Piece }>(getSetPieceFormulaMutation(true), {
     onCompleted: ({ setPieceFormula }) => {
-      dispatch(setRecordData(setPieceFormula));
+      dispatch(setPieceData(setPieceFormula));
     },
   });
 
   const [unlinkPieceFormula] = useMutation<{ setPieceFormula: Piece }>(getSetPieceFormulaMutation(false), {
     onCompleted: ({ setPieceFormula }) => {
-      dispatch(setRecordData(setPieceFormula));
+      dispatch(setPieceData(setPieceFormula));
     },
   });
 
-  // const handleSubmitSearch = useCallback((fieldValue: string) => {
-  //   console.log(fieldValue);
-  // }, []);
+  const handleSubmitSearch = useCallback((fieldValue: string) => {
+    console.log(fieldValue);
+  }, []);
 
-  // const handleSetPage = useCallback(
-  //   (page: number) => {
-  //     dispatch(setFormulaLoadPage(page));
-  //   },
-  //   [dispatch]
-  // );
+  const handleSetPage = useCallback(
+    (page: number) => {
+      dispatch(setFormulaLoadPage(page));
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -113,21 +121,21 @@ const PieceInfos: FC = () => {
         <InfosCardField label="Création" defaultContent={dateToDisplayString(piece.createdAt, true)} />
         <InfosCardField label="Dernière modification" defaultContent={dateToDisplayString(piece.updatedAt, true)} />
       </InfosCard>
-      {/* <LinkTableModal
+      <LinkTableModal
         show={ShowLinkModal}
         discardChange={() => setShowLinkModal(false)}
         confirmChange={() => {
           setShowLinkModal(false);
-          setPieceFormula({ variables: { recordId: piece.id, formulaId: formulaId ?? 0 } });
+          setPieceFormula({ variables: { pieceId: piece.id, formulaId: formulaId ?? 0 } });
         }}
-        title={<TableTitle title="Émaux" handleSubmit={handleSubmitSearch} />}
+        title={<TableTitle title="Émaux" handleSubmit={handleSubmitSearch} placeholder="Nom de l'émail" />}
         pagination={
           formulaPageAmount > 0 && (
             <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetPage} small />
           )
         }
         table={<FormulaLoadTable />}
-      /> */}
+      />
     </>
   );
 };
