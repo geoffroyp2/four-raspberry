@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 import { useParams } from "react-router";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { recordQuery, RecordQueryParams } from "../_gql/queries";
 
 import { useDispatch } from "react-redux";
@@ -17,30 +17,26 @@ const RecordFetcher: FC = () => {
   const dispatch = useDispatch();
   const params = useParams();
 
-  const [invalidId, setInvalidId] = useState<boolean>(isNaN(+params.id));
-
-  const recordId = isNaN(+params.id) ? 0 : +params.id;
-  const mainParams: RecordQueryParams = {
-    variables: {
-      id: recordId,
-    },
-  };
-
-  const mainData = useQuery<RecordQueryRes>(recordQuery, {
-    ...mainParams,
+  const [loadRecordData, { error }] = useLazyQuery<RecordQueryRes>(recordQuery, {
     onCompleted: ({ records }) => {
       if (records.rows[0]) {
-        if (recordId !== records.rows[0].id) {
-          setInvalidId(true);
-        } else {
-          dispatch(setRecordLoadId(records.rows[0].id));
-          dispatch(setRecordData(records.rows[0]));
-        }
+        dispatch(setRecordLoadId(records.rows[0].id!));
+        dispatch(setRecordData(records.rows[0]));
       }
     },
   });
 
-  if (mainData.error || invalidId) {
+  useEffect(() => {
+    const recordId = isNaN(+params.id) ? 0 : +params.id;
+    const mainParams: RecordQueryParams = {
+      variables: {
+        id: recordId,
+      },
+    };
+    loadRecordData(mainParams);
+  }, [params, loadRecordData]);
+
+  if (error || isNaN(+params.id)) {
     return <NotFound />;
   }
 
