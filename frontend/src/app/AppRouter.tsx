@@ -4,7 +4,7 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Header from "./header/Header";
 import LiveScreen from "./live/LiveScreen";
 import GraphRouter from "@graphs/GraphRouter";
-import PieceEditor from "./editor/pieces/PieceEditor";
+import PieceRouter from "./editor/pieces/PieceRouter";
 import FormulaEditor from "./editor/formulas/FormulaEditor";
 
 const AppRouter: FC = () => {
@@ -24,7 +24,7 @@ const AppRouter: FC = () => {
         <Routes>
           <Route path="live" element={<LiveScreen />} />
           <Route path="graphs/*" element={<GraphRouter />} />
-          <Route path="pieces/*" element={<PieceEditor />} />
+          <Route path="pieces/*" element={<PieceRouter />} />
           <Route path="formulas/*" element={<FormulaEditor />} />
         </Routes>
       </div>

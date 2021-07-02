@@ -13,3 +13,11 @@ export const getUpdatePieceMutation = (field: keyof typeof updatePieceFields) =>
       }
     }
   `;
+
+export const getSetPieceFormulaMutation = (formulaId: boolean) => gql`
+  mutation setPieceFormula($pieceId: Int! ${formulaId ? ",$formulaId: Int!" : ""}) {
+    setPieceFormula(pieceId: $pieceId ${formulaId ? ", formulaId: $formulaId" : ""}) {
+      ${pieceFieldsString}
+    }
+  }
+`;
