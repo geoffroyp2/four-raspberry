@@ -41,7 +41,7 @@ const TargetInfosPage: FC = () => {
         <TargetGallery />
       </MainGridItem>
       <MainGridItem col="1" row="6" xlCol="2" xlRow="4">
-        <PiecePreview />
+        <PiecePreview showGoto />
       </MainGridItem>
     </MainGrid>
   );

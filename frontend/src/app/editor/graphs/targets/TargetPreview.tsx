@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useLazyQuery } from "@apollo/client";
 import { TargetQueryRes } from "@app/_types/dbTypes";
@@ -14,8 +15,13 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 import PreviewCard, { PreviewCardField } from "@components/cards/PreviewCard";
 import NotFound from "@editor/NotFound";
 
-const TargetPreview: FC = () => {
+type Props = {
+  showGoto?: boolean;
+};
+
+const TargetPreview: FC<Props> = ({ showGoto }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const targetId = useSelector(selectTargetLoadId);
   const previewData = useSelector(selectTargetPreview);
 
@@ -39,7 +45,11 @@ const TargetPreview: FC = () => {
   if (error) return <NotFound />;
 
   return (
-    <PreviewCard title={previewData.name ?? "-"}>
+    <PreviewCard
+      title={previewData.name ?? "-"}
+      goto={showGoto ? () => navigate(`/graphs/targets/${targetId}`) : undefined}
+      gotoColor="targets"
+    >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />
       <PreviewCardField name="Four" value={previewData.oven ?? "-"} />
       <PreviewCardField name="Création" value={dateToDisplayString(previewData.createdAt, true)} />

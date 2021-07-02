@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useLazyQuery } from "@apollo/client";
 import { RecordQueryRes } from "@app/_types/dbTypes";
@@ -14,8 +15,13 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 import PreviewCard, { PreviewCardField } from "@components/cards/PreviewCard";
 import NotFound from "@editor/NotFound";
 
-const RecordPreview: FC = () => {
+type Props = {
+  showGoto?: boolean;
+};
+
+const RecordPreview: FC<Props> = ({ showGoto }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const recordId = useSelector(selectRecordLoadId);
   const previewData = useSelector(selectRecordPreview);
 
@@ -39,7 +45,11 @@ const RecordPreview: FC = () => {
   if (error) return <NotFound />;
 
   return (
-    <PreviewCard title={previewData.name ?? "-"}>
+    <PreviewCard
+      title={previewData.name ?? "-"}
+      goto={showGoto ? () => navigate(`/graphs/records/${recordId}`) : undefined}
+      gotoColor="records"
+    >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />
       <PreviewCardField name="Four" value={previewData.oven ?? "-"} />
       <PreviewCardField name="Courbe de référence" value={previewData.target?.name ?? "-"} />

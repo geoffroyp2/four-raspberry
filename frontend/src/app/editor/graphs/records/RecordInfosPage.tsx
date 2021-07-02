@@ -27,9 +27,8 @@ const RecordInfosPage: FC = () => {
         <MainGridItem col="1" row="4" xlCol="1" xlRow="3">
           <RecordGallery />
         </MainGridItem>
-
         <MainGridItem col="1" row="5" xlCol="2" xlRow="3">
-          <PiecePreview />
+          <PiecePreview showGoto />
         </MainGridItem>
       </MainGrid>
     </>

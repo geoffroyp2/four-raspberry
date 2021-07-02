@@ -1,4 +1,5 @@
 import { FC, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useLazyQuery } from "@apollo/client";
 import { PieceQueryRes } from "@app/_types/dbTypes";
@@ -14,8 +15,13 @@ import { dateToDisplayString } from "@app/_utils/dateFormat";
 import PreviewCard, { PreviewCardField } from "@components/cards/PreviewCard";
 import NotFound from "@editor/NotFound";
 
-const PiecePreview: FC = () => {
+type Props = {
+  showGoto?: boolean;
+};
+
+const PiecePreview: FC<Props> = ({ showGoto }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const pieceId = useSelector(selectPieceLoadId);
   const previewData = useSelector(selectPiecePreview);
 
@@ -39,7 +45,11 @@ const PiecePreview: FC = () => {
   if (error) return <NotFound />;
 
   return (
-    <PreviewCard title={previewData.name ?? "-"}>
+    <PreviewCard
+      title={previewData.name ?? "-"}
+      goto={showGoto ? () => navigate(`/pieces/${pieceId}`) : undefined}
+      gotoColor="pieces"
+    >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />
       <PreviewCardField name="Création" value={dateToDisplayString(previewData.createdAt, true)} />
       <PreviewCardField name="Dernière modification" value={dateToDisplayString(previewData.updatedAt, true)} />
