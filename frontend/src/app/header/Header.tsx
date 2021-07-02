@@ -21,7 +21,7 @@ const Header: FC = () => {
         <nav className="md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-700 flex flex-wrap items-center text-base justify-center">
           <NavButton text="Direct" link="/live" />
           <NavButton text="Courbes" link={`/graphs/${graphRoute}`} />
-          <NavButton text="Poteries" link="/pieces" />
+          <NavButton text="Poteries" link="/pieces/banner" />
           <NavButton text="Émaux" link="/formulas" />
         </nav>
       </div>
