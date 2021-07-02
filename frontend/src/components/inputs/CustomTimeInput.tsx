@@ -10,9 +10,9 @@ const CustomTimeInput: FC<Props> = ({ value, onChange }) => {
   const minutes = Math.floor((Math.floor(value / 60) % 60) / 5) * 5; // Rounded down with a step of 5
 
   return (
-    <div className="p-y-1 px-2 bg-gray-100 rounded-md shadow-md">
+    <div className="p-y-1 px-2 rounded-md shadow-md gap-1">
       <select
-        className="appearance-none outline-none text-gray-800 bg-transparent cursor-pointer text-right"
+        className="appearance-none outline-none text-gray-800 bg-gray-100 rounded-l cursor-pointer text-right"
         value={hours}
         onChange={({ target }) => onChange(parseInt(target.value) * 3600 + minutes * 60)}
       >
@@ -22,9 +22,9 @@ const CustomTimeInput: FC<Props> = ({ value, onChange }) => {
           </option>
         ))}
       </select>
-      <span className="text-gray-900 ">:</span>
+      <span className="inline-block bg-gray-400 text-gray-800 px-1 rounded-r mr-1">h</span>
       <select
-        className="appearance-none outline-none text-gray-800 bg-transparent cursor-pointer text-left"
+        className="appearance-none outline-none text-gray-800 bg-gray-100 rounded-l cursor-pointer text-right"
         value={minutes}
         onChange={({ target }) => onChange(hours * 3600 + parseInt(target.value) * 60)}
       >
@@ -34,6 +34,7 @@ const CustomTimeInput: FC<Props> = ({ value, onChange }) => {
           </option>
         ))}
       </select>
+      <span className="inline-block bg-gray-400 text-gray-800 px-1 rounded-r ">m</span>
     </div>
   );
 };
