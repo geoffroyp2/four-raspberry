@@ -20,9 +20,9 @@ const PieceRouter: FC = () => {
     } else if (params["*"] === "banner") {
       if (piece.id && piece.id > 0) {
         // We're coming from the banner, if a piece is already loaded, go there
-        navigate(`/pieces/${piece.id}`);
+        navigate(`/pieces/${piece.id}`, { replace: true });
       } else {
-        navigate("/pieces");
+        navigate("/pieces", { replace: true });
       }
     }
   }, [params, navigate, piece]);
