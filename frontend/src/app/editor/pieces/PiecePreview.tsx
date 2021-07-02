@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { PieceQueryRes } from "@app/_types/dbTypes";
 import { IdQueryParams } from "@editor/_gql/types";
 import { piecePreviewQuery } from "./_gql/queries";
@@ -19,20 +19,22 @@ const PiecePreview: FC = () => {
   const pieceId = useSelector(selectPieceLoadId);
   const previewData = useSelector(selectPiecePreview);
 
-  const variables: IdQueryParams = {
-    variables: {
-      id: pieceId ?? 0,
-    },
-  };
-
-  const { error } = useQuery<PieceQueryRes>(piecePreviewQuery, {
-    ...variables,
+  const [loadPiecePreview, { error }] = useLazyQuery<PieceQueryRes>(piecePreviewQuery, {
     onCompleted: ({ pieces }) => {
       if (pieces.rows[0] && pieces.rows[0].id === pieceId) {
         dispatch(setPiecePreview(pieces.rows[0]));
       }
     },
   });
+
+  useEffect(() => {
+    const variables: IdQueryParams = {
+      variables: {
+        id: pieceId ?? 0,
+      },
+    };
+    loadPiecePreview(variables);
+  }, [pieceId, loadPiecePreview]);
 
   if (error) return <NotFound />;
 

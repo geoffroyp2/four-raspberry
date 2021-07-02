@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { RecordQueryRes } from "@app/_types/dbTypes";
 import { IdQueryParams } from "@editor/_gql/types";
 import { recordPreviewQuery } from "../_gql/queries";
@@ -19,20 +19,22 @@ const RecordPreview: FC = () => {
   const recordId = useSelector(selectRecordLoadId);
   const previewData = useSelector(selectRecordPreview);
 
-  const variables: IdQueryParams = {
-    variables: {
-      id: recordId ?? 0,
-    },
-  };
-
-  const { error } = useQuery<RecordQueryRes>(recordPreviewQuery, {
-    ...variables,
+  const [loadRecordPreview, { error }] = useLazyQuery<RecordQueryRes>(recordPreviewQuery, {
     onCompleted: ({ records }) => {
       if (records.rows[0] && records.rows[0].id === recordId) {
         dispatch(setRecordPreview(records.rows[0]));
       }
     },
   });
+
+  useEffect(() => {
+    const variables: IdQueryParams = {
+      variables: {
+        id: recordId ?? 0,
+      },
+    };
+    loadRecordPreview(variables);
+  }, [recordId, loadRecordPreview]);
 
   if (error) return <NotFound />;
 

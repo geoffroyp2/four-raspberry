@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { TargetQueryRes } from "@app/_types/dbTypes";
 import { IdQueryParams } from "@editor/_gql/types";
 import { targetPreviewQuery } from "../_gql/queries";
@@ -19,20 +19,22 @@ const TargetPreview: FC = () => {
   const targetId = useSelector(selectTargetLoadId);
   const previewData = useSelector(selectTargetPreview);
 
-  const variables: IdQueryParams = {
-    variables: {
-      id: targetId ?? 0,
-    },
-  };
-
-  const { error } = useQuery<TargetQueryRes>(targetPreviewQuery, {
-    ...variables,
+  const [loadTargetPreview, { error }] = useLazyQuery<TargetQueryRes>(targetPreviewQuery, {
     onCompleted: ({ targets }) => {
       if (targets.rows[0] && targets.rows[0].id === targetId) {
         dispatch(setTargetPreview(targets.rows[0]));
       }
     },
   });
+
+  useEffect(() => {
+    const variables: IdQueryParams = {
+      variables: {
+        id: targetId ?? 0,
+      },
+    };
+    loadTargetPreview(variables);
+  }, [targetId, loadTargetPreview]);
 
   if (error) return <NotFound />;
 

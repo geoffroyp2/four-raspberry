@@ -1,6 +1,6 @@
-import { FC, useCallback, useMemo } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { recordPageQuery } from "../_gql/queries";
 import { PageQueryParams } from "@editor/_gql/types";
 import { Record, RecordQueryRes } from "@app/_types/dbTypes";
@@ -38,15 +38,7 @@ const RecordLoadTable: FC = () => {
     [dispatch]
   );
 
-  const variables: PageQueryParams = {
-    variables: {
-      page: currentLoadPage,
-      amount: currentLoadAmount,
-    },
-  };
-
-  const { loading, error } = useQuery<RecordQueryRes>(recordPageQuery, {
-    ...variables,
+  const [loadRecordPage, { loading, error }] = useLazyQuery<RecordQueryRes>(recordPageQuery, {
     onCompleted: ({ records }) => {
       if (currentLoadPage !== 0 && records.rows.length === 0) {
         // if current page has no result
@@ -57,6 +49,16 @@ const RecordLoadTable: FC = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const variables: PageQueryParams = {
+      variables: {
+        page: currentLoadPage,
+        amount: currentLoadAmount,
+      },
+    };
+    loadRecordPage(variables);
+  }, [currentLoadPage, currentLoadAmount, loadRecordPage]);
 
   const rows = useMemo(() => {
     const records: Record[] = [];
