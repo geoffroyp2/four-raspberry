@@ -10,7 +10,7 @@ const pieceFields: PieceFields = [
   "updatedAt",
   {
     type: "records",
-    fields: ["id", "name", "oven"],
+    fields: ["id", "name", "oven", { type: "target", fields: ["id", "name", "createdAt", "updatedAt"] }],
   },
   { type: "formula", fields: ["id", "name"] },
 ];

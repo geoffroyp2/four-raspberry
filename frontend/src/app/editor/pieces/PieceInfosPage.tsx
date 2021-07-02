@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import PieceInfos from "./PieceInfos";
 import PieceGallery from "./PieceGallery";
+import PieceRecords from "./PieceRecords";
 
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import BackButton from "@components/buttons/BackButton";
@@ -20,6 +21,9 @@ const PieceInfosPage: FC = () => {
       </MainGridItem>
       <MainGridItem col="1" row="3" xlCol="2" xlRow="2">
         <PieceInfos />
+      </MainGridItem>
+      <MainGridItem col="1" row="4" xlCol="1" xlRow="3">
+        <PieceRecords />
       </MainGridItem>
     </MainGrid>
   );
