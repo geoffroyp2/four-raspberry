@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectAppTheme } from "./_state/appStateSlice";
 
 import AppRouter from "./AppRouter";
-import "./App.scss";
+import "./App.css";
 
 const App: FC = () => {
   const theme = useSelector(selectAppTheme);
