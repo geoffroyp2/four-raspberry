@@ -5,7 +5,7 @@ import Header from "./header/Header";
 import LiveScreen from "./live/LiveScreen";
 import GraphRouter from "@graphs/GraphRouter";
 import PieceRouter from "./editor/pieces/PieceRouter";
-import FormulaEditor from "./editor/formulas/FormulaEditor";
+import FormulaRouter from "./editor/formulas/FormulaRouter";
 
 const AppRouter: FC = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const AppRouter: FC = () => {
           <Route path="live" element={<LiveScreen />} />
           <Route path="graphs/*" element={<GraphRouter />} />
           <Route path="pieces/*" element={<PieceRouter />} />
-          <Route path="formulas/*" element={<FormulaEditor />} />
+          <Route path="formulas/*" element={<FormulaRouter />} />
         </Routes>
       </div>
     </>
