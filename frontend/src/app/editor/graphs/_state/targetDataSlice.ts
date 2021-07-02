@@ -52,16 +52,16 @@ export const targetDataSlice = createSlice({
     setTargetTempPoint: (state, action: PayloadAction<{ point: TargetPoint; index: number }>) => {
       if (action.payload.index >= 0 && action.payload.index < state.tempValues.points.length)
         state.tempValues.points[action.payload.index] = action.payload.point;
-      state.tempValues.points.sort((a, b) => (a.time ?? 0) - (b.time ?? 0));
+      // state.tempValues.points.sort(pointSort);
     },
     addTargetTempPoint: (state, action: PayloadAction<void>) => {
       state.tempValues.points.push({ time: 0, temperature: 0, oxygen: 0 });
-      state.tempValues.points.sort((a, b) => (a.time ?? 0) - (b.time ?? 0));
+      // state.tempValues.points.sort(pointSort);
     },
     removeTargetTempPoint: (state, action: PayloadAction<number>) => {
       if (action.payload >= 0 && action.payload < state.tempValues.points.length)
         state.tempValues.points.splice(action.payload, 1);
-      state.tempValues.points.sort((a, b) => (a.time ?? 0) - (b.time ?? 0));
+      // state.tempValues.points.sort(pointSort);
     },
     resetTargetTempPoints: (state, action: PayloadAction<void>) => {
       state.tempValues.points = state.points;

@@ -41,7 +41,16 @@ const TargetGraph: FC = () => {
   if (error) return <NotFound />;
   if (loading) return <SimpleGraph targetPoints={[]} color={{ r: 0, g: 0, b: 0, a: 0 }} />;
 
-  return <SimpleGraph targetPoints={targetPoints} color={color} />;
+  return (
+    <SimpleGraph
+      targetPoints={[...targetPoints].sort((a, b) => {
+        if (a.time === undefined || a.temperature === undefined || b.time === undefined || b.temperature === undefined) return 1;
+        if (a.time === b.time) return a.temperature - b.temperature;
+        return a.time - b.time;
+      })}
+      color={color}
+    />
+  );
 };
 
 export default TargetGraph;
