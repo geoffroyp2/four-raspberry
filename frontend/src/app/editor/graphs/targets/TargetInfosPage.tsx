@@ -20,7 +20,7 @@ const TargetInfosPage: FC = () => {
       <MainGridItem col="1" row="1" xlCol="1" xlRow="1">
         <BackButton onClick={() => navigate("../../")} />
       </MainGridItem>
-      <MainGridItem col="1" row="1" xlCol="2" xlRow="1">
+      <MainGridItem col="1" row="2" xlCol="2" xlRow="1">
         <div className="flex x-full gap-2 justify-center">
           <BasicButton onClick={() => setInfosDisplay("infos")} color={InfosDisplay === "infos" ? "blue" : "gray"}>
             Infos
@@ -30,10 +30,10 @@ const TargetInfosPage: FC = () => {
           </BasicButton>
         </div>
       </MainGridItem>
-      <MainGridItem col="1" row="2" xlCol="1" xlRow="2">
+      <MainGridItem col="1" row="3" xlCol="1" xlRow="2">
         <TargetGraph />
       </MainGridItem>
-      <MainGridItem col="1" row="3" xlCol="2" xlRow="2">
+      <MainGridItem col="1" row="4" xlCol="2" xlRow="2">
         {InfosDisplay === "infos" && <TargetInfos />}
         {InfosDisplay === "points" && <TargetPointEdit />}
       </MainGridItem>

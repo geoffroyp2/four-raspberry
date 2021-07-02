@@ -38,7 +38,7 @@ type Props = {
 
 const ColorPicker: FC<Props> = ({ value, onChange }) => {
   return (
-    <div className="p-2 grid grid-cols-4 grid-rows-3 gap-1 bg-gray-800 mt-1 rounded-xl shadow-xl">
+    <div className="p-2 grid grid-cols-4 grid-rows-3 gap-1 bg-gray-800 my-1 rounded-xl shadow-xl">
       {colorChoices.map((c, i) => (
         <ColorCircle
           key={`circle-${i}`}
