@@ -25,7 +25,7 @@ export const pieceDisplaySlice = createSlice({
       state.loadPage = action.payload;
     },
     setPieceTotalAmount: (state, action: PayloadAction<number>) => {
-      state.pageAmount = Math.floor(action.payload / state.loadAmount);
+      state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
     setPieceLoadId: (state, action: PayloadAction<number>) => {
       state.loadId = action.payload;

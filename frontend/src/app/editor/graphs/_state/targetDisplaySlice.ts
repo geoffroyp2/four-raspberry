@@ -32,7 +32,7 @@ export const targetDisplaySlice = createSlice({
       state.loadPage = action.payload;
     },
     setTargetTotalAmount: (state, action: PayloadAction<number>) => {
-      state.pageAmount = Math.floor(action.payload / state.loadAmount);
+      state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
     setTargetLoadId: (state, action: PayloadAction<number>) => {
       state.loadId = action.payload;
