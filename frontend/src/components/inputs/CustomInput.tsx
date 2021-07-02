@@ -10,7 +10,7 @@ const CustomInput: FC<Props> = ({ value, onChange }) => {
     <input
       autoFocus
       onFocus={({ currentTarget }) => currentTarget.select()}
-      className="text-gray-900 w-full px-3 rounded-md  focus:shadow-outline"
+      className="text-gray-900 w-full px-3 rounded focus:shadow-outline"
       value={value}
       onChange={({ target }) => onChange(target.value)}
     />

@@ -12,7 +12,7 @@ const CustomSelect: FC<Props> = ({ className, value, children, onChange }) => {
       <select
         value={value}
         onChange={({ target }) => onChange(target.value)}
-        className="w-full pl-3 pr-6 text-base border rounded-md appearance-none focus:shadow-outline"
+        className="w-full pl-3 pr-6 text-base border rounded appearance-none focus:shadow-outline"
       >
         {children}
       </select>
