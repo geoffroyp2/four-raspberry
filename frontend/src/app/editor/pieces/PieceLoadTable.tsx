@@ -83,6 +83,7 @@ const PieceLoadTable: FC = () => {
         id={piece.id ?? 0}
         disabled={piece.id === undefined}
         handleSelect={() => handleSelectRow(piece.id ?? 0)}
+        hoverEffect
       />
     ));
   }, [currentLoadList, currentLoadAmount, handleSelectRow, pieceId, loading]);

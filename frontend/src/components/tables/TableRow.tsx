@@ -1,27 +1,28 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
 type Props = {
-  rowContent: string[];
-  selected: boolean;
+  rowContent: ReactNode[];
   id: number;
-  handleSelect: () => void;
+  selected?: boolean;
+  handleSelect?: () => void;
   disabled?: boolean;
+  hoverEffect?: boolean;
 };
 
-const TableRow: FC<Props> = ({ rowContent, selected, id, handleSelect, disabled = false }) => {
+const TableRow: FC<Props> = ({ rowContent, selected, id, handleSelect, disabled = false, hoverEffect }) => {
   const bgColor = selected ? "blue-500" : "gray-700";
-  const hoverColor = selected ? "" : "hover:bg-gray-600";
-  const cursor = disabled || selected ? "" : "cursor-pointer";
+  const hoverColor = selected || !hoverEffect ? "" : "hover:bg-gray-600";
+  const cursor = disabled || selected || !handleSelect ? "" : "cursor-pointer";
 
   return (
     <tr
       onClick={() => {
-        if (!disabled && !selected) handleSelect();
+        if (!disabled && !selected && handleSelect) handleSelect();
       }}
       className={`${cursor} ${hoverColor} bg-${bgColor} `}
     >
       {rowContent.map((text, i) => (
-        <TDElement key={`load-table-${id}-${i}`} text={text} selected={selected} />
+        <TDElement key={`load-table-${id}-${i}`} content={text} />
       ))}
     </tr>
   );
@@ -30,14 +31,13 @@ const TableRow: FC<Props> = ({ rowContent, selected, id, handleSelect, disabled 
 export default TableRow;
 
 type TDElementProps = {
-  text?: string;
-  selected: boolean;
+  content?: ReactNode;
 };
 
-const TDElement: FC<TDElementProps> = ({ text }) => {
+const TDElement: FC<TDElementProps> = ({ content }) => {
   return (
-    <td className={`px-5 py-2 border-b border-gray-800 text-sm`}>
-      <p className="text-gray-200 whitespace-no-wrap">{text}</p>
+    <td className="px-5 py-2 border-b border-gray-800 text-sm">
+      <p className="text-gray-200 whitespace-no-wrap">{content}</p>
     </td>
   );
 };

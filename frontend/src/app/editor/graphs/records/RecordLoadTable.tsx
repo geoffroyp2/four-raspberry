@@ -88,6 +88,7 @@ const RecordLoadTable: FC = () => {
         id={record.id ?? 0}
         disabled={record.id === undefined}
         handleSelect={() => handleSelectRow(record.id ?? 0)}
+        hoverEffect
       />
     ));
   }, [currentLoadList, currentLoadAmount, handleSelectRow, recordId, loading]);

@@ -83,6 +83,7 @@ const TargetLoadTable: FC = () => {
         id={target.id ?? 0}
         disabled={target.id === undefined}
         handleSelect={() => handleSelectRow(target.id ?? 0)}
+        hoverEffect
       />
     ));
   }, [currentLoadList, currentLoadAmount, handleSelectRow, targetId, loading]);
