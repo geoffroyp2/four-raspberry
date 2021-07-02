@@ -125,7 +125,7 @@ const FormulaInfos: FC = () => {
         title={<TableTitle title="Émaux" handleSubmit={handleSubmitSearch} />}
         pagination={
           formulaPageAmount > 0 && (
-            <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetPage} />
+            <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetPage} small />
           )
         }
         table={<FormulaLoadTable />}

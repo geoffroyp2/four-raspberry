@@ -69,7 +69,7 @@ const GraphHome: FC = () => {
           <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
             <TargetLoadTable />
             {targetPageAmount > 0 && (
-              <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetTargetPage} />
+              <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetTargetPage} small />
             )}
           </MainGridItem>
           <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">
@@ -84,7 +84,7 @@ const GraphHome: FC = () => {
           <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
             <RecordLoadTable />
             {recordPageAmount > 0 && (
-              <Pagination currentPage={recordLoadPage} pageAmount={recordPageAmount} handleSetPage={handleSetRecordPage} />
+              <Pagination currentPage={recordLoadPage} pageAmount={recordPageAmount} handleSetPage={handleSetRecordPage} small />
             )}
           </MainGridItem>
           <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">

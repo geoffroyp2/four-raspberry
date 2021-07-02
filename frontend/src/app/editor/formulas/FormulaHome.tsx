@@ -35,7 +35,7 @@ const GraphHome: FC = () => {
       <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">
         <FormulaLoadTable />
         {formulaPageAmount > 0 && (
-          <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetFormulaPage} />
+          <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetFormulaPage} small />
         )}
       </MainGridItem>
       <MainGridItem col="1" row="1" xlCol="2" xlRow="1" className="max-w-3xl">

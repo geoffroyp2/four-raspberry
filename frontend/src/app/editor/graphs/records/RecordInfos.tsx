@@ -148,7 +148,7 @@ const RecordInfos: FC = () => {
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
         pagination={
           targetPageAmount > 0 && (
-            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} />
+            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} small />
           )
         }
         table={<TargetLoadTable />}
