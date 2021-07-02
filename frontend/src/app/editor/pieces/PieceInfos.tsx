@@ -108,7 +108,7 @@ const PieceInfos: FC = () => {
                 }
               : undefined
           }
-          gotoColor={"orange"}
+          gotoColor={"formulas"}
         />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(piece.createdAt, true)} />
         <InfosCardField label="Dernière modification" defaultContent={dateToDisplayString(piece.updatedAt, true)} />

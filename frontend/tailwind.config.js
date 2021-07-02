@@ -308,10 +308,11 @@ module.exports = {
       lime: colors.lime,
       orange: colors.orange,
 
-      formulas: "#643f79",
-      pieces: "#3f5f79",
-      graphs: "#51793f",
-      live: "#215e5e",
+      formulas: colors.amber,
+      pieces: colors.red,
+      targets: colors.purple,
+      records: colors.lime,
+      live: colors.emerald,
     },
     spacing: {
       px: "1px",

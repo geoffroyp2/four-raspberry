@@ -123,7 +123,7 @@ const RecordInfos: FC = () => {
                 }
               : undefined
           }
-          gotoColor={"purple"}
+          gotoColor={"targets"}
         />
         <InfosCardField label="Four" defaultContent={record.oven ?? "-"} />
         <InfosCardField
