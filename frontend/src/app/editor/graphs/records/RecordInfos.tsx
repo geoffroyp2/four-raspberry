@@ -145,7 +145,7 @@ const RecordInfos: FC = () => {
           setShowLinkModal(false);
           setRecordTarget({ variables: { recordId: record.id, targetId: targetId ?? 0 } });
         }}
-        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} />}
+        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
         pagination={
           targetPageAmount > 0 && (
             <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} />

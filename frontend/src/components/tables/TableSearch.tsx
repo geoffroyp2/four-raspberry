@@ -4,10 +4,11 @@ import BasicButton from "@components/buttons/BasicButton";
 import SearchInput from "@components/inputs/SearchInput";
 
 type Props = {
+  placeholder: string;
   handleSubmit: (fieldValue: string) => void;
 };
 
-const TableSearch: FC<Props> = ({ handleSubmit }) => {
+const TableSearch: FC<Props> = ({ placeholder, handleSubmit }) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const elements = (e.target as HTMLFormElement).elements;
@@ -21,7 +22,7 @@ const TableSearch: FC<Props> = ({ handleSubmit }) => {
   return (
     <form onSubmit={onSubmit} className="flex w-full max-w-sm space-x-3 justify-end">
       <div className="relative ">
-        <SearchInput id="load-table-search" color="blue" placeholder="Nom de la courbe" />
+        <SearchInput id="load-table-search" color="blue" placeholder={placeholder} />
       </div>
       <BasicButton type="submit" color="blue">
         Filtrer

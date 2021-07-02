@@ -30,7 +30,7 @@ const GraphHome: FC = () => {
   return (
     <MainGrid cols="1" xlRows="home-xl-2" xlCols="home-xl-2">
       <MainGridItem col="1" row="2" xlCol="1" xlRow="1" className="max-w-3xl">
-        <TableTitle handleSubmit={handleSubmitSearch} />
+        <TableTitle handleSubmit={handleSubmitSearch} placeholder="Nom de la potterie" />
       </MainGridItem>
 
       <MainGridItem col="1" row="3" xlCol="1" xlRow="2" className="max-w-3xl">

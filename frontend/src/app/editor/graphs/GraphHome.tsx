@@ -61,6 +61,7 @@ const GraphHome: FC = () => {
             />,
           ]}
           handleSubmit={handleSubmitSearch}
+          placeholder="nom de la courbe"
         />
       </MainGridItem>
       {graphRoute === "targets" ? (
