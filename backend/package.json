@@ -31,6 +31,7 @@
     "@types/node": "^15.14.0",
     "@types/sequelize": "^4.28.9",
     "@types/validator": "^13.6.0",
+    "babel-loader": "^8.2.2",
     "graphql-tag": "^2.12.5",
     "jest": "^27.0.6",
     "nodemon": "^2.0.9",

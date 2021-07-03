@@ -1,4 +1,4 @@
--- SELECT id, name, description, color, "targetId" FROM records;
+SELECT id, name, description, color, "targetId" FROM records WHERE records.id = 2;
 -- SELECT id, name, description, color FROM targets;
 -- SELECT id, name, description FROM pieces;
 -- SELECT id, "pieceId", url FROM photos;
@@ -10,9 +10,9 @@
 --      WHERE p."targetId" = 7
 --      ORDER BY "targetId", time;
 
-SELECT pieces.id, name, description, url, photos.id
-     FROM pieces
-     JOIN photos ON photos."pieceId" = pieces.id;
+-- SELECT pieces.id, name, description, url, photos.id
+--      FROM pieces
+--      JOIN photos ON photos."pieceId" = pieces.id;
 
 -- SELECT COUNT (*) FROM "recordPoints" ;
 

@@ -8,6 +8,7 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passw
   dialect: "postgres",
   host: dbConfig.host,
   port: dbConfig.port,
+  // logging: false,
 });
 
 export default sequelize;

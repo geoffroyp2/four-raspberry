@@ -8,13 +8,14 @@ module.exports = {
   mode: "production",
   output: {
     path: path.resolve(__dirname, "dist/__bundle"),
-    filename: "bundle.js",
+    filename: "four-api.js",
   },
   resolve: {
     extensions: [".js", ".ts"],
     fallback: {
       util: require.resolve("util/"),
     },
+    modules: ["node_modules", path.resolve(__dirname, "app")],
   },
   module: {
     rules: [
