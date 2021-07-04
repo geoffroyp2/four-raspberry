@@ -47,7 +47,7 @@ const FormulaPreview: FC<Props> = ({ showGoto }) => {
   return (
     <PreviewCard
       title={previewData.name ?? "-"}
-      goto={showGoto ? () => navigate(`/formulas/${formulaId}`) : undefined}
+      goto={showGoto && previewData.id && previewData.id > 0 ? () => navigate(`/formulas/${formulaId}`) : undefined}
       gotoColor="formulas"
     >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />

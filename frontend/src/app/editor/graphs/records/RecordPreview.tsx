@@ -47,7 +47,7 @@ const RecordPreview: FC<Props> = ({ showGoto }) => {
   return (
     <PreviewCard
       title={previewData.name ?? "-"}
-      goto={showGoto ? () => navigate(`/graphs/records/${recordId}`) : undefined}
+      goto={showGoto && previewData.id && previewData.id > 0 ? () => navigate(`/graphs/records/${recordId}`) : undefined}
       gotoColor="records"
     >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />

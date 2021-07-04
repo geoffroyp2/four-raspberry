@@ -47,7 +47,7 @@ const PiecePreview: FC<Props> = ({ showGoto }) => {
   return (
     <PreviewCard
       title={previewData.name ?? "-"}
-      goto={showGoto ? () => navigate(`/pieces/${pieceId}`) : undefined}
+      goto={showGoto && previewData.id && previewData.id > 0 ? () => navigate(`/pieces/${pieceId}`) : undefined}
       gotoColor="pieces"
     >
       <PreviewCardField name="Description" value={previewData.description ?? "-"} />
