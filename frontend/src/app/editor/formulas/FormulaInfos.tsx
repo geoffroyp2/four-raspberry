@@ -3,16 +3,24 @@ import { useNavigate } from "react-router-dom";
 
 import { useMutation } from "@apollo/client";
 import { Formula } from "@app/_types/dbTypes";
-import { getUpdateFormulaMutation } from "./_gql/mutations";
+import { getSetFormulaTargetMutation, getUpdateFormulaMutation } from "./_gql/mutations";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectFormulaData, setFormulaData } from "./_state/formulaDataSlice";
-import { setRecordData } from "@editor/graphs/_state/recordDataSlice";
+import {
+  selectTargetLoadId,
+  selectTargetLoadPage,
+  selectTargetPageAmount,
+  setTargetLoadPage,
+} from "@editor/graphs/_state/targetDisplaySlice";
 
+import TargetLoadTable from "@editor/graphs/targets/TargetLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import CustomInput from "@components/inputs/CustomInput";
 import CustomTextArea from "@components/inputs/CustomTextArea";
 import LinkTableModal from "@components/modals/LinkTableModal";
+import Pagination from "@components/tables/Pagination";
+import TableTitle from "@components/tables/TableTitle";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -21,9 +29,9 @@ const FormulaInfos: FC = () => {
   const navigate = useNavigate();
 
   const formula = useSelector(selectFormulaData);
-  // const formulaPageAmount = useSelector(selectFormulaPageAmount);
-  // const formulaLoadPage = useSelector(selectFormulaLoadPage);
-  // const formulaId = useSelector(selectFormulaLoadId);
+  const targetPageAmount = useSelector(selectTargetPageAmount);
+  const targetLoadPage = useSelector(selectTargetLoadPage);
+  const targetId = useSelector(selectTargetLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(formula.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(formula.description ?? "");
@@ -46,28 +54,28 @@ const FormulaInfos: FC = () => {
     },
   });
 
-  // const [setFormulaTarget] = useMutation<{ setFormulaTarget: Formula }>(getSetFormulaTargetMutation(true), {
-  //   onCompleted: ({ setFormulaTarget }) => {
-  //     dispatch(setFormulaData(setFormulaTarget));
-  //   },
-  // });
+  const [setFormulaTarget] = useMutation<{ setFormulaTarget: Formula }>(getSetFormulaTargetMutation(true), {
+    onCompleted: ({ setFormulaTarget }) => {
+      dispatch(setFormulaData(setFormulaTarget));
+    },
+  });
 
-  // const [unlinkFormulaTarget] = useMutation<{ setFormulaFormula: Formula }>(getSetFormulaTargetMutation(false), {
-  //   onCompleted: ({ setFormulaTarget }) => {
-  //     dispatch(setFormulaData(setFormulaTarget));
-  //   },
-  // });
+  const [unlinkFormulaTarget] = useMutation<{ setFormulaTarget: Formula }>(getSetFormulaTargetMutation(false), {
+    onCompleted: ({ setFormulaTarget }) => {
+      dispatch(setFormulaData(setFormulaTarget));
+    },
+  });
 
-  // const handleSubmitSearch = useCallback((fieldValue: string) => {
-  //   console.log(fieldValue);
-  // }, []);
+  const handleSubmitSearch = useCallback((fieldValue: string) => {
+    console.log(fieldValue);
+  }, []);
 
-  // const handleSetPage = useCallback(
-  //   (page: number) => {
-  //     dispatch(setFormulaLoadPage(page));
-  //   },
-  //   [dispatch]
-  // );
+  const handleSetPage = useCallback(
+    (page: number) => {
+      dispatch(setTargetLoadPage(page));
+    },
+    [dispatch]
+  );
 
   return (
     <>
@@ -88,48 +96,48 @@ const FormulaInfos: FC = () => {
           }
           discardChange={() => setDescriptionEditValue(formula.description ?? "")}
         />
-        {/* <InfosCardField
-          label="Émail"
-          defaultContent={formula.formula?.name ?? "-"}
+        <InfosCardField
+          label="Courbe de référence"
+          defaultContent={formula.target?.name ?? "-"}
           unlink={
-            formula.formula?.id
+            formula.target?.id
               ? () => {
-                  unlinkFormulaFormula({ variables: { formulaId: formula.id } });
+                  unlinkFormulaTarget({ variables: { formulaId: formula.id } });
                 }
               : undefined
           }
           link={() => setShowLinkModal(true)}
           goto={
-            formula.formula?.id
+            formula.target?.id
               ? () => {
-                  if (formula.formula?.id && formula.formula.id > 0) {
-                    navigate(`../../formulas/${formula.formula.id}`);
+                  if (formula.target?.id && formula.target.id > 0) {
+                    navigate(`/graphs/targets/${formula.target?.id}`);
                   } else {
-                    navigate("../../formulas");
+                    navigate("/graphs");
                   }
                 }
               : undefined
           }
-          gotoColor={"formulas"}
-        /> */}
+          gotoColor={"targets"}
+        />
         <InfosCardField label="Création" defaultContent={dateToDisplayString(formula.createdAt, true)} />
         <InfosCardField label="Dernière modification" defaultContent={dateToDisplayString(formula.updatedAt, true)} />
       </InfosCard>
-      {/* <LinkTableModal
+      <LinkTableModal
         show={ShowLinkModal}
         discardChange={() => setShowLinkModal(false)}
         confirmChange={() => {
           setShowLinkModal(false);
-          setFormulaFormula({ variables: { recordId: formula.id, formulaId: formulaId ?? 0 } });
+          setFormulaTarget({ variables: { formulaId: formula.id, targetId: targetId ?? 0 } });
         }}
-        title={<TableTitle title="Émaux" handleSubmit={handleSubmitSearch} />}
+        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
         pagination={
-          formulaPageAmount > 0 && (
-            <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetPage} small />
+          targetPageAmount > 0 && (
+            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} small />
           )
         }
-        table={<FormulaLoadTable />}
-      /> */}
+        table={<TargetLoadTable />}
+      />
     </>
   );
 };
