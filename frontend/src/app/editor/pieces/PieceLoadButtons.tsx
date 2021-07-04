@@ -12,7 +12,7 @@ const PieceLoadButtons: FC = () => {
   const pieceId = useSelector(selectPieceLoadId);
 
   const open = () => {
-    navigate(`${pieceId}`);
+    navigate(`/pieces/${pieceId}`);
   };
 
   return (

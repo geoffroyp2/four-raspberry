@@ -116,9 +116,9 @@ const RecordInfos: FC = () => {
             record.target?.id
               ? () => {
                   if (record.target?.id && record.target.id > 0) {
-                    navigate(`../../targets/${record.target?.id}`);
+                    navigate(`/graphs/targets/${record.target?.id}`);
                   } else {
-                    navigate("../../");
+                    navigate("/graphs");
                   }
                 }
               : undefined

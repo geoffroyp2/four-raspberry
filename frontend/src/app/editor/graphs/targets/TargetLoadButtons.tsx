@@ -12,7 +12,7 @@ const TargetLoadButtons: FC = () => {
   const targetId = useSelector(selectTargetLoadId);
 
   const open = () => {
-    navigate(`targets/${targetId}`);
+    navigate(`/graphs/targets/${targetId}`);
   };
 
   return (

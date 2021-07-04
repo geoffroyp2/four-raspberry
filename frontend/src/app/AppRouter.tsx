@@ -13,7 +13,7 @@ const AppRouter: FC = () => {
 
   useEffect(() => {
     // Automatically redirect to the "live" screen
-    if (pathname === "/") navigate("live", { replace: true });
+    if (pathname === "/") navigate("/live", { replace: true });
   }, [pathname, navigate]);
 
   return (

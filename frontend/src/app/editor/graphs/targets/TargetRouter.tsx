@@ -17,7 +17,7 @@ const TargetRouter: FC = () => {
       if (target.id && target.id > 0) {
         navigate(`/graphs/targets/${target.id}`);
       } else {
-        navigate("../");
+        navigate("/graphs");
       }
     }
   }, [target, navigate, params]);

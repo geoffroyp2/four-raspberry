@@ -109,9 +109,9 @@ const PieceInfos: FC = () => {
             piece.formula?.id
               ? () => {
                   if (piece.formula?.id && piece.formula.id > 0) {
-                    navigate(`../../formulas/${piece.formula.id}`);
+                    navigate(`/formulas/${piece.formula.id}`);
                   } else {
-                    navigate("../../formulas");
+                    navigate("/formulas");
                   }
                 }
               : undefined

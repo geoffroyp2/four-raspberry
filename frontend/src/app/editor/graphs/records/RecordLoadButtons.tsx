@@ -12,7 +12,7 @@ const RecordLoadButtons: FC = () => {
   const recordId = useSelector(selectRecordLoadId);
 
   const open = () => {
-    navigate(`records/${recordId}`);
+    navigate(`/graphs/records/${recordId}`);
   };
 
   return (

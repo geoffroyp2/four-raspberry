@@ -18,7 +18,7 @@ const TargetInfosPage: FC = () => {
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">
       <MainGridItem col="1" row="1" xlCol="1" xlRow="1">
-        <BackButton onClick={() => navigate("../../")} />
+        <BackButton onClick={() => navigate("/graphs")} />
       </MainGridItem>
       <MainGridItem col="1" row="2" xlCol="2" xlRow="1">
         <div className="flex x-full gap-2 justify-center">

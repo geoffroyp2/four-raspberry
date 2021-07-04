@@ -31,7 +31,7 @@ const PieceRecords: FC = () => {
                   r.oven ?? "-",
                   r.target?.name ?? "-",
                   dateToDisplayString(r.target?.createdAt, true),
-                  <GotoIcon onClick={() => navigate(`../../graphs/records/${r.id}`)} color={"records"} />,
+                  <GotoIcon onClick={() => navigate(`/graphs/records/${r.id}`)} color={"records"} />,
                 ]}
                 id={piece.id ?? 0}
               />

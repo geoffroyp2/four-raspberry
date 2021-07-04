@@ -17,7 +17,7 @@ const RecordRouter: FC = () => {
       if (record.id && record.id > 0) {
         navigate(`/graphs/records/${record.id}`);
       } else {
-        navigate("../");
+        navigate("/graphs");
       }
     }
   }, [record, navigate, params]);

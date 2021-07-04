@@ -12,7 +12,7 @@ const FormulaLoadButtons: FC = () => {
   const formulaId = useSelector(selectFormulaLoadId);
 
   const open = () => {
-    navigate(`${formulaId}`);
+    navigate(`/formulas/${formulaId}`);
   };
 
   return (
