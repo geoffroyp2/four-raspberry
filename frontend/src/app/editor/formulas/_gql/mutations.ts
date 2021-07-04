@@ -13,3 +13,11 @@ export const getUpdateFormulaMutation = (field: keyof typeof updateFormulaFields
       }
     }
   `;
+
+export const getSetFormulaTargetMutation = (targetId: boolean) => gql`
+  mutation setFormulaTarget($formulaId: Int! ${targetId ? ",$targetId: Int!" : ""}) {
+    setFormulaTarget(formulaId: $formulaId ${targetId ? ", targetId: $targetId" : ""}) {
+      ${formulaFieldsString}
+    }
+  }
+`;
