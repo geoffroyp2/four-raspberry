@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import FormulaInfos from "./FormulaInfos";
 import FormulaGallery from "./FormulaGallery";
+import FormulaComposition from "./FormulaComposition";
 import PiecePreview from "@editor/pieces/PiecePreview";
 
 import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
@@ -17,9 +18,7 @@ const FormulaInfosPage: FC = () => {
         <BackButton onClick={() => navigate("/formulas/back")} />
       </MainGridItem>
       <MainGridItem col="1" row="2" xlCol="1" xlRow="2">
-        <div className="flex items-center justify-center h-full bg-gray-700">
-          <div className="text-xl">(Composition)</div>
-        </div>
+        <FormulaComposition />
       </MainGridItem>
       <MainGridItem col="1" row="3" xlCol="2" xlRow="2">
         <FormulaInfos />

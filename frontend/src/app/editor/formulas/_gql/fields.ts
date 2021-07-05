@@ -13,7 +13,16 @@ const formulaFields: FormulaFields = [
       "amount",
       {
         type: "chemical",
-        fields: ["id", "name", "chemicalName", "currentVersion", "existingVersions", "createdAt", "updatedAt"],
+        fields: [
+          "id",
+          "name",
+          "chemicalName",
+          "currentVersion",
+          "existingVersions",
+          "createdAt",
+          "updatedAt",
+          { type: "color", fields: ["r", "g", "b", "a"] },
+        ],
       },
     ],
   },
