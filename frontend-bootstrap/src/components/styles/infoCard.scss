@@ -1,0 +1,89 @@
+.editField {
+  display: flex;
+  justify-content: space-between;
+  min-width: 20em;
+
+  .colContent {
+    display: flex;
+    justify-content: flex-start;
+    min-width: 8em;
+  }
+
+  .colButtons {
+    display: flex;
+    justify-content: flex-end;
+    min-width: max-content;
+    max-width: max-content;
+    padding: 0.5em;
+  }
+
+  svg {
+    cursor: pointer;
+    margin: 2px 4px;
+  }
+
+  span {
+    display: flex;
+    flex-grow: 1;
+    margin: 0.5em;
+    font-weight: 300;
+  }
+
+  label {
+    font-weight: 700;
+    display: inline;
+    vertical-align: top;
+    color: var(--info);
+    margin: 0.5em 0.25em;
+  }
+}
+
+.nameField {
+  .form-control {
+    padding: 0.5em 0.5em;
+    height: 1.5em;
+  }
+}
+
+.descriptionField {
+  .form-control {
+    padding: 0.5em 1em;
+  }
+}
+
+.targetField {
+  span {
+    max-width: max-content;
+  }
+}
+
+.dateField {
+  .colContent {
+    flex-wrap: wrap;
+  }
+
+  span {
+    max-width: max-content;
+  }
+}
+
+.colorField {
+  .col {
+    margin-top: 0.5em;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.ovenField {
+  .colContent {
+    display: flex;
+    align-items: center;
+  }
+  .custom-select {
+    margin-left: 0.2em;
+    max-width: 16em;
+    padding: 0.1em 0.3em;
+    height: 2em;
+  }
+}
