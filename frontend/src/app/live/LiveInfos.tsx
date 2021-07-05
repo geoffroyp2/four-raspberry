@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Table } from "react-bootstrap";
+import { FC } from "react";
+
 import { useSelector } from "react-redux";
 import {
   selectLiveMonitoring,
@@ -9,9 +9,9 @@ import {
   selectLiveTargetId,
 } from "./_state/liveScreenSlice";
 
-import { formatTime } from "@utils/timeFormat";
+import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 
-import EditorCard from "@components/EditorCard";
+import { formatTime } from "@app/_utils/timeFormat";
 
 const LiveInfos: FC = () => {
   const currentTargetId = useSelector(selectLiveTargetId);
@@ -21,30 +21,16 @@ const LiveInfos: FC = () => {
   const monitoring = useSelector(selectLiveMonitoring);
 
   return (
-    <EditorCard>
-      <Table striped hover size="sm" variant="dark">
-        <thead>
-          <tr>
-            <th>Target ID</th>
-            <th>Status</th>
-            <th>Oxygene</th>
-            <th>Temperature</th>
-            <th>Program Time</th>
-            <th>Monitoring</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{currentTargetId ?? "-"}</td>
-            <td>{currentStatus}</td>
-            <td>{sensorValues.oxygen.toFixed(2)}</td>
-            <td>{sensorValues.temperature.toFixed(2)}</td>
-            <td>{formatTime(programTime)}</td>
-            <td>{monitoring ? "Activé" : "Désactivé"}</td>
-          </tr>
-        </tbody>
-      </Table>
-    </EditorCard>
+    <>
+      <InfosCard>
+        <InfosCardField label="Courbe de référence" defaultContent={currentTargetId ?? "-"} />
+        <InfosCardField label="Status" defaultContent={currentStatus} />
+        <InfosCardField label="Oxygène" defaultContent={sensorValues.oxygen.toFixed(2)} />
+        <InfosCardField label="Température" defaultContent={sensorValues.temperature.toFixed(2)} />
+        <InfosCardField label="Temps du programme" defaultContent={formatTime(programTime)} />
+        <InfosCardField label="Monitoring" defaultContent={monitoring ? "Activé" : "Désactivé"} />
+      </InfosCard>
+    </>
   );
 };
 

@@ -1,21 +1,17 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import nav from "@navBar/MainNavSlice";
-import live from "@live/_state/liveScreenSlice";
-import recordReducers from "@editor/record/_state";
-import targetReducers from "@editor/target/_state";
-import pieceReducers from "@editor/piece/_state";
-import formulaReducers from "@editor/formula/_state";
-import editorState from "@editor/_state/editorSlice";
+import appState from "./_state/appStateSlice";
+import graphReducers from "@editor/graphs/_state";
+import pieceReducers from "@editor/pieces/_state";
+import formulaReducers from "@editor/formulas/_state";
+import liveScreenReducer from "./live/_state/liveScreenSlice";
 
 export const store = configureStore({
   reducer: {
-    ...recordReducers,
-    ...targetReducers,
+    ...graphReducers,
     ...pieceReducers,
     ...formulaReducers,
-    editorState,
-    nav,
-    live,
+    live: liveScreenReducer,
+    appState,
   },
 });
 

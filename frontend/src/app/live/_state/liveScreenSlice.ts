@@ -1,16 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@app/store";
-import { LiveValuesType, Record, Target } from "@baseTypes/database/GQLResTypes";
+import { LiveValuesType, Record, Target } from "@app/_types/dbTypes";
+import { PointFilter } from "@app/_types/queryTypes";
 
 type LiveDataType = {
   target: Target;
   record: Record;
+  pointZoom: Required<PointFilter>;
   values: LiveValuesType;
 };
 
 const initialState: LiveDataType = {
   target: {},
   record: {},
+  pointZoom: {
+    start: 0,
+    end: 2147483647,
+    amount: 70,
+  },
   values: {
     status: "stop",
     programTime: 0,
@@ -38,6 +45,9 @@ export const mainNavSlice = createSlice({
     setLiveTarget: (state, action: PayloadAction<Target>) => {
       state.target = action.payload;
     },
+    setLivePointZoom: (state, action: PayloadAction<PointFilter>) => {
+      state.pointZoom = { ...state.pointZoom, ...action.payload };
+    },
   },
 });
 
@@ -52,5 +62,6 @@ export const selectLiveMonitoring = (state: RootState) => state.live.values.moni
 export const selectLiveRefresh = (state: RootState) => state.live.values.refresh;
 export const selectLiveRecord = (state: RootState) => state.live.record;
 export const selectLiveTarget = (state: RootState) => state.live.target;
+export const selectLivePointZoom = (state: RootState) => state.live.pointZoom;
 
 export default mainNavSlice.reducer;

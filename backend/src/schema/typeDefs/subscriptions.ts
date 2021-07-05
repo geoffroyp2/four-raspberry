@@ -31,7 +31,7 @@ export default gql`
     """
     L'id de la courbe de référence
     """
-    currentTargetId: Int!
+    currentTargetId: Int
 
     """
     L'id de la courbe de cuisson en direct. Null si la cuisson n'est pas en cours

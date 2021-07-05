@@ -106,13 +106,18 @@ export default gql`
     createTargetPoint(targetId: Int!, time: Float!, temperature: Float!, oxygen: Float): TargetPoint
 
     """
-    Selectionne Target et de ses points par id et supprime le point
+    Selectionne un Target et un de ses points par id et supprime le point
     """
     deleteTargetPoint(targetId: Int!, pointId: Int!): Boolean!
 
     """
-    Selectionne Target et de ses points par id et met à jour le point
+    Selectionne un Target et un de ses points par id et met à jour le point
     """
     updateTargetPoint(targetId: Int!, pointId: Int!, time: Float, temperature: Float, oxygen: Float): TargetPoint
+
+    """
+    Selectionne un Target et met à jour tous ses points
+    """
+    setTargetAllPoints(targetId: Int!, points: [TargetPointInput]!): Target
   }
 `;

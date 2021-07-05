@@ -120,6 +120,9 @@ export interface GQLTargetUpdate extends GQLTargetId, Partial<GQLTarget> {}
 export interface GQLTargetPointUpdate extends GQLTargetPoint, GQLTTargetPointId, GQLTargetId {}
 export interface GQLTargetPointCreate extends GQLTargetPoint, GQLTargetId {}
 export interface GQLTargetPointDelete extends GQLTTargetPointId, GQLTargetId {}
+export interface GQLTargetPointSetAll extends GQLTargetId {
+  points: GQLTargetPoint[];
+}
 
 export interface GQLRecordFind extends GQLGenericResearchFields {
   finished?: boolean;

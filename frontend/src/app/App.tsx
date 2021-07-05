@@ -1,33 +1,22 @@
-import React from "react";
-import "./App.scss";
+import { FC } from "react";
+import { BrowserRouter } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-import { selectCurrentScreen } from "@navBar/MainNavSlice";
+import { selectAppTheme } from "./_state/appStateSlice";
 
-import MainNavBar from "./navBar/MainNavBar";
-import LiveScreen from "./live/LiveScreen";
-import RecordEditor from "./editor/record/RecordEditor";
-import TargetEditor from "@editor/target/TargetEditor";
-import PieceEditor from "@editor/piece/PieceEditor";
-import FormulaEditor from "@editor/formula/FormulaEditor";
+import AppRouter from "./AppRouter";
+import "./App.css";
 
-const mainScreens = {
-  live: <LiveScreen />,
-  target: <TargetEditor />,
-  record: <RecordEditor />,
-  piece: <PieceEditor />,
-  formula: <FormulaEditor />,
-};
-
-function App() {
-  const currentScreen = useSelector(selectCurrentScreen);
+const App: FC = () => {
+  const theme = useSelector(selectAppTheme);
 
   return (
-    <div className="App">
-      <MainNavBar />
-      {mainScreens[currentScreen]}
-    </div>
+    <BrowserRouter>
+      <div className={theme}>
+        <AppRouter />
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

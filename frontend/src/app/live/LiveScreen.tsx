@@ -1,38 +1,27 @@
-import React, { FC, useCallback, useEffect } from "react";
+import { FC } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-
-import { selectTargetLoadRowSelected } from "@editor/target/_state/targetDisplaySlice";
-import { setLoadTable } from "@editor/_state/editorSlice";
-
-import { subscribe } from "./utils/subscription";
-import { updateTargetId } from "./utils/mutations";
-
-import TargetLoadTable from "@editor/target/TargetLoadTable";
 import LiveGraph from "./LiveGraph";
 import LiveInfos from "./LiveInfos";
 import LiveButtons from "./LiveButtons";
+import LiveSubscriptionHandler from "./LiveSuscriptionHandler";
+
+import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 
 const LiveScreen: FC = () => {
-  const dispatch = useDispatch();
-  const rowSelected = useSelector(selectTargetLoadRowSelected);
-
-  useEffect(() => {
-    subscribe();
-  }, []);
-
-  const handleSelect = useCallback(async () => {
-    await updateTargetId(rowSelected);
-    dispatch(setLoadTable({ target: false }));
-  }, [rowSelected, dispatch]);
-
   return (
     <>
-      <LiveButtons />
-      <LiveInfos />
-      <LiveGraph />
-
-      <TargetLoadTable select={handleSelect} />
+      <LiveSubscriptionHandler />
+      <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">
+        <MainGridItem col="1" row="1" xlCol="1" xlRow="1">
+          <LiveGraph />
+        </MainGridItem>
+        <MainGridItem col="1" row="2" xlCol="2" xlRow="1">
+          <LiveInfos />
+        </MainGridItem>
+        <MainGridItem col="1" row="3" xlCol="2" xlRow="2">
+          <LiveButtons />
+        </MainGridItem>
+      </MainGrid>
     </>
   );
 };

@@ -56,7 +56,7 @@ export const pStart = async () => {
     engine.pauseTotalTime += new Date().getTime() - engine.lastPauseDate;
     console.log("Program unpaused");
 
-    client.mutate({ mutation: updateStatusQuery({ status: "pause" }) });
+    client.mutate({ mutation: updateStatusQuery({ status: "start" }) });
   }
 };
 
@@ -66,7 +66,7 @@ export const pPause = () => {
     engine.lastPauseDate = new Date().getTime();
     console.log("Program paused");
 
-    client.mutate({ mutation: updateStatusQuery({ status: "start" }) });
+    client.mutate({ mutation: updateStatusQuery({ status: "pause" }) });
   }
 };
 
