@@ -1,11 +1,7 @@
-html {
-  height: 100%;
-}
-
 body {
   height: 100%;
   /* background-repeat: no-repeat; */
   background-attachment: scroll;
-  background: #1c1c1c;
-  /* background: linear-gradient(180deg, #262626 0%, #1c1c1c 100%); */
+  /* background: #1c1c1c; */
+  background: linear-gradient(180deg, #262626 0%, #1c1c1c 100%);
 }

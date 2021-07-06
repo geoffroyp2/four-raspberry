@@ -6,7 +6,7 @@ const BasicMainCard: FC = ({ children }) => {
       <div
         className="inline-block min-w-full shadow rounded-lg overflow-hidden border-gray-900"
         style={{
-          background: "linear-gradient(180deg, #3f3f46 0%, #36363D 100%)",
+          background: "linear-gradient(180deg, #424246 0%, #36363D 100%)",
         }}
       >
         {children}
