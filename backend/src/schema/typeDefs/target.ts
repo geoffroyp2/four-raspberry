@@ -81,7 +81,7 @@ export default gql`
     """
     Recherche les Targets par id, name, ou type de four (oven: "gaz" ou "electrique")
     """
-    targets(id: Int, name: String, oven: String, page: Int, amount: Int): TargetQueryRes!
+    targets(id: Int, name: String, oven: String, page: Int, amount: Int, sort: SortInput): TargetQueryRes!
   }
 
   type Mutation {

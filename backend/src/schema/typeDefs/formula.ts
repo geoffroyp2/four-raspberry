@@ -59,7 +59,7 @@ export default gql`
     """
     Recherche les Formulas par id ou name
     """
-    formulas(id: Int, name: String, page: Int, amount: Int): FormulaQueryRes!
+    formulas(id: Int, name: String, page: Int, amount: Int, sort: SortInput): FormulaQueryRes!
   }
 
   extend type Mutation {

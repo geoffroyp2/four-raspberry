@@ -86,7 +86,7 @@ export default gql`
     """
     Recherche les Records par id ou par name
     """
-    records(id: Int, name: String, oven: String, finished: Boolean, page: Int, amount: Int): RecordQueryRes!
+    records(id: Int, name: String, oven: String, finished: Boolean, page: Int, amount: Int, sort: SortInput): RecordQueryRes!
   }
 
   extend type Mutation {

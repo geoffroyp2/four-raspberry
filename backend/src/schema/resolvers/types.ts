@@ -114,8 +114,17 @@ export interface GQLChemical {
   chemicalName: string;
   color: ColorType;
 }
+export type GQLSortDirection = "ASC" | "DESC";
+export type GQLGenericSortOptions = "name" | "id" | "createdAt" | "updatedAt";
+export type GQLSortType<T> = {
+  sortBy: T;
+  order: GQLSortDirection;
+};
 
-export interface GQLTargetQuery extends GQLGenericResearchFields, GQLPageOptions {}
+export type GQLTargetSortOptions = GQLGenericSortOptions | "oven";
+export interface GQLTargetQuery extends GQLGenericResearchFields, GQLPageOptions {
+  sort: GQLSortType<GQLTargetSortOptions>;
+}
 export interface GQLTargetUpdate extends GQLTargetId, Partial<GQLTarget> {}
 export interface GQLTargetPointUpdate extends GQLTargetPoint, GQLTTargetPointId, GQLTargetId {}
 export interface GQLTargetPointCreate extends GQLTargetPoint, GQLTargetId {}
@@ -124,11 +133,14 @@ export interface GQLTargetPointSetAll extends GQLTargetId {
   points: GQLTargetPoint[];
 }
 
+export type GQLRecordSortOptions = GQLGenericSortOptions | "oven" | "target";
 export interface GQLRecordFind extends GQLGenericResearchFields {
   finished?: boolean;
   oven?: string;
 }
-export interface GQLRecordQuery extends GQLRecordFind, GQLPageOptions {}
+export interface GQLRecordQuery extends GQLRecordFind, GQLPageOptions {
+  sort: GQLSortType<GQLRecordSortOptions>;
+}
 export interface GQLRecordUpdate extends GQLRecordId, Partial<GQLRecord> {}
 export interface GQLRecordTarget extends GQLRecordId, GQLTargetId {}
 export interface GQLRecordPiece extends GQLRecordId, GQLPieceId {}
@@ -136,13 +148,19 @@ export interface GQLRecordPointUpdate extends GQLRecordPoint, GQLRecordPointId, 
 export interface GQLRecordPointCreate extends GQLRecordPoint, GQLRecordId {}
 export interface GQLRecordPointDelete extends GQLRecordPointId, GQLRecordId {}
 
-export interface GQLPieceQuery extends GQLGenericResearchFields, GQLPageOptions {}
+export type GQLPieceSortOptions = GQLGenericSortOptions | "formula";
+export interface GQLPieceQuery extends GQLGenericResearchFields, GQLPageOptions {
+  sort: GQLSortType<GQLPieceSortOptions>;
+}
 export interface GQLPieceUpdate extends GQLPieceId, Partial<GQLPiece> {}
 export interface GQLPieceFormula extends GQLPieceId, GQLFormulaId {}
 
+export type GQLFormulaSortOptions = GQLGenericSortOptions | "target";
+export interface GQLFormulaQuery extends GQLGenericResearchFields, GQLPageOptions {
+  sort: GQLSortType<GQLFormulaSortOptions>;
+}
 export interface GQLFormulaTarget extends GQLFormulaId, GQLTargetId {}
 export interface GQLFormulaUpdate extends GQLFormulaId, Partial<GQLFormula> {}
-export interface GQLFormulaQuery extends GQLGenericResearchFields, GQLPageOptions {}
 export interface GQLIngredientSelect extends GQLFormulaId, GQLChemicalId {}
 export interface GQLIngredientAdd extends GQLIngredientSelect {
   amount: number;
@@ -151,7 +169,10 @@ export interface GQLIngredientUpdate extends GQLIngredientAdd {
   newChemicalId: number;
 }
 
-export interface GQLChemicalQuery extends GQLChemicalFind, GQLPageOptions {}
+export type GQLChemicalSortOptions = GQLGenericSortOptions | "chemicalName";
+export interface GQLChemicalQuery extends GQLChemicalFind, GQLPageOptions {
+  sort: GQLSortType<GQLChemicalSortOptions>;
+}
 export interface GQLChemicalUpdate extends GQLChemicalId, Partial<GQLChemical> {}
 export interface GQLChemicalVersion extends GQLChemicalId {
   versionName: string;

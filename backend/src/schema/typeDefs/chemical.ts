@@ -49,7 +49,7 @@ export default gql`
     """
     Recherche les Chemicals par id, name ou chemicalName
     """
-    chemicals(id: Int, name: String, chemicalName: String, page: Int, amount: Int): ChemicalQueryRes!
+    chemicals(id: Int, name: String, chemicalName: String, page: Int, amount: Int, sort: SortInput): ChemicalQueryRes!
   }
 
   extend type Mutation {

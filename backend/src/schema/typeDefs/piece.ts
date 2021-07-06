@@ -48,7 +48,7 @@ export default gql`
     """
     Recherche les Records par id ou par name
     """
-    pieces(id: Int, name: String, page: Int, amount: Int): PieceQueryRes!
+    pieces(id: Int, name: String, page: Int, amount: Int, sort: SortInput): PieceQueryRes!
   }
 
   extend type Mutation {

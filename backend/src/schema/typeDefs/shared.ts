@@ -35,6 +35,11 @@ export default gql`
     oxygen: Float!
   }
 
+  input SortInput {
+    sortBy: String!
+    order: String!
+  }
+
   """
   Color contains 4 Integer fields: r, g, b with range 0-255
   And one Float field a range 0-1
