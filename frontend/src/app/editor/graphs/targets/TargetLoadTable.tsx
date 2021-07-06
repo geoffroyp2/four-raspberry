@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Target, TargetQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetLoadList, setTargetLoadList } from "../_state/targetDataSlice";
+import { selectTargetLoadList, selectTargetNameSearch, setTargetLoadList } from "../_state/targetDataSlice";
 import {
   selectTargetLoadAmount,
   selectTargetLoadId,
@@ -40,6 +40,7 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
   const currentLoadList = useSelector(selectTargetLoadList);
   const targetLoadPage = useSelector(selectTargetLoadPage);
   const targetPageAmount = useSelector(selectTargetPageAmount);
+  const targetNameSearch = useSelector(selectTargetNameSearch);
 
   const [loadTargetPage, { loading, error }] = useLazyQuery<TargetQueryRes>(targetPageQuery, {
     onCompleted: ({ targets }) => {
@@ -60,8 +61,10 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
         amount: currentLoadAmount,
       },
     };
+
+    if (targetNameSearch !== null) variables.variables["name"] = targetNameSearch;
     loadTargetPage(variables);
-  }, [currentLoadPage, currentLoadAmount, loadTargetPage]);
+  }, [currentLoadPage, currentLoadAmount, targetNameSearch, loadTargetPage]);
 
   const handleSetTargetPage = useCallback(
     (page: number) => {

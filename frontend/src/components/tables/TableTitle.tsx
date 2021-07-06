@@ -1,14 +1,12 @@
 import { FC, ReactNode } from "react";
-import TableSearch from "./TableSearch";
 
 type Props = {
   title?: string;
   tabs?: ReactNode[];
-  placeholder: string;
-  handleSubmit: (fieldValue: string) => void;
+  searchField?: ReactNode;
 };
 
-const TableTitle: FC<Props> = ({ title, handleSubmit, tabs, placeholder }) => {
+const TableTitle: FC<Props> = ({ title, searchField, tabs }) => {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:mb-0 sm:justify-between w-full items-center">
       {tabs ? (
@@ -18,7 +16,7 @@ const TableTitle: FC<Props> = ({ title, handleSubmit, tabs, placeholder }) => {
           <h2 className="text-2xl leading-tight">{title}</h2>
         </div>
       )}
-      <TableSearch handleSubmit={handleSubmit} placeholder={placeholder} />
+      {searchField}
     </div>
   );
 };

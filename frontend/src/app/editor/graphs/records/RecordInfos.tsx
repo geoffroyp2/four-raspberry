@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useMutation } from "@apollo/client";
@@ -10,9 +10,9 @@ import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
 import { selectTargetLoadId } from "../_state/targetDisplaySlice";
 
 import TargetLoadTable from "../targets/TargetLoadTable";
+import TargetTableTitle from "../elements/TargetTableTitle";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import TableTitle from "@components/tables/TableTitle";
 import CustomInput from "@components/inputs/CustomInput";
 import BasicButton from "@components/buttons/BasicButton";
 import CustomTextArea from "@components/inputs/CustomTextArea";
@@ -65,10 +65,6 @@ const RecordInfos: FC = () => {
       dispatch(setRecordData(updateRecord));
     },
   });
-
-  const handleSubmitSearch = useCallback((fieldValue: string) => {
-    console.log(fieldValue);
-  }, []);
 
   return (
     <>
@@ -126,7 +122,7 @@ const RecordInfos: FC = () => {
       </InfosCard>
       <LinkTableModal
         show={ShowLinkModal}
-        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
+        title={<TargetTableTitle />}
         onHide={() => setShowLinkModal(false)}
         table={
           <TargetLoadTable

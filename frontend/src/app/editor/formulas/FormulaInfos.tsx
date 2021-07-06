@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useMutation } from "@apollo/client";
@@ -15,9 +15,9 @@ import CustomInput from "@components/inputs/CustomInput";
 import BasicButton from "@components/buttons/BasicButton";
 import CustomTextArea from "@components/inputs/CustomTextArea";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import TableTitle from "@components/tables/TableTitle";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
+import TargetTableTitle from "@editor/graphs/elements/TargetTableTitle";
 
 const FormulaInfos: FC = () => {
   const dispatch = useDispatch();
@@ -58,10 +58,6 @@ const FormulaInfos: FC = () => {
       dispatch(setFormulaData(setFormulaTarget));
     },
   });
-
-  const handleSubmitSearch = useCallback((fieldValue: string) => {
-    console.log(fieldValue);
-  }, []);
 
   return (
     <>
@@ -111,7 +107,7 @@ const FormulaInfos: FC = () => {
       </InfosCard>
       <LinkTableModal
         show={ShowLinkModal}
-        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
+        title={<TargetTableTitle />}
         onHide={() => setShowLinkModal(false)}
         table={
           <TargetLoadTable

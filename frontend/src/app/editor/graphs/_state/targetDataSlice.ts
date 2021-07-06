@@ -11,6 +11,7 @@ interface TargetDataType {
   points: TargetPoint[];
   loadList: Target[];
   preview: Target;
+  nameSearch: string | null;
 }
 
 const initialState: TargetDataType = {
@@ -22,6 +23,7 @@ const initialState: TargetDataType = {
   },
   loadList: [],
   preview: {},
+  nameSearch: null,
 };
 
 export const targetDataSlice = createSlice({
@@ -52,22 +54,22 @@ export const targetDataSlice = createSlice({
     setTargetTempPoint: (state, action: PayloadAction<{ point: TargetPoint; index: number }>) => {
       if (action.payload.index >= 0 && action.payload.index < state.tempValues.points.length)
         state.tempValues.points[action.payload.index] = action.payload.point;
-      // state.tempValues.points.sort(pointSort);
     },
     addTargetTempPoint: (state, action: PayloadAction<void>) => {
       state.tempValues.points.push({ time: 0, temperature: 0, oxygen: 0 });
-      // state.tempValues.points.sort(pointSort);
     },
     removeTargetTempPoint: (state, action: PayloadAction<number>) => {
       if (action.payload >= 0 && action.payload < state.tempValues.points.length)
         state.tempValues.points.splice(action.payload, 1);
-      // state.tempValues.points.sort(pointSort);
     },
     resetTargetTempPoints: (state, action: PayloadAction<void>) => {
       state.tempValues.points = state.points;
     },
     setTargetPreview: (state, action: PayloadAction<Target>) => {
       state.preview = action.payload;
+    },
+    setTargetNameSearch: (state, action: PayloadAction<string | null>) => {
+      state.nameSearch = action.payload;
     },
   },
 });
@@ -82,6 +84,7 @@ export const {
   addTargetTempPoint,
   removeTargetTempPoint,
   resetTargetTempPoints,
+  setTargetNameSearch,
 } = targetDataSlice.actions;
 
 export const selectTargetData = (state: RootState) => state.targetData.data;
@@ -90,5 +93,6 @@ export const selectTargetPoints = (state: RootState) => state.targetData.points;
 export const selectTargetTempColor = (state: RootState) => state.targetData.tempValues.color;
 export const selectTargetPreview = (state: RootState) => state.targetData.preview;
 export const selectTargetTempPoints = (state: RootState) => state.targetData.tempValues.points;
+export const selectTargetNameSearch = (state: RootState) => state.targetData.nameSearch;
 
 export default targetDataSlice.reducer;

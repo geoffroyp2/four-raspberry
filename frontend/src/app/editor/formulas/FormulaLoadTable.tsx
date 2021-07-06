@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Formula, FormulaQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormulaLoadList, setFormulaLoadList } from "./_state/formulaDataSlice";
+import { selectFormulaLoadList, selectFormulaNameSearch, setFormulaLoadList } from "./_state/formulaDataSlice";
 import {
   selectFormulaLoadAmount,
   selectFormulaLoadId,
@@ -40,6 +40,7 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
   const currentLoadList = useSelector(selectFormulaLoadList);
   const formulaLoadPage = useSelector(selectFormulaLoadPage);
   const formulaPageAmount = useSelector(selectFormulaPageAmount);
+  const formulaNameSearch = useSelector(selectFormulaNameSearch);
 
   const [loadFormulaPage, { loading, error }] = useLazyQuery<FormulaQueryRes>(formulaPageQuery, {
     onCompleted: ({ formulas }) => {
@@ -60,8 +61,9 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
         amount: currentLoadAmount,
       },
     };
+    if (formulaNameSearch !== null) variables.variables["name"] = formulaNameSearch;
     loadFormulaPage(variables);
-  }, [currentLoadPage, currentLoadAmount, loadFormulaPage]);
+  }, [currentLoadPage, currentLoadAmount, formulaNameSearch, loadFormulaPage]);
 
   const handleSetFormulaPage = useCallback(
     (page: number) => {

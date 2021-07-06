@@ -1,16 +1,15 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 
 import { useMutation } from "@apollo/client";
+import { sendCommandMutation, updateTargetIdMutation } from "./_gql/mutations";
 
 import { useSelector } from "react-redux";
 import { selectTargetLoadId } from "@editor/graphs/_state/targetDisplaySlice";
 
+import TargetTableTitle from "@editor/graphs/elements/TargetTableTitle";
 import TargetLoadTable from "@editor/graphs/targets/TargetLoadTable";
 import BasicButton from "@components/buttons/BasicButton";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import TableTitle from "@components/tables/TableTitle";
-
-import { sendCommandMutation, updateTargetIdMutation } from "./_gql/mutations";
 
 const LiveButtons: FC = () => {
   const [ShowLinkModal, setShowLinkModal] = useState<boolean>(false);
@@ -27,10 +26,6 @@ const LiveButtons: FC = () => {
       if (!updateLiveTargetId) console.log("Error whith updateTargetId mutation");
     },
   });
-
-  const handleSubmitSearch = useCallback((fieldValue: string) => {
-    console.log(fieldValue);
-  }, []);
 
   return (
     <>
@@ -52,7 +47,7 @@ const LiveButtons: FC = () => {
       </div>
       <LinkTableModal
         show={ShowLinkModal}
-        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
+        title={<TargetTableTitle />}
         onHide={() => setShowLinkModal(false)}
         table={
           <TargetLoadTable

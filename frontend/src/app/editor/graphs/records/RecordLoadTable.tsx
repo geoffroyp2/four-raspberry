@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Record, RecordQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordLoadList, setRecordLoadList } from "../_state/recordDataSlice";
+import { selectRecordLoadList, selectRecordNameSearch, setRecordLoadList } from "../_state/recordDataSlice";
 import {
   selectRecordLoadAmount,
   selectRecordLoadId,
@@ -40,6 +40,7 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
   const currentLoadList = useSelector(selectRecordLoadList);
   const recordLoadPage = useSelector(selectRecordLoadPage);
   const recordPageAmount = useSelector(selectRecordPageAmount);
+  const recordNameSearch = useSelector(selectRecordNameSearch);
 
   const [loadRecordPage, { loading, error }] = useLazyQuery<RecordQueryRes>(recordPageQuery, {
     onCompleted: ({ records }) => {
@@ -60,8 +61,9 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
         amount: currentLoadAmount,
       },
     };
+    if (recordNameSearch !== null) variables.variables["name"] = recordNameSearch;
     loadRecordPage(variables);
-  }, [currentLoadPage, currentLoadAmount, loadRecordPage]);
+  }, [currentLoadPage, currentLoadAmount, recordNameSearch, loadRecordPage]);
 
   const handleSetRecordPage = useCallback(
     (page: number) => {

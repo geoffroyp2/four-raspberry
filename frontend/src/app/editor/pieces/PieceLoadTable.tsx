@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Piece, PieceQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectPieceLoadList, setPieceLoadList } from "./_state/pieceDataSlice";
+import { selectPieceLoadList, selectPieceNameSearch, setPieceLoadList } from "./_state/pieceDataSlice";
 import {
   selectPieceLoadAmount,
   selectPieceLoadId,
@@ -40,6 +40,7 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
   const currentLoadList = useSelector(selectPieceLoadList);
   const pieceLoadPage = useSelector(selectPieceLoadPage);
   const piecePageAmount = useSelector(selectPiecePageAmount);
+  const pieceNameSearch = useSelector(selectPieceNameSearch);
 
   const [loadPiecePage, { loading, error }] = useLazyQuery<PieceQueryRes>(piecePageQuery, {
     onCompleted: ({ pieces }) => {
@@ -60,8 +61,9 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
         amount: currentLoadAmount,
       },
     };
+    if (pieceNameSearch !== null) variables.variables["name"] = pieceNameSearch;
     loadPiecePage(variables);
-  }, [currentLoadPage, currentLoadAmount, loadPiecePage]);
+  }, [currentLoadPage, currentLoadAmount, pieceNameSearch, loadPiecePage]);
 
   const handleSetPiecePage = useCallback(
     (page: number) => {

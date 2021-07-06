@@ -21,8 +21,8 @@ export const formulaQuery = gql`
 `;
 
 export const formulaPageQuery = gql`
-  query FormulaQueryRes($page: Int, $amount: Int)  {
-    formulas(page: $page, amount: $amount) {
+  query FormulaQueryRes($page: Int, $amount: Int, $name: String)  {
+    formulas(page: $page, amount: $amount, name: $name) {
       count
       rows {
         ${formulaPageFieldsString}

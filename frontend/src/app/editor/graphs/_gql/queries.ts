@@ -41,8 +41,8 @@ export const targetQuery = gql`
 `;
 
 export const targetPageQuery = gql`
-  query TargetQueryRes($page: Int, $amount: Int)  {
-    targets(page: $page, amount: $amount) {
+  query TargetQueryRes($page: Int, $amount: Int, $name: String)  {
+    targets(page: $page, amount: $amount, name: $name) {
       count
       rows {
         ${targetPageFieldsString}
@@ -85,8 +85,8 @@ export const recordQuery = gql`
 `;
 
 export const recordPageQuery = gql`
-  query RecordQueryRes($page: Int, $amount: Int)  {
-    records(page: $page, amount: $amount) {
+  query RecordQueryRes($page: Int, $amount: Int, $name: String)  {
+    records(page: $page, amount: $amount, name: $name) {
       count
       rows {
         ${recordPageFieldsString}

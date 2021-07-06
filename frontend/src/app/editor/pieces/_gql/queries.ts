@@ -21,8 +21,8 @@ export const pieceQuery = gql`
 `;
 
 export const piecePageQuery = gql`
-  query PieceQueryRes($page: Int, $amount: Int)  {
-    pieces(page: $page, amount: $amount) {
+  query PieceQueryRes($page: Int, $amount: Int, $name: String)  {
+    pieces(page: $page, amount: $amount, name: $name) {
       count
       rows {
         ${piecePageFieldsString}
