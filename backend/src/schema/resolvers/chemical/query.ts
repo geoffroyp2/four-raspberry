@@ -15,23 +15,27 @@ const Query: ResolverObjectType = {
     if (id !== undefined) args.id = id;
 
     const order: Order = [];
-    let direction = sort.order === "DESC" ? "DESC" : "ASC";
-    switch (sort.sortBy) {
-      case "id":
-        order.push(["id", direction]);
-        break;
-      case "name":
-      case "chemicalName":
-      case "updatedAt":
-      case "createdAt":
-        order.push([sort.sortBy, direction], ["id", "ASC"]); // id always as second parameter
-        break;
-      default:
-        order.push(["id", "ASC"]);
-        break;
+    if (sort) {
+      let direction = sort?.order === "DESC" ? "DESC" : "ASC";
+      switch (sort?.sortBy) {
+        case "id":
+          order.push(["id", direction]);
+          break;
+        case "name":
+        case "chemicalName":
+        case "updatedAt":
+        case "createdAt":
+          order.push([sort.sortBy, direction], ["id", "ASC"]); // id always as second parameter
+          break;
+        default:
+          order.push(["id", "ASC"]);
+          break;
+      }
+    } else {
+      order.push(["id", "ASC"]);
     }
 
-    return await Chemical.findAndCountAll({
+    return Chemical.findAndCountAll({
       where: args,
       order: order,
       limit: amount,

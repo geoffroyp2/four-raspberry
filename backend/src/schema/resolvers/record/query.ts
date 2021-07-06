@@ -18,22 +18,24 @@ const Query: ResolverObjectType = {
     if (name !== undefined) args.name = { [Op.iLike]: `%${name}%` };
     if (finished !== undefined) args.finished = finished;
 
-    console.log(sort);
-
     const order: Order = [];
-    let direction = sort.order === "DESC" ? "DESC" : "ASC";
-    switch (sort.sortBy) {
-      case "id":
-        order.push(["id", direction]);
-        break;
-      case "name":
-      case "updatedAt":
-      case "createdAt":
-        order.push([sort.sortBy, direction], ["id", "ASC"]); // id always as second parameter
-        break;
-      default:
-        order.push(["id", "ASC"]);
-        break;
+    if (sort) {
+      let direction = sort.order === "DESC" ? "DESC" : "ASC";
+      switch (sort.sortBy) {
+        case "id":
+          order.push(["id", direction]);
+          break;
+        case "name":
+        case "updatedAt":
+        case "createdAt":
+          order.push([sort.sortBy, direction], ["id", "ASC"]); // id always as second parameter
+          break;
+        default:
+          order.push(["id", "ASC"]);
+          break;
+      }
+    } else {
+      order.push(["id", "ASC"]);
     }
 
     if (id === 0) {
@@ -47,7 +49,7 @@ const Query: ResolverObjectType = {
         offset: (amount || 0) * (page || 0),
       });
 
-      if (oven === undefined && sort.sortBy !== "oven" && sort.sortBy !== "target") return records;
+      if (oven === undefined && sort?.sortBy !== "oven" && sort?.sortBy !== "target") return records;
 
       // Look for the target of each record and keep the ones that match oven
       const filteredRecords: Record[] = [];
@@ -68,9 +70,9 @@ const Query: ResolverObjectType = {
           rows: filteredRecords,
         };
 
-      const sortDirectionFactor = sort.order === "DESC" ? -1 : 1;
+      const sortDirectionFactor = sort?.order === "DESC" ? -1 : 1;
 
-      if (sort.sortBy === "oven")
+      if (sort?.sortBy === "oven")
         return {
           count: records.count,
           rows: records.rows.sort((a, b) => {
@@ -82,7 +84,7 @@ const Query: ResolverObjectType = {
           }),
         };
 
-      if (sort.sortBy === "target")
+      if (sort?.sortBy === "target")
         return {
           count: records.count,
           rows: records.rows.sort((a, b) => {
