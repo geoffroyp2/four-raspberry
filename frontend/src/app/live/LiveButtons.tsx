@@ -2,27 +2,18 @@ import { FC, useCallback, useState } from "react";
 
 import { useMutation } from "@apollo/client";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectTargetLoadId,
-  selectTargetLoadPage,
-  selectTargetPageAmount,
-  setTargetLoadPage,
-} from "@editor/graphs/_state/targetDisplaySlice";
+import { useSelector } from "react-redux";
+import { selectTargetLoadId } from "@editor/graphs/_state/targetDisplaySlice";
 
 import TargetLoadTable from "@editor/graphs/targets/TargetLoadTable";
 import BasicButton from "@components/buttons/BasicButton";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import Pagination from "@components/tables/Pagination";
 import TableTitle from "@components/tables/TableTitle";
 
 import { sendCommandMutation, updateTargetIdMutation } from "./_gql/mutations";
 
 const LiveButtons: FC = () => {
-  const dispatch = useDispatch();
   const [ShowLinkModal, setShowLinkModal] = useState<boolean>(false);
-  const targetPageAmount = useSelector(selectTargetPageAmount);
-  const targetLoadPage = useSelector(selectTargetLoadPage);
   const targetId = useSelector(selectTargetLoadId);
 
   const [sendCommand] = useMutation<{ sendCommand: boolean }>(sendCommandMutation, {
@@ -40,13 +31,6 @@ const LiveButtons: FC = () => {
   const handleSubmitSearch = useCallback((fieldValue: string) => {
     console.log(fieldValue);
   }, []);
-
-  const handleSetPage = useCallback(
-    (page: number) => {
-      dispatch(setTargetLoadPage(page));
-    },
-    [dispatch]
-  );
 
   return (
     <>
@@ -68,18 +52,28 @@ const LiveButtons: FC = () => {
       </div>
       <LinkTableModal
         show={ShowLinkModal}
-        discardChange={() => setShowLinkModal(false)}
-        confirmChange={() => {
-          setShowLinkModal(false);
-          updateTargetId({ variables: { targetId } });
-        }}
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
-        pagination={
-          targetPageAmount > 0 && (
-            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} small />
-          )
+        onHide={() => setShowLinkModal(false)}
+        table={
+          <TargetLoadTable
+            buttons={
+              <>
+                <BasicButton color={"red"} onClick={() => setShowLinkModal(false)}>
+                  Annuler
+                </BasicButton>
+                <BasicButton
+                  color={"blue"}
+                  onClick={() => {
+                    setShowLinkModal(false);
+                    updateTargetId({ variables: { targetId } });
+                  }}
+                >
+                  Sélectionner
+                </BasicButton>
+              </>
+            }
+          />
         }
-        table={<TargetLoadTable />}
       />
     </>
   );

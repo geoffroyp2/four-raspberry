@@ -7,19 +7,14 @@ import { getSetPieceFormulaMutation, getUpdatePieceMutation } from "./_gql/mutat
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectPieceData, setPieceData } from "./_state/pieceDataSlice";
-import {
-  selectFormulaLoadId,
-  selectFormulaLoadPage,
-  selectFormulaPageAmount,
-  setFormulaLoadPage,
-} from "@editor/formulas/_state/formulaDisplaySlice";
+import { selectFormulaLoadId } from "@editor/formulas/_state/formulaDisplaySlice";
 
 import FormulaLoadTable from "@editor/formulas/FormulaLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import CustomInput from "@components/inputs/CustomInput";
 import CustomTextArea from "@components/inputs/CustomTextArea";
+import BasicButton from "@components/buttons/BasicButton";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import Pagination from "@components/tables/Pagination";
 import TableTitle from "@components/tables/TableTitle";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
@@ -29,8 +24,6 @@ const PieceInfos: FC = () => {
   const navigate = useNavigate();
 
   const piece = useSelector(selectPieceData);
-  const formulaPageAmount = useSelector(selectFormulaPageAmount);
-  const formulaLoadPage = useSelector(selectFormulaLoadPage);
   const formulaId = useSelector(selectFormulaLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(piece.name ?? "");
@@ -69,13 +62,6 @@ const PieceInfos: FC = () => {
   const handleSubmitSearch = useCallback((fieldValue: string) => {
     console.log(fieldValue);
   }, []);
-
-  const handleSetPage = useCallback(
-    (page: number) => {
-      dispatch(setFormulaLoadPage(page));
-    },
-    [dispatch]
-  );
 
   return (
     <>
@@ -123,18 +109,28 @@ const PieceInfos: FC = () => {
       </InfosCard>
       <LinkTableModal
         show={ShowLinkModal}
-        discardChange={() => setShowLinkModal(false)}
-        confirmChange={() => {
-          setShowLinkModal(false);
-          setPieceFormula({ variables: { pieceId: piece.id, formulaId: formulaId ?? 0 } });
-        }}
-        title={<TableTitle title="Émaux" handleSubmit={handleSubmitSearch} placeholder="Nom de l'émail" />}
-        pagination={
-          formulaPageAmount > 0 && (
-            <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetPage} small />
-          )
+        title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
+        onHide={() => setShowLinkModal(false)}
+        table={
+          <FormulaLoadTable
+            buttons={
+              <>
+                <BasicButton color={"red"} onClick={() => setShowLinkModal(false)}>
+                  Annuler
+                </BasicButton>
+                <BasicButton
+                  color={"blue"}
+                  onClick={() => {
+                    setShowLinkModal(false);
+                    setPieceFormula({ variables: { pieceId: piece.id, formulaId: formulaId ?? 0 } });
+                  }}
+                >
+                  Sélectionner
+                </BasicButton>
+              </>
+            }
+          />
         }
-        table={<FormulaLoadTable />}
       />
     </>
   );

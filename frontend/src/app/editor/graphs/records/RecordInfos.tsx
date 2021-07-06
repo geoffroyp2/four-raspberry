@@ -7,19 +7,14 @@ import { Record } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
-import {
-  selectTargetLoadId,
-  selectTargetLoadPage,
-  selectTargetPageAmount,
-  setTargetLoadPage,
-} from "../_state/targetDisplaySlice";
+import { selectTargetLoadId } from "../_state/targetDisplaySlice";
 
 import TargetLoadTable from "../targets/TargetLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
 import LinkTableModal from "@components/modals/LinkTableModal";
-import Pagination from "@components/tables/Pagination";
 import TableTitle from "@components/tables/TableTitle";
 import CustomInput from "@components/inputs/CustomInput";
+import BasicButton from "@components/buttons/BasicButton";
 import CustomTextArea from "@components/inputs/CustomTextArea";
 import ColorPicker from "@components/inputs/ColorPicker";
 
@@ -30,8 +25,6 @@ const RecordInfos: FC = () => {
   const navigate = useNavigate();
 
   const record = useSelector(selectRecordData);
-  const targetPageAmount = useSelector(selectTargetPageAmount);
-  const targetLoadPage = useSelector(selectTargetLoadPage);
   const targetId = useSelector(selectTargetLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(record.name ?? "");
@@ -76,13 +69,6 @@ const RecordInfos: FC = () => {
   const handleSubmitSearch = useCallback((fieldValue: string) => {
     console.log(fieldValue);
   }, []);
-
-  const handleSetPage = useCallback(
-    (page: number) => {
-      dispatch(setTargetLoadPage(page));
-    },
-    [dispatch]
-  );
 
   return (
     <>
@@ -140,18 +126,28 @@ const RecordInfos: FC = () => {
       </InfosCard>
       <LinkTableModal
         show={ShowLinkModal}
-        discardChange={() => setShowLinkModal(false)}
-        confirmChange={() => {
-          setShowLinkModal(false);
-          setRecordTarget({ variables: { recordId: record.id, targetId: targetId ?? 0 } });
-        }}
         title={<TableTitle title="Courbes de Référence" handleSubmit={handleSubmitSearch} placeholder="Nom de la courbe" />}
-        pagination={
-          targetPageAmount > 0 && (
-            <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetPage} small />
-          )
+        onHide={() => setShowLinkModal(false)}
+        table={
+          <TargetLoadTable
+            buttons={
+              <>
+                <BasicButton color={"red"} onClick={() => setShowLinkModal(false)}>
+                  Annuler
+                </BasicButton>
+                <BasicButton
+                  color={"blue"}
+                  onClick={() => {
+                    setShowLinkModal(false);
+                    setRecordTarget({ variables: { recordId: record.id, targetId: targetId ?? 0 } });
+                  }}
+                >
+                  Sélectionner
+                </BasicButton>
+              </>
+            }
+          />
         }
-        table={<TargetLoadTable />}
       />
     </>
   );

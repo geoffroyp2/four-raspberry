@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
 import { targetPageQuery } from "../_gql/queries";
@@ -11,6 +11,7 @@ import {
   selectTargetLoadAmount,
   selectTargetLoadId,
   selectTargetLoadPage,
+  selectTargetPageAmount,
   setTargetLoadId,
   setTargetLoadPage,
   setTargetTotalAmount,
@@ -20,23 +21,25 @@ import NotFound from "@editor/NotFound";
 import LoadTable from "@components/tables/LoadTable";
 import TableHeader from "@components/tables/TableHeader";
 import TableRow from "@components/tables/TableRow";
+import Pagination from "@components/tables/Pagination";
+import LoadTableFooter from "@components/tables/LoadTableFooter";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
-const TargetLoadTable: FC = () => {
+type Props = {
+  buttons?: ReactNode;
+};
+
+const TargetLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
 
+  const [Rows, setRows] = useState<ReactNode[]>([]);
   const targetId = useSelector(selectTargetLoadId);
   const currentLoadPage = useSelector(selectTargetLoadPage);
   const currentLoadAmount = useSelector(selectTargetLoadAmount);
   const currentLoadList = useSelector(selectTargetLoadList);
-
-  const handleSelectRow = useCallback(
-    (id: number) => {
-      dispatch(setTargetLoadId(id));
-    },
-    [dispatch]
-  );
+  const targetLoadPage = useSelector(selectTargetLoadPage);
+  const targetPageAmount = useSelector(selectTargetPageAmount);
 
   const [loadTargetPage, { loading, error }] = useLazyQuery<TargetQueryRes>(targetPageQuery, {
     onCompleted: ({ targets }) => {
@@ -60,41 +63,72 @@ const TargetLoadTable: FC = () => {
     loadTargetPage(variables);
   }, [currentLoadPage, currentLoadAmount, loadTargetPage]);
 
-  const rows = useMemo(() => {
-    const targets: Target[] = [];
+  const handleSetTargetPage = useCallback(
+    (page: number) => {
+      dispatch(setTargetLoadPage(page));
+    },
+    [dispatch]
+  );
+
+  const handleSelectRow = useCallback(
+    (id: number) => {
+      dispatch(setTargetLoadId(id));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
     if (loading) {
-      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
-        targets.push({});
+      if (Rows.length === 0) {
+        setRows(
+          [...Array(currentLoadAmount)].map((e, idx) => (
+            <TableRow
+              key={`load-table-row-${idx}`}
+              rowContent={["", "", ""]}
+              selected={false}
+              id={0}
+              disabled={true}
+              handleSelect={() => {}}
+            />
+          ))
+        );
       }
-    } else {
-      for (let i = 0; i < currentLoadList.length; ++i) {
-        targets.push(currentLoadList[i]);
-      }
-      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
-        targets.push({});
-      }
+      return;
     }
 
-    return targets.map((target, idx) => (
-      <TableRow
-        key={`load-table-row-${idx}`}
-        rowContent={[target.name ?? "-", target.oven ?? "-", dateToDisplayString(target.createdAt, true)]}
-        selected={target.id === targetId}
-        id={target.id ?? 0}
-        disabled={target.id === undefined}
-        handleSelect={() => handleSelectRow(target.id ?? 0)}
-        hoverEffect
-      />
-    ));
-  }, [currentLoadList, currentLoadAmount, handleSelectRow, targetId, loading]);
+    const targets: Target[] = [];
+    for (let i = 0; i < currentLoadList.length; ++i) targets.push(currentLoadList[i]);
+    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) targets.push({});
+    setRows(
+      targets.map((target, idx) => (
+        <TableRow
+          key={`load-table-row-${idx}`}
+          rowContent={[target.name ?? "-", target.oven ?? "-", dateToDisplayString(target.createdAt, true)]}
+          selected={target.id === targetId}
+          id={target.id ?? 0}
+          disabled={target.id === undefined}
+          handleSelect={() => handleSelectRow(target.id ?? 0)}
+          hoverEffect
+        />
+      ))
+    );
+  }, [loading, currentLoadList, currentLoadAmount, targetId, Rows.length, handleSelectRow]);
 
   if (error) return <NotFound />;
 
   return (
-    <LoadTable>
-      <TableHeader columnNames={["Nom", "Four", "Créé le"]} />
-      <tbody>{rows}</tbody>
-    </LoadTable>
+    <>
+      <LoadTable>
+        <TableHeader columnNames={["Nom", "Four", "Créé le"]} />
+        <tbody>{Rows}</tbody>
+      </LoadTable>
+      <LoadTableFooter
+        pagination={
+          <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetTargetPage} small />
+        }
+        buttons={buttons}
+      />
+    </>
   );
 };
 

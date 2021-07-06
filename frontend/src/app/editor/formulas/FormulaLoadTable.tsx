@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
 import { formulaPageQuery } from "./_gql/queries";
@@ -11,6 +11,7 @@ import {
   selectFormulaLoadAmount,
   selectFormulaLoadId,
   selectFormulaLoadPage,
+  selectFormulaPageAmount,
   setFormulaLoadId,
   setFormulaLoadPage,
   setFormulaTotalAmount,
@@ -20,23 +21,25 @@ import NotFound from "@editor/NotFound";
 import LoadTable from "@components/tables/LoadTable";
 import TableHeader from "@components/tables/TableHeader";
 import TableRow from "@components/tables/TableRow";
+import Pagination from "@components/tables/Pagination";
+import LoadTableFooter from "@components/tables/LoadTableFooter";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
-const FormulaLoadTable: FC = () => {
+type Props = {
+  buttons?: ReactNode;
+};
+
+const FormulaLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
 
+  const [Rows, setRows] = useState<ReactNode[]>([]);
   const formulaId = useSelector(selectFormulaLoadId);
   const currentLoadPage = useSelector(selectFormulaLoadPage);
   const currentLoadAmount = useSelector(selectFormulaLoadAmount);
   const currentLoadList = useSelector(selectFormulaLoadList);
-
-  const handleSelectRow = useCallback(
-    (id: number) => {
-      dispatch(setFormulaLoadId(id));
-    },
-    [dispatch]
-  );
+  const formulaLoadPage = useSelector(selectFormulaLoadPage);
+  const formulaPageAmount = useSelector(selectFormulaPageAmount);
 
   const [loadFormulaPage, { loading, error }] = useLazyQuery<FormulaQueryRes>(formulaPageQuery, {
     onCompleted: ({ formulas }) => {
@@ -60,41 +63,72 @@ const FormulaLoadTable: FC = () => {
     loadFormulaPage(variables);
   }, [currentLoadPage, currentLoadAmount, loadFormulaPage]);
 
-  const rows = useMemo(() => {
-    const formulas: Formula[] = [];
+  const handleSetFormulaPage = useCallback(
+    (page: number) => {
+      dispatch(setFormulaLoadPage(page));
+    },
+    [dispatch]
+  );
+
+  const handleSelectRow = useCallback(
+    (id: number) => {
+      dispatch(setFormulaLoadId(id));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
     if (loading) {
-      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
-        formulas.push({});
+      if (Rows.length === 0) {
+        setRows(
+          [...Array(currentLoadAmount)].map((e, idx) => (
+            <TableRow
+              key={`load-table-row-${idx}`}
+              rowContent={["", "", ""]}
+              selected={false}
+              id={0}
+              disabled={true}
+              handleSelect={() => {}}
+            />
+          ))
+        );
       }
-    } else {
-      for (let i = 0; i < currentLoadList.length; ++i) {
-        formulas.push(currentLoadList[i]);
-      }
-      for (let i = currentLoadList.length; i < currentLoadAmount; ++i) {
-        formulas.push({});
-      }
+      return;
     }
 
-    return formulas.map((formula, idx) => (
-      <TableRow
-        key={`load-table-row-${idx}`}
-        rowContent={[formula.name ?? "-", formula.target?.name ?? "-", dateToDisplayString(formula.createdAt, true)]}
-        selected={formula.id === formulaId}
-        id={formula.id ?? 0}
-        disabled={formula.id === undefined}
-        handleSelect={() => handleSelectRow(formula.id ?? 0)}
-        hoverEffect
-      />
-    ));
-  }, [currentLoadList, currentLoadAmount, handleSelectRow, formulaId, loading]);
+    const formulas: Formula[] = [];
+    for (let i = 0; i < currentLoadList.length; ++i) formulas.push(currentLoadList[i]);
+    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) formulas.push({});
+    setRows(
+      formulas.map((formula, idx) => (
+        <TableRow
+          key={`load-table-row-${idx}`}
+          rowContent={[formula.name ?? "-", formula.target?.name ?? "-", dateToDisplayString(formula.createdAt, true)]}
+          selected={formula.id === formulaId}
+          id={formula.id ?? 0}
+          disabled={formula.id === undefined}
+          handleSelect={() => handleSelectRow(formula.id ?? 0)}
+          hoverEffect
+        />
+      ))
+    );
+  }, [loading, currentLoadList, currentLoadAmount, formulaId, Rows.length, handleSelectRow]);
 
   if (error) return <NotFound />;
 
   return (
-    <LoadTable>
-      <TableHeader columnNames={["Nom", "Courbe de Référence", "Créé le"]} />
-      <tbody>{rows}</tbody>
-    </LoadTable>
+    <>
+      <LoadTable>
+        <TableHeader columnNames={["Nom", "Courbe de Référence", "Créé le"]} />
+        <tbody>{Rows}</tbody>
+      </LoadTable>
+      <LoadTableFooter
+        pagination={
+          <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetFormulaPage} small />
+        }
+        buttons={buttons}
+      />
+    </>
   );
 };
 
