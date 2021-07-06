@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetNameSearch, setTargetNameSearch } from "../_state/targetDataSlice";
+import { selectTargetNameSearch, setTargetNameSearch } from "../_state/targetDisplaySlice";
 
 import TableSearch from "@components/tables/TableSearch";
 

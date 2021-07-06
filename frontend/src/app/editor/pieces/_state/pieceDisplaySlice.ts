@@ -6,6 +6,9 @@ interface PieceDisplayType {
   loadAmount: number;
   pageAmount: number;
   loadId: number | null;
+  nameSearch: string | null;
+  sortParam: "name" | "id" | "createdAt" | "updatedAt" | "formula";
+  sortDirection: "ASC" | "DESC";
 }
 
 const initialState: PieceDisplayType = {
@@ -13,6 +16,9 @@ const initialState: PieceDisplayType = {
   loadAmount: 15,
   pageAmount: 0,
   loadId: null,
+  nameSearch: null,
+  sortParam: "id",
+  sortDirection: "ASC",
 };
 
 export const pieceDisplaySlice = createSlice({
@@ -28,14 +34,33 @@ export const pieceDisplaySlice = createSlice({
     setPieceLoadId: (state, action: PayloadAction<number>) => {
       state.loadId = action.payload;
     },
+    setPieceNameSearch: (state, action: PayloadAction<string | null>) => {
+      state.nameSearch = action.payload;
+    },
+    setPieceSortParam: (state, action: PayloadAction<PieceDisplayType["sortParam"]>) => {
+      state.sortParam = action.payload;
+    },
+    setPieceSortDirection: (state, action: PayloadAction<PieceDisplayType["sortDirection"]>) => {
+      state.sortDirection = action.payload;
+    },
   },
 });
 
-export const { setPieceLoadPage, setPieceTotalAmount, setPieceLoadId } = pieceDisplaySlice.actions;
+export const {
+  setPieceLoadPage,
+  setPieceTotalAmount,
+  setPieceLoadId,
+  setPieceNameSearch,
+  setPieceSortParam,
+  setPieceSortDirection,
+} = pieceDisplaySlice.actions;
 
 export const selectPieceLoadPage = (state: RootState) => state.pieceDisplay.loadPage;
 export const selectPieceLoadAmount = (state: RootState) => state.pieceDisplay.loadAmount;
 export const selectPiecePageAmount = (state: RootState) => state.pieceDisplay.pageAmount;
 export const selectPieceLoadId = (state: RootState) => state.pieceDisplay.loadId;
+export const selectPieceNameSearch = (state: RootState) => state.pieceDisplay.nameSearch;
+export const selectPieceSortParam = (state: RootState) => state.pieceDisplay.sortParam;
+export const selectPieceSortDirection = (state: RootState) => state.pieceDisplay.sortDirection;
 
 export default pieceDisplaySlice.reducer;

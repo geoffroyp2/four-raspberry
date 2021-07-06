@@ -10,6 +10,9 @@ interface RecordDisplayType {
   pageAmount: number;
   loadId: number | null;
   pointZoom: PointZoomType;
+  nameSearch: string | null;
+  sortParam: "name" | "id" | "createdAt" | "updatedAt" | "oven" | "target";
+  sortDirection: "ASC" | "DESC";
 }
 
 const initialState: RecordDisplayType = {
@@ -22,6 +25,9 @@ const initialState: RecordDisplayType = {
     end: 2147483647,
     amount: 70,
   },
+  nameSearch: null,
+  sortParam: "id",
+  sortDirection: "ASC",
 };
 
 export const recordDisplaySlice = createSlice({
@@ -40,15 +46,35 @@ export const recordDisplaySlice = createSlice({
     setRecordPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {
       state.pointZoom = { ...state.pointZoom, ...action.payload };
     },
+    setRecordNameSearch: (state, action: PayloadAction<string | null>) => {
+      state.nameSearch = action.payload;
+    },
+    setRecordSortParam: (state, action: PayloadAction<RecordDisplayType["sortParam"]>) => {
+      state.sortParam = action.payload;
+    },
+    setRecordSortDirection: (state, action: PayloadAction<RecordDisplayType["sortDirection"]>) => {
+      state.sortDirection = action.payload;
+    },
   },
 });
 
-export const { setRecordLoadPage, setRecordTotalAmount, setRecordLoadId, setRecordPointZoom } = recordDisplaySlice.actions;
+export const {
+  setRecordLoadPage,
+  setRecordTotalAmount,
+  setRecordLoadId,
+  setRecordPointZoom,
+  setRecordNameSearch,
+  setRecordSortParam,
+  setRecordSortDirection,
+} = recordDisplaySlice.actions;
 
 export const selectRecordLoadPage = (state: RootState) => state.recordDisplay.loadPage;
 export const selectRecordLoadAmount = (state: RootState) => state.recordDisplay.loadAmount;
 export const selectRecordPageAmount = (state: RootState) => state.recordDisplay.pageAmount;
 export const selectRecordLoadId = (state: RootState) => state.recordDisplay.loadId;
 export const selectRecordPointZoom = (state: RootState) => state.recordDisplay.pointZoom;
+export const selectRecordNameSearch = (state: RootState) => state.recordDisplay.nameSearch;
+export const selectRecordSortParam = (state: RootState) => state.recordDisplay.sortParam;
+export const selectRecordSortDirection = (state: RootState) => state.recordDisplay.sortDirection;
 
 export default recordDisplaySlice.reducer;

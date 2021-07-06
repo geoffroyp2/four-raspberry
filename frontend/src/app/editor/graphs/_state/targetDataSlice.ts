@@ -11,7 +11,6 @@ interface TargetDataType {
   points: TargetPoint[];
   loadList: Target[];
   preview: Target;
-  nameSearch: string | null;
 }
 
 const initialState: TargetDataType = {
@@ -23,7 +22,6 @@ const initialState: TargetDataType = {
   },
   loadList: [],
   preview: {},
-  nameSearch: null,
 };
 
 export const targetDataSlice = createSlice({
@@ -68,9 +66,6 @@ export const targetDataSlice = createSlice({
     setTargetPreview: (state, action: PayloadAction<Target>) => {
       state.preview = action.payload;
     },
-    setTargetNameSearch: (state, action: PayloadAction<string | null>) => {
-      state.nameSearch = action.payload;
-    },
   },
 });
 
@@ -84,7 +79,6 @@ export const {
   addTargetTempPoint,
   removeTargetTempPoint,
   resetTargetTempPoints,
-  setTargetNameSearch,
 } = targetDataSlice.actions;
 
 export const selectTargetData = (state: RootState) => state.targetData.data;
@@ -93,6 +87,5 @@ export const selectTargetPoints = (state: RootState) => state.targetData.points;
 export const selectTargetTempColor = (state: RootState) => state.targetData.tempValues.color;
 export const selectTargetPreview = (state: RootState) => state.targetData.preview;
 export const selectTargetTempPoints = (state: RootState) => state.targetData.tempValues.points;
-export const selectTargetNameSearch = (state: RootState) => state.targetData.nameSearch;
 
 export default targetDataSlice.reducer;

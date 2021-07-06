@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Target, TargetQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetLoadList, selectTargetNameSearch, setTargetLoadList } from "../_state/targetDataSlice";
+import { selectTargetLoadList, setTargetLoadList } from "../_state/targetDataSlice";
 import {
   selectTargetLoadAmount,
   selectTargetLoadId,
@@ -15,6 +15,11 @@ import {
   setTargetLoadId,
   setTargetLoadPage,
   setTargetTotalAmount,
+  selectTargetNameSearch,
+  selectTargetSortParam,
+  selectTargetSortDirection,
+  setTargetSortDirection,
+  setTargetSortParam,
 } from "../_state/targetDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -41,6 +46,8 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
   const targetLoadPage = useSelector(selectTargetLoadPage);
   const targetPageAmount = useSelector(selectTargetPageAmount);
   const targetNameSearch = useSelector(selectTargetNameSearch);
+  const targetSortParam = useSelector(selectTargetSortParam);
+  const targetSortDirection = useSelector(selectTargetSortDirection);
 
   const [loadTargetPage, { loading, error }] = useLazyQuery<TargetQueryRes>(targetPageQuery, {
     onCompleted: ({ targets }) => {
@@ -80,6 +87,14 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
     [dispatch]
   );
 
+  const handleSort = (param: typeof targetSortParam) => {
+    if (param === targetSortParam) {
+      dispatch(setTargetSortDirection(targetSortDirection === "ASC" ? "DESC" : "ASC"));
+    } else {
+      dispatch(setTargetSortParam(param));
+    }
+  };
+
   useEffect(() => {
     if (loading) {
       if (Rows.length === 0) {
@@ -117,12 +132,28 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
     );
   }, [loading, currentLoadList, currentLoadAmount, targetId, Rows.length, handleSelectRow]);
 
+  const getColumn = (name: string, param: typeof targetSortParam) => {
+    return {
+      name,
+      onClick: () => handleSort(param),
+      isSortParam: targetSortParam === param,
+      sortDirection: targetSortDirection,
+    };
+  };
+
   if (error) return <NotFound />;
 
   return (
     <>
       <LoadTable>
-        <TableHeader columnNames={["Nom", "Four", "Créé le"]} />
+        <TableHeader
+          columns={[
+            getColumn("Nom", "name"),
+            getColumn("Four", "oven"),
+            getColumn("Créé le", "createdAt"),
+            getColumn("Dernière modification", "updatedAt"),
+          ]}
+        />
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter

@@ -11,7 +11,6 @@ interface RecordDataType {
   targetPoints: TargetPoint[] | undefined;
   loadList: Record[];
   preview: Record;
-  nameSearch: string | null;
 }
 
 const initialState: RecordDataType = {
@@ -23,7 +22,6 @@ const initialState: RecordDataType = {
   },
   loadList: [],
   preview: {},
-  nameSearch: null,
 };
 
 export const recordDataSlice = createSlice({
@@ -54,21 +52,11 @@ export const recordDataSlice = createSlice({
     setRecordPreview: (state, action: PayloadAction<Record>) => {
       state.preview = action.payload;
     },
-    setRecordNameSearch: (state, action: PayloadAction<string | null>) => {
-      state.nameSearch = action.payload;
-    },
   },
 });
 
-export const {
-  setRecordData,
-  setRecordLoadList,
-  setRecordTempValues,
-  setRecordPoints,
-  setRecordPreview,
-  setRecordTargetPoints,
-  setRecordNameSearch,
-} = recordDataSlice.actions;
+export const { setRecordData, setRecordLoadList, setRecordTempValues, setRecordPoints, setRecordPreview, setRecordTargetPoints } =
+  recordDataSlice.actions;
 
 export const selectRecordData = (state: RootState) => state.recordData.data;
 export const selectRecordLoadList = (state: RootState) => state.recordData.loadList;
@@ -76,6 +64,5 @@ export const selectRecordPoints = (state: RootState) => state.recordData.recordP
 export const selectRecordTargetPoints = (state: RootState) => state.recordData.targetPoints;
 export const selectRecordTempValues = (state: RootState) => state.recordData.tempValues;
 export const selectRecordPreview = (state: RootState) => state.recordData.preview;
-export const selectRecordNameSearch = (state: RootState) => state.recordData.nameSearch;
 
 export default recordDataSlice.reducer;

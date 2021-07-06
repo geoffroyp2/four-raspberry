@@ -1,16 +1,23 @@
 import { FC } from "react";
 
+type ColumnType = {
+  name: string;
+  onClick?: () => void;
+  isSortParam?: boolean;
+  sortDirection?: "ASC" | "DESC";
+};
+
 type Props = {
-  columnNames: string[];
+  columns: ColumnType[];
   textCenter?: boolean;
 };
 
-const TableHeader: FC<Props> = ({ columnNames, textCenter }) => {
+const TableHeader: FC<Props> = ({ columns, textCenter }) => {
   return (
     <thead>
       <tr>
-        {columnNames.map((name, i) => (
-          <THElement name={name} key={`load-table-header-${i}`} textCenter={textCenter} />
+        {columns.map((col, i) => (
+          <THElement column={col} key={`load-table-header-${i}`} textCenter={textCenter} />
         ))}
       </tr>
     </thead>
@@ -20,11 +27,11 @@ const TableHeader: FC<Props> = ({ columnNames, textCenter }) => {
 export default TableHeader;
 
 type THElementProps = {
-  name: string;
   textCenter?: boolean;
+  column: ColumnType;
 };
 
-const THElement: FC<THElementProps> = ({ name, textCenter }) => {
+const THElement: FC<THElementProps> = ({ column, textCenter }) => {
   return (
     <th
       scope="col"
@@ -32,7 +39,7 @@ const THElement: FC<THElementProps> = ({ name, textCenter }) => {
         textCenter ? "center" : "left"
       } text-sm uppercase font-bold`}
     >
-      {name}
+      {column.name}
     </th>
   );
 };

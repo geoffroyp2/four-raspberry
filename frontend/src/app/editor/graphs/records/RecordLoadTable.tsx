@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Record, RecordQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordLoadList, selectRecordNameSearch, setRecordLoadList } from "../_state/recordDataSlice";
+import { selectRecordLoadList, setRecordLoadList } from "../_state/recordDataSlice";
 import {
   selectRecordLoadAmount,
   selectRecordLoadId,
@@ -15,6 +15,11 @@ import {
   setRecordLoadId,
   setRecordLoadPage,
   setRecordTotalAmount,
+  selectRecordNameSearch,
+  selectRecordSortParam,
+  selectRecordSortDirection,
+  setRecordSortDirection,
+  setRecordSortParam,
 } from "../_state/recordDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -41,6 +46,8 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
   const recordLoadPage = useSelector(selectRecordLoadPage);
   const recordPageAmount = useSelector(selectRecordPageAmount);
   const recordNameSearch = useSelector(selectRecordNameSearch);
+  const targetSortParam = useSelector(selectRecordSortParam);
+  const targetSortDirection = useSelector(selectRecordSortDirection);
 
   const [loadRecordPage, { loading, error }] = useLazyQuery<RecordQueryRes>(recordPageQuery, {
     onCompleted: ({ records }) => {
@@ -78,6 +85,14 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     },
     [dispatch]
   );
+
+  const handleSort = (param: typeof targetSortParam) => {
+    if (param === targetSortParam) {
+      dispatch(setRecordSortDirection(targetSortDirection === "ASC" ? "DESC" : "ASC"));
+    } else {
+      dispatch(setRecordSortParam(param));
+    }
+  };
 
   useEffect(() => {
     if (loading) {
@@ -121,12 +136,29 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     );
   }, [loading, currentLoadList, currentLoadAmount, recordId, Rows.length, handleSelectRow]);
 
+  const getColumn = (name: string, param: typeof targetSortParam) => {
+    return {
+      name,
+      onClick: () => handleSort(param),
+      isSortParam: targetSortParam === param,
+      sortDirection: targetSortDirection,
+    };
+  };
+
   if (error) return <NotFound />;
 
   return (
     <>
       <LoadTable>
-        <TableHeader columnNames={["Nom", "Courbe de Référence", "Four", "Créé le"]} />
+        <TableHeader
+          columns={[
+            getColumn("Nom", "name"),
+            getColumn("Courbe de Référence", "target"),
+            getColumn("Four", "oven"),
+            getColumn("Créé le", "createdAt"),
+            getColumn("Dernière modification", "updatedAt"),
+          ]}
+        />
         <tbody>{Rows}</tbody>
       </LoadTable>
 

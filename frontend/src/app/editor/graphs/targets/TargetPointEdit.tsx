@@ -43,7 +43,7 @@ const TargetPointEdit: FC = () => {
   return (
     <BasicMainCard>
       <PointEditTable.Table>
-        <TableHeader columnNames={["Temps", "Température", "Oxygène", ""]} textCenter />
+        <TableHeader columns={[{ name: "Temps" }, { name: "Température" }, { name: "Oxygène" }, { name: "" }]} textCenter />
         <tbody>
           <PointEditTable.Row>
             <PointEditTable.RowElement />

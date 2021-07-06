@@ -20,7 +20,15 @@ const PieceRecords: FC = () => {
         <h2 className="text-3xl title-font font-medium uppercase">Cuissons</h2>
       </div>
       <ElementListTable>
-        <TableHeader columnNames={["Nom", "Four", "Courbe de référence", "Date de Cuisson", ""]} />
+        <TableHeader
+          columns={[
+            { name: "Nom" },
+            { name: "Four" },
+            { name: "Courbe de référence" },
+            { name: "Date de Cuisson" },
+            { name: "" },
+          ]}
+        />
         <tbody>
           {piece.records &&
             piece.records.map((r, idx) => (

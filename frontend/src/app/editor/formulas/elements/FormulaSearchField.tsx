@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormulaNameSearch, setFormulaNameSearch } from "../_state/formulaDataSlice";
+import { selectFormulaNameSearch, setFormulaNameSearch } from "../_state/formulaDisplaySlice";
 
 import TableSearch from "@components/tables/TableSearch";
 

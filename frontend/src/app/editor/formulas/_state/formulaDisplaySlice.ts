@@ -6,6 +6,9 @@ interface FormulaDisplayType {
   loadAmount: number;
   pageAmount: number;
   loadId: number | null;
+  nameSearch: string | null;
+  sortParam: "name" | "id" | "createdAt" | "updatedAt" | "target";
+  sortDirection: "ASC" | "DESC";
 }
 
 const initialState: FormulaDisplayType = {
@@ -13,6 +16,9 @@ const initialState: FormulaDisplayType = {
   loadAmount: 15,
   pageAmount: 0,
   loadId: null,
+  nameSearch: null,
+  sortParam: "id",
+  sortDirection: "ASC",
 };
 
 export const formulaDisplaySlice = createSlice({
@@ -28,14 +34,33 @@ export const formulaDisplaySlice = createSlice({
     setFormulaLoadId: (state, action: PayloadAction<number>) => {
       state.loadId = action.payload;
     },
+    setFormulaNameSearch: (state, action: PayloadAction<string | null>) => {
+      state.nameSearch = action.payload;
+    },
+    setFormulaSortParam: (state, action: PayloadAction<FormulaDisplayType["sortParam"]>) => {
+      state.sortParam = action.payload;
+    },
+    setFormulaSortDirection: (state, action: PayloadAction<FormulaDisplayType["sortDirection"]>) => {
+      state.sortDirection = action.payload;
+    },
   },
 });
 
-export const { setFormulaLoadPage, setFormulaTotalAmount, setFormulaLoadId } = formulaDisplaySlice.actions;
+export const {
+  setFormulaLoadPage,
+  setFormulaTotalAmount,
+  setFormulaLoadId,
+  setFormulaNameSearch,
+  setFormulaSortParam,
+  setFormulaSortDirection,
+} = formulaDisplaySlice.actions;
 
 export const selectFormulaLoadPage = (state: RootState) => state.formulaDisplay.loadPage;
 export const selectFormulaLoadAmount = (state: RootState) => state.formulaDisplay.loadAmount;
 export const selectFormulaPageAmount = (state: RootState) => state.formulaDisplay.pageAmount;
 export const selectFormulaLoadId = (state: RootState) => state.formulaDisplay.loadId;
+export const selectFormulaNameSearch = (state: RootState) => state.formulaDisplay.nameSearch;
+export const selectFormulaSortParam = (state: RootState) => state.formulaDisplay.sortParam;
+export const selectFormulaSortDirection = (state: RootState) => state.formulaDisplay.sortDirection;
 
 export default formulaDisplaySlice.reducer;

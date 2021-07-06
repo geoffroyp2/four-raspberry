@@ -6,14 +6,19 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Formula, FormulaQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormulaLoadList, selectFormulaNameSearch, setFormulaLoadList } from "./_state/formulaDataSlice";
+import { selectFormulaLoadList, setFormulaLoadList } from "./_state/formulaDataSlice";
 import {
   selectFormulaLoadAmount,
   selectFormulaLoadId,
   selectFormulaLoadPage,
+  selectFormulaNameSearch,
   selectFormulaPageAmount,
+  selectFormulaSortDirection,
+  selectFormulaSortParam,
   setFormulaLoadId,
   setFormulaLoadPage,
+  setFormulaSortDirection,
+  setFormulaSortParam,
   setFormulaTotalAmount,
 } from "./_state/formulaDisplaySlice";
 
@@ -41,6 +46,8 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
   const formulaLoadPage = useSelector(selectFormulaLoadPage);
   const formulaPageAmount = useSelector(selectFormulaPageAmount);
   const formulaNameSearch = useSelector(selectFormulaNameSearch);
+  const formulaSortParam = useSelector(selectFormulaSortParam);
+  const formulaSortDirection = useSelector(selectFormulaSortDirection);
 
   const [loadFormulaPage, { loading, error }] = useLazyQuery<FormulaQueryRes>(formulaPageQuery, {
     onCompleted: ({ formulas }) => {
@@ -79,6 +86,14 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
     [dispatch]
   );
 
+  const handleSort = (param: typeof formulaSortParam) => {
+    if (param === formulaSortParam) {
+      dispatch(setFormulaSortDirection(formulaSortDirection === "ASC" ? "DESC" : "ASC"));
+    } else {
+      dispatch(setFormulaSortParam(param));
+    }
+  };
+
   useEffect(() => {
     if (loading) {
       if (Rows.length === 0) {
@@ -105,7 +120,12 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
       formulas.map((formula, idx) => (
         <TableRow
           key={`load-table-row-${idx}`}
-          rowContent={[formula.name ?? "-", formula.target?.name ?? "-", dateToDisplayString(formula.createdAt, true)]}
+          rowContent={[
+            formula.name ?? "-",
+            formula.target?.name ?? "-",
+            dateToDisplayString(formula.createdAt, true),
+            dateToDisplayString(formula.updatedAt, true),
+          ]}
           selected={formula.id === formulaId}
           id={formula.id ?? 0}
           disabled={formula.id === undefined}
@@ -116,12 +136,28 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
     );
   }, [loading, currentLoadList, currentLoadAmount, formulaId, Rows.length, handleSelectRow]);
 
+  const getColumn = (name: string, param: typeof formulaSortParam) => {
+    return {
+      name,
+      onClick: () => handleSort(param),
+      isSortParam: formulaSortParam === param,
+      sortDirection: formulaSortDirection,
+    };
+  };
+
   if (error) return <NotFound />;
 
   return (
     <>
       <LoadTable>
-        <TableHeader columnNames={["Nom", "Courbe de Référence", "Créé le"]} />
+        <TableHeader
+          columns={[
+            getColumn("Nom", "name"),
+            getColumn("Courbe de référence", "target"),
+            getColumn("Créé le", "createdAt"),
+            getColumn("Dernière modification", "updatedAt"),
+          ]}
+        />
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter

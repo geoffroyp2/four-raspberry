@@ -6,7 +6,7 @@ import { PageQueryParams } from "@editor/_gql/types";
 import { Piece, PieceQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectPieceLoadList, selectPieceNameSearch, setPieceLoadList } from "./_state/pieceDataSlice";
+import { selectPieceLoadList, setPieceLoadList } from "./_state/pieceDataSlice";
 import {
   selectPieceLoadAmount,
   selectPieceLoadId,
@@ -15,6 +15,11 @@ import {
   setPieceLoadId,
   setPieceLoadPage,
   setPieceTotalAmount,
+  selectPieceNameSearch,
+  selectPieceSortParam,
+  selectPieceSortDirection,
+  setPieceSortDirection,
+  setPieceSortParam,
 } from "./_state/pieceDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -41,6 +46,8 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
   const pieceLoadPage = useSelector(selectPieceLoadPage);
   const piecePageAmount = useSelector(selectPiecePageAmount);
   const pieceNameSearch = useSelector(selectPieceNameSearch);
+  const pieceSortParam = useSelector(selectPieceSortParam);
+  const pieceSortDirection = useSelector(selectPieceSortDirection);
 
   const [loadPiecePage, { loading, error }] = useLazyQuery<PieceQueryRes>(piecePageQuery, {
     onCompleted: ({ pieces }) => {
@@ -79,6 +86,14 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
     [dispatch]
   );
 
+  const handleSort = (param: typeof pieceSortParam) => {
+    if (param === pieceSortParam) {
+      dispatch(setPieceSortDirection(pieceSortDirection === "ASC" ? "DESC" : "ASC"));
+    } else {
+      dispatch(setPieceSortParam(param));
+    }
+  };
+
   useEffect(() => {
     if (loading) {
       if (Rows.length === 0) {
@@ -116,12 +131,28 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
     );
   }, [loading, currentLoadList, currentLoadAmount, pieceId, Rows.length, handleSelectRow]);
 
+  const getColumn = (name: string, param: typeof pieceSortParam) => {
+    return {
+      name,
+      onClick: () => handleSort(param),
+      isSortParam: pieceSortParam === param,
+      sortDirection: pieceSortDirection,
+    };
+  };
+
   if (error) return <NotFound />;
 
   return (
     <>
       <LoadTable>
-        <TableHeader columnNames={["Nom", "Émail", "Créé le"]} />
+        <TableHeader
+          columns={[
+            getColumn("Nom", "name"),
+            getColumn("Émail", "formula"),
+            getColumn("Créé le", "createdAt"),
+            getColumn("Dernière modification", "updatedAt"),
+          ]}
+        />
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter
