@@ -1,5 +1,7 @@
-import Piece from "../../../database/models/piece/piece";
-import { GQLGenericResearchFields, GQLPieceQuery, GQLPieceQueryRes, ResolverObjectType } from "../types";
+import { Op } from "sequelize";
+import { WhereOptions } from "sequelize";
+import Piece, { PieceAttributes } from "../../../database/models/piece/piece";
+import { GQLPieceQuery, GQLPieceQueryRes, ResolverObjectType } from "../types";
 
 const Query: ResolverObjectType = {
   /**
@@ -7,8 +9,8 @@ const Query: ResolverObjectType = {
    * @param args research filters (id, name)
    */
   pieces: async (_, { id, name, amount, page }: GQLPieceQuery): Promise<GQLPieceQueryRes> => {
-    const args: GQLGenericResearchFields = {};
-    if (name !== undefined) args.name = name;
+    const args: WhereOptions<PieceAttributes> = {};
+    if (name !== undefined) args.name = { [Op.iLike]: `%${name}%` };
 
     if (id === 0) {
       return Piece.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });

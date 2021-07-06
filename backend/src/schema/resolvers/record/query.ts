@@ -1,5 +1,6 @@
-import Record from "../../../database/models/record/record";
-import { GQLRecordFind, GQLRecordQuery, GQLRecordQueryRes, ResolverObjectType } from "../types";
+import { Op, WhereOptions } from "sequelize";
+import Record, { RecordAttributes } from "../../../database/models/record/record";
+import { GQLRecordQuery, GQLRecordQueryRes, ResolverObjectType } from "../types";
 
 const Query: ResolverObjectType = {
   /**
@@ -12,8 +13,8 @@ const Query: ResolverObjectType = {
     { id, name, oven, finished, page, amount }: GQLRecordQuery,
     { targetLoader }
   ): Promise<GQLRecordQueryRes> => {
-    const args: GQLRecordFind = {};
-    if (name !== undefined) args.name = name;
+    const args: WhereOptions<RecordAttributes> = {};
+    if (name !== undefined) args.name = { [Op.iLike]: `%${name}%` };
     if (finished !== undefined) args.finished = finished;
 
     if (id === 0) {

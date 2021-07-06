@@ -1,5 +1,7 @@
-import Target from "../../../database/models/target/target";
-import { GQLGenericResearchFields, GQLTargetQuery, GQLTargetQueryRes, ResolverObjectType } from "../types";
+import { Op } from "sequelize";
+import { WhereOptions } from "sequelize";
+import Target, { TargetAttributes } from "../../../database/models/target/target";
+import { GQLTargetQuery, GQLTargetQueryRes, ResolverObjectType } from "../types";
 
 const Query: ResolverObjectType = {
   /**
@@ -7,8 +9,8 @@ const Query: ResolverObjectType = {
    * @param args research filters (id and name)
    */
   targets: async (_, { id, name, page, amount }: GQLTargetQuery): Promise<GQLTargetQueryRes> => {
-    const args: GQLGenericResearchFields = {};
-    if (name !== undefined) args.name = name;
+    const args: WhereOptions<TargetAttributes> = {};
+    if (name !== undefined) args.name = { [Op.iLike]: `%${name}%` };
 
     if (id === 0) {
       return Target.findAndCountAll({ where: args, order: [["id", "DESC"]], limit: 1 });
