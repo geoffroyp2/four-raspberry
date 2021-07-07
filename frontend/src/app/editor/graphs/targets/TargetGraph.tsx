@@ -1,45 +1,19 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
-import { useLazyQuery } from "@apollo/client";
-import { targetPointsQuery } from "../_gql/queries";
-
-import { useDispatch, useSelector } from "react-redux";
-import { selectTargetPointZoom } from "../_state/targetDisplaySlice";
-import { selectTargetData, selectTargetTempPoints, selectTargetTempColor, setTargetPoints } from "../_state/targetDataSlice";
-
-import { IdQueryParams } from "@editor/_gql/types";
-import { TargetQueryRes } from "@app/_types/dbTypes";
+import { useSelector } from "react-redux";
+import { selectTargetTempPoints, selectTargetColor } from "../_state/targetDataSlice";
 
 import NotFound from "@editor/NotFound";
 import SimpleGraph from "@components/graphs/SimpleGraph";
+import useTargetLoadPoints from "../hooks/useTargetLoadPoints";
 
 const TargetGraph: FC = () => {
-  const dispatch = useDispatch();
-
-  const target = useSelector(selectTargetData);
   const targetPoints = useSelector(selectTargetTempPoints);
-  const pointFilter = useSelector(selectTargetPointZoom);
-
-  const color = useSelector(selectTargetTempColor);
-
-  const [loadPoints, { error, loading }] = useLazyQuery<TargetQueryRes>(targetPointsQuery(pointFilter), {
-    onCompleted: ({ targets }) => {
-      if (targets.rows[0]) {
-        dispatch(setTargetPoints(targets.rows[0].points));
-      }
-    },
-    fetchPolicy: "network-only",
-  });
-
-  useEffect(() => {
-    const pointsParams: IdQueryParams = {
-      variables: { id: target.id ?? 0 },
-    };
-    loadPoints(pointsParams);
-  }, [target.id, pointFilter, loadPoints]);
+  const color = useSelector(selectTargetColor);
+  const { loading, error, called } = useTargetLoadPoints();
 
   if (error) return <NotFound />;
-  if (loading) return <SimpleGraph targetPoints={[]} color={{ r: 0, g: 0, b: 0, a: 0 }} />;
+  if (!called || loading) return <div className="w-full"></div>;
 
   return (
     <SimpleGraph

@@ -22,13 +22,15 @@ const TargetInfosPage: FC = () => {
   const { id } = useParams();
   const target = useSelector(selectTargetData);
   const [InfosDisplay, setInfosDisplay] = useState<"infos" | "points">("infos");
-  useTargetLoadMain();
+  const { called, loading } = useTargetLoadMain();
 
   useEffect(() => {
     if (target.id !== +id) {
       dispatch(setTargetMainLoadId(+id));
     }
   }, [id, target.id, dispatch]);
+
+  if (!called || loading) return <div></div>;
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

@@ -19,13 +19,17 @@ const RecordInfosPage: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const record = useSelector(selectRecordData);
-  useRecordLoadMain();
+  const { loading, called } = useRecordLoadMain();
 
   useEffect(() => {
     if (record.id !== +id) {
       dispatch(setRecordMainLoadId(+id));
     }
   }, [id, record.id, dispatch]);
+
+  if (!called || loading) return <div></div>;
+
+  console.log("Rendering Record Infos Page");
 
   return (
     <>
