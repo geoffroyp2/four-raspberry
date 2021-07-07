@@ -1,8 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
-import { recordPageQuery } from "../_gql/queries";
-import { PageQueryParams } from "@editor/_gql/types";
+import { recordPageQuery, RecordPageQueryParams } from "../_gql/queries";
 import { Record, RecordQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -46,8 +45,8 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
   const recordLoadPage = useSelector(selectRecordLoadPage);
   const recordPageAmount = useSelector(selectRecordPageAmount);
   const recordNameSearch = useSelector(selectRecordNameSearch);
-  const targetSortParam = useSelector(selectRecordSortParam);
-  const targetSortDirection = useSelector(selectRecordSortDirection);
+  const recordSortParam = useSelector(selectRecordSortParam);
+  const recordSortDirection = useSelector(selectRecordSortDirection);
 
   const [loadRecordPage, { loading, error }] = useLazyQuery<RecordQueryRes>(recordPageQuery, {
     onCompleted: ({ records }) => {
@@ -62,15 +61,19 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
   });
 
   useEffect(() => {
-    const variables: PageQueryParams = {
+    const variables: RecordPageQueryParams = {
       variables: {
         page: currentLoadPage,
         amount: currentLoadAmount,
+        sort: {
+          sortBy: recordSortParam,
+          order: recordSortDirection,
+        },
       },
     };
     if (recordNameSearch !== null) variables.variables["name"] = recordNameSearch;
     loadRecordPage(variables);
-  }, [currentLoadPage, currentLoadAmount, recordNameSearch, loadRecordPage]);
+  }, [currentLoadPage, currentLoadAmount, recordNameSearch, recordSortParam, recordSortDirection, loadRecordPage]);
 
   const handleSetRecordPage = useCallback(
     (page: number) => {
@@ -86,10 +89,13 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     [dispatch]
   );
 
-  const handleSort = (param: typeof targetSortParam) => {
-    if (param === targetSortParam) {
-      dispatch(setRecordSortDirection(targetSortDirection === "ASC" ? "DESC" : "ASC"));
+  const handleSort = (param: typeof recordSortParam) => {
+    if (param === recordSortParam) {
+      dispatch(setRecordLoadPage(0));
+      dispatch(setRecordSortDirection(recordSortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
+      dispatch(setRecordLoadPage(0));
+      dispatch(setRecordSortDirection("ASC"));
       dispatch(setRecordSortParam(param));
     }
   };
@@ -124,7 +130,8 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
             record.name ?? "-",
             record.target?.name ?? "-",
             record.oven ?? "-",
-            dateToDisplayString(record.createdAt, true),
+            // dateToDisplayString(record.createdAt, true),
+            dateToDisplayString(record.updatedAt, true),
           ]}
           selected={record.id === recordId}
           id={record.id ?? 0}
@@ -136,12 +143,12 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     );
   }, [loading, currentLoadList, currentLoadAmount, recordId, Rows.length, handleSelectRow]);
 
-  const getColumn = (name: string, param: typeof targetSortParam) => {
+  const getColumn = (name: string, param: typeof recordSortParam) => {
     return {
       name,
       onClick: () => handleSort(param),
-      isSortParam: targetSortParam === param,
-      sortDirection: targetSortDirection,
+      isSortParam: recordSortParam === param,
+      sortDirection: recordSortDirection,
     };
   };
 
@@ -155,7 +162,7 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
             getColumn("Nom", "name"),
             getColumn("Courbe de Référence", "target"),
             getColumn("Four", "oven"),
-            getColumn("Créé le", "createdAt"),
+            // getColumn("Créé le", "createdAt"),
             getColumn("Dernière modification", "updatedAt"),
           ]}
         />

@@ -1,5 +1,6 @@
 import { OvenType } from "@app/_types/dbTypes";
 import { PointFilter } from "@app/_types/queryTypes";
+import { PageQueryParams } from "@editor/_gql/types";
 import gql from "graphql-tag";
 import {
   recordFieldsString,
@@ -40,9 +41,15 @@ export const targetQuery = gql`
   }
 `;
 
+export type TargetSortParams = {
+  sortBy: "name" | "id" | "createdAt" | "updatedAt" | "oven";
+  order: "ASC" | "DESC";
+};
+export type TargetPageQueryParams = PageQueryParams & { variables: { sort?: TargetSortParams } };
+
 export const targetPageQuery = gql`
-  query TargetQueryRes($page: Int, $amount: Int, $name: String)  {
-    targets(page: $page, amount: $amount, name: $name) {
+  query TargetQueryRes($page: Int, $amount: Int, $name: String, $sort: SortInput)  {
+    targets(page: $page, amount: $amount, name: $name, sort: $sort) {
       count
       rows {
         ${targetPageFieldsString}
@@ -84,9 +91,15 @@ export const recordQuery = gql`
   }
 `;
 
+export type RecordSortParams = {
+  sortBy: "name" | "id" | "createdAt" | "updatedAt" | "oven" | "target";
+  order: "ASC" | "DESC";
+};
+export type RecordPageQueryParams = PageQueryParams & { variables: { sort?: RecordSortParams } };
+
 export const recordPageQuery = gql`
-  query RecordQueryRes($page: Int, $amount: Int, $name: String)  {
-    records(page: $page, amount: $amount, name: $name) {
+  query RecordQueryRes($page: Int, $amount: Int, $name: String, $sort: SortInput)  {
+    records(page: $page, amount: $amount, name: $name, sort: $sort) {
       count
       rows {
         ${recordPageFieldsString}

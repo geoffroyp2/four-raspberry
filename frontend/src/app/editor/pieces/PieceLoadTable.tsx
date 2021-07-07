@@ -1,8 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
-import { piecePageQuery } from "./_gql/queries";
-import { PageQueryParams } from "@editor/_gql/types";
+import { piecePageQuery, PiecePageQueryParams } from "./_gql/queries";
 import { Piece, PieceQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -62,15 +61,19 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
   });
 
   useEffect(() => {
-    const variables: PageQueryParams = {
+    const variables: PiecePageQueryParams = {
       variables: {
         page: currentLoadPage,
         amount: currentLoadAmount,
+        sort: {
+          sortBy: pieceSortParam,
+          order: pieceSortDirection,
+        },
       },
     };
     if (pieceNameSearch !== null) variables.variables["name"] = pieceNameSearch;
     loadPiecePage(variables);
-  }, [currentLoadPage, currentLoadAmount, pieceNameSearch, loadPiecePage]);
+  }, [currentLoadPage, currentLoadAmount, pieceNameSearch, pieceSortParam, pieceSortDirection, loadPiecePage]);
 
   const handleSetPiecePage = useCallback(
     (page: number) => {
@@ -88,8 +91,11 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSort = (param: typeof pieceSortParam) => {
     if (param === pieceSortParam) {
+      dispatch(setPieceLoadPage(0));
       dispatch(setPieceSortDirection(pieceSortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
+      dispatch(setPieceLoadPage(0));
+      dispatch(setPieceSortDirection("ASC"));
       dispatch(setPieceSortParam(param));
     }
   };
@@ -120,7 +126,12 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
       pieces.map((piece, idx) => (
         <TableRow
           key={`load-table-row-${idx}`}
-          rowContent={[piece.name ?? "-", piece.formula?.name ?? "-", dateToDisplayString(piece.createdAt, true)]}
+          rowContent={[
+            piece.name ?? "-",
+            piece.formula?.name ?? "-",
+            // dateToDisplayString(piece.createdAt, true),
+            dateToDisplayString(piece.updatedAt, true),
+          ]}
           selected={piece.id === pieceId}
           id={piece.id ?? 0}
           disabled={piece.id === undefined}
@@ -149,7 +160,7 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
           columns={[
             getColumn("Nom", "name"),
             getColumn("Émail", "formula"),
-            getColumn("Créé le", "createdAt"),
+            // getColumn("Créé le", "createdAt"),
             getColumn("Dernière modification", "updatedAt"),
           ]}
         />

@@ -1,8 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
-import { targetPageQuery } from "../_gql/queries";
-import { PageQueryParams } from "@editor/_gql/types";
+import { targetPageQuery, TargetPageQueryParams } from "../_gql/queries";
 import { Target, TargetQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -62,16 +61,20 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
   });
 
   useEffect(() => {
-    const variables: PageQueryParams = {
+    const variables: TargetPageQueryParams = {
       variables: {
         page: currentLoadPage,
         amount: currentLoadAmount,
+        sort: {
+          sortBy: targetSortParam,
+          order: targetSortDirection,
+        },
       },
     };
 
     if (targetNameSearch !== null) variables.variables["name"] = targetNameSearch;
     loadTargetPage(variables);
-  }, [currentLoadPage, currentLoadAmount, targetNameSearch, loadTargetPage]);
+  }, [currentLoadPage, currentLoadAmount, targetNameSearch, targetSortParam, targetSortDirection, loadTargetPage]);
 
   const handleSetTargetPage = useCallback(
     (page: number) => {
@@ -89,8 +92,11 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSort = (param: typeof targetSortParam) => {
     if (param === targetSortParam) {
+      dispatch(setTargetLoadPage(0));
       dispatch(setTargetSortDirection(targetSortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
+      dispatch(setTargetLoadPage(0));
+      dispatch(setTargetSortDirection("ASC"));
       dispatch(setTargetSortParam(param));
     }
   };
@@ -121,7 +127,12 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
       targets.map((target, idx) => (
         <TableRow
           key={`load-table-row-${idx}`}
-          rowContent={[target.name ?? "-", target.oven ?? "-", dateToDisplayString(target.createdAt, true)]}
+          rowContent={[
+            target.name ?? "-",
+            target.oven ?? "-",
+            // dateToDisplayString(target.createdAt, true),
+            dateToDisplayString(target.updatedAt, true),
+          ]}
           selected={target.id === targetId}
           id={target.id ?? 0}
           disabled={target.id === undefined}
@@ -150,7 +161,7 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
           columns={[
             getColumn("Nom", "name"),
             getColumn("Four", "oven"),
-            getColumn("Créé le", "createdAt"),
+            // getColumn("Créé le", "createdAt"),
             getColumn("Dernière modification", "updatedAt"),
           ]}
         />

@@ -1,8 +1,7 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { useLazyQuery } from "@apollo/client";
-import { formulaPageQuery } from "./_gql/queries";
-import { PageQueryParams } from "@editor/_gql/types";
+import { formulaPageQuery, FormulaPageQueryParams } from "./_gql/queries";
 import { Formula, FormulaQueryRes } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -62,15 +61,19 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
   });
 
   useEffect(() => {
-    const variables: PageQueryParams = {
+    const variables: FormulaPageQueryParams = {
       variables: {
         page: currentLoadPage,
         amount: currentLoadAmount,
+        sort: {
+          sortBy: formulaSortParam,
+          order: formulaSortDirection,
+        },
       },
     };
     if (formulaNameSearch !== null) variables.variables["name"] = formulaNameSearch;
     loadFormulaPage(variables);
-  }, [currentLoadPage, currentLoadAmount, formulaNameSearch, loadFormulaPage]);
+  }, [currentLoadPage, currentLoadAmount, formulaNameSearch, formulaSortParam, formulaSortDirection, loadFormulaPage]);
 
   const handleSetFormulaPage = useCallback(
     (page: number) => {
@@ -88,8 +91,11 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSort = (param: typeof formulaSortParam) => {
     if (param === formulaSortParam) {
+      dispatch(setFormulaLoadPage(0));
       dispatch(setFormulaSortDirection(formulaSortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
+      dispatch(setFormulaLoadPage(0));
+      dispatch(setFormulaSortDirection("ASC"));
       dispatch(setFormulaSortParam(param));
     }
   };
@@ -123,7 +129,7 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
           rowContent={[
             formula.name ?? "-",
             formula.target?.name ?? "-",
-            dateToDisplayString(formula.createdAt, true),
+            // dateToDisplayString(formula.createdAt, true),
             dateToDisplayString(formula.updatedAt, true),
           ]}
           selected={formula.id === formulaId}
@@ -154,7 +160,7 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
           columns={[
             getColumn("Nom", "name"),
             getColumn("Courbe de référence", "target"),
-            getColumn("Créé le", "createdAt"),
+            // getColumn("Créé le", "createdAt"),
             getColumn("Dernière modification", "updatedAt"),
           ]}
         />
