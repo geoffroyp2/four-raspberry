@@ -33,10 +33,10 @@ export const pieceDisplaySlice = createSlice({
     setPieceTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setPieceMainLoadId: (state, action: PayloadAction<number>) => {
+    setPieceMainLoadId: (state, action: PayloadAction<number | null>) => {
       state.mainLoadId = action.payload;
     },
-    setPiecePreviewLoadId: (state, action: PayloadAction<number>) => {
+    setPiecePreviewLoadId: (state, action: PayloadAction<number | null>) => {
       state.previewLoadId = action.payload;
     },
     setPieceNameSearch: (state, action: PayloadAction<string | null>) => {

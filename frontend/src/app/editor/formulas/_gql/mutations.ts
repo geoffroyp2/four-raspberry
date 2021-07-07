@@ -21,3 +21,17 @@ export const getSetFormulaTargetMutation = (targetId: boolean) => gql`
     }
   }
 `;
+
+export const createFormulaMutation = gql`
+  mutation createFormula {
+    createFormula {
+      ${formulaFieldsString}
+    }
+  }
+`;
+
+export const deleteFormulaMutation = gql`
+  mutation deleteFormula($formulaId: Int!) {
+    deleteFormula(formulaId: $formulaId)
+  }
+`;

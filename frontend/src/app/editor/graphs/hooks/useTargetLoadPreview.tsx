@@ -21,13 +21,17 @@ const useTargetLoadPreview = () => {
   });
 
   useEffect(() => {
-    const mainParams: TargetQueryParams = {
-      variables: {
-        id: targetId ?? 0,
-      },
-    };
-    loadTargetPreview(mainParams);
-  }, [targetId, loadTargetPreview]);
+    if (targetId === null) {
+      dispatch(setTargetPreview({}));
+    } else {
+      const mainParams: TargetQueryParams = {
+        variables: {
+          id: targetId ?? 0,
+        },
+      };
+      loadTargetPreview(mainParams);
+    }
+  }, [targetId, dispatch, loadTargetPreview]);
 
   return status;
 };

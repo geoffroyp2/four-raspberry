@@ -25,6 +25,20 @@ export const getSetRecordTargetMutation = (targetId: boolean) => gql`
   }
 `;
 
+export const createRecordMutation = gql`
+  mutation createRecord {
+    createRecord {
+      ${recordFieldsString}
+    }
+  }
+`;
+
+export const deleteRecordMutation = gql`
+  mutation deleteRecord($recordId: Int!) {
+    deleteRecord(recordId: $recordId)
+  }
+`;
+
 const updateTargetFields = {
   name: "$name: String",
   description: "$description: String",
@@ -45,5 +59,19 @@ export const getSetTargetPointsMutation = (filter: PointFilter) => gql`
     setTargetAllPoints(targetId: $targetId, points: $points) {
       ${targetPointsFieldsString(filter)}
     }
+  }
+`;
+
+export const createTargetMutation = gql`
+  mutation createTarget {
+    createTarget {
+      ${targetFieldsString}
+    }
+  }
+`;
+
+export const deleteTargetMutation = gql`
+  mutation deleteTarget($targetId: Int!) {
+    deleteTarget(targetId: $targetId)
   }
 `;

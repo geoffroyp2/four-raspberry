@@ -21,13 +21,17 @@ const useFormulaLoadPreview = () => {
   });
 
   useEffect(() => {
-    const mainParams: FormulaQueryParams = {
-      variables: {
-        id: formulaId ?? 0,
-      },
-    };
-    loadFormulaPreview(mainParams);
-  }, [formulaId, loadFormulaPreview]);
+    if (formulaId === null) {
+      dispatch(setFormulaPreview({}));
+    } else {
+      const mainParams: FormulaQueryParams = {
+        variables: {
+          id: formulaId ?? 0,
+        },
+      };
+      loadFormulaPreview(mainParams);
+    }
+  }, [formulaId, dispatch, loadFormulaPreview]);
 
   return status;
 };

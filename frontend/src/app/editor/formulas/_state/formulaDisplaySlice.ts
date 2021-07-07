@@ -33,10 +33,10 @@ export const formulaDisplaySlice = createSlice({
     setFormulaTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setFormulaMainLoadId: (state, action: PayloadAction<number>) => {
+    setFormulaMainLoadId: (state, action: PayloadAction<number | null>) => {
       state.mainLoadId = action.payload;
     },
-    setFormulaPreviewLoadId: (state, action: PayloadAction<number>) => {
+    setFormulaPreviewLoadId: (state, action: PayloadAction<number | null>) => {
       state.previewLoadId = action.payload;
     },
     setFormulaNameSearch: (state, action: PayloadAction<string | null>) => {

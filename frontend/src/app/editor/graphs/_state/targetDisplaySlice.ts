@@ -42,10 +42,10 @@ export const targetDisplaySlice = createSlice({
     setTargetTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setTargetMainLoadId: (state, action: PayloadAction<number>) => {
+    setTargetMainLoadId: (state, action: PayloadAction<number | null>) => {
       state.mainLoadId = action.payload;
     },
-    setTargetPreviewLoadId: (state, action: PayloadAction<number>) => {
+    setTargetPreviewLoadId: (state, action: PayloadAction<number | null>) => {
       state.previewLoadId = action.payload;
     },
     setTargetPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {

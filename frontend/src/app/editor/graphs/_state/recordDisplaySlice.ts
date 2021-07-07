@@ -42,10 +42,10 @@ export const recordDisplaySlice = createSlice({
     setRecordTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setRecordMainLoadId: (state, action: PayloadAction<number>) => {
+    setRecordMainLoadId: (state, action: PayloadAction<number | null>) => {
       state.mainLoadId = action.payload;
     },
-    setRecordPreviewLoadId: (state, action: PayloadAction<number>) => {
+    setRecordPreviewLoadId: (state, action: PayloadAction<number | null>) => {
       state.previewLoadId = action.payload;
     },
     setRecordPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {

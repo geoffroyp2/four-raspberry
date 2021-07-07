@@ -21,13 +21,17 @@ const useRecordLoadPreview = () => {
   });
 
   useEffect(() => {
-    const mainParams: RecordQueryParams = {
-      variables: {
-        id: recordId ?? 0,
-      },
-    };
-    loadRecordPreview(mainParams);
-  }, [recordId, loadRecordPreview]);
+    if (recordId === null) {
+      dispatch(setRecordPreview({}));
+    } else {
+      const mainParams: RecordQueryParams = {
+        variables: {
+          id: recordId ?? 0,
+        },
+      };
+      loadRecordPreview(mainParams);
+    }
+  }, [recordId, dispatch, loadRecordPreview]);
 
   return status;
 };

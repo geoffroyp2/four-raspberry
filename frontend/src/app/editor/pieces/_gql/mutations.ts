@@ -21,3 +21,17 @@ export const getSetPieceFormulaMutation = (formulaId: boolean) => gql`
     }
   }
 `;
+
+export const createPieceMutation = gql`
+  mutation createPiece {
+    createPiece {
+      ${pieceFieldsString}
+    }
+  }
+`;
+
+export const deletePieceMutation = gql`
+  mutation deletePiece($pieceId: Int!) {
+    deletePiece(pieceId: $pieceId)
+  }
+`;

@@ -21,13 +21,17 @@ const usePieceLoadPreview = () => {
   });
 
   useEffect(() => {
-    const mainParams: PieceQueryParams = {
-      variables: {
-        id: pieceId ?? 0,
-      },
-    };
-    loadPiecePreview(mainParams);
-  }, [pieceId, loadPiecePreview]);
+    if (pieceId === null) {
+      dispatch(setPiecePreview({}));
+    } else {
+      const mainParams: PieceQueryParams = {
+        variables: {
+          id: pieceId ?? 0,
+        },
+      };
+      loadPiecePreview(mainParams);
+    }
+  }, [pieceId, dispatch, loadPiecePreview]);
 
   return status;
 };
