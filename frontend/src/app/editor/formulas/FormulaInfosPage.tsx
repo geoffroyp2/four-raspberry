@@ -19,13 +19,15 @@ const FormulaInfosPage: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const formula = useSelector(selectFormulaData);
-  useFormulaLoadMain();
+  const { called, loading } = useFormulaLoadMain();
 
   useEffect(() => {
     if (formula.id !== +id) {
       dispatch(setFormulaMainLoadId(+id));
     }
   }, [id, formula.id, dispatch]);
+
+  if (!called || loading) return <div></div>;
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

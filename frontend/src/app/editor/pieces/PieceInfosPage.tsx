@@ -18,13 +18,15 @@ const PieceInfosPage: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const piece = useSelector(selectPieceData);
-  usePieceLoadMain();
+  const { called, loading } = usePieceLoadMain();
 
   useEffect(() => {
     if (piece.id !== +id) {
       dispatch(setPieceMainLoadId(+id));
     }
   }, [id, piece.id, dispatch]);
+
+  if (!called || loading) return <div></div>;
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

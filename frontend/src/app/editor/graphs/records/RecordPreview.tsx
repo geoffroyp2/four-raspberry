@@ -19,9 +19,19 @@ const RecordPreview: FC<Props> = ({ showGoto }) => {
   const navigate = useNavigate();
   const recordId = useSelector(selectRecordPreviewLoadId);
   const previewData = useSelector(selectRecordPreview);
-  const { error } = useRecordLoadPreview();
+  const { called, loading, error } = useRecordLoadPreview();
 
   if (error) return <NotFound />;
+  if (!called || loading)
+    return (
+      <PreviewCard title={""}>
+        <PreviewCardField name="Description" value={""} />
+        <PreviewCardField name="Four" value={""} />
+        <PreviewCardField name="Courbe de référence" value={""} />
+        <PreviewCardField name="Création" value={""} />
+        <PreviewCardField name="Dernière modification" value={""} />
+      </PreviewCard>
+    );
 
   return (
     <PreviewCard

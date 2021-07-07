@@ -19,9 +19,18 @@ const TargetPreview: FC<Props> = ({ showGoto }) => {
   const navigate = useNavigate();
   const targetId = useSelector(selectTargetPreviewLoadId);
   const previewData = useSelector(selectTargetPreview);
-  const { error } = useTargetLoadPreview();
+  const { called, loading, error } = useTargetLoadPreview();
 
   if (error) return <NotFound />;
+  if (!called || loading)
+    return (
+      <PreviewCard title={""}>
+        <PreviewCardField name="Description" value={""} />
+        <PreviewCardField name="Four" value={""} />
+        <PreviewCardField name="Création" value={""} />
+        <PreviewCardField name="Dernière modification" value={""} />
+      </PreviewCard>
+    );
 
   return (
     <PreviewCard

@@ -19,9 +19,17 @@ const FormulaPreview: FC<Props> = ({ showGoto }) => {
   const navigate = useNavigate();
   const formulaId = useSelector(selectFormulaPreviewLoadId);
   const previewData = useSelector(selectFormulaPreview);
-  const { error } = useFormulaLoadPreview();
+  const { called, loading, error } = useFormulaLoadPreview();
 
   if (error) return <NotFound />;
+  if (!called || loading)
+    return (
+      <PreviewCard title={""}>
+        <PreviewCardField name="Description" value={""} />
+        <PreviewCardField name="Création" value={""} />
+        <PreviewCardField name="Dernière modification" value={""} />
+      </PreviewCard>
+    );
 
   return (
     <PreviewCard
