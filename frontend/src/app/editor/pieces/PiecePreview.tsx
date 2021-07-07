@@ -1,14 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import usePieceLoadPreview from "./hooks/usePieceLoadPreview";
 
-import { useLazyQuery } from "@apollo/client";
-import { PieceQueryRes } from "@app/_types/dbTypes";
-import { IdQueryParams } from "@editor/_gql/types";
-import { piecePreviewQuery } from "./_gql/queries";
-
-import { useDispatch, useSelector } from "react-redux";
-import { selectPieceLoadId } from "./_state/pieceDisplaySlice";
-import { selectPiecePreview, setPiecePreview } from "./_state/pieceDataSlice";
+import { useSelector } from "react-redux";
+import { selectPiecePreviewLoadId } from "./_state/pieceDisplaySlice";
+import { selectPiecePreview } from "./_state/pieceDataSlice";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -20,27 +16,10 @@ type Props = {
 };
 
 const PiecePreview: FC<Props> = ({ showGoto }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const pieceId = useSelector(selectPieceLoadId);
+  const pieceId = useSelector(selectPiecePreviewLoadId);
   const previewData = useSelector(selectPiecePreview);
-
-  const [loadPiecePreview, { error }] = useLazyQuery<PieceQueryRes>(piecePreviewQuery, {
-    onCompleted: ({ pieces }) => {
-      if (pieces.rows[0] && pieces.rows[0].id === pieceId) {
-        dispatch(setPiecePreview(pieces.rows[0]));
-      }
-    },
-  });
-
-  useEffect(() => {
-    const variables: IdQueryParams = {
-      variables: {
-        id: pieceId ?? 0,
-      },
-    };
-    loadPiecePreview(variables);
-  }, [pieceId, loadPiecePreview]);
+  const { error } = usePieceLoadPreview();
 
   if (error) return <NotFound />;
 

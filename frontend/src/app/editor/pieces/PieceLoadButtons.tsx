@@ -2,14 +2,14 @@ import { FC } from "react";
 import { useNavigate } from "react-router";
 
 import { useSelector } from "react-redux";
-import { selectPieceLoadId } from "./_state/pieceDisplaySlice";
+import { selectPiecePreviewLoadId } from "./_state/pieceDisplaySlice";
 
 import BasicButton from "@components/buttons/BasicButton";
 import ArrowRight from "@components/svg/ArrowRight";
 
 const PieceLoadButtons: FC = () => {
   const navigate = useNavigate();
-  const pieceId = useSelector(selectPieceLoadId);
+  const pieceId = useSelector(selectPiecePreviewLoadId);
 
   const open = () => {
     navigate(`/pieces/${pieceId}`);

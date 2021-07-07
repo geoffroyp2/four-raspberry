@@ -1,24 +1,20 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-
-import { useLazyQuery } from "@apollo/client";
-import { formulaPageQuery, FormulaPageQueryParams } from "./_gql/queries";
-import { Formula, FormulaQueryRes } from "@app/_types/dbTypes";
+import useFormulaLoadPage from "./hooks/useFormulaLoadPage";
+import { Formula } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectFormulaLoadList, setFormulaLoadList } from "./_state/formulaDataSlice";
+import { selectFormulaLoadList } from "./_state/formulaDataSlice";
 import {
   selectFormulaLoadAmount,
-  selectFormulaLoadId,
+  selectFormulaPreviewLoadId,
   selectFormulaLoadPage,
-  selectFormulaNameSearch,
   selectFormulaPageAmount,
   selectFormulaSortDirection,
   selectFormulaSortParam,
-  setFormulaLoadId,
+  setFormulaPreviewLoadId,
   setFormulaLoadPage,
   setFormulaSortDirection,
   setFormulaSortParam,
-  setFormulaTotalAmount,
 } from "./_state/formulaDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -36,46 +32,18 @@ type Props = {
 
 const FormulaLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
-
+  const { loading, error } = useFormulaLoadPage();
   const [Rows, setRows] = useState<ReactNode[]>([]);
-  const formulaId = useSelector(selectFormulaLoadId);
-  const currentLoadPage = useSelector(selectFormulaLoadPage);
-  const currentLoadAmount = useSelector(selectFormulaLoadAmount);
-  const currentLoadList = useSelector(selectFormulaLoadList);
-  const formulaLoadPage = useSelector(selectFormulaLoadPage);
-  const formulaPageAmount = useSelector(selectFormulaPageAmount);
-  const formulaNameSearch = useSelector(selectFormulaNameSearch);
-  const formulaSortParam = useSelector(selectFormulaSortParam);
-  const formulaSortDirection = useSelector(selectFormulaSortDirection);
 
-  const [loadFormulaPage, { loading, error }] = useLazyQuery<FormulaQueryRes>(formulaPageQuery, {
-    onCompleted: ({ formulas }) => {
-      if (currentLoadPage !== 0 && formulas.rows.length === 0) {
-        // if current page has no result
-        dispatch(setFormulaLoadPage(0));
-      } else {
-        dispatch(setFormulaLoadList(formulas.rows));
-        dispatch(setFormulaTotalAmount(formulas.count));
-      }
-    },
-  });
+  const formulaId = useSelector(selectFormulaPreviewLoadId);
+  const loadList = useSelector(selectFormulaLoadList);
+  const loadAmount = useSelector(selectFormulaLoadAmount);
+  const loadPage = useSelector(selectFormulaLoadPage);
+  const pageAmount = useSelector(selectFormulaPageAmount);
+  const sortParam = useSelector(selectFormulaSortParam);
+  const sortDirection = useSelector(selectFormulaSortDirection);
 
-  useEffect(() => {
-    const variables: FormulaPageQueryParams = {
-      variables: {
-        page: currentLoadPage,
-        amount: currentLoadAmount,
-        sort: {
-          sortBy: formulaSortParam,
-          order: formulaSortDirection,
-        },
-      },
-    };
-    if (formulaNameSearch !== null) variables.variables["name"] = formulaNameSearch;
-    loadFormulaPage(variables);
-  }, [currentLoadPage, currentLoadAmount, formulaNameSearch, formulaSortParam, formulaSortDirection, loadFormulaPage]);
-
-  const handleSetFormulaPage = useCallback(
+  const handleSetPage = useCallback(
     (page: number) => {
       dispatch(setFormulaLoadPage(page));
     },
@@ -84,15 +52,15 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setFormulaLoadId(id));
+      dispatch(setFormulaPreviewLoadId(id));
     },
     [dispatch]
   );
 
-  const handleSort = (param: typeof formulaSortParam) => {
-    if (param === formulaSortParam) {
+  const handleSort = (param: typeof sortParam) => {
+    if (param === sortParam) {
       dispatch(setFormulaLoadPage(0));
-      dispatch(setFormulaSortDirection(formulaSortDirection === "ASC" ? "DESC" : "ASC"));
+      dispatch(setFormulaSortDirection(sortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
       dispatch(setFormulaLoadPage(0));
       dispatch(setFormulaSortDirection("ASC"));
@@ -100,11 +68,12 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
     }
   };
 
+  // Populate rows
   useEffect(() => {
     if (loading) {
       if (Rows.length === 0) {
         setRows(
-          [...Array(currentLoadAmount)].map((e, idx) => (
+          [...Array(loadAmount)].map((e, idx) => (
             <TableRow
               key={`load-table-row-${idx}`}
               rowContent={["", "", ""]}
@@ -120,8 +89,8 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
     }
 
     const formulas: Formula[] = [];
-    for (let i = 0; i < currentLoadList.length; ++i) formulas.push(currentLoadList[i]);
-    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) formulas.push({});
+    for (let i = 0; i < loadList.length; ++i) formulas.push(loadList[i]);
+    for (let i = loadList.length; i < loadAmount; ++i) formulas.push({});
     setRows(
       formulas.map((formula, idx) => (
         <TableRow
@@ -140,14 +109,14 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
         />
       ))
     );
-  }, [loading, currentLoadList, currentLoadAmount, formulaId, Rows.length, handleSelectRow]);
+  }, [loading, loadList, loadAmount, formulaId, Rows.length, handleSelectRow]);
 
-  const getColumn = (name: string, param: typeof formulaSortParam) => {
+  const getColumn = (name: string, param: typeof sortParam) => {
     return {
       name,
       onClick: () => handleSort(param),
-      isSortParam: formulaSortParam === param,
-      sortDirection: formulaSortDirection,
+      isSortParam: sortParam === param,
+      sortDirection: sortDirection,
     };
   };
 
@@ -167,9 +136,7 @@ const FormulaLoadTable: FC<Props> = ({ buttons }) => {
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter
-        pagination={
-          <Pagination currentPage={formulaLoadPage} pageAmount={formulaPageAmount} handleSetPage={handleSetFormulaPage} small />
-        }
+        pagination={<Pagination currentPage={loadPage} pageAmount={pageAmount} handleSetPage={handleSetPage} small />}
         buttons={buttons}
       />
     </>

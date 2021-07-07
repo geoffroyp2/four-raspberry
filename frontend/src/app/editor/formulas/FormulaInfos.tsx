@@ -7,7 +7,7 @@ import { getSetFormulaTargetMutation, getUpdateFormulaMutation } from "./_gql/mu
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectFormulaData, setFormulaData } from "./_state/formulaDataSlice";
-import { selectTargetLoadId } from "@editor/graphs/_state/targetDisplaySlice";
+import { selectTargetPreviewLoadId } from "@editor/graphs/_state/targetDisplaySlice";
 
 import TargetLoadTable from "@editor/graphs/targets/TargetLoadTable";
 import InfosCard, { InfosCardField } from "@components/cards/InfosCard";
@@ -24,7 +24,7 @@ const FormulaInfos: FC = () => {
   const navigate = useNavigate();
 
   const formula = useSelector(selectFormulaData);
-  const targetId = useSelector(selectTargetLoadId);
+  const targetId = useSelector(selectTargetPreviewLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(formula.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(formula.description ?? "");

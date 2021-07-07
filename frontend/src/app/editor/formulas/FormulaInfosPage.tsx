@@ -1,16 +1,31 @@
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useFormulaLoadMain from "./hooks/useFormulaLoadMain";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectFormulaData } from "./_state/formulaDataSlice";
+import { setFormulaMainLoadId } from "./_state/formulaDisplaySlice";
 
 import FormulaInfos from "./FormulaInfos";
 import FormulaGallery from "./FormulaGallery";
 import FormulaComposition from "./FormulaComposition";
 import PiecePreview from "@editor/pieces/PiecePreview";
 
-import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 import BackButton from "@components/buttons/BackButton";
+import MainGrid, { MainGridItem } from "@components/grids/MainGrid";
 
 const FormulaInfosPage: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const formula = useSelector(selectFormulaData);
+  useFormulaLoadMain();
+
+  useEffect(() => {
+    if (formula.id !== +id) {
+      dispatch(setFormulaMainLoadId(+id));
+    }
+  }, [id, formula.id, dispatch]);
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

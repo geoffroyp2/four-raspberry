@@ -6,11 +6,12 @@ import { useSelector } from "react-redux";
 import { selectFormulaData } from "./_state/formulaDataSlice";
 
 import FormulaHome from "./FormulaHome";
-import FormulaFetcher from "./FormulaFetcher";
+import FormulaInfosPage from "./FormulaInfosPage";
 
 const FormulaRouter: FC = () => {
   const params = useParams();
   const navigate = useNavigate();
+
   const formula = useSelector(selectFormulaData);
 
   useEffect(() => {
@@ -24,13 +25,16 @@ const FormulaRouter: FC = () => {
       } else {
         navigate("/formulas", { replace: true });
       }
+    } else if (isNaN(+params["*"])) {
+      // If id is invalid
+      navigate("/formulas", { replace: true });
     }
   }, [params, navigate, formula]);
 
   return (
     <Routes>
       <Route path="*" element={<FormulaHome />} />
-      <Route path=":id" element={<FormulaFetcher />} />
+      <Route path=":id" element={<FormulaInfosPage />} />
     </Routes>
   );
 };

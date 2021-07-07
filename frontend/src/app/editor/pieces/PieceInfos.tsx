@@ -7,7 +7,7 @@ import { getSetPieceFormulaMutation, getUpdatePieceMutation } from "./_gql/mutat
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectPieceData, setPieceData } from "./_state/pieceDataSlice";
-import { selectFormulaLoadId } from "@editor/formulas/_state/formulaDisplaySlice";
+import { selectFormulaPreviewLoadId } from "@editor/formulas/_state/formulaDisplaySlice";
 
 import FormulaLoadTable from "@editor/formulas/FormulaLoadTable";
 import FormulaTableTitle from "@editor/formulas/elements/FormulaTableTitle";
@@ -24,7 +24,7 @@ const PieceInfos: FC = () => {
   const navigate = useNavigate();
 
   const piece = useSelector(selectPieceData);
-  const formulaId = useSelector(selectFormulaLoadId);
+  const formulaId = useSelector(selectFormulaPreviewLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(piece.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(piece.description ?? "");

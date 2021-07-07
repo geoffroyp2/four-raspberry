@@ -1,5 +1,10 @@
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useRecordLoadMain from "../hooks/useRecordLoadMain";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectRecordData } from "../_state/recordDataSlice";
+import { setRecordMainLoadId } from "../_state/recordDisplaySlice";
 
 import RecordGraph from "./RecordGraph";
 import RecordInfos from "./RecordInfos";
@@ -11,6 +16,16 @@ import BackButton from "@components/buttons/BackButton";
 
 const RecordInfosPage: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const record = useSelector(selectRecordData);
+  useRecordLoadMain();
+
+  useEffect(() => {
+    if (record.id !== +id) {
+      dispatch(setRecordMainLoadId(+id));
+    }
+  }, [id, record.id, dispatch]);
 
   return (
     <>

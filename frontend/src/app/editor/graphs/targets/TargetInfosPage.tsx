@@ -1,5 +1,10 @@
-import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useTargetLoadMain from "../hooks/useTargetLoadMain";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectTargetData } from "../_state/targetDataSlice";
+import { setTargetMainLoadId } from "../_state/targetDisplaySlice";
 
 import TargetGraph from "./TargetGraph";
 import TargetInfos from "./TargetInfos";
@@ -13,7 +18,17 @@ import BasicButton from "@components/buttons/BasicButton";
 
 const TargetInfosPage: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const target = useSelector(selectTargetData);
   const [InfosDisplay, setInfosDisplay] = useState<"infos" | "points">("infos");
+  useTargetLoadMain();
+
+  useEffect(() => {
+    if (target.id !== +id) {
+      dispatch(setTargetMainLoadId(+id));
+    }
+  }, [id, target.id, dispatch]);
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

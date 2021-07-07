@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 import { sendCommandMutation, updateTargetIdMutation } from "./_gql/mutations";
 
 import { useSelector } from "react-redux";
-import { selectTargetLoadId } from "@editor/graphs/_state/targetDisplaySlice";
+import { selectTargetPreviewLoadId } from "@editor/graphs/_state/targetDisplaySlice";
 
 import TargetTableTitle from "@editor/graphs/elements/TargetTableTitle";
 import TargetLoadTable from "@editor/graphs/targets/TargetLoadTable";
@@ -13,7 +13,7 @@ import LinkTableModal from "@components/modals/LinkTableModal";
 
 const LiveButtons: FC = () => {
   const [ShowLinkModal, setShowLinkModal] = useState<boolean>(false);
-  const targetId = useSelector(selectTargetLoadId);
+  const targetId = useSelector(selectTargetPreviewLoadId);
 
   const [sendCommand] = useMutation<{ sendCommand: boolean }>(sendCommandMutation, {
     onCompleted: ({ sendCommand }) => {

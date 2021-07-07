@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectFormulaData } from "./_state/formulaDataSlice";
 
 import GalleryCard from "@components/cards/GalleryCard";
-import { setPieceLoadId } from "@editor/pieces/_state/pieceDisplaySlice";
+import { setPiecePreviewLoadId } from "@editor/pieces/_state/pieceDisplaySlice";
 
 const FormulaGallery: FC = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const FormulaGallery: FC = () => {
     return photos;
   };
 
-  return <GalleryCard images={getUrls()} onImgClick={(id) => dispatch(setPieceLoadId(id))} />;
+  return <GalleryCard images={getUrls()} onImgClick={(id) => dispatch(setPiecePreviewLoadId(id))} />;
 };
 
 export default FormulaGallery;

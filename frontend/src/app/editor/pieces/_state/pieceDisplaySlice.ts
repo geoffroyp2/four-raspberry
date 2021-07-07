@@ -5,7 +5,8 @@ interface PieceDisplayType {
   loadPage: number;
   loadAmount: number;
   pageAmount: number;
-  loadId: number | null;
+  mainLoadId: number | null;
+  previewLoadId: number | null;
   nameSearch: string | null;
   sortParam: "name" | "id" | "createdAt" | "updatedAt" | "formula";
   sortDirection: "ASC" | "DESC";
@@ -15,7 +16,8 @@ const initialState: PieceDisplayType = {
   loadPage: 0,
   loadAmount: 15,
   pageAmount: 0,
-  loadId: null,
+  mainLoadId: null,
+  previewLoadId: null,
   nameSearch: null,
   sortParam: "id",
   sortDirection: "ASC",
@@ -31,8 +33,11 @@ export const pieceDisplaySlice = createSlice({
     setPieceTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setPieceLoadId: (state, action: PayloadAction<number>) => {
-      state.loadId = action.payload;
+    setPieceMainLoadId: (state, action: PayloadAction<number>) => {
+      state.mainLoadId = action.payload;
+    },
+    setPiecePreviewLoadId: (state, action: PayloadAction<number>) => {
+      state.previewLoadId = action.payload;
     },
     setPieceNameSearch: (state, action: PayloadAction<string | null>) => {
       state.nameSearch = action.payload;
@@ -49,7 +54,8 @@ export const pieceDisplaySlice = createSlice({
 export const {
   setPieceLoadPage,
   setPieceTotalAmount,
-  setPieceLoadId,
+  setPieceMainLoadId,
+  setPiecePreviewLoadId,
   setPieceNameSearch,
   setPieceSortParam,
   setPieceSortDirection,
@@ -58,7 +64,8 @@ export const {
 export const selectPieceLoadPage = (state: RootState) => state.pieceDisplay.loadPage;
 export const selectPieceLoadAmount = (state: RootState) => state.pieceDisplay.loadAmount;
 export const selectPiecePageAmount = (state: RootState) => state.pieceDisplay.pageAmount;
-export const selectPieceLoadId = (state: RootState) => state.pieceDisplay.loadId;
+export const selectPieceMainLoadId = (state: RootState) => state.pieceDisplay.mainLoadId;
+export const selectPiecePreviewLoadId = (state: RootState) => state.pieceDisplay.previewLoadId;
 export const selectPieceNameSearch = (state: RootState) => state.pieceDisplay.nameSearch;
 export const selectPieceSortParam = (state: RootState) => state.pieceDisplay.sortParam;
 export const selectPieceSortDirection = (state: RootState) => state.pieceDisplay.sortDirection;

@@ -1,5 +1,10 @@
-import { FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import usePieceLoadMain from "./hooks/usePieceLoadMain";
+
+import { useDispatch, useSelector } from "react-redux";
+import { selectPieceData } from "./_state/pieceDataSlice";
+import { setPieceMainLoadId } from "./_state/pieceDisplaySlice";
 
 import PieceInfos from "./PieceInfos";
 import PieceGallery from "./PieceGallery";
@@ -10,6 +15,16 @@ import BackButton from "@components/buttons/BackButton";
 
 const PieceInfosPage: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const piece = useSelector(selectPieceData);
+  usePieceLoadMain();
+
+  useEffect(() => {
+    if (piece.id !== +id) {
+      dispatch(setPieceMainLoadId(+id));
+    }
+  }, [id, piece.id, dispatch]);
 
   return (
     <MainGrid cols="1" xlRows="home-xl-1" xlCols="home-xl-3/2">

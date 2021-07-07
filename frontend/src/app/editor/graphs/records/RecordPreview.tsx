@@ -1,14 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import useRecordLoadPreview from "../hooks/useRecordLoadPreview";
 
-import { useLazyQuery } from "@apollo/client";
-import { RecordQueryRes } from "@app/_types/dbTypes";
-import { IdQueryParams } from "@editor/_gql/types";
-import { recordPreviewQuery } from "../_gql/queries";
-
-import { useDispatch, useSelector } from "react-redux";
-import { selectRecordLoadId } from "../_state/recordDisplaySlice";
-import { selectRecordPreview, setRecordPreview } from "../_state/recordDataSlice";
+import { useSelector } from "react-redux";
+import { selectRecordPreviewLoadId } from "../_state/recordDisplaySlice";
+import { selectRecordPreview } from "../_state/recordDataSlice";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -20,27 +16,10 @@ type Props = {
 };
 
 const RecordPreview: FC<Props> = ({ showGoto }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const recordId = useSelector(selectRecordLoadId);
+  const recordId = useSelector(selectRecordPreviewLoadId);
   const previewData = useSelector(selectRecordPreview);
-
-  const [loadRecordPreview, { error }] = useLazyQuery<RecordQueryRes>(recordPreviewQuery, {
-    onCompleted: ({ records }) => {
-      if (records.rows[0] && records.rows[0].id === recordId) {
-        dispatch(setRecordPreview(records.rows[0]));
-      }
-    },
-  });
-
-  useEffect(() => {
-    const variables: IdQueryParams = {
-      variables: {
-        id: recordId ?? 0,
-      },
-    };
-    loadRecordPreview(variables);
-  }, [recordId, loadRecordPreview]);
+  const { error } = useRecordLoadPreview();
 
   if (error) return <NotFound />;
 

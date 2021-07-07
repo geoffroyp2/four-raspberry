@@ -1,24 +1,20 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-
-import { useLazyQuery } from "@apollo/client";
-import { recordPageQuery, RecordPageQueryParams } from "../_gql/queries";
-import { Record, RecordQueryRes } from "@app/_types/dbTypes";
+import useRecordLoadPage from "../hooks/useRecordLoadPage";
+import { Record } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectRecordLoadList, setRecordLoadList } from "../_state/recordDataSlice";
+import { selectRecordLoadList } from "../_state/recordDataSlice";
 import {
   selectRecordLoadAmount,
-  selectRecordLoadId,
   selectRecordLoadPage,
   selectRecordPageAmount,
-  setRecordLoadId,
   setRecordLoadPage,
-  setRecordTotalAmount,
-  selectRecordNameSearch,
   selectRecordSortParam,
   selectRecordSortDirection,
   setRecordSortDirection,
   setRecordSortParam,
+  selectRecordPreviewLoadId,
+  setRecordPreviewLoadId,
 } from "../_state/recordDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -36,46 +32,18 @@ type Props = {
 
 const RecordLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
-
+  const { loading, error } = useRecordLoadPage();
   const [Rows, setRows] = useState<ReactNode[]>([]);
-  const recordId = useSelector(selectRecordLoadId);
-  const currentLoadPage = useSelector(selectRecordLoadPage);
-  const currentLoadAmount = useSelector(selectRecordLoadAmount);
-  const currentLoadList = useSelector(selectRecordLoadList);
-  const recordLoadPage = useSelector(selectRecordLoadPage);
-  const recordPageAmount = useSelector(selectRecordPageAmount);
-  const recordNameSearch = useSelector(selectRecordNameSearch);
-  const recordSortParam = useSelector(selectRecordSortParam);
-  const recordSortDirection = useSelector(selectRecordSortDirection);
 
-  const [loadRecordPage, { loading, error }] = useLazyQuery<RecordQueryRes>(recordPageQuery, {
-    onCompleted: ({ records }) => {
-      if (currentLoadPage !== 0 && records.rows.length === 0) {
-        // if current page has no result
-        dispatch(setRecordLoadPage(0));
-      } else {
-        dispatch(setRecordLoadList(records.rows));
-        dispatch(setRecordTotalAmount(records.count));
-      }
-    },
-  });
+  const recordId = useSelector(selectRecordPreviewLoadId);
+  const loadList = useSelector(selectRecordLoadList);
+  const loadAmount = useSelector(selectRecordLoadAmount);
+  const loadPage = useSelector(selectRecordLoadPage);
+  const pageAmount = useSelector(selectRecordPageAmount);
+  const sortParam = useSelector(selectRecordSortParam);
+  const sortDirection = useSelector(selectRecordSortDirection);
 
-  useEffect(() => {
-    const variables: RecordPageQueryParams = {
-      variables: {
-        page: currentLoadPage,
-        amount: currentLoadAmount,
-        sort: {
-          sortBy: recordSortParam,
-          order: recordSortDirection,
-        },
-      },
-    };
-    if (recordNameSearch !== null) variables.variables["name"] = recordNameSearch;
-    loadRecordPage(variables);
-  }, [currentLoadPage, currentLoadAmount, recordNameSearch, recordSortParam, recordSortDirection, loadRecordPage]);
-
-  const handleSetRecordPage = useCallback(
+  const handleSetPage = useCallback(
     (page: number) => {
       dispatch(setRecordLoadPage(page));
     },
@@ -84,15 +52,15 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setRecordLoadId(id));
+      dispatch(setRecordPreviewLoadId(id));
     },
     [dispatch]
   );
 
-  const handleSort = (param: typeof recordSortParam) => {
-    if (param === recordSortParam) {
+  const handleSort = (param: typeof sortParam) => {
+    if (param === sortParam) {
       dispatch(setRecordLoadPage(0));
-      dispatch(setRecordSortDirection(recordSortDirection === "ASC" ? "DESC" : "ASC"));
+      dispatch(setRecordSortDirection(sortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
       dispatch(setRecordLoadPage(0));
       dispatch(setRecordSortDirection("ASC"));
@@ -104,7 +72,7 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     if (loading) {
       if (Rows.length === 0) {
         setRows(
-          [...Array(currentLoadAmount)].map((e, idx) => (
+          [...Array(loadAmount)].map((e, idx) => (
             <TableRow
               key={`load-table-row-${idx}`}
               rowContent={["", "", ""]}
@@ -120,8 +88,8 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
     }
 
     const records: Record[] = [];
-    for (let i = 0; i < currentLoadList.length; ++i) records.push(currentLoadList[i]);
-    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) records.push({});
+    for (let i = 0; i < loadList.length; ++i) records.push(loadList[i]);
+    for (let i = loadList.length; i < loadAmount; ++i) records.push({});
     setRows(
       records.map((record, idx) => (
         <TableRow
@@ -141,14 +109,14 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
         />
       ))
     );
-  }, [loading, currentLoadList, currentLoadAmount, recordId, Rows.length, handleSelectRow]);
+  }, [loading, loadList, loadAmount, recordId, Rows.length, handleSelectRow]);
 
-  const getColumn = (name: string, param: typeof recordSortParam) => {
+  const getColumn = (name: string, param: typeof sortParam) => {
     return {
       name,
       onClick: () => handleSort(param),
-      isSortParam: recordSortParam === param,
-      sortDirection: recordSortDirection,
+      isSortParam: sortParam === param,
+      sortDirection: sortDirection,
     };
   };
 
@@ -170,9 +138,7 @@ const RecordLoadTable: FC<Props> = ({ buttons }) => {
       </LoadTable>
 
       <LoadTableFooter
-        pagination={
-          <Pagination currentPage={recordLoadPage} pageAmount={recordPageAmount} handleSetPage={handleSetRecordPage} small />
-        }
+        pagination={<Pagination currentPage={loadPage} pageAmount={pageAmount} handleSetPage={handleSetPage} small />}
         buttons={buttons}
       />
     </>

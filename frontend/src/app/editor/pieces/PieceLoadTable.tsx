@@ -1,20 +1,16 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-
-import { useLazyQuery } from "@apollo/client";
-import { piecePageQuery, PiecePageQueryParams } from "./_gql/queries";
-import { Piece, PieceQueryRes } from "@app/_types/dbTypes";
+import usePieceLoadPage from "./hooks/usePieceLoadPage";
+import { Piece } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectPieceLoadList, setPieceLoadList } from "./_state/pieceDataSlice";
+import { selectPieceLoadList } from "./_state/pieceDataSlice";
 import {
   selectPieceLoadAmount,
-  selectPieceLoadId,
+  selectPiecePreviewLoadId,
   selectPieceLoadPage,
   selectPiecePageAmount,
-  setPieceLoadId,
+  setPiecePreviewLoadId,
   setPieceLoadPage,
-  setPieceTotalAmount,
-  selectPieceNameSearch,
   selectPieceSortParam,
   selectPieceSortDirection,
   setPieceSortDirection,
@@ -36,46 +32,18 @@ type Props = {
 
 const PieceLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
-
+  const { loading, error } = usePieceLoadPage();
   const [Rows, setRows] = useState<ReactNode[]>([]);
-  const pieceId = useSelector(selectPieceLoadId);
-  const currentLoadPage = useSelector(selectPieceLoadPage);
-  const currentLoadAmount = useSelector(selectPieceLoadAmount);
-  const currentLoadList = useSelector(selectPieceLoadList);
-  const pieceLoadPage = useSelector(selectPieceLoadPage);
-  const piecePageAmount = useSelector(selectPiecePageAmount);
-  const pieceNameSearch = useSelector(selectPieceNameSearch);
-  const pieceSortParam = useSelector(selectPieceSortParam);
-  const pieceSortDirection = useSelector(selectPieceSortDirection);
 
-  const [loadPiecePage, { loading, error }] = useLazyQuery<PieceQueryRes>(piecePageQuery, {
-    onCompleted: ({ pieces }) => {
-      if (currentLoadPage !== 0 && pieces.rows.length === 0) {
-        // if current page has no result
-        dispatch(setPieceLoadPage(0));
-      } else {
-        dispatch(setPieceLoadList(pieces.rows));
-        dispatch(setPieceTotalAmount(pieces.count));
-      }
-    },
-  });
+  const pieceId = useSelector(selectPiecePreviewLoadId);
+  const loadList = useSelector(selectPieceLoadList);
+  const loadAmount = useSelector(selectPieceLoadAmount);
+  const loadPage = useSelector(selectPieceLoadPage);
+  const pageAmount = useSelector(selectPiecePageAmount);
+  const sortParam = useSelector(selectPieceSortParam);
+  const sortDirection = useSelector(selectPieceSortDirection);
 
-  useEffect(() => {
-    const variables: PiecePageQueryParams = {
-      variables: {
-        page: currentLoadPage,
-        amount: currentLoadAmount,
-        sort: {
-          sortBy: pieceSortParam,
-          order: pieceSortDirection,
-        },
-      },
-    };
-    if (pieceNameSearch !== null) variables.variables["name"] = pieceNameSearch;
-    loadPiecePage(variables);
-  }, [currentLoadPage, currentLoadAmount, pieceNameSearch, pieceSortParam, pieceSortDirection, loadPiecePage]);
-
-  const handleSetPiecePage = useCallback(
+  const handleSetPage = useCallback(
     (page: number) => {
       dispatch(setPieceLoadPage(page));
     },
@@ -84,15 +52,15 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setPieceLoadId(id));
+      dispatch(setPiecePreviewLoadId(id));
     },
     [dispatch]
   );
 
-  const handleSort = (param: typeof pieceSortParam) => {
-    if (param === pieceSortParam) {
+  const handleSort = (param: typeof sortParam) => {
+    if (param === sortParam) {
       dispatch(setPieceLoadPage(0));
-      dispatch(setPieceSortDirection(pieceSortDirection === "ASC" ? "DESC" : "ASC"));
+      dispatch(setPieceSortDirection(sortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
       dispatch(setPieceLoadPage(0));
       dispatch(setPieceSortDirection("ASC"));
@@ -104,7 +72,7 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
     if (loading) {
       if (Rows.length === 0) {
         setRows(
-          [...Array(currentLoadAmount)].map((e, idx) => (
+          [...Array(loadAmount)].map((e, idx) => (
             <TableRow
               key={`load-table-row-${idx}`}
               rowContent={["", "", ""]}
@@ -120,8 +88,8 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
     }
 
     const pieces: Piece[] = [];
-    for (let i = 0; i < currentLoadList.length; ++i) pieces.push(currentLoadList[i]);
-    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) pieces.push({});
+    for (let i = 0; i < loadList.length; ++i) pieces.push(loadList[i]);
+    for (let i = loadList.length; i < loadAmount; ++i) pieces.push({});
     setRows(
       pieces.map((piece, idx) => (
         <TableRow
@@ -140,14 +108,14 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
         />
       ))
     );
-  }, [loading, currentLoadList, currentLoadAmount, pieceId, Rows.length, handleSelectRow]);
+  }, [loading, loadList, loadAmount, pieceId, Rows.length, handleSelectRow]);
 
-  const getColumn = (name: string, param: typeof pieceSortParam) => {
+  const getColumn = (name: string, param: typeof sortParam) => {
     return {
       name,
       onClick: () => handleSort(param),
-      isSortParam: pieceSortParam === param,
-      sortDirection: pieceSortDirection,
+      isSortParam: sortParam === param,
+      sortDirection: sortDirection,
     };
   };
 
@@ -167,9 +135,7 @@ const PieceLoadTable: FC<Props> = ({ buttons }) => {
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter
-        pagination={
-          <Pagination currentPage={pieceLoadPage} pageAmount={piecePageAmount} handleSetPage={handleSetPiecePage} small />
-        }
+        pagination={<Pagination currentPage={loadPage} pageAmount={pageAmount} handleSetPage={handleSetPage} small />}
         buttons={buttons}
       />
     </>

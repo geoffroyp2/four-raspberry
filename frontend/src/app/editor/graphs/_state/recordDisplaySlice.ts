@@ -8,7 +8,8 @@ interface RecordDisplayType {
   loadPage: number;
   loadAmount: number;
   pageAmount: number;
-  loadId: number | null;
+  mainLoadId: number | null;
+  previewLoadId: number | null;
   pointZoom: PointZoomType;
   nameSearch: string | null;
   sortParam: "name" | "id" | "createdAt" | "updatedAt" | "oven" | "target";
@@ -19,7 +20,8 @@ const initialState: RecordDisplayType = {
   loadPage: 0,
   loadAmount: 15,
   pageAmount: 0,
-  loadId: null,
+  mainLoadId: null,
+  previewLoadId: null,
   pointZoom: {
     start: 0,
     end: 2147483647,
@@ -40,8 +42,11 @@ export const recordDisplaySlice = createSlice({
     setRecordTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setRecordLoadId: (state, action: PayloadAction<number>) => {
-      state.loadId = action.payload;
+    setRecordMainLoadId: (state, action: PayloadAction<number>) => {
+      state.mainLoadId = action.payload;
+    },
+    setRecordPreviewLoadId: (state, action: PayloadAction<number>) => {
+      state.previewLoadId = action.payload;
     },
     setRecordPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {
       state.pointZoom = { ...state.pointZoom, ...action.payload };
@@ -61,7 +66,8 @@ export const recordDisplaySlice = createSlice({
 export const {
   setRecordLoadPage,
   setRecordTotalAmount,
-  setRecordLoadId,
+  setRecordMainLoadId,
+  setRecordPreviewLoadId,
   setRecordPointZoom,
   setRecordNameSearch,
   setRecordSortParam,
@@ -71,7 +77,8 @@ export const {
 export const selectRecordLoadPage = (state: RootState) => state.recordDisplay.loadPage;
 export const selectRecordLoadAmount = (state: RootState) => state.recordDisplay.loadAmount;
 export const selectRecordPageAmount = (state: RootState) => state.recordDisplay.pageAmount;
-export const selectRecordLoadId = (state: RootState) => state.recordDisplay.loadId;
+export const selectRecordMainLoadId = (state: RootState) => state.recordDisplay.mainLoadId;
+export const selectRecordPreviewLoadId = (state: RootState) => state.recordDisplay.previewLoadId;
 export const selectRecordPointZoom = (state: RootState) => state.recordDisplay.pointZoom;
 export const selectRecordNameSearch = (state: RootState) => state.recordDisplay.nameSearch;
 export const selectRecordSortParam = (state: RootState) => state.recordDisplay.sortParam;

@@ -8,7 +8,8 @@ interface TargetDisplayType {
   loadPage: number;
   loadAmount: number;
   pageAmount: number;
-  loadId: number | null;
+  mainLoadId: number | null;
+  previewLoadId: number | null;
   pointZoom: PointZoomType;
   nameSearch: string | null;
   sortParam: "name" | "id" | "createdAt" | "updatedAt" | "oven";
@@ -19,7 +20,8 @@ const initialState: TargetDisplayType = {
   loadPage: 0,
   loadAmount: 15,
   pageAmount: 0,
-  loadId: null,
+  mainLoadId: null,
+  previewLoadId: null,
   pointZoom: {
     start: 0,
     end: 2147483647,
@@ -40,8 +42,11 @@ export const targetDisplaySlice = createSlice({
     setTargetTotalAmount: (state, action: PayloadAction<number>) => {
       state.pageAmount = Math.floor((action.payload - 1) / state.loadAmount);
     },
-    setTargetLoadId: (state, action: PayloadAction<number>) => {
-      state.loadId = action.payload;
+    setTargetMainLoadId: (state, action: PayloadAction<number>) => {
+      state.mainLoadId = action.payload;
+    },
+    setTargetPreviewLoadId: (state, action: PayloadAction<number>) => {
+      state.previewLoadId = action.payload;
     },
     setTargetPointZoom: (state, action: PayloadAction<Partial<PointZoomType>>) => {
       state.pointZoom = { ...state.pointZoom, ...action.payload };
@@ -61,7 +66,8 @@ export const targetDisplaySlice = createSlice({
 export const {
   setTargetLoadPage,
   setTargetTotalAmount,
-  setTargetLoadId,
+  setTargetMainLoadId,
+  setTargetPreviewLoadId,
   setTargetPointZoom,
   setTargetNameSearch,
   setTargetSortParam,
@@ -71,7 +77,8 @@ export const {
 export const selectTargetLoadPage = (state: RootState) => state.targetDisplay.loadPage;
 export const selectTargetLoadAmount = (state: RootState) => state.targetDisplay.loadAmount;
 export const selectTargetPageAmount = (state: RootState) => state.targetDisplay.pageAmount;
-export const selectTargetLoadId = (state: RootState) => state.targetDisplay.loadId;
+export const selectTargetMainLoadId = (state: RootState) => state.targetDisplay.mainLoadId;
+export const selectTargetPreviewLoadId = (state: RootState) => state.targetDisplay.previewLoadId;
 export const selectTargetPointZoom = (state: RootState) => state.targetDisplay.pointZoom;
 export const selectTargetNameSearch = (state: RootState) => state.targetDisplay.nameSearch;
 export const selectTargetSortParam = (state: RootState) => state.targetDisplay.sortParam;

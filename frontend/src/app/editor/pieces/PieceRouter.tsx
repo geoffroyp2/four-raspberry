@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectPieceData } from "./_state/pieceDataSlice";
 
 import PieceHome from "./PieceHome";
-import PieceFetcher from "./PieceFetcher";
+import PieceInfosPage from "./PieceInfosPage";
 
 const PieceRouter: FC = () => {
   const params = useParams();
@@ -24,13 +24,16 @@ const PieceRouter: FC = () => {
       } else {
         navigate("/pieces", { replace: true });
       }
+    } else if (isNaN(+params["*"])) {
+      // If id is invalid
+      navigate("/pieces", { replace: true });
     }
   }, [params, navigate, piece]);
 
   return (
     <Routes>
       <Route path="*" element={<PieceHome />} />
-      <Route path=":id" element={<PieceFetcher />} />
+      <Route path=":id" element={<PieceInfosPage />} />
     </Routes>
   );
 };

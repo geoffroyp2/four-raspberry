@@ -7,7 +7,7 @@ import { Record } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
 import { selectRecordData, setRecordData } from "../_state/recordDataSlice";
-import { selectTargetLoadId } from "../_state/targetDisplaySlice";
+import { selectTargetPreviewLoadId } from "../_state/targetDisplaySlice";
 
 import TargetLoadTable from "../targets/TargetLoadTable";
 import TargetTableTitle from "../elements/TargetTableTitle";
@@ -25,7 +25,7 @@ const RecordInfos: FC = () => {
   const navigate = useNavigate();
 
   const record = useSelector(selectRecordData);
-  const targetId = useSelector(selectTargetLoadId);
+  const targetId = useSelector(selectTargetPreviewLoadId);
 
   const [NameEditValue, setNameEditValue] = useState<string>(record.name ?? "");
   const [DescriptionEditValue, setDescriptionEditValue] = useState<string>(record.description ?? "");

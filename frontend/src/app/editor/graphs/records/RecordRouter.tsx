@@ -1,10 +1,11 @@
 import { FC, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 import { selectRecordData } from "../_state/recordDataSlice";
 
-import RecordFetcher from "./RecordFetcher";
+import RecordInfosPage from "./RecordInfosPage";
 
 const RecordRouter: FC = () => {
   const params = useParams();
@@ -19,12 +20,15 @@ const RecordRouter: FC = () => {
       } else {
         navigate("/graphs");
       }
+    } else if (isNaN(+params["*"])) {
+      // If id is invalid
+      navigate("/graphs", { replace: true });
     }
   }, [record, navigate, params]);
 
   return (
     <Routes>
-      <Route path=":id" element={<RecordFetcher />} />
+      <Route path=":id" element={<RecordInfosPage />} />
     </Routes>
   );
 };

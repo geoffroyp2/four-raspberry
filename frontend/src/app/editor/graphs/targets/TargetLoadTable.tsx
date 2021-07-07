@@ -1,24 +1,20 @@
 import { FC, ReactNode, useCallback, useEffect, useState } from "react";
-
-import { useLazyQuery } from "@apollo/client";
-import { targetPageQuery, TargetPageQueryParams } from "../_gql/queries";
-import { Target, TargetQueryRes } from "@app/_types/dbTypes";
+import useTargetLoadPage from "../hooks/useTargetLoadPage";
+import { Target } from "@app/_types/dbTypes";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectTargetLoadList, setTargetLoadList } from "../_state/targetDataSlice";
+import { selectTargetLoadList } from "../_state/targetDataSlice";
 import {
   selectTargetLoadAmount,
-  selectTargetLoadId,
   selectTargetLoadPage,
   selectTargetPageAmount,
-  setTargetLoadId,
   setTargetLoadPage,
-  setTargetTotalAmount,
-  selectTargetNameSearch,
   selectTargetSortParam,
   selectTargetSortDirection,
   setTargetSortDirection,
   setTargetSortParam,
+  selectTargetPreviewLoadId,
+  setTargetPreviewLoadId,
 } from "../_state/targetDisplaySlice";
 
 import NotFound from "@editor/NotFound";
@@ -36,45 +32,16 @@ type Props = {
 
 const TargetLoadTable: FC<Props> = ({ buttons }) => {
   const dispatch = useDispatch();
-
+  const { loading, error } = useTargetLoadPage();
   const [Rows, setRows] = useState<ReactNode[]>([]);
-  const targetId = useSelector(selectTargetLoadId);
-  const currentLoadPage = useSelector(selectTargetLoadPage);
-  const currentLoadAmount = useSelector(selectTargetLoadAmount);
-  const currentLoadList = useSelector(selectTargetLoadList);
-  const targetLoadPage = useSelector(selectTargetLoadPage);
-  const targetPageAmount = useSelector(selectTargetPageAmount);
-  const targetNameSearch = useSelector(selectTargetNameSearch);
-  const targetSortParam = useSelector(selectTargetSortParam);
-  const targetSortDirection = useSelector(selectTargetSortDirection);
 
-  const [loadTargetPage, { loading, error }] = useLazyQuery<TargetQueryRes>(targetPageQuery, {
-    onCompleted: ({ targets }) => {
-      if (currentLoadPage !== 0 && targets.rows.length === 0) {
-        // if current page has no result
-        dispatch(setTargetLoadPage(0));
-      } else {
-        dispatch(setTargetLoadList(targets.rows));
-        dispatch(setTargetTotalAmount(targets.count));
-      }
-    },
-  });
-
-  useEffect(() => {
-    const variables: TargetPageQueryParams = {
-      variables: {
-        page: currentLoadPage,
-        amount: currentLoadAmount,
-        sort: {
-          sortBy: targetSortParam,
-          order: targetSortDirection,
-        },
-      },
-    };
-
-    if (targetNameSearch !== null) variables.variables["name"] = targetNameSearch;
-    loadTargetPage(variables);
-  }, [currentLoadPage, currentLoadAmount, targetNameSearch, targetSortParam, targetSortDirection, loadTargetPage]);
+  const targetId = useSelector(selectTargetPreviewLoadId);
+  const loadList = useSelector(selectTargetLoadList);
+  const loadAmount = useSelector(selectTargetLoadAmount);
+  const loadPage = useSelector(selectTargetLoadPage);
+  const pageAmount = useSelector(selectTargetPageAmount);
+  const sortParam = useSelector(selectTargetSortParam);
+  const sortDirection = useSelector(selectTargetSortDirection);
 
   const handleSetTargetPage = useCallback(
     (page: number) => {
@@ -85,15 +52,15 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
 
   const handleSelectRow = useCallback(
     (id: number) => {
-      dispatch(setTargetLoadId(id));
+      dispatch(setTargetPreviewLoadId(id));
     },
     [dispatch]
   );
 
-  const handleSort = (param: typeof targetSortParam) => {
-    if (param === targetSortParam) {
+  const handleSort = (param: typeof sortParam) => {
+    if (param === sortParam) {
       dispatch(setTargetLoadPage(0));
-      dispatch(setTargetSortDirection(targetSortDirection === "ASC" ? "DESC" : "ASC"));
+      dispatch(setTargetSortDirection(sortDirection === "ASC" ? "DESC" : "ASC"));
     } else {
       dispatch(setTargetLoadPage(0));
       dispatch(setTargetSortDirection("ASC"));
@@ -105,7 +72,7 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
     if (loading) {
       if (Rows.length === 0) {
         setRows(
-          [...Array(currentLoadAmount)].map((e, idx) => (
+          [...Array(loadAmount)].map((e, idx) => (
             <TableRow
               key={`load-table-row-${idx}`}
               rowContent={["", "", ""]}
@@ -121,8 +88,8 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
     }
 
     const targets: Target[] = [];
-    for (let i = 0; i < currentLoadList.length; ++i) targets.push(currentLoadList[i]);
-    for (let i = currentLoadList.length; i < currentLoadAmount; ++i) targets.push({});
+    for (let i = 0; i < loadList.length; ++i) targets.push(loadList[i]);
+    for (let i = loadList.length; i < loadAmount; ++i) targets.push({});
     setRows(
       targets.map((target, idx) => (
         <TableRow
@@ -141,14 +108,14 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
         />
       ))
     );
-  }, [loading, currentLoadList, currentLoadAmount, targetId, Rows.length, handleSelectRow]);
+  }, [loading, loadList, loadAmount, targetId, Rows.length, handleSelectRow]);
 
-  const getColumn = (name: string, param: typeof targetSortParam) => {
+  const getColumn = (name: string, param: typeof sortParam) => {
     return {
       name,
       onClick: () => handleSort(param),
-      isSortParam: targetSortParam === param,
-      sortDirection: targetSortDirection,
+      isSortParam: sortParam === param,
+      sortDirection: sortDirection,
     };
   };
 
@@ -168,9 +135,7 @@ const TargetLoadTable: FC<Props> = ({ buttons }) => {
         <tbody>{Rows}</tbody>
       </LoadTable>
       <LoadTableFooter
-        pagination={
-          <Pagination currentPage={targetLoadPage} pageAmount={targetPageAmount} handleSetPage={handleSetTargetPage} small />
-        }
+        pagination={<Pagination currentPage={loadPage} pageAmount={pageAmount} handleSetPage={handleSetTargetPage} small />}
         buttons={buttons}
       />
     </>

@@ -1,14 +1,10 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import useTargetLoadPreview from "../hooks/useTargetLoadPreview";
 
-import { useLazyQuery } from "@apollo/client";
-import { TargetQueryRes } from "@app/_types/dbTypes";
-import { IdQueryParams } from "@editor/_gql/types";
-import { targetPreviewQuery } from "../_gql/queries";
-
-import { useDispatch, useSelector } from "react-redux";
-import { selectTargetLoadId } from "../_state/targetDisplaySlice";
-import { selectTargetPreview, setTargetPreview } from "../_state/targetDataSlice";
+import { useSelector } from "react-redux";
+import { selectTargetPreviewLoadId } from "../_state/targetDisplaySlice";
+import { selectTargetPreview } from "../_state/targetDataSlice";
 
 import { dateToDisplayString } from "@app/_utils/dateFormat";
 
@@ -20,27 +16,10 @@ type Props = {
 };
 
 const TargetPreview: FC<Props> = ({ showGoto }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const targetId = useSelector(selectTargetLoadId);
+  const targetId = useSelector(selectTargetPreviewLoadId);
   const previewData = useSelector(selectTargetPreview);
-
-  const [loadTargetPreview, { error }] = useLazyQuery<TargetQueryRes>(targetPreviewQuery, {
-    onCompleted: ({ targets }) => {
-      if (targets.rows[0] && targets.rows[0].id === targetId) {
-        dispatch(setTargetPreview(targets.rows[0]));
-      }
-    },
-  });
-
-  useEffect(() => {
-    const variables: IdQueryParams = {
-      variables: {
-        id: targetId ?? 0,
-      },
-    };
-    loadTargetPreview(variables);
-  }, [targetId, loadTargetPreview]);
+  const { error } = useTargetLoadPreview();
 
   if (error) return <NotFound />;
 
